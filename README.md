@@ -5,7 +5,7 @@
  1. Create a `.env` file on the project's root and add the following template:
 ```env
 # Your Bot Token Goes Here
-TOKEN = <YourDoubleQuotedTokenHere>
+TOKEN = "MyBotToken"
 ```
  2. Run `npm i` to install all dependencies
  3. Run `node .` to run the project
