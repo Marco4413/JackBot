@@ -1,0 +1,23 @@
+{
+  "name": "jackbot",
+  "version": "0.1.0",
+  "description": "A Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hds536jhmk/JackBot.git"
+  },
+  "author": "hds536jhmk",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hds536jhmk/JackBot/issues"
+  },
+  "homepage": "https://github.com/hds536jhmk/JackBot#readme",
+  "dependencies": {
+    "discord.js": "^13.3.1",
+    "dotenv": "^10.0.0"
+  }
+}
