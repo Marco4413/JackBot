@@ -11,3 +11,8 @@ TOKEN = "MyBotToken"
  3. Run `node .` to run the project
 
 **NOTE:** This Project uses Node v16.13.0
+
+## Contributing
+
+This project uses EditorConfig, so if you're using VSCode you should download
+the EditorConfig extension specified in the Official Site: [https://editorconfig.org](https://editorconfig.org)
