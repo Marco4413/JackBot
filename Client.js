@@ -1,18 +1,41 @@
-const { Client, Intents } = require("discord.js");
+const fs = require("fs");
+const { Client: DiscordClient, Intents } = require("discord.js");
 
-const client = new Client({
-    "intents": Intents.FLAGS.GUILD_MESSAGES | Intents.FLAGS.GUILD_MEMBERS
+const Client = new DiscordClient({
+    "intents": Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES | Intents.FLAGS.GUILD_MEMBERS
 });
 
-client.token = process.env["TOKEN"];
+Client.token = process.env["TOKEN"];
 
-client.once("ready", () => {
+Client.once("ready", () => {
     console.log("Bot Ready!");
 });
 
 process.once("SIGINT", () => {
-    client.destroy();
+    Client.destroy();
     console.log("Bot Destroyed.");
 });
 
-module.exports = client;
+const RegisterEventListeners = () => {
+    const eventsFolder = "./events";
+    fs.readdirSync(eventsFolder).forEach(file => {
+        if (file.endsWith(".js")) {
+            const script = require(`${eventsFolder}/${file}`);
+            if (
+                typeof script === "object" &&
+                typeof script.event === "string" &&
+                typeof script.callback === "function"
+            ) {
+                if (script.once === true) {
+                    Client.once(script.event, script.callback);
+                } else {
+                    Client.on(script.event, script.callback);
+                }
+            }
+        }
+    });
+}
+
+module.exports = {
+    Client, RegisterEventListeners
+};
