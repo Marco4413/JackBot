@@ -1,21 +1,19 @@
 const discord = require("discord.js");
+const Database = require("./Database.js");
+const DatabaseDefinitions = require("./DatabaseDefinitions.js");
 
-const CommandArgumentType = {
-    "STRING": 1,
-    "NUMBER": 2,
-    "BOOLEAN": 3
-};
+/** @typedef {"string"|"number"|"boolean"} CommandArgumentType */
 
 /**
  * @typedef {Object} CommandArgument
- * @property {Number} types The type of the argument, choose from the {@link CommandArgumentType} enum
+ * @property {CommandArgumentType[]} types
  * @property {Any} [default]
  */
 
 /**
  * @typedef {Object} Command
  * @property {String} name
- * @property {(args: Any[], ...execArgs: Any[]) => void} execute
+ * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, args: Any[]) => void} execute
  * @property {Boolean} [channelPermissions]
  * @property {discord.PermissionResolvable} [permissions]
  * @property {String} [shortcut]
@@ -25,27 +23,31 @@ const CommandArgumentType = {
 
 /**
  * @param {String} arg
- * @param {Number} argTypes
+ * @param {CommandArgumentType[]} argTypes
  * @returns {Any}
  */
 const _ConvertArgument = (arg, argTypes) => {
     if (argTypes === 0) return undefined;
-    const typeString  = (argTypes & CommandArgumentType.STRING)  !== 0;
-    const typeNumber  = (argTypes & CommandArgumentType.NUMBER)  !== 0;
-    const typeBoolean = (argTypes & CommandArgumentType.BOOLEAN) !== 0;
 
-    if (typeBoolean) {
-        const isTrue  = arg === "true"  || arg === "1";
-        const isFalse = arg === "false" || arg === "0";
-        if (isTrue || isFalse) return isTrue;
+    for (let i = 0; i < argTypes.length; i++) {
+        const type = argTypes[i];
+        switch (type) {
+        case "string":
+            return arg;
+        case "number": {
+            const asNumber = Number.parseFloat(arg);
+            if (!Number.isNaN(asNumber)) return asNumber;
+            break;
+        }
+        case "boolean": {
+            const isTrue  = arg === "true"  || arg === "1";
+            const isFalse = arg === "false" || arg === "0";
+            if (isTrue || isFalse) return isTrue;
+            break;
+        }
+        }
     }
 
-    if (typeNumber) {
-        const asNumber = Number.parseFloat(arg);
-        if (!Number.isNaN(asNumber)) return asNumber;
-    }
-
-    if (typeString) return arg;
     return undefined;
 };
 
@@ -75,10 +77,11 @@ const IsValidCommand = (command) => {
 
         if (Array.isArray(command.arguments)) {
             for (const arg of command.arguments) {
-                if (!(
-                    typeof arg.types === "number" ||
-                    typeof arg.types === "bigint"
-                )) return false;
+                if (!Array.isArray(arg.types)) return false;
+                for (const argType of arg.types) {
+                    if (!(argType === "string" || argType === "number" || argType === "boolean"))
+                        return false;
+                }
             }
         }
     }
@@ -97,13 +100,13 @@ const SplitCommand = (command) => {
 
 /**
  * @param {discord.Message} msg
+ * @param {DatabaseDefinitions.GuildRow} guildRow
  * @param {String[]} splittedMessage
  * @param {Command[]} commandList
  * @param {Boolean} useShortcuts
- * @param {...Any} execArguments
  * @returns {Boolean}
  */
-const ExecuteCommand = (msg, splittedMessage, commandList, useShortcuts = true, ...execArguments) => {
+const ExecuteCommand = (msg, guildRow, splittedMessage, commandList) => {
     const [ commandName, ...commandArgs ] = splittedMessage;
 
     for (let i = 0; i < commandList.length; i++) {
@@ -111,7 +114,7 @@ const ExecuteCommand = (msg, splittedMessage, commandList, useShortcuts = true, 
 
         // If the command name doesn't match go to the next command
         if (
-            !( useShortcuts && command.shortcut === commandName ) &&
+            !( guildRow.shortcuts && command.shortcut === commandName ) &&
             command.name !== commandName
         ) continue;
 
@@ -135,7 +138,7 @@ const ExecuteCommand = (msg, splittedMessage, commandList, useShortcuts = true, 
 
         // If this command has subcommands then try to execute those
         if (command.subcommands !== undefined) {
-            if (ExecuteCommand(msg, commandArgs, command.subcommands, useShortcuts, execArguments))
+            if (ExecuteCommand(msg, guildRow, commandArgs, command.subcommands))
                 return true;
         }
 
@@ -177,8 +180,8 @@ const ExecuteCommand = (msg, splittedMessage, commandList, useShortcuts = true, 
             }
         }
 
-        // Execute command with command arguments and execArguments
-        command.execute(parsedCommandArgs, ...execArguments);
+        // Execute command with parsedCommands if arguments are defined else with the raw arguments
+        command.execute(msg, guildRow, parsedCommandArgs.length === 0 ? commandArgs : parsedCommandArgs);
         return true;
     }
 
@@ -193,5 +196,6 @@ const ExecuteCommand = (msg, splittedMessage, commandList, useShortcuts = true, 
 const CreateCommand = cmd => cmd;
 
 module.exports = {
-    CommandArgumentType, IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand
+    IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand,
+    Database, DatabaseDefinitions, Permissions: discord.Permissions
 };

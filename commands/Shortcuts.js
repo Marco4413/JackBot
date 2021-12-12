@@ -1,6 +1,4 @@
-const { Permissions } = require("discord.js");
-const { CreateCommand, CommandArgumentType } = require("../Command.js");
-const { SetGuildAttr } = require("../Database");
+const { CreateCommand, Permissions, Database } = require("../Command.js");
 
 module.exports = CreateCommand({
     "name": "shortcuts",
@@ -8,13 +6,13 @@ module.exports = CreateCommand({
     "permissions": Permissions.FLAGS.ADMINISTRATOR,
     "arguments": [
         {
-            "types": CommandArgumentType.BOOLEAN,
+            "types": [ "boolean" ],
             "default": null
         }
     ],
-    "execute": async ([ enable ], msg, guild) => {
+    "execute": async (msg, guild, [ enable ]) => {
         const enableShortcuts = enable === null ? !guild.shortcuts : enable;
-        SetGuildAttr(msg.guild.id, { "shortcuts": enableShortcuts });
+        await Database.SetGuildAttr(msg.guild.id, { "shortcuts": enableShortcuts });
         msg.reply(`Shortcuts set to: \`${enableShortcuts}\``);
     }
 });
