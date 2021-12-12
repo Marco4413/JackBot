@@ -16,7 +16,7 @@ module.exports = CreateEventListener(
             if (splittedCommand.length === 0) return;
 
             if (!ExecuteCommand(msg, splittedCommand, GetCommands(), guild.shortcuts, msg, guild)) {
-                msg.reply(`The specified command is not valid.`);
+                msg.reply("The specified command is not valid.");
             }
         }
     }

@@ -15,6 +15,6 @@ const discord = require("discord.js");
  */
 const CreateEventListener = (event, callback, once = false) => {
     return { event, callback, once };
-}
+};
 
 module.exports = { CreateEventListener };

@@ -16,3 +16,6 @@ TOKEN = "MyBotToken"
 
 This project uses EditorConfig, so if you're using VSCode you should download
 the EditorConfig extension specified in the Official Site: [https://editorconfig.org](https://editorconfig.org)
+
+It also uses ESLint, extensions can be found at the following link: [https://eslint.org/docs/user-guide/integrations](https://eslint.org/docs/user-guide/integrations)<br>
+The ESLint module is a dev dependency of this project.

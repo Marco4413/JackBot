@@ -20,4 +20,4 @@ module.exports = (settings, logging) => {
         "storage": settings.filePos,
         logging
     });
-}
+};

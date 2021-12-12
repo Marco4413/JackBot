@@ -26,7 +26,7 @@ const IsStarted = () => _DBInstance !== null;
 
 const _EnsureStart = () => {
     if (!IsStarted()) throw Error("Database wasn't yet Started.");
-}
+};
 
 /**
  * Starts the Database with the specified settings
@@ -36,13 +36,13 @@ const Start = async (settings) => {
     if (IsStarted()) throw new Error("Can't Start Database, it's Already Running.");
 
     switch (settings.mode) {
-        case "sqlite":
-            _DBInstance = SQLiteDatabase(settings.sqlite, settings.logging);
-            break;
-        case "mariadb":
-            throw new Error("MariaDB Not Yet Implemented.");
-        default:
-            throw new Error("Database Mode not Valid.");
+    case "sqlite":
+        _DBInstance = SQLiteDatabase(settings.sqlite, settings.logging);
+        break;
+    case "mariadb":
+        throw new Error("MariaDB Not Yet Implemented.");
+    default:
+        throw new Error("Database Mode not Valid.");
     }
 
     /** @type {SyncOptions} */
@@ -54,7 +54,7 @@ const Start = async (settings) => {
     
     // Trying to authenticate to the Database
     await _DBInstance.authenticate();
-}
+};
 
 /**
  * @param {String} guildID
@@ -66,7 +66,7 @@ const _FindOrCreateGuild = async (guildID) => {
         "defaults": { guildID }
     });
     return instance;
-}
+};
 
 /**
  * Creates an entry for guildID if it doesn't exist and returns it
@@ -77,7 +77,7 @@ const GetGuild = async (guildID) => {
     _EnsureStart();
     const instance = await _FindOrCreateGuild(guildID);
     return instance.get();
-}
+};
 
 /**
  * Sets the specified Guild Attributes
@@ -93,6 +93,6 @@ const SetGuildAttr = async (guildID, attributes) => {
     }
     await instance.save();
     return instance.get();
-}
+};
 
 module.exports = { IsStarted, Start, GetGuild, SetGuildAttr };

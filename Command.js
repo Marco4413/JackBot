@@ -47,7 +47,7 @@ const _ConvertArgument = (arg, argTypes) => {
 
     if (typeString) return arg;
     return undefined;
-}
+};
 
 /**
  * @param {Command} command
@@ -84,7 +84,7 @@ const IsValidCommand = (command) => {
     }
 
     return isValid;
-}
+};
 
 /**
  * @param {String} command
@@ -93,7 +93,7 @@ const IsValidCommand = (command) => {
 const SplitCommand = (command) => {
     if (command.length === 0) return [ ];
     return command.split(/ /g);
-}
+};
 
 /**
  * @param {discord.Message} msg
@@ -184,7 +184,7 @@ const ExecuteCommand = (msg, splittedMessage, commandList, useShortcuts = true, 
 
     // Return false: No Command Found
     return false;
-}
+};
 
 /**
  * @param {Command} cmd

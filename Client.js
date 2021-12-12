@@ -34,7 +34,7 @@ const RegisterEventListeners = () => {
             }
         }
     });
-}
+};
 
 module.exports = {
     Client, RegisterEventListeners

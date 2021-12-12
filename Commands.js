@@ -16,14 +16,14 @@ const RegisterCommands = () => {
             }
         }
     });
-}
+};
 
 /**
  * @returns {command.Command[]}
  */
 const GetCommands = () => {
     return _Commands;
-}
+};
 
 module.exports = {
     RegisterCommands, GetCommands
