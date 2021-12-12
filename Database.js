@@ -1,108 +1,98 @@
-const LocalDatabase = require("./databases/LocalDatabase.js");
+const SQLiteDatabase = require("./databases/SQLiteDatabase.js");
+const DBDefinitions = require("./DatabaseDefinitions.js");
+const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
 
-const Mode = {
-    "NONE": 0,
-    "LOCAL": 1,
-    "REMOTE": 2
-};
-
-let _Started = false;
-let _DBMode = Mode.NONE;
+/** @typedef {(boolean|((sql: string, timing?: number) => void))?} SequelizeLogging */
 
 /**
- * @param {Number} mode A value from the {@link Mode} enum
- */
-const SetMode = (mode) => {
-    if (_Started) throw new Error("Can't change Database Mode if Database was already started.");
-    _DBMode = mode;
-}
-
-const _ExecuteByMode = (localcb, remotecb, ...arguments) => {
-    switch (_DBMode) {
-        case Mode.LOCAL:
-            if (localcb === undefined)
-                throw new Error("LOCAL Mode is not yet Implemented.");
-            return localcb(...arguments);
-        case Mode.REMOTE:
-            if (remotecb === undefined)
-                throw new Error("REMOTE Mode is not yet Implemented.");
-            return remotecb(...arguments);
-        default:
-            throw new Error("Invalid Database Mode Specified.");
-    }
-}
-
-/**
+ * Generic Settings for Databases
  * @typedef {Object} DatabaseSettings
- * @property {String} [filePos]
- * @property {Number} [localSaveInterval]
+ * @property {"sqlite"|"mariadb"} mode The Database mode
+ * @property {SequelizeLogging} [logging] A Logger for Sequelize
+ * @property {SQLiteDatabase.SQLiteSettings} [sqlite] Specific Database Settings for "sqlite" mode
  */
 
-// #region Common Methods Implementation
+/** @type {Sequelize} */
+let _DBInstance = null;
+
+/** @type {ModelCtor<Model>} */
+let _Guild = null;
 
 /**
- * @param {DatabaseSettings} settings
+ * Returns whether or not the Database was started
+ * @returns {Boolean} Whether or not the Database was started
  */
-const Start = (settings) => {
-    if (_Started) throw new Error("Can't Start Database, it's Already Running.");
-    if (_DBMode === Mode.NONE) throw new Error("Can't Start Database, no Mode Specified.");
+const IsStarted = () => _DBInstance !== null;
 
-    _ExecuteByMode(
-        LocalDatabase.Start, undefined, settings
-    );
-
-    _Started = true;
+const _EnsureStart = () => {
+    if (!IsStarted()) throw Error("Database wasn't yet Started.");
 }
 
 /**
- * @typedef {Object} Guild
- * @property {String} prefix
- * @property {Boolean} shortcuts
+ * Starts the Database with the specified settings
+ * @param {DatabaseSettings} settings The settings to start the Database with
  */
+const Start = async (settings) => {
+    if (IsStarted()) throw new Error("Can't Start Database, it's Already Running.");
 
-/**
- * @param {String} guildID
- * @returns {Guild|undefined}
- */
-const GetGuildByID = (guildID) => {
-    return _ExecuteByMode(
-        LocalDatabase.GetGuildByID, undefined, guildID
-    );
-}
-
-/**
- * @param {String} guildID
- * @param {Guild} [guildEntry]
- * @param {Boolean} [forceAdd]
- * @returns {Guild}
- */
-const AddGuildByID = (guildID, guildEntry, forceAdd = false) => {
-    if (guildEntry === undefined) {
-        guildEntry = {
-            "prefix": "!",
-            "shortcuts": true
-        };
+    switch (settings.mode) {
+        case "sqlite":
+            _DBInstance = SQLiteDatabase(settings.sqlite, settings.logging);
+            break;
+        case "mariadb":
+            throw new Error("MariaDB Not Yet Implemented.");
+        default:
+            throw new Error("Database Mode not Valid.");
     }
 
-    return _ExecuteByMode(
-        LocalDatabase.AddGuildByID, undefined,
-        guildID, guildEntry, forceAdd
-    );
+    /** @type {SyncOptions} */
+    const syncOptions = { "alter": true };
+
+    // Defining and Syncing Models
+    _Guild = _DBInstance.define("Guild", DBDefinitions.GuildModel);
+    await _Guild.sync(syncOptions);
+    
+    // Trying to authenticate to the Database
+    await _DBInstance.authenticate();
 }
 
 /**
  * @param {String} guildID
- * @param {(keyof Guild)[]} attributes
- * @param {Any[]} values
- * @returns {Guild}
+ * @returns {Model}
  */
-const SetGuildAttrByID = (guildID, attributes, values) => {
-    return _ExecuteByMode(
-        LocalDatabase.SetGuildAttrByID, undefined,
-        guildID, attributes, values
-    );
+const _FindOrCreateGuild = async (guildID) => {
+    const [ instance ] = await _Guild.findOrCreate({
+        "where":    { guildID },
+        "defaults": { guildID }
+    });
+    return instance;
 }
 
-// #endregion
+/**
+ * Creates an entry for guildID if it doesn't exist and returns it
+ * @param {String} guildID The ID of the Guild to Get or Create
+ * @returns {DBDefinitions.GuildRow} The Row of the Guild
+ */
+const GetGuild = async (guildID) => {
+    _EnsureStart();
+    const instance = await _FindOrCreateGuild(guildID);
+    return instance.get();
+}
 
-module.exports = { Mode, SetMode, Start, GetGuildByID, AddGuildByID, SetGuildAttrByID };
+/**
+ * Sets the specified Guild Attributes
+ * @param {String} guildID The Guild to set the attributes for
+ * @param {DBDefinitions.GuildRow} attributes The Attributes to set ( undefined keys don't change attributes )
+ * @returns {DBDefinitions.GuildRow} The updated Guild Row
+ */
+const SetGuildAttr = async (guildID, attributes) => {
+    _EnsureStart();
+    const instance = await _FindOrCreateGuild(guildID);
+    for (const key of Object.keys(attributes)) {
+        instance.set(key, attributes[key]);
+    }
+    await instance.save();
+    return instance.get();
+}
+
+module.exports = { IsStarted, Start, GetGuild, SetGuildAttr };

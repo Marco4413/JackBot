@@ -5,12 +5,16 @@ const { Client, RegisterEventListeners } = require("./Client.js");
 const { RegisterCommands } = require("./Commands.js");
 const db = require("./Database.js");
 
-db.SetMode(db.Mode.LOCAL);
-db.Start({
-    "filePos": "./data/database.json",
-    "localSaveInterval": 1800e3 // Save Every 30 Minutes
-});
-
-RegisterCommands();
-RegisterEventListeners();
-Client.login();
+(async () => {
+    await db.Start({
+        "mode": "sqlite",
+        "logging": false,
+        "sqlite": {
+            "filePos": "./data/database.sqlite"
+        }
+    });
+    
+    RegisterCommands();
+    RegisterEventListeners();
+    Client.login();
+})();
