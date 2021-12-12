@@ -95,7 +95,8 @@ const IsValidCommand = (command) => {
  */
 const SplitCommand = (command) => {
     if (command.length === 0) return [ ];
-    return command.split(/ /g);
+    const match = command.match(/[^\s]+/g);
+    return match === null ? [ ] : match;
 };
 
 /**
