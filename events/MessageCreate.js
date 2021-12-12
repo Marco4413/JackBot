@@ -1,5 +1,6 @@
 const { CreateEventListener } = require("../EventListener.js");
 const { SplitCommand, ExecuteCommand } = require("../Command.js");
+const { GetCommands } = require("../Commands.js");
 const db = require("../Database.js");
 
 module.exports = CreateEventListener(
@@ -14,7 +15,7 @@ module.exports = CreateEventListener(
 
             if (splittedCommand.length === 0) return;
 
-            if (!ExecuteCommand(msg, splittedCommand, [ ], guild.shortcuts, msg, guild)) {
+            if (!ExecuteCommand(msg, splittedCommand, GetCommands(), guild.shortcuts, msg, guild)) {
                 msg.reply(`The specified command is not valid.`);
             }
         }
