@@ -101,8 +101,27 @@ const AddGuildByID = (guildID, guildEntry, forceAdd = false) => {
     return _Data[guildID];
 }
 
+/**
+ * @param {String} guildID
+ * @param {(keyof Guild)[]} attributes
+ * @param {Any[]} values
+ * @returns {Guild|undefined}
+ */
+const SetGuildAttrByID = (guildID, attributes, values) => {
+    if (_Data[guildID] === undefined) return undefined;
+
+    const guild = _Data[guildID];
+    for (let i = 0; i < attributes.length; i++) {
+        const attr = attributes[i];
+        const value = i < values.length ? values[i] : null;
+        guild[attr] = value;
+    }
+    
+    return guild;
+}
+
 // #endregion
 
 module.exports = {
-    Start, GetGuildByID, AddGuildByID
+    Start, GetGuildByID, AddGuildByID, SetGuildAttrByID
 }

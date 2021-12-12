@@ -10,7 +10,7 @@ let _Started = false;
 let _DBMode = Mode.NONE;
 
 /**
- * @param {keyof Mode} mode
+ * @param {Number} mode A value from the {@link Mode} enum
  */
 const SetMode = (mode) => {
     if (_Started) throw new Error("Can't change Database Mode if Database was already started.");
@@ -37,6 +37,8 @@ const _ExecuteByMode = (localcb, remotecb, ...arguments) => {
  * @property {String} [filePos]
  * @property {Number} [localSaveInterval]
  */
+
+// #region Common Methods Implementation
 
 /**
  * @param {DatabaseSettings} settings
@@ -86,4 +88,19 @@ const AddGuildByID = (guildID, guildEntry, forceAdd = false) => {
     );
 }
 
-module.exports = { Mode, SetMode, Start, GetGuildByID, AddGuildByID };
+/**
+ * @param {String} guildID
+ * @param {(keyof Guild)[]} attributes
+ * @param {Any[]} values
+ * @returns {Guild}
+ */
+const SetGuildAttrByID = (guildID, attributes, values) => {
+    return _ExecuteByMode(
+        LocalDatabase.SetGuildAttrByID, undefined,
+        guildID, attributes, values
+    );
+}
+
+// #endregion
+
+module.exports = { Mode, SetMode, Start, GetGuildByID, AddGuildByID, SetGuildAttrByID };
