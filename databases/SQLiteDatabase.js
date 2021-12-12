@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 
 /**
  * @typedef {Object} SQLiteSettings SQLite Database Settings
- * @property {String} filePos The File Location for the SQLite Database
+ * @property {String} storage The File Location for the SQLite Database
  */
 
 /** @typedef {import("../Database.js").SequelizeLogging} SequelizeLogging */
@@ -14,10 +14,10 @@ const { Sequelize } = require("sequelize");
  */
 module.exports = (settings, logging) => {
     if (typeof settings !== "object") throw new Error("Settings must be Specified for SQLite Database.");
-    if (typeof settings.filePos !== "string") throw new Error("File Pos Must be Specified for SQLite Database.");
+    if (typeof settings.storage !== "string") throw new Error("File Pos Must be Specified for SQLite Database.");
     return new Sequelize({
         "dialect": "sqlite",
-        "storage": settings.filePos,
+        "storage": settings.storage,
         logging
     });
 };

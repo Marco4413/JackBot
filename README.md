@@ -6,6 +6,12 @@
 ```env
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
+
+# Database Settings
+DB_MODE = "sqlite"
+
+# SQLite Database Settings for "sqlite" mode
+SQLITE_STORAGE = "./data/database.sqlite"
 ```
  2. Run `npm i` to install all dependencies
  3. Run `node .` to run the project

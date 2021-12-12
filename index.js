@@ -7,10 +7,10 @@ const db = require("./Database.js");
 
 (async () => {
     await db.Start({
-        "mode": "sqlite",
+        "mode": process.env["DB_MODE"],
         "logging": false,
         "sqlite": {
-            "filePos": "./data/database.sqlite"
+            "storage": process.env["SQLITE_STORAGE"]
         }
     });
     
