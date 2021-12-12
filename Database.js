@@ -57,6 +57,7 @@ const Start = (settings) => {
 /**
  * @typedef {Object} Guild
  * @property {String} prefix
+ * @property {Boolean} shortcuts
  */
 
 /**
@@ -78,7 +79,8 @@ const GetGuildByID = (guildID) => {
 const AddGuildByID = (guildID, guildEntry, forceAdd = false) => {
     if (guildEntry === undefined) {
         guildEntry = {
-            "prefix": "!"
+            "prefix": "!",
+            "shortcuts": true
         };
     }
 
