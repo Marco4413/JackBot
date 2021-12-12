@@ -1,11 +1,22 @@
 const { CreateEventListener } = require("../EventListener.js");
+const { SplitCommand, ExecuteCommand } = require("../Command.js");
+const db = require("../Database.js");
 
 module.exports = CreateEventListener(
     "messageCreate", msg => {
         if (msg.author.bot) return;
+        
+        const guild = db.AddGuildByID(msg.guild.id);
+        if (msg.content.startsWith(guild.prefix)) {
+            const splittedCommand = SplitCommand(
+                msg.content.substring(guild.prefix.length).trim()
+            );
 
-        const rand = Math.random();
-        if (rand <= 0.1) msg.reply("La Sagra è Iniziata?");
-        else if (rand <= 0.2) msg.react("🤔");
+            if (splittedCommand.length === 0) return;
+
+            if (!ExecuteCommand(msg, splittedCommand, [ ], guild.shortcuts, msg, guild)) {
+                msg.reply(`The specified command is not valid.`);
+            }
+        }
     }
 );
