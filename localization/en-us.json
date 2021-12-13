@@ -1,5 +1,11 @@
 {
     "commands": {
+        "language": {
+            "available": "Available Languages:\n{0}",
+            "invalid": "The specified language doesn't exist.",
+            "changed": "Language set to: `{0}`",
+            "current": "Current Language: `{0}`"
+        },
         "ping": {
             "subcommands": {
                 "message": {
@@ -19,6 +25,7 @@
         }
     },
     "common": {
+        "listEntry": " - `{0}`",
         "noChannelPerms": "Not enough permissions in channel {0} to run this command.",
         "noGuildPerms": "Not enough permissions to run this command.",
         "noSubcommand": "A valid subcommand must be provided.",
