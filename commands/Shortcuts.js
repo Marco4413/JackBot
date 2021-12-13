@@ -6,6 +6,7 @@ module.exports = CreateCommand({
     "permissions": Permissions.FLAGS.ADMINISTRATOR,
     "arguments": [
         {
+            "name": "[Enable]",
             "types": [ "boolean" ],
             "default": null
         }

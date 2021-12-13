@@ -10,6 +10,7 @@ module.exports = CreateCommand({
             "permissions": Permissions.FLAGS.ADMINISTRATOR,
             "arguments": [
                 {
+                    "name": "[Prefix]",
                     "types": [ "string" ]
                 }
             ],
@@ -21,7 +22,7 @@ module.exports = CreateCommand({
             }
         }
     ],
-    "execute": async (msg, guild, args) => {
+    "execute": (msg, guild, args) => {
         msg.reply(`Current Prefix: \`${guild.prefix}\``);
     }
 });

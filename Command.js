@@ -2,60 +2,154 @@ const discord = require("discord.js");
 const Database = require("./Database.js");
 const DatabaseDefinitions = require("./DatabaseDefinitions.js");
 
+// #region typedefs
+
 /** @typedef {"string"|"number"|"boolean"} CommandArgumentType */
 
 /**
- * @typedef {Object} CommandArgument
- * @property {CommandArgumentType[]} types
- * @property {Any} [default]
+ * @typedef {Object} CommandArgument A Command's Argument Definition
+ * @property {String} name The name to be used for pretty errors
+ * @property {CommandArgumentType[]} types The Types the Argument can be
+ * @property {Boolean} [isVariadic] Whether or not the Argument is variadic
+ * @property {Any} [default] The default value for the Argument ( Doesn't do anything for variadic, if not specified the Argument is required )
  */
 
 /**
- * @typedef {Object} Command
- * @property {String} name
- * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, args: Any[]) => void} execute
- * @property {Boolean} [channelPermissions]
- * @property {discord.PermissionResolvable} [permissions]
- * @property {String} [shortcut]
- * @property {Command[]} [subcommands]
- * @property {CommandArgument[]} [arguments]
+ * @typedef {Object} Command A Command's Definition
+ * @property {String} name The name of the Command
+ * @property {String} [shortcut] The shortcut for the Command
+ * @property {Command[]} [subcommands] A List of Subcommands
+ * @property {Boolean} [channelPermissions] Whether or not the specified permissions are for the channel
+ * @property {discord.PermissionResolvable} [permissions] The permissions required to run the Command
+ * @property {CommandArgument[]} [arguments] The Arguments of the Command ( If not specified all arguments are given as Strings )
+ * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, args: Any[]) => void} execute The function called to Execute the Command
+ */
+
+/** @private @typedef {"none"|"invalid_type"|"not_provided"} _ArgumentParseError */
+
+/**
+ * @private
+ * @typedef {Object} _ArgumentParseResult
+ * @property {_ArgumentParseError} error
+ * @property {String} errorArgName
+ * @property {Any} argument
  */
 
 /**
- * @param {String} arg
- * @param {CommandArgumentType[]} argTypes
- * @returns {Any}
+ * @private
+ * @typedef {Object} _ArgumentsParseResult
+ * @property {_ArgumentParseError} error
+ * @property {Number} errorArgIndex
+ * @property {String} errorArgName
+ * @property {Any[]} arguments
  */
-const _ConvertArgument = (arg, argTypes) => {
-    if (argTypes === 0) return undefined;
 
-    for (let i = 0; i < argTypes.length; i++) {
-        const type = argTypes[i];
-        switch (type) {
+// #endregion
+
+// #region Private Functions
+
+/**
+ * @param {discord.Message} msg
+ * @param {String} [arg]
+ * @param {Number} argIndex
+ * @param {CommandArgument} argDef
+ * @param {Boolean} [isRequired]
+ * @returns {_ArgumentParseResult}
+ */
+const _ParseArgument = (arg, argDef, isRequired = true) => {
+    if (argDef.types.length === 0) return { "error": "invalid_type", "errorArgName": argDef.name, "argument": undefined };
+
+    if (arg === undefined) {
+        return {
+            "error": argDef.default === undefined && isRequired ? "not_provided" : "none",
+            "errorArgName": argDef.name,
+            "argument": argDef.default
+        };
+    }
+
+    let parsedArg = undefined;
+    for (let i = 0; i < argDef.types.length; i++) {
+        const argType = argDef.types[i];
+        switch (argType) {
         case "string":
-            return arg;
+            parsedArg = arg;
+            break;
         case "number": {
             const asNumber = Number.parseFloat(arg);
-            if (!Number.isNaN(asNumber)) return asNumber;
+            if (!Number.isNaN(asNumber)) parsedArg = asNumber;
             break;
         }
         case "boolean": {
             const isTrue  = arg === "true"  || arg === "1";
             const isFalse = arg === "false" || arg === "0";
-            if (isTrue || isFalse) return isTrue;
+            if (isTrue || isFalse) parsedArg = isTrue;
             break;
         }
+        default:
+            throw new Error(`Invalid Argument Type: ${argType}`);
         }
+
+        if (parsedArg !== undefined) break;
     }
 
-    return undefined;
+    return {
+        "error": parsedArg === undefined ? "invalid_type" : "none",
+        "errorArgName": argDef.name,
+        "argument": parsedArg
+    };
 };
 
 /**
- * @param {Command} command
- * @returns {Boolean}
+ * @param {discord.Message} msg
+ * @param {String[]} args
+ * @param {CommandArgument[]} [argDefs]
+ * @returns {_ArgumentsParseResult}
+ */
+const _ParseArguments = (args, argDefs) => {
+    if (argDefs === undefined) return { "error": "none", "errorArgIndex": -1, "arguments": args };
+    if (argDefs.length === 0) return { "error": "none", "errorArgIndex": -1, "arguments": [ ] };
+
+    const parsedArgs = [ ];
+
+    let argIndex = 0;
+    for (let i = 0; i < argDefs.length; i++) {
+        const argDef = argDefs[i];
+
+        if (argDef.isVariadic) {
+            const variadic = [ ];
+            
+            while (true) {
+                const { argument } = _ParseArgument(args[argIndex], argDef, false);
+                if (argument === undefined) break;
+                argIndex++;
+                variadic.push(argument);
+            }
+            
+            parsedArgs.push(variadic);
+        } else {
+            const { argument, error: error, errorArgName: errorName } = _ParseArgument(args[argIndex], argDef);
+            
+            if (argument === undefined) return { error: error, "errorArgIndex": argIndex, errorArgName: errorName };
+            argIndex++;
+
+            parsedArgs.push(argument);
+        }
+    }
+
+    return { "error": "none", "errorArgIndex": -1, "arguments": parsedArgs };
+};
+
+// #endregion
+
+// #region Public Functions
+
+/**
+ * Checks if the specified Command is valid
+ * @param {Command} command The Command to check
+ * @returns {Boolean} Whether or not the specified Command is valid
  */
 const IsValidCommand = (command) => {
+    // This basically makes sure that all fields are present and have their possible value types
     let isValid = (
         typeof command === "object" &&
         typeof command.name === "string" &&
@@ -77,7 +171,11 @@ const IsValidCommand = (command) => {
 
         if (Array.isArray(command.arguments)) {
             for (const arg of command.arguments) {
-                if (!Array.isArray(arg.types)) return false;
+                if (!(
+                    typeof arg.name === "string" &&
+                    Array.isArray(arg.types) &&
+                    ( arg.isVariadic === undefined || typeof arg.isVariadic === "boolean" )
+                )) return false;
                 for (const argType of arg.types) {
                     if (!(argType === "string" || argType === "number" || argType === "boolean"))
                         return false;
@@ -90,22 +188,23 @@ const IsValidCommand = (command) => {
 };
 
 /**
- * @param {String} command
- * @returns {String[]}
+ * Splits the commands within the specified message
+ * @param {String} msg The message to split
+ * @returns {String[]} The commands splitted from the message
  */
-const SplitCommand = (command) => {
-    if (command.length === 0) return [ ];
-    const match = command.match(/[^\s]+/g);
+const SplitCommand = (msg) => {
+    if (msg.length === 0) return [ ];
+    const match = msg.match(/[^\s]+/g);
     return match === null ? [ ] : match;
 };
 
 /**
- * @param {discord.Message} msg
- * @param {DatabaseDefinitions.GuildRow} guildRow
- * @param {String[]} splittedMessage
- * @param {Command[]} commandList
- * @param {Boolean} useShortcuts
- * @returns {Boolean}
+ * Executes the Commands from the specified commandList and splittedMessage ( Obtained with {@link SplitCommand} )
+ * @param {discord.Message} msg The message to be given to Commands when executing and to reply with error feedback
+ * @param {DatabaseDefinitions.GuildRow} guildRow The Guild Row from the Database
+ * @param {String[]} splittedMessage The splitted message containing the "raw" commands
+ * @param {Command[]} commandList The list of Commands to check for
+ * @returns {Boolean} Whether or not a candidate Command was Found ( It may have failed Execution )
  */
 const ExecuteCommand = (msg, guildRow, splittedMessage, commandList) => {
     const [ commandName, ...commandArgs ] = splittedMessage;
@@ -122,7 +221,7 @@ const ExecuteCommand = (msg, guildRow, splittedMessage, commandList) => {
         // If the command needs a specific permission from the user
         if (command.permissions !== undefined) {
             // If it's a permission needed in the current channel
-            if (command.channelPermissions === true) {
+            if (command.channelPermissions) {
                 // Check permissions of the user in the message's channel
                 if (!msg.member.permissionsIn(msg.channel.id).has(command.permissions)) {
                     msg.reply(`Not enough permissions in channel ${msg.channel.name} to run this command.`);
@@ -150,39 +249,24 @@ const ExecuteCommand = (msg, guildRow, splittedMessage, commandList) => {
         }
 
         // Parsing command arguments
-        const parsedCommandArgs = [ ];
-        // If arguments are defined
-        if (command.arguments !== undefined) {
-            // For each argument definition
-            for (let j = 0; j < command.arguments.length; j++) {
-                const argDef = command.arguments[j];
-                const arg = commandArgs[j];
-    
-                // If the current argument is undefined then use the default
-                //  value if there is one else return
-                if (arg === undefined) {
-                    if (argDef.default === undefined) {
-                        msg.reply(`Argument \\#${j} must be provided.`);
-                        return true;
-                    }
+        const { arguments: parsedArgs, error: error, errorArgIndex: errorIndex, errorArgName: errorName } = _ParseArguments(commandArgs, command.arguments);
 
-                    parsedCommandArgs.push(argDef.default);
-                } else {
-                    // Try converting the current argument to the type specified by the definition
-                    const convertedArg = _ConvertArgument(arg, argDef.types);
-                    // If undefined is returned then it couldn't be converted
-                    if (convertedArg === undefined) {
-                        msg.reply(`Argument \\#${j} is of wrong type.`);
-                        return true;
-                    }
-
-                    parsedCommandArgs.push(convertedArg);
-                }
-            }
+        // Check error given by the Argument Parsing
+        switch (error) {
+        case "none":
+            break;
+        case "not_provided":
+            msg.reply(`Argument \`${errorName}\` (at ${errorIndex + 1}) must be provided.`);
+            return true;
+        case "invalid_type":
+            msg.reply(`Argument \`${errorName}\` (at ${errorIndex + 1}) is of wrong type.`);
+            return true;
+        default:
+            throw new Error(`Not handled error type of Argument: ${error}`);
         }
 
-        // Execute command with parsedCommands if arguments are defined else with the raw arguments
-        command.execute(msg, guildRow, parsedCommandArgs.length === 0 ? commandArgs : parsedCommandArgs);
+        // Execute command with parsedArgs
+        command.execute(msg, guildRow, parsedArgs);
         return true;
     }
 
@@ -191,10 +275,14 @@ const ExecuteCommand = (msg, guildRow, splittedMessage, commandList) => {
 };
 
 /**
+ * Helper function to give better autocompletion when creating Commands ( Doesn't check for validity ).
+ * Returns the same value that's given
  * @param {Command} cmd
  * @returns {Command}
  */
 const CreateCommand = cmd => cmd;
+
+// #endregion
 
 module.exports = {
     IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand,
