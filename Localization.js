@@ -43,11 +43,21 @@ const RegisterLocales = () => {
  */
 
 /**
+ * Returns the specified locale or the default one if not present
  * @param {String} localeName The locale to load
  * @returns {LocaleRoot} The specified Locale
  */
 const GetLocale = (localeName) => {
     return _Locales[localeName] === undefined ? _Locales[DEFAULT_LOCALE] : _Locales[localeName];
+};
+
+/**
+ * Checks if the specified locale exists
+ * @param {String} localeName The locale to check for
+ * @returns {Boolean} Whether or not the specified locale exists
+ */
+const HasLocale = (localeName) => {
+    return _Locales[localeName] !== undefined;
 };
 
 /**
@@ -58,4 +68,4 @@ const GetAvailableLocales = () => {
     return Object.keys(_Locales);
 };
 
-module.exports = { DEFAULT_LOCALE, RegisterLocales, GetLocale, GetAvailableLocales };
+module.exports = { DEFAULT_LOCALE, RegisterLocales, GetLocale, HasLocale, GetAvailableLocales };
