@@ -1,6 +1,7 @@
 const { CreateEventListener } = require("../EventListener.js");
 const { SplitCommand, ExecuteCommand } = require("../Command.js");
 const { GetCommands } = require("../Commands.js");
+const { GetLocale } = require("../Localization.js");
 const db = require("../Database.js");
 
 const { Client } = require("../Client.js");
@@ -33,8 +34,10 @@ module.exports = CreateEventListener(
 
             if (splittedCommand.length === 0) return;
 
-            if (!ExecuteCommand(msg, guild, splittedCommand, GetCommands())) {
-                msg.reply("The specified command is not valid.");
+            const guildLocale = GetLocale(guild.locale);
+            const commandLocale = { "common": guildLocale.common, "command": { "subcommands": guildLocale.commands } };
+            if (!ExecuteCommand(msg, guild, commandLocale, splittedCommand, GetCommands())) {
+                msg.reply(guildLocale.common.invalidCommand);
             }
         }
     }

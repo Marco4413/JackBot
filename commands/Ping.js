@@ -1,4 +1,4 @@
-const { CreateCommand } = require("../Command.js");
+const { CreateCommand, Utils } = require("../Command.js");
 
 module.exports = CreateCommand({
     "name": "ping",
@@ -6,16 +6,16 @@ module.exports = CreateCommand({
         {
             "name": "message",
             "shortcut": "msg",
-            "execute": async msg => {
+            "execute": async (msg, guild, locale) => {
                 const startEpoch = Date.now();
-                const pingMessage = await msg.channel.send("Calculating Ping...");
+                const pingMessage = await msg.channel.send(locale.command.calculating);
                 const ping = Date.now() - startEpoch;
                 await pingMessage.delete();
-                msg.reply(`Ping is ${ping}ms`);
+                msg.reply(Utils.FormatString(locale.command.result, ping));
             }
         }
     ],
-    "execute": msg => {
-        msg.reply("Pong!");
+    "execute": (msg, guild, locale) => {
+        msg.reply(locale.command.pong);
     }
 });

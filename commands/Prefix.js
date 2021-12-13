@@ -1,4 +1,4 @@
-const { CreateCommand, Permissions, Database, DatabaseDefinitions } = require("../Command.js");
+const { CreateCommand, Permissions, Database, DatabaseDefinitions, Utils } = require("../Command.js");
 
 module.exports = CreateCommand({
     "name": "prefix",
@@ -14,15 +14,15 @@ module.exports = CreateCommand({
                     "types": [ "string" ]
                 }
             ],
-            "execute": async (msg, guild, [ prefix ]) => {
+            "execute": async (msg, guild, locale, [ prefix ]) => {
                 /** @type {String} */
                 const constrainedPrefix = prefix.substring(0, DatabaseDefinitions.MAX_PREFIX_LENGTH);
                 const { prefix: newPrefix } = await Database.SetGuildAttr(msg.guild.id, { "prefix": constrainedPrefix });
-                msg.reply(`Prefix set to: \`${newPrefix}\``);
+                msg.reply(Utils.FormatString(locale.command.changed, newPrefix));
             }
         }
     ],
-    "execute": (msg, guild, args) => {
-        msg.reply(`Current Prefix: \`${guild.prefix}\``);
+    "execute": (msg, guild, locale, args) => {
+        msg.reply(Utils.FormatString(locale.command.current, guild.prefix));
     }
 });

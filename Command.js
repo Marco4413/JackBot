@@ -1,6 +1,8 @@
 const discord = require("discord.js");
 const Database = require("./Database.js");
 const DatabaseDefinitions = require("./DatabaseDefinitions.js");
+const Localization = require("./Localization.js");
+const Utils = require("./Utils.js");
 
 // #region typedefs
 
@@ -22,7 +24,7 @@ const DatabaseDefinitions = require("./DatabaseDefinitions.js");
  * @property {Boolean} [channelPermissions] Whether or not the specified permissions are for the channel
  * @property {discord.PermissionResolvable} [permissions] The permissions required to run the Command
  * @property {CommandArgument[]} [arguments] The Arguments of the Command ( If not specified all arguments are given as Strings )
- * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, args: Any[]) => void} execute The function called to Execute the Command
+ * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => void} execute The function called to Execute the Command
  */
 
 /** @private @typedef {"none"|"invalid_type"|"not_provided"} _ArgumentParseError */
@@ -127,9 +129,9 @@ const _ParseArguments = (args, argDefs) => {
             
             parsedArgs.push(variadic);
         } else {
-            const { argument, error: error, errorArgName: errorName } = _ParseArgument(args[argIndex], argDef);
+            const { argument, error, errorArgName } = _ParseArgument(args[argIndex], argDef);
             
-            if (argument === undefined) return { error: error, "errorArgIndex": argIndex, errorArgName: errorName };
+            if (argument === undefined) return { error, "errorArgIndex": argIndex, errorArgName };
             argIndex++;
 
             parsedArgs.push(argument);
@@ -202,11 +204,12 @@ const SplitCommand = (msg) => {
  * Executes the Commands from the specified commandList and splittedMessage ( Obtained with {@link SplitCommand} )
  * @param {discord.Message} msg The message to be given to Commands when executing and to reply with error feedback
  * @param {DatabaseDefinitions.GuildRow} guildRow The Guild Row from the Database
+ * @param {Localization.CommandLocale} locale The locale to use for messages
  * @param {String[]} splittedMessage The splitted message containing the "raw" commands
  * @param {Command[]} commandList The list of Commands to check for
  * @returns {Boolean} Whether or not a candidate Command was Found ( It may have failed Execution )
  */
-const ExecuteCommand = (msg, guildRow, splittedMessage, commandList) => {
+const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => {
     const [ commandName, ...commandArgs ] = splittedMessage;
 
     for (let i = 0; i < commandList.length; i++) {
@@ -224,49 +227,56 @@ const ExecuteCommand = (msg, guildRow, splittedMessage, commandList) => {
             if (command.channelPermissions) {
                 // Check permissions of the user in the message's channel
                 if (!msg.member.permissionsIn(msg.channel.id).has(command.permissions)) {
-                    msg.reply(`Not enough permissions in channel ${msg.channel.name} to run this command.`);
+                    msg.reply(Utils.FormatString(locale.common.noChannelPerms, msg.channel.name));
                     return true;
                 }
             } else {
                 // Else check global permissions
                 if (!msg.member.permissions.has(command.permissions)) {
-                    msg.reply("Not enough permissions to run this command.");
+                    msg.reply(locale.common.noGuildPerms);
                     return true;
                 }
             }
         }
 
+        /** @type {Localization.CommandLocale} */
+        const commandLocale = {
+            "common": locale.common,
+            "command": locale.command.subcommands === undefined || locale.command.subcommands[command.name] === undefined ?
+                locale.command : locale.command.subcommands[command.name]
+        };
+
         // If this command has subcommands then try to execute those
         if (command.subcommands !== undefined) {
-            if (ExecuteCommand(msg, guildRow, commandArgs, command.subcommands))
+            if (ExecuteCommand(msg, guildRow, commandLocale, commandArgs, command.subcommands))
                 return true;
         }
 
         // If this command can't be executed then it must have subcommands
         if (command.execute === undefined) {
-            msg.reply("A valid subcommand must be provided.");
+            msg.reply(locale.common.noSubcommand);
             return true;
         }
 
         // Parsing command arguments
-        const { arguments: parsedArgs, error: error, errorArgIndex: errorIndex, errorArgName: errorName } = _ParseArguments(commandArgs, command.arguments);
+        const { arguments: parsedArgs, error, errorArgIndex, errorArgName } = _ParseArguments(commandArgs, command.arguments);
 
         // Check error given by the Argument Parsing
         switch (error) {
         case "none":
             break;
         case "not_provided":
-            msg.reply(`Argument \`${errorName}\` (at ${errorIndex + 1}) must be provided.`);
+            msg.reply(Utils.FormatString(locale.common.missingArg, errorArgName, errorArgIndex + 1));
             return true;
         case "invalid_type":
-            msg.reply(`Argument \`${errorName}\` (at ${errorIndex + 1}) is of wrong type.`);
+            msg.reply(Utils.FormatString(locale.common.wrongArgType, errorArgName, errorArgIndex + 1));
             return true;
         default:
             throw new Error(`Not handled error type of Argument: ${error}`);
         }
 
         // Execute command with parsedArgs
-        command.execute(msg, guildRow, parsedArgs);
+        command.execute(msg, guildRow, commandLocale, parsedArgs);
         return true;
     }
 
@@ -286,5 +296,5 @@ const CreateCommand = cmd => cmd;
 
 module.exports = {
     IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand,
-    Database, DatabaseDefinitions, Permissions: discord.Permissions
+    Utils, Database, DatabaseDefinitions, Permissions: discord.Permissions
 };

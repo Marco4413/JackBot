@@ -1,0 +1,29 @@
+{
+    "commands": {
+        "ping": {
+            "subcommands": {
+                "message": {
+                    "calculating": "Calculating Ping...",
+                    "result": "Ping is {0}ms"
+                }
+            },
+            "pong": "Pong!"
+        },
+        "prefix": {
+            "changed": "Prefix set to: `{0}`",
+            "current": "Current Prefix: `{0}`"
+        },
+        "shortcuts": {
+            "changed": "Shortcuts set to: `{0}`",
+            "current": "Shortcuts are set to: `{0}`"
+        }
+    },
+    "common": {
+        "noChannelPerms": "Not enough permissions in channel {0} to run this command.",
+        "noGuildPerms": "Not enough permissions to run this command.",
+        "noSubcommand": "A valid subcommand must be provided.",
+        "missingArg": "Argument `{0}` (at {1}) is missing.",
+        "wrongArgType": "Argument `{0}` (at {1}) is of wrong type.",
+        "invalidCommand": "The specified command isn't valid."
+    }
+}
