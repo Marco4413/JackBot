@@ -11,6 +11,10 @@
     },
     "rules": {
         "no-tabs": "error",
+        "no-constant-condition": [
+            "error",
+            { "checkLoops": false }
+        ],
         "no-unused-vars": [
             "off",
             { "vars": "global" }
