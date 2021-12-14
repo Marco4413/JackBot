@@ -12,4 +12,21 @@ const FormatString = (str, ...formats) => {
     });
 };
 
-module.exports = { FormatString };
+/**
+ * Tested at https://jsben.ch/Vy7s5 and it's x2 the Speed of {@link Array.prototype.join}
+ * and it gives the option to manipulate elements
+ * @template {T} The type of the elements in the Array
+ * @param {T[]} array The Array to Join
+ * @param {String} [separator] The separator used to separate Array elements
+ * @param {(el: T, index: Number) => Any} [elFormatter] Called to format every element in the Array
+ * @returns {String} The Joint Array Elements
+ */
+const JoinArray = (array, separator = ",", elFormatter = el => el) => {
+    const output = array.reduce((prev, next, index) => {
+        if (prev === undefined) return "" + elFormatter(next, index);
+        return prev + separator + elFormatter(next, index);
+    }, undefined);
+    return output === undefined ? "" : output;
+};
+
+module.exports = { FormatString, JoinArray };
