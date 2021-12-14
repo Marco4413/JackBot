@@ -33,7 +33,7 @@ const Utils = require("./Utils.js");
  * @private
  * @typedef {Object} _ArgumentParseResult
  * @property {_ArgumentParseError} error
- * @property {String} errorArgName
+ * @property {CommandArgument} errorArgDef
  * @property {Any} argument
  */
 
@@ -42,7 +42,7 @@ const Utils = require("./Utils.js");
  * @typedef {Object} _ArgumentsParseResult
  * @property {_ArgumentParseError} error
  * @property {Number} errorArgIndex
- * @property {String} errorArgName
+ * @property {CommandArgument} errorArgDef
  * @property {Any[]} arguments
  */
 
@@ -59,12 +59,12 @@ const Utils = require("./Utils.js");
  * @returns {_ArgumentParseResult}
  */
 const _ParseArgument = (arg, argDef, isRequired = true) => {
-    if (argDef.types.length === 0) return { "error": "invalid_type", "errorArgName": argDef.name, "argument": undefined };
+    if (argDef.types.length === 0) return { "error": "invalid_type", "errorArgDef": argDef, "argument": undefined };
 
     if (arg === undefined) {
         return {
             "error": argDef.default === undefined && isRequired ? "not_provided" : "none",
-            "errorArgName": argDef.name,
+            "errorArgDef": argDef,
             "argument": argDef.default
         };
     }
@@ -82,8 +82,9 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
             break;
         }
         case "boolean": {
-            const isTrue  = arg === "true"  || arg === "1";
-            const isFalse = arg === "false" || arg === "0";
+            const lowerArg = arg.toLowerCase();
+            const isTrue  = lowerArg === "true"  || lowerArg === "1";
+            const isFalse = lowerArg === "false" || lowerArg === "0";
             if (isTrue || isFalse) parsedArg = isTrue;
             break;
         }
@@ -96,7 +97,7 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
 
     return {
         "error": parsedArg === undefined ? "invalid_type" : "none",
-        "errorArgName": argDef.name,
+        "errorArgDef": argDef,
         "argument": parsedArg
     };
 };
@@ -129,9 +130,9 @@ const _ParseArguments = (args, argDefs) => {
             
             parsedArgs.push(variadic);
         } else {
-            const { argument, error, errorArgName } = _ParseArgument(args[argIndex], argDef);
+            const { argument, error, errorArgDef } = _ParseArgument(args[argIndex], argDef);
             
-            if (argument === undefined) return { error, "errorArgIndex": argIndex, errorArgName };
+            if (argument === undefined) return { error, "errorArgIndex": argIndex, errorArgDef };
             argIndex++;
 
             parsedArgs.push(argument);
@@ -160,6 +161,21 @@ const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
         missingPerms,
         locale.common.listSeparator,
         el => locale.common.permissions[el] === undefined ? el : locale.common.permissions[el]
+    );
+};
+
+/**
+ * @param {CommandArgument} argDef
+ * @param {Localization.CommandLocale} locale
+ * @returns {String}
+ */
+const _ListPossibleTypes = (argDef, locale) => {
+    const hasLocale = locale.common.argumentTypes !== undefined;
+    if (!hasLocale) Utils.JoinArray(argDef.types, locale.common.listSeparator);
+    return Utils.JoinArray(
+        argDef.types,
+        locale.common.listSeparator,
+        el => locale.common.argumentTypes[el] === undefined ? el : locale.common.argumentTypes[el]
     );
 };
 
@@ -289,17 +305,20 @@ const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => 
         }
 
         // Parsing command arguments
-        const { arguments: parsedArgs, error, errorArgIndex, errorArgName } = _ParseArguments(commandArgs, command.arguments);
+        const { arguments: parsedArgs, error, errorArgIndex, errorArgDef } = _ParseArguments(commandArgs, command.arguments);
 
         // Check error given by the Argument Parsing
         switch (error) {
         case "none":
             break;
         case "not_provided":
-            msg.reply(Utils.FormatString(locale.common.missingArg, errorArgName, errorArgIndex + 1));
+            msg.reply(Utils.FormatString(locale.common.missingArg, errorArgDef.name, errorArgIndex + 1));
             return true;
         case "invalid_type":
-            msg.reply(Utils.FormatString(locale.common.wrongArgType, errorArgName, errorArgIndex + 1));
+            msg.reply(Utils.FormatString(
+                locale.common.wrongArgType, errorArgDef.name, errorArgIndex + 1,
+                _ListPossibleTypes(errorArgDef, locale)
+            ));
             return true;
         default:
             throw new Error(`Not handled error type of Argument: ${error}`);
