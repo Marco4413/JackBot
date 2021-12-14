@@ -95,4 +95,13 @@ const SetGuildAttr = async (guildID, attributes) => {
     return instance.get();
 };
 
-module.exports = { IsStarted, Start, GetGuild, SetGuildAttr };
+/**
+ * Removes the specified Guild from the Database
+ * @param {String} guildID The ID of the Guild to Remove
+ */
+const RemoveGuild = async (guildID) => {
+    _EnsureStart();
+    await _Guild.destroy({ "where": { guildID } });
+};
+
+module.exports = { IsStarted, Start, GetGuild, SetGuildAttr, RemoveGuild };
