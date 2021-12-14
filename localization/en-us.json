@@ -1,5 +1,64 @@
 {
     "commands": {
+        "help": {
+            "docs": {
+                "title": "All Commands",
+                "description": "A list of all the available commands.",
+                "subcommands": {
+                    "help": {
+                        "title": "Help",
+                        "description": "Shows these help messages."
+                    },
+                    "language": {
+                        "title": "Language",
+                        "description": "Shows this Guild's Language.",
+                        "subcommands": {
+                            "set": {
+                                "title": "Set",
+                                "description": "Sets this Guild's language to the one specified."
+                            }
+                        }
+                    },
+                    "ping": {
+                        "title": "Ping",
+                        "description": "Pong!",
+                        "subcommands": {
+                            "message": {
+                                "hidden": true,
+                                "title": "Message",
+                                "description": "Sends a message and calculates the time needed for that message to be sent."
+                            }
+                        }
+                    },
+                    "prefix": {
+                        "title": "Prefix",
+                        "description": "Shows this Guild's Prefix.",
+                        "subcommands": {
+                            "set": {
+                                "title": "Set",
+                                "description": "Sets this Guild's prefix to the one specified."
+                            }
+                        }
+                    },
+                    "shortcuts": {
+                        "title": "Shortcuts",
+                        "description": "Shows if shortcuts are enabled in this Guild.",
+                        "subcommands": {
+                            "set": {
+                                "title": "Set",
+                                "description": "Enables or disables shortcuts for this Guild."
+                            }
+                        }
+                    }
+                }
+            },
+            "emptyDoc": {
+                "title": "No Command Found",
+                "description": "No command with the specified name was found in the documentation."
+            },
+            "subcommandsList": "Subcommands: {0}",
+            "noSubcommands": "This command has no subcommands."
+        },
         "language": {
             "available": "Available Languages:\n{0}",
             "invalid": "The specified language doesn't exist.",
@@ -74,6 +133,7 @@
             "boolean": "True or False"
         },
         "listSeparator": ", ",
+        "listDelimiter": "[ {0} ]",
         "listEntry": " - `{0}`",
         "noChannelPerms": "Not enough permissions in channel {1} to run this command ( Missing: `{0}` ).",
         "noGuildPerms": "Not enough permissions to run this command ( Missing: `{0}` ).",
