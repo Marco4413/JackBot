@@ -141,6 +141,28 @@ const _ParseArguments = (args, argDefs) => {
     return { "error": "none", "errorArgIndex": -1, "arguments": parsedArgs };
 };
 
+/**
+ * @param {discord.Permissions} memberPerms
+ * @param {discord.PermissionResolvable} requiredPermsResolvable
+ * @param {Localization.CommandLocale} locale
+ * @returns {String}
+ */
+const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
+    const adminKey = "ADMINISTRATOR";
+    const requiredPerms = discord.Permissions.resolve(requiredPermsResolvable);
+    const missingPerms =
+        requiredPerms === discord.Permissions.FLAGS.ADMINISTRATOR ?
+            [ adminKey ] : memberPerms.missing(requiredPerms);
+
+    const hasLocale = locale.common.permissions !== undefined;
+    if (!hasLocale) Utils.JoinArray(missingPerms, locale.common.listSeparator);
+    return Utils.JoinArray(
+        missingPerms,
+        locale.common.listSeparator,
+        el => locale.common.permissions[el] === undefined ? el : locale.common.permissions[el]
+    );
+};
+
 // #endregion
 
 // #region Public Functions
@@ -226,14 +248,22 @@ const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => 
             // If it's a permission needed in the current channel
             if (command.channelPermissions) {
                 // Check permissions of the user in the message's channel
-                if (!msg.member.permissionsIn(msg.channel.id).has(command.permissions)) {
-                    msg.reply(Utils.FormatString(locale.common.noChannelPerms, msg.channel.name));
+                const channelPerms = msg.member.permissionsIn(msg.channel.id);
+                if (!channelPerms.has(command.permissions)) {
+                    msg.reply(Utils.FormatString(
+                        locale.common.noChannelPerms,
+                        _ListMissingPerms(channelPerms, command.permissions, locale),
+                        msg.channel.name
+                    ));
                     return true;
                 }
             } else {
                 // Else check global permissions
                 if (!msg.member.permissions.has(command.permissions)) {
-                    msg.reply(locale.common.noGuildPerms);
+                    msg.reply(Utils.FormatString(
+                        locale.common.noGuildPerms,
+                        _ListMissingPerms(msg.member.permissions, command.permissions, locale)
+                    ));
                     return true;
                 }
             }
