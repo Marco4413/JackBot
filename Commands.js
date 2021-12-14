@@ -4,6 +4,9 @@ const command = require("./Command.js");
 /** @type {command.Command[]} */
 const _Commands = [ ];
 
+/**
+ * Registers all Commands found in the Commands folder
+ */
 const RegisterCommands = () => {
     const commandsFolder = "./commands";
     fs.readdirSync(commandsFolder).forEach(file => {
@@ -20,7 +23,8 @@ const RegisterCommands = () => {
 };
 
 /**
- * @returns {command.Command[]}
+ * Returns all Registered Commands
+ * @returns {command.Command[]} All Registered Commands
  */
 const GetCommands = () => {
     return _Commands;

@@ -16,6 +16,9 @@ process.once("SIGINT", () => {
     console.log("Bot Destroyed.");
 });
 
+/**
+ * Registers all Event Listeners found in the Events folder
+ */
 const RegisterEventListeners = () => {
     const eventsFolder = "./events";
     fs.readdirSync(eventsFolder).forEach(file => {
