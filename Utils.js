@@ -1,3 +1,5 @@
+const { Message, MessageEmbed } = require("discord.js");
+
 /**
  * Formats the specified String with the specified Formats
  * @param {String} str The String to Format
@@ -29,4 +31,27 @@ const JoinArray = (array, separator = ",", elFormatter = el => el) => {
     return output === undefined ? "" : output;
 };
 
-module.exports = { FormatString, JoinArray };
+/**
+ * Returns the Default Embed for the Specified Message
+ * @param {Message} msg The Message to create the Embed from
+ * @param {boolean} [addThumbnail] Whether or not to add a Thumbnail to the Embed
+ * @returns {MessageEmbed} The Default Embed for the Specified Message
+ */
+const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
+    const botAvatar = msg.guild.me.displayAvatarURL();
+    return new MessageEmbed({
+        "author": {
+            "iconURL": msg.member.displayAvatarURL(),
+            "name": msg.member.displayName
+        },
+        "color": "GOLD",
+        "thumbnail": addThumbnail ? { "url": botAvatar } : undefined,
+        "timestamp": Date.now(),
+        "footer": {
+            "iconURL": botAvatar,
+            "text": msg.guild.me.displayName
+        }
+    });
+};
+
+module.exports = { FormatString, JoinArray, GetDefaultEmbedForMessage };
