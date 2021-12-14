@@ -11,6 +11,7 @@ const RegisterCommands = () => {
             const script = require(`${commandsFolder}/${file}`);
             if (command.IsValidCommand(script)) {
                 _Commands.push(script);
+                console.info(`Command "${script.name}" registered!`);
             } else {
                 console.warn(`Command "${file}" couldn't be loaded because it returned an invalid Command.`);
             }

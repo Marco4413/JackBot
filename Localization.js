@@ -15,6 +15,7 @@ const RegisterLocales = () => {
             const localeName = file.substring(0, file.length - ".json".length);
             if (localeName.length <= MAX_LOCALE_NAME_LENGTH) {
                 _Locales[localeName] = require(`${localesFolder}/${file}`);
+                console.info(`Locale "${localeName}" registered!`);
             } else {
                 console.warn(`Locale "${localeName}" couldn't be loaded because its name exceeds the max locale name length of ${MAX_LOCALE_NAME_LENGTH}.`);
             }

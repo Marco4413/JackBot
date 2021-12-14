@@ -31,6 +31,9 @@ const RegisterEventListeners = () => {
                 } else {
                     Client.on(script.event, script.callback);
                 }
+                console.info(`Event Listener "${file}" registered to "${script.event}"!`);
+            } else {
+                console.warn(`Event Listener "${file}" couldn't be loaded because it returned an invalid Event Listener.`);
             }
         }
     });
