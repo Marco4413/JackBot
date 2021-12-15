@@ -1,145 +1,145 @@
 {
-    "commands": {
-        "help": {
-            "docs": {
-                "title": "All Commands",
-                "description": "A list of all the available commands.",
-                "subcommands": {
-                    "help": {
-                        "title": "Help",
-                        "description": "Shows these help messages."
-                    },
-                    "language": {
-                        "title": "Language",
-                        "description": "Shows this Guild's Language.",
-                        "subcommands": {
-                            "set": {
-                                "title": "Set",
-                                "description": "Sets this Guild's language to the one specified."
-                            }
-                        }
-                    },
-                    "ping": {
-                        "title": "Ping",
-                        "description": "Pong!",
-                        "subcommands": {
-                            "message": {
-                                "hidden": true,
-                                "title": "Message",
-                                "description": "Sends a message and calculates the time needed for that message to be sent."
-                            }
-                        }
-                    },
-                    "prefix": {
-                        "title": "Prefix",
-                        "description": "Shows this Guild's Prefix.",
-                        "subcommands": {
-                            "set": {
-                                "title": "Set",
-                                "description": "Sets this Guild's prefix to the one specified."
-                            }
-                        }
-                    },
-                    "shortcuts": {
-                        "title": "Shortcuts",
-                        "description": "Shows if shortcuts are enabled in this Guild.",
-                        "subcommands": {
-                            "set": {
-                                "title": "Set",
-                                "description": "Enables or disables shortcuts for this Guild."
-                            }
-                        }
-                    }
-                }
-            },
-            "emptyDoc": {
-                "title": "No Command Found",
-                "description": "No command with the specified name was found in the documentation."
-            },
-            "subcommandsList": "Subcommands: {0}",
-            "noSubcommands": "This command has no subcommands."
-        },
-        "language": {
-            "available": "Available Languages:\n{0}",
-            "invalid": "The specified language doesn't exist.",
-            "changed": "Language set to: `{0}`",
-            "current": "Current Language: `{0}`"
-        },
-        "ping": {
+  "commands": {
+    "help": {
+      "docs": {
+        "title": "All Commands",
+        "description": "A list of all the available commands.",
+        "subcommands": {
+          "help": {
+            "title": "Help",
+            "description": "Shows these help messages."
+          },
+          "language": {
+            "title": "Language",
+            "description": "Shows this Guild's Language.",
             "subcommands": {
-                "message": {
-                    "calculating": "Calculating Ping...",
-                    "result": "Ping is {0}ms"
-                }
-            },
-            "pong": "Pong!"
-        },
-        "prefix": {
-            "changed": "Prefix set to: `{0}`",
-            "current": "Current Prefix: `{0}`"
-        },
-        "shortcuts": {
-            "changed": "Shortcuts set to: `{0}`",
-            "current": "Shortcuts are set to: `{0}`"
+              "set": {
+                "title": "Set",
+                "description": "Sets this Guild's language to the one specified."
+              }
+            }
+          },
+          "ping": {
+            "title": "Ping",
+            "description": "Pong!",
+            "subcommands": {
+              "message": {
+                "hidden": true,
+                "title": "Message",
+                "description": "Sends a message and calculates the time needed for that message to be sent."
+              }
+            }
+          },
+          "prefix": {
+            "title": "Prefix",
+            "description": "Shows this Guild's Prefix.",
+            "subcommands": {
+              "set": {
+                "title": "Set",
+                "description": "Sets this Guild's prefix to the one specified."
+              }
+            }
+          },
+          "shortcuts": {
+            "title": "Shortcuts",
+            "description": "Shows if shortcuts are enabled in this Guild.",
+            "subcommands": {
+              "set": {
+                "title": "Set",
+                "description": "Enables or disables shortcuts for this Guild."
+              }
+            }
+          }
         }
+      },
+      "emptyDoc": {
+        "title": "No Command Found",
+        "description": "No command with the specified name was found in the documentation."
+      },
+      "subcommandsList": "Subcommands: {0}",
+      "noSubcommands": "This command has no subcommands."
     },
-    "common": {
-        "permissions": {
-            "CREATE_INSTANT_INVITE": "Create Instant Invite",
-            "KICK_MEMBERS": "Kick Members",
-            "BAN_MEMBERS": "Ban Members",
-            "ADMINISTRATOR": "Administrator",
-            "MANAGE_CHANNELS": "Manage Channels",
-            "MANAGE_GUILD": "Manage Guild",
-            "ADD_REACTIONS": "Add Reactions",
-            "VIEW_AUDIT_LOG": "View Audit Log",
-            "PRIORITY_SPEAKER": "Priority Speaker",
-            "STREAM": "Stream",
-            "VIEW_CHANNEL": "View Channel",
-            "SEND_MESSAGES": "Send Messages",
-            "SEND_TTS_MESSAGES": "Send TTS Messages",
-            "MANAGE_MESSAGES": "Manage Messages",
-            "EMBED_LINKS": "Embed Links",
-            "ATTACH_FILES": "Attach Filed",
-            "READ_MESSAGE_HISTORY": "Read Message History",
-            "MENTION_EVERYONE": "Mention Everyone",
-            "USE_EXTERNAL_EMOJIS": "Use External Emojis",
-            "VIEW_GUILD_INSIGHTS": "View Guild Insights",
-            "CONNECT": "Connect",
-            "SPEAK": "Speak",
-            "MUTE_MEMBERS": "Mute Members",
-            "DEAFEN_MEMBERS": "Deafen Members",
-            "MOVE_MEMBERS": "Move Members",
-            "USE_VAD": "Use VAD",
-            "CHANGE_NICKNAME": "Change Nickname",
-            "MANAGE_NICKNAMES": "Manage Nicknames",
-            "MANAGE_ROLES": "Manage Roles",
-            "MANAGE_WEBHOOKS": "Manage Webhooks",
-            "MANAGE_EMOJIS_AND_STICKERS": "Manage Emojis and Stickers",
-            "USE_APPLICATION_COMMANDS": "Use Application Commands",
-            "REQUEST_TO_SPEAK": "Request to Speak",
-            "MANAGE_THREADS": "Manage Threads",
-            "USE_PUBLIC_THREADS": "Use Public Threads",
-            "CREATE_PUBLIC_THREADS": "Create Public Threads",
-            "USE_PRIVATE_THREADS": "Use Private Threads",
-            "CREATE_PRIVATE_THREADS": "Create Private Threads",
-            "USE_EXTERNAL_STICKERS": "Use External Stickers",
-            "SEND_MESSAGES_IN_THREADS": "Send Messages in Threads",
-            "START_EMBEDDED_ACTIVITIES": "Start Embedded Activities"
-        },
-        "argumentTypes": {
-            "string": "Text",
-            "number": "Number",
-            "boolean": "True or False"
-        },
-        "listSeparator": ", ",
-        "listDelimiter": "[ {0} ]",
-        "listEntry": " - `{0}`",
-        "noChannelPerms": "Not enough permissions in channel {1} to run this command ( Missing: `{0}` ).",
-        "noGuildPerms": "Not enough permissions to run this command ( Missing: `{0}` ).",
-        "noSubcommand": "A valid subcommand must be provided.",
-        "missingArg": "Argument `{0}` ( at {1} ) is missing.",
-        "wrongArgType": "Argument `{0}` ( at {1} ) is of wrong type ( Expected Types: {2} ).",
-        "invalidCommand": "The specified command isn't valid."
+    "language": {
+      "available": "Available Languages:\n{0}",
+      "invalid": "The specified language doesn't exist.",
+      "changed": "Language set to: `{0}`",
+      "current": "Current Language: `{0}`"
+    },
+    "ping": {
+      "subcommands": {
+        "message": {
+          "calculating": "Calculating Ping...",
+          "result": "Ping is {0}ms"
+        }
+      },
+      "pong": "Pong!"
+    },
+    "prefix": {
+      "changed": "Prefix set to: `{0}`",
+      "current": "Current Prefix: `{0}`"
+    },
+    "shortcuts": {
+      "changed": "Shortcuts set to: `{0}`",
+      "current": "Shortcuts are set to: `{0}`"
     }
+  },
+  "common": {
+    "permissions": {
+      "CREATE_INSTANT_INVITE": "Create Instant Invite",
+      "KICK_MEMBERS": "Kick Members",
+      "BAN_MEMBERS": "Ban Members",
+      "ADMINISTRATOR": "Administrator",
+      "MANAGE_CHANNELS": "Manage Channels",
+      "MANAGE_GUILD": "Manage Guild",
+      "ADD_REACTIONS": "Add Reactions",
+      "VIEW_AUDIT_LOG": "View Audit Log",
+      "PRIORITY_SPEAKER": "Priority Speaker",
+      "STREAM": "Stream",
+      "VIEW_CHANNEL": "View Channel",
+      "SEND_MESSAGES": "Send Messages",
+      "SEND_TTS_MESSAGES": "Send TTS Messages",
+      "MANAGE_MESSAGES": "Manage Messages",
+      "EMBED_LINKS": "Embed Links",
+      "ATTACH_FILES": "Attach Filed",
+      "READ_MESSAGE_HISTORY": "Read Message History",
+      "MENTION_EVERYONE": "Mention Everyone",
+      "USE_EXTERNAL_EMOJIS": "Use External Emojis",
+      "VIEW_GUILD_INSIGHTS": "View Guild Insights",
+      "CONNECT": "Connect",
+      "SPEAK": "Speak",
+      "MUTE_MEMBERS": "Mute Members",
+      "DEAFEN_MEMBERS": "Deafen Members",
+      "MOVE_MEMBERS": "Move Members",
+      "USE_VAD": "Use VAD",
+      "CHANGE_NICKNAME": "Change Nickname",
+      "MANAGE_NICKNAMES": "Manage Nicknames",
+      "MANAGE_ROLES": "Manage Roles",
+      "MANAGE_WEBHOOKS": "Manage Webhooks",
+      "MANAGE_EMOJIS_AND_STICKERS": "Manage Emojis and Stickers",
+      "USE_APPLICATION_COMMANDS": "Use Application Commands",
+      "REQUEST_TO_SPEAK": "Request to Speak",
+      "MANAGE_THREADS": "Manage Threads",
+      "USE_PUBLIC_THREADS": "Use Public Threads",
+      "CREATE_PUBLIC_THREADS": "Create Public Threads",
+      "USE_PRIVATE_THREADS": "Use Private Threads",
+      "CREATE_PRIVATE_THREADS": "Create Private Threads",
+      "USE_EXTERNAL_STICKERS": "Use External Stickers",
+      "SEND_MESSAGES_IN_THREADS": "Send Messages in Threads",
+      "START_EMBEDDED_ACTIVITIES": "Start Embedded Activities"
+    },
+    "argumentTypes": {
+      "string": "Text",
+      "number": "Number",
+      "boolean": "True or False"
+    },
+    "listSeparator": ", ",
+    "listDelimiter": "[ {0} ]",
+    "listEntry": " - `{0}`",
+    "noChannelPerms": "Not enough permissions in channel {1} to run this command ( Missing: `{0}` ).",
+    "noGuildPerms": "Not enough permissions to run this command ( Missing: `{0}` ).",
+    "noSubcommand": "A valid subcommand must be provided.",
+    "missingArg": "Argument `{0}` ( at {1} ) is missing.",
+    "wrongArgType": "Argument `{0}` ( at {1} ) is of wrong type ( Expected Types: {2} ).",
+    "invalidCommand": "The specified command isn't valid."
+  }
 }

@@ -7,3 +7,4 @@ indent_size = 4
 
 [*.json]
 insert_final_newline = false
+indent_size = 2
