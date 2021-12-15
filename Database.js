@@ -1,4 +1,5 @@
-const SQLiteDatabase = require("./databases/SQLiteDatabase.js");
+const SQLite = require("./databases/SQLite.js");
+const MariaDB = require("./databases/MariaDB.js");
 const DBDefinitions = require("./DatabaseDefinitions.js");
 const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
 
@@ -9,7 +10,8 @@ const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
  * @typedef {Object} DatabaseSettings
  * @property {"sqlite"|"mariadb"} mode The Database mode
  * @property {SequelizeLogging} [logging] A Logger for Sequelize
- * @property {SQLiteDatabase.SQLiteSettings} [sqlite] Specific Database Settings for "sqlite" mode
+ * @property {SQLite.SQLiteSettings} [sqlite] Specific Database Settings for "sqlite" mode
+ * @property {MariaDB.MariaDBSettings} [mariadb] Specific Database Settings for "mariadb" mode
  */
 
 /** @type {Sequelize} */
@@ -37,10 +39,11 @@ const Start = async (settings) => {
 
     switch (settings.mode) {
     case "sqlite":
-        _DBInstance = SQLiteDatabase(settings.sqlite, settings.logging);
+        _DBInstance = SQLite(settings.sqlite, settings.logging);
         break;
     case "mariadb":
-        throw new Error("MariaDB Not Yet Implemented.");
+        _DBInstance = MariaDB(settings.mariadb, settings.logging);
+        break;
     default:
         throw new Error("Database Mode not Valid.");
     }

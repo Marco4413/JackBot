@@ -10,8 +10,15 @@ TOKEN = "MyBotToken"
 # Database Settings
 DB_MODE = "sqlite"
 
-# SQLite Database Settings for "sqlite" mode
+# SQLite Settings for "sqlite" mode
 SQLITE_STORAGE = "./data/database.sqlite"
+
+# MariaDB Settings for "mariadb" mode
+MARIADB_HOST = "192.168.1.100"
+MARIADB_PORT = 3306
+MARIADB_DATABASE = "JackBot"
+MARIADB_USERNAME = "jack"
+MARIADB_PASSWORD = "jack-is-cool"
 ```
  2. Run `npm i` to install all dependencies
  3. Run `node .` to run the project
