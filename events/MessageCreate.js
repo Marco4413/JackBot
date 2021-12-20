@@ -18,7 +18,7 @@ const _StartsWithBotMention = (str) => {
 
 module.exports = CreateEventListener(
     "messageCreate", async msg => {
-        if (msg.author.bot) return;
+        if (msg.author.bot || msg.channel.type !== "GUILD_TEXT" || msg.deleted) return;
         
         const guild = await db.GetGuild(msg.guild.id);
 
