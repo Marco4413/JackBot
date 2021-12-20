@@ -54,4 +54,22 @@ const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
     });
 };
 
-module.exports = { FormatString, JoinArray, GetDefaultEmbedForMessage };
+/**
+ * Creates a mention to the specified User
+ * @param {String} userId The ID of the User to create the mention for
+ * @returns {String} The mention for the specified User
+ */
+const MentionUser = (userId) => {
+    return `<@${userId}>`;
+};
+
+/**
+ * Creates a mention to the specified Text Channel
+ * @param {String} channelId The ID of the Text Channel to create the mention for
+ * @returns {String} The mention for the specified Text Channel
+ */
+const MentionTextChannel = (channelId) => {
+    return `<#${channelId}>`;
+};
+
+module.exports = { FormatString, JoinArray, GetDefaultEmbedForMessage, MentionUser, MentionTextChannel };
