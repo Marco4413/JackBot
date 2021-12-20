@@ -7,7 +7,7 @@ module.exports = CreateCommand({
         {
             "name": "set",
             "shortcut": "s",
-            "permissions": Permissions.FLAGS.ADMINISTRATOR,
+            "permissions": Permissions.FLAGS.MANAGE_GUILD,
             "arguments": [
                 {
                     "name": "[Prefix]",
@@ -22,7 +22,7 @@ module.exports = CreateCommand({
             }
         }
     ],
-    "execute": (msg, guild, locale, args) => {
+    "execute": (msg, guild, locale) => {
         msg.reply(Utils.FormatString(locale.command.current, guild.prefix));
     }
 });
