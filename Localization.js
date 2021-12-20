@@ -69,4 +69,29 @@ const GetAvailableLocales = () => {
     return Object.keys(_Locales);
 };
 
-module.exports = { DEFAULT_LOCALE, RegisterLocales, GetLocale, HasLocale, GetAvailableLocales };
+/**
+ * Gets the Locale for the specified Command
+ * @param {String} localeName The name of the Locale to get the {@link sCommandLocale} from
+ * @param {String[]} commandPath The path to the Command
+ * @returns {CommandLocale} The Locale for the Command
+ */
+const GetCommandLocale = (localeName, commandPath) => {
+    const locale = GetLocale(localeName);
+    if (commandPath.length === 0) return { "common": locale.common, "command": { } };
+
+    /** @type {CommandLocale} */
+    let commandLocale = { "common": locale.common, "command": locale.commands[commandPath[0]] };
+    for (let i = 1; i < commandPath.length; i++) {
+        commandLocale.command =
+            commandLocale.command.subcommands === undefined ?
+                undefined : commandLocale.command.subcommands[commandPath[i]];
+        if (commandLocale.command === undefined) break;
+    }
+
+    if (commandLocale.command === undefined)
+        commandLocale.command = { };
+    
+    return commandLocale;
+};
+
+module.exports = { DEFAULT_LOCALE, RegisterLocales, GetLocale, GetCommandLocale, HasLocale, GetAvailableLocales };
