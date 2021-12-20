@@ -9,14 +9,24 @@ const discord = require("discord.js");
 
 /**
  * Helper function to give better autocompletion when creating EventListeners ( Doesn't check for validity ).
- * Returns the same value that's given
+ * Wraps callback to catch errors and print them to the console
  * @template {keyof discord.ClientEvents} T
  * @param {T} event
  * @param {(...args: discord.ClientEvents[T]) => void} callback
  * @returns {EventListener}
  */
 const CreateEventListener = (event, callback, once = false) => {
-    return { event, callback, once };
+    return {
+        event,
+        "callback": async (...args) => {
+            try {
+                await callback(...args);
+            } catch (err) {
+                console.warn(`Event "${event}" has thrown an exception:\n${err.stack}`);
+            }
+        },
+        once
+    };
 };
 
 module.exports = { CreateEventListener };
