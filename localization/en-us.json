@@ -29,6 +29,38 @@
             "title": "Help",
             "description": "Shows these help messages."
           },
+          "counter": {
+            "title": "Counter",
+            "description": "Shows the current count of this Channel.",
+            "subcommands": {
+              "start": {
+                "title": "Start",
+                "description": "Starts a new Counter in this Channel."
+              },
+              "terminate": {
+                "title": "Terminate",
+                "description": "Removes the Counter in this Channel or the one specified."
+              },
+              "config": {
+                "title": "Config",
+                "description": "Used to configure Counter Channel settings.",
+                "subcommands": {
+                  "allow-messages": {
+                    "title": "Allow Messages",
+                    "description": "If false Messages that aren't numbers will be deleted."
+                  }
+                }
+              },
+              "best": {
+                "title": "Best",
+                "description": "Replies with the best count this Channel has reached."
+              },
+              "list": {
+                "title": "List",
+                "description": "Shows all active Counters in this Guild."
+              }
+            }
+          },
           "language": {
             "title": "Language",
             "description": "Shows this Guild's Language.",
