@@ -1,4 +1,4 @@
-const { CreateCommand, Permissions, Database, Utils } = require("../Command.js");
+const { CreateCommand, IsMissingPermissions, Permissions, Database, Utils } = require("../Command.js");
 
 module.exports = CreateCommand({
     "name": "counter",
@@ -7,6 +7,7 @@ module.exports = CreateCommand({
         {
             "name": "start",
             "shortcut": "s",
+            "channelPermissions": true,
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "execute": async (msg, guild, locale) => {
                 const counter = await Database.CreateGuildCounter(msg.guild.id, msg.channel.id);
@@ -22,6 +23,7 @@ module.exports = CreateCommand({
         {
             "name": "terminate",
             "shortcut": "term",
+            "channelPermissions": true,
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "arguments": [
                 {
@@ -32,7 +34,15 @@ module.exports = CreateCommand({
             ],
             "execute": async (msg, guild, locale, [ targetChannel ]) => {
                 const isHere = targetChannel === null;
-                const channelId = isHere ? msg.channel.id : targetChannel;
+
+                let channelId = msg.channel.id;
+                if (!isHere) {
+                    channelId = targetChannel;
+                    const textChannel = await msg.guild.channels.resolve(channelId);
+                    if (textChannel !== null && await IsMissingPermissions(msg, locale, Permissions.FLAGS.MANAGE_CHANNELS, textChannel))
+                        return;
+                }
+
                 const counter = await Database.GetGuildCounter(msg.guild.id, channelId);
 
                 if (counter === undefined) {
@@ -53,6 +63,7 @@ module.exports = CreateCommand({
         {
             "name": "config",
             "shortcut": "cfg",
+            "channelPermissions": true,
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "subcommands": [
                 {
@@ -104,9 +115,17 @@ module.exports = CreateCommand({
                 } else {
                     for (let i = 0; i < counters.length; i++) {
                         const counter = counters[i];
-                        const textChannel = await msg.guild.channels.fetch(counter.channelId);
+                        const textChannel = await msg.guild.channels.resolve(counter.channelId);
+
+                        let channelName = counter.channelId;
+                        if (textChannel !== null) {
+                            if (!msg.member.permissionsIn(textChannel).has(Permissions.FLAGS.VIEW_CHANNEL))
+                                continue;
+                            channelName = textChannel.name;
+                        }
+
                         embed.addField(
-                            Utils.FormatString(locale.command.counterTitle, textChannel.name, counter.count, counter.bestCount),
+                            Utils.FormatString(locale.command.counterTitle, channelName, counter.count, counter.bestCount),
                             Utils.FormatString(locale.command.counterDescription, Utils.MentionTextChannel(counter.channelId), counter.count, counter.bestCount),
                             false
                         );
