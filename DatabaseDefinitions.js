@@ -4,7 +4,7 @@ const { DataTypes } = Sequelize;
 // This should be sage, IDs are 64bit Numbers and the biggest 64bit Number shouldn't
 //  have more then 20 digits so we also have room to spare
 const MAX_SNOWFLAKE_LENGTH = 24;
-const MAX_PREFIX_LENGTH = 4;
+const MAX_PREFIX_LENGTH = 6;
 const MAX_LOCALE_NAME_LENGTH = 8;
 
 const GuildModel = {
