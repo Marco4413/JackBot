@@ -2,6 +2,7 @@ const MathJS = require("mathjs");
 
 const _MathContext = MathJS.create();
 _MathContext.import([
+    MathJS.evaluateDependencies,
     MathJS.unaryMinusDependencies,
     MathJS.unaryPlusDependencies,
     MathJS.absDependencies,
@@ -27,8 +28,6 @@ _MathContext.import([
     MathJS.notDependencies,
     MathJS.orDependencies,
     MathJS.xorDependencies,
-    MathJS.onesDependencies,
-    MathJS.numericDependencies,
     MathJS.powDependencies,
     MathJS.roundDependencies,
     MathJS.logDependencies,
@@ -36,7 +35,6 @@ _MathContext.import([
     MathJS.rightArithShiftDependencies,
     MathJS.maxDependencies,
     MathJS.minDependencies,
-    MathJS.FibonacciHeapDependencies,
     MathJS.acosDependencies,
     MathJS.acotDependencies,
     MathJS.acscDependencies,
