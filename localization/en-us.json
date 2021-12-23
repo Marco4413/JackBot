@@ -1,5 +1,25 @@
 {
   "commands": {
+    "counter": {
+      "subcommands": {
+        "list": {
+          "title": "Guild's Counters",
+          "noCounters": "This guild has no Counters",
+          "counterTitle": "{0}",
+          "counterDescription": "Found in channel {0} with a current count of {1} and a best of {2}."
+        }
+      },
+      "countFailed": "Count Failed at `{1}` thanks to {0}",
+      "alreadyCounting": "A Counter is already ongoing in this channel.",
+      "noCountingHere": "No Counter was found in this channel.",
+      "noCountingThere": "No Counter was found in the channel {0}.",
+      "startedCounting": "A Counter was started in this channel.",
+      "stoppedCountingHere": "Counter stopped, best count: {0}",
+      "stoppedCountingThere": "Counter stopped for channel {1}, best count: {0}",
+      "bestCount": "Best Count: {0}",
+      "currentCount": "Current Count: {0}",
+      "allowMessagesChange": "Allow Messages for this channel was set to `{0}`"
+    },
     "help": {
       "docs": {
         "title": "All Commands",
@@ -132,6 +152,8 @@
       "number": "Number",
       "boolean": "True or False"
     },
+    "checkmark": "✅",
+    "crossmark": "❌",
     "listSeparator": ", ",
     "listDelimiter": "[ {0} ]",
     "listEntry": " - `{0}`",
