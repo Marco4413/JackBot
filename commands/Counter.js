@@ -7,7 +7,6 @@ module.exports = CreateCommand({
         {
             "name": "start",
             "shortcut": "s",
-            "channelPermissions": true,
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "execute": async (msg, guild, locale) => {
                 const counter = await Database.CreateGuildCounter(msg.guild.id, msg.channel.id);
@@ -23,7 +22,6 @@ module.exports = CreateCommand({
         {
             "name": "terminate",
             "shortcut": "term",
-            "channelPermissions": true,
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "arguments": [
                 {
@@ -55,7 +53,6 @@ module.exports = CreateCommand({
         {
             "name": "config",
             "shortcut": "cfg",
-            "channelPermissions": true,
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "subcommands": [
                 {
