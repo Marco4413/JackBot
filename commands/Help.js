@@ -3,7 +3,7 @@ const { CreateCommand, Utils } = require("../Command.js");
 module.exports = CreateCommand({
     "name": "help",
     "shortcut": "h",
-    "execute": (msg, guild, locale, docsPath) => {
+    "execute": async (msg, guild, locale, docsPath) => {
         let currentDoc = locale.command.docs;
         for (let i = 0; i < docsPath.length; i++) {
             if (currentDoc.subcommands === undefined) {
@@ -52,6 +52,6 @@ module.exports = CreateCommand({
             }
         }
 
-        msg.channel.send({ "embeds": [ embed ] });
+        await msg.channel.send({ "embeds": [ embed ] });
     }
 });

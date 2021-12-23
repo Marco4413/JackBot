@@ -11,11 +11,11 @@ module.exports = CreateCommand({
                 const pingMessage = await msg.channel.send(locale.command.calculating);
                 const ping = Date.now() - startEpoch;
                 await pingMessage.delete();
-                msg.reply(Utils.FormatString(locale.command.result, ping));
+                await msg.reply(Utils.FormatString(locale.command.result, ping));
             }
         }
     ],
-    "execute": (msg, guild, locale) => {
-        msg.reply(locale.command.pong);
+    "execute": async (msg, guild, locale) => {
+        await msg.reply(locale.command.pong);
     }
 });

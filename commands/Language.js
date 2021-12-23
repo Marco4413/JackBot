@@ -8,11 +8,11 @@ module.exports = CreateCommand({
         {
             "name": "list",
             "shortcut": "l",
-            "execute": (msg, guild, locale) => {
+            "execute": async (msg, guild, locale) => {
                 const localesList = GetAvailableLocales().map(
                     localeName => Utils.FormatString(locale.common.listEntry, localeName)
                 ).join("\n");
-                msg.reply(Utils.FormatString(locale.command.available, localesList));
+                await msg.reply(Utils.FormatString(locale.command.available, localesList));
             }
         },
         {
@@ -27,16 +27,16 @@ module.exports = CreateCommand({
             ],
             "execute": async (msg, guild, locale, [ localeName ]) => {
                 if (!HasLocale(localeName)) {
-                    msg.reply(locale.command.invalid);
+                    await msg.reply(locale.command.invalid);
                     return;
                 }
 
                 const { locale: newLocale } = await Database.SetGuildAttr(msg.guild.id, { "locale": localeName });
-                msg.reply(Utils.FormatString(locale.command.changed, newLocale));
+                await msg.reply(Utils.FormatString(locale.command.changed, newLocale));
             }
         }
     ],
-    "execute": (msg, guild, locale) => {
-        msg.reply(Utils.FormatString(locale.command.current, guild.locale));
+    "execute": async (msg, guild, locale) => {
+        await msg.reply(Utils.FormatString(locale.command.current, guild.locale));
     }
 });

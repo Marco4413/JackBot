@@ -15,7 +15,8 @@ module.exports = CreateCommand({
                     await msg.reply(locale.command.alreadyCounting);
                 } else {
                     await msg.reply(locale.command.startedCounting);
-                    await (await msg.channel.send(counter.count.toString())).react(locale.common.checkmark);
+                    const response = await msg.channel.send(counter.count.toString());
+                    await response.react(locale.common.checkmark);
                 }
             }
         },
@@ -60,8 +61,6 @@ module.exports = CreateCommand({
                 {
                     "name": "allow-messages",
                     "shortcut": "am",
-                    "channelPermissions": true,
-                    "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
                     "arguments": [
                         {
                             "name": "[Enable]",
