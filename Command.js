@@ -6,7 +6,7 @@ const Utils = require("./Utils.js");
 
 // #region typedefs
 
-/** @typedef {"string"|"number"|"boolean"} CommandArgumentType */
+/** @typedef {"string"|"number"|"boolean"|"text-channel"|"user"} CommandArgumentType */
 
 /**
  * @typedef {Object} CommandArgument A Command's Argument Definition
@@ -86,6 +86,18 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
             const isTrue  = lowerArg === "true"  || lowerArg === "1";
             const isFalse = lowerArg === "false" || lowerArg === "0";
             if (isTrue || isFalse) parsedArg = isTrue;
+            break;
+        }
+        case "text-channel": {
+            const channelIdMatcher = /^<#([0-9]+)>$/g;
+            const channelId = channelIdMatcher.exec(arg);
+            if (channelId !== null) parsedArg = channelId[1];
+            break;
+        }
+        case "user": {
+            const userIdMatcher = /^<@!?([0-9]+)>$/g;
+            const userId = userIdMatcher.exec(arg);
+            if (userId !== null) parsedArg = userId[1];
             break;
         }
         default:
@@ -217,7 +229,7 @@ const IsValidCommand = (command) => {
                     ( arg.isVariadic === undefined || typeof arg.isVariadic === "boolean" )
                 )) return false;
                 for (const argType of arg.types) {
-                    if (!(argType === "string" || argType === "number" || argType === "boolean"))
+                    if (typeof argType !== "string")
                         return false;
                 }
             }
