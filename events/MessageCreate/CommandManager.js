@@ -35,7 +35,7 @@ module.exports = async (msg, guild) => {
 
         const guildLocale = GetLocale(guild.locale);
         const commandLocale = { "common": guildLocale.common, "command": { "subcommands": guildLocale.commands } };
-        if (!ExecuteCommand(msg, guild, commandLocale, splittedCommand, GetCommands())) {
+        if (!await ExecuteCommand(msg, guild, commandLocale, splittedCommand, GetCommands())) {
             await msg.reply(guildLocale.common.invalidCommand);
         }
 

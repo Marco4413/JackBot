@@ -24,7 +24,7 @@ const Utils = require("./Utils.js");
  * @property {Boolean} [channelPermissions] Whether or not the specified permissions are for the channel
  * @property {discord.PermissionResolvable} [permissions] The permissions required to run the Command
  * @property {CommandArgument[]} [arguments] The Arguments of the Command ( If not specified all arguments are given as Strings )
- * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => void} execute The function called to Execute the Command
+ * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<void>} execute The function called to Execute the Command
  */
 
 /** @private @typedef {"none"|"invalid_type"|"not_provided"} _ArgumentParseError */
@@ -251,6 +251,39 @@ const SplitCommand = (msg) => {
 };
 
 /**
+ * Tests if the author of the specified Message has the specified Permissions
+ * in the guild or the specified Channel and replies to the Message whether or
+ * not the author has the Permissions with the specified CommandLocale
+ * @param {discord.Message} msg The Message to use
+ * @param {CommandLocale} locale The Locale to use
+ * @param {discord.PermissionResolvable} requiredPerms The Permissions Required
+ * @param {discord.GuildChannel} [channel] The Channel to test the Permissions on ( undefined for Guild )
+ * @returns {Boolean} Whether or not the Message's author has the specified Permissions
+ */
+const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
+    if (channel === undefined) {
+        if (!msg.member.permissions.has(requiredPerms)) {
+            await msg.reply(Utils.FormatString(
+                locale.common.noGuildPerms,
+                _ListMissingPerms(msg.member.permissions, requiredPerms, locale)
+            ));
+            return true;
+        }
+    } else {
+        const channelPerms = msg.member.permissionsIn(channel);
+        if (!channelPerms.has(requiredPerms)) {
+            await msg.reply(Utils.FormatString(
+                locale.common.noChannelPerms,
+                _ListMissingPerms(channelPerms, requiredPerms, locale),
+                channel.name
+            ));
+            return true;
+        }
+    }
+    return false;
+};
+
+/**
  * Executes the Commands from the specified commandList and splittedMessage ( Obtained with {@link SplitCommand} )
  * @param {discord.Message} msg The message to be given to Commands when executing and to reply with error feedback
  * @param {DatabaseDefinitions.GuildRow} guildRow The Guild Row from the Database
@@ -259,7 +292,7 @@ const SplitCommand = (msg) => {
  * @param {Command[]} commandList The list of Commands to check for
  * @returns {Boolean} Whether or not a candidate Command was Found ( It may have failed Execution )
  */
-const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => {
+const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandList) => {
     const [ commandName, ...commandArgs ] = splittedMessage;
 
     for (let i = 0; i < commandList.length; i++) {
@@ -271,30 +304,10 @@ const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => 
             command.name !== commandName
         ) continue;
 
-        // If the command needs a specific permission from the user
+        // If the command needs a specific permission from the user check for thems
         if (command.permissions !== undefined) {
-            // If it's a permission needed in the current channel
-            if (command.channelPermissions) {
-                // Check permissions of the user in the message's channel
-                const channelPerms = msg.member.permissionsIn(msg.channel.id);
-                if (!channelPerms.has(command.permissions)) {
-                    msg.reply(Utils.FormatString(
-                        locale.common.noChannelPerms,
-                        _ListMissingPerms(channelPerms, command.permissions, locale),
-                        msg.channel.name
-                    ));
-                    return true;
-                }
-            } else {
-                // Else check global permissions
-                if (!msg.member.permissions.has(command.permissions)) {
-                    msg.reply(Utils.FormatString(
-                        locale.common.noGuildPerms,
-                        _ListMissingPerms(msg.member.permissions, command.permissions, locale)
-                    ));
-                    return true;
-                }
-            }
+            if (await IsMissingPermissions(msg, locale, command.permissions, command.channelPermissions ? msg.channel : undefined))
+                return true;
         }
 
         /** @type {Localization.CommandLocale} */
@@ -306,13 +319,13 @@ const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => 
 
         // If this command has subcommands then try to execute those
         if (command.subcommands !== undefined) {
-            if (ExecuteCommand(msg, guildRow, commandLocale, commandArgs, command.subcommands))
+            if (await ExecuteCommand(msg, guildRow, commandLocale, commandArgs, command.subcommands))
                 return true;
         }
 
         // If this command can't be executed then it must have subcommands
         if (command.execute === undefined) {
-            msg.reply(locale.common.noSubcommand);
+            await msg.reply(locale.common.noSubcommand);
             return true;
         }
 
@@ -324,10 +337,10 @@ const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => 
         case "none":
             break;
         case "not_provided":
-            msg.reply(Utils.FormatString(locale.common.missingArg, errorArgDef.name, errorArgIndex + 1));
+            await msg.reply(Utils.FormatString(locale.common.missingArg, errorArgDef.name, errorArgIndex + 1));
             return true;
         case "invalid_type":
-            msg.reply(Utils.FormatString(
+            await msg.reply(Utils.FormatString(
                 locale.common.wrongArgType, errorArgDef.name, errorArgIndex + 1,
                 _ListPossibleTypes(errorArgDef, locale)
             ));
@@ -337,7 +350,7 @@ const ExecuteCommand = (msg, guildRow, locale, splittedMessage, commandList) => 
         }
 
         // Execute command with parsedArgs
-        command.execute(msg, guildRow, commandLocale, parsedArgs);
+        await command.execute(msg, guildRow, commandLocale, parsedArgs);
         return true;
     }
 
@@ -356,6 +369,6 @@ const CreateCommand = cmd => cmd;
 // #endregion
 
 module.exports = {
-    IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand,
+    IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand, IsMissingPermissions,
     Utils, Database, DatabaseDefinitions, Permissions: discord.Permissions
 };
