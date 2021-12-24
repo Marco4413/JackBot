@@ -25,7 +25,7 @@ MARIADB_USERNAME = "jack"
 MARIADB_PASSWORD = "jack-is-cool"
 ```
  2. Run `npm i` to install all dependencies
- 3. Run `node .` to run the project
+ 3. Run `npm run start` to run the project
 
 **NOTE:** This Project uses Node v16.13.0
 
