@@ -7,6 +7,10 @@
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
 
+# Rich Presence Settings
+# RP Update Interval in Milliseconds
+RP_UPDATE_INTERVAL = 3600e3
+
 # Database Settings
 DB_MODE = "sqlite"
 

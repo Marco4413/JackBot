@@ -1,6 +1,7 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
+const { StartRichPresence } = require("./RichPresence.js");
 const { Client, RegisterEventListeners } = require("./Client.js");
 const { RegisterCommands } = require("./Commands.js");
 const { RegisterLocales } = require("./Localization.js");
@@ -25,5 +26,6 @@ const db = require("./Database.js");
     RegisterLocales();
     RegisterCommands();
     RegisterEventListeners();
-    Client.login();
+    await Client.login();
+    await StartRichPresence();
 })();
