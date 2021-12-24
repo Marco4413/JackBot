@@ -86,6 +86,27 @@ module.exports = CreateCommand({
                             await msg.reply(Utils.FormatString(locale.command.allowMessagesChange, counter.allowMessages));
                         }
                     }
+                },
+                {
+                    "name": "alternate-member",
+                    "shortcut": "altm",
+                    "arguments": [
+                        {
+                            "name": "[Enable]",
+                            "types": [ "boolean" ]
+                        }
+                    ],
+                    "execute": async (msg, guild, locale, [ enable ]) => {
+                        const counter = await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
+                            "alternateMember": enable
+                        });
+        
+                        if (counter === undefined) {
+                            await msg.reply(locale.command.noCountingHere);
+                        } else {
+                            await msg.reply(Utils.FormatString(locale.command.alternateMemberChange, counter.alternateMember));
+                        }
+                    }
                 }
             ]
         },
