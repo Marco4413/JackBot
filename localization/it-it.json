@@ -1,0 +1,212 @@
+{
+  "commands": {
+    "counter": {
+      "subcommands": {
+        "list": {
+          "title": "Contatori Server",
+          "noCounters": "Questo server non ha contatori",
+          "counterTitle": "{0}",
+          "counterDescription": "Nel canale {0} con un coteggio di {1} ed un migliore di {2}."
+        }
+      },
+      "countFailed": "Conteggio fallito a `{1}` grazie a {0}",
+      "alreadyCounting": "Un conteggio è già stato avviato in questo canale.",
+      "noCountingHere": "Nessun conteggio è stato trovato in questo canale.",
+      "noCountingThere": "Nessun conteggio è stato trovato in questo canale {0}.",
+      "startedCounting": "Un conteggio è stato avviato in questo canale.",
+      "stoppedCountingHere": "Conteggio fermato, Miglior conteggio: {0}",
+      "stoppedCountingThere": "Conteggio fermato per il canale {1}, Miglior conteggio: {0}",
+      "bestCount": "Miglior conteggio: {0}",
+      "currentCount": "Conteggio attuale: {0}",
+      "allowMessagesValue": "Permetti Messaggi su questo canale è impostato a: `{0}`",
+      "allowErrorsValue": "Permetti Errori su questo canale è impostato a: `{0}`",
+      "alternateMemberValue": "Alternanza Membri su questo canale è impostato a:`{0}`"
+    },
+    "help": {
+      "docs": {
+        "title": "Tutti i comandi",
+        "description": "Lista di tutti i comandi disponibili.",
+        "subcommands": {
+          "help": {
+            "title": "Help",
+            "description": "Mostra questi messaggi di aiuto."
+          },
+          "counter": {
+            "title": "Counter",
+            "description": "Mostra l'attuale conteggio di questo canale.",
+            "subcommands": {
+              "start": {
+                "title": "Start",
+                "description": "Inizia un nuovo conteggio in questo canale."
+              },
+              "terminate": {
+                "title": "Terminate",
+                "description": "Rimuove il conteggio in questo canale o uno specificato."
+              },
+              "config": {
+                "title": "Config",
+                "description": "Usato per configurare il conteggio di questo canale.",
+                "subcommands": {
+                  "allow-messages": {
+                    "title": "Allow Messages",
+                    "description": "Se impostato su Falso i messaggi inviati nel canale che non sono numeri verranno eliminati."
+                  },
+                  "allow-errors": {
+                    "title": "Allow Errors",
+                    "description": "Se impostato su Falso i numeri errati inviati nel canale verranno ignorati ed eliminati."
+                  },
+                  "alternate-member": {
+                    "title": "Alternate Member",
+                    "description": "Se impostato su Vero un utente non potrà inviare più di due numeri di seguito ed i suoi messaggi saranno ignorati ed eliminati."
+                  }
+                }
+              },
+              "best": {
+                "title": "Best",
+                "description": "Mostra il conteggio più alto raggiunto in questo canale."
+              },
+              "list": {
+                "title": "List",
+                "description": "Mostra tutti i conteggi attivi nel server."
+              }
+            }
+          },
+          "language": {
+            "title": "Language",
+            "description": "Mostra la lingua del server.",
+            "subcommands": {
+              "set": {
+                "title": "Set",
+                "description": "Imposta la lingua del server a quella specificata."
+              }
+            }
+          },
+          "ping": {
+            "title": "Ping",
+            "description": "Pong!",
+            "subcommands": {
+              "message": {
+                "hidden": true,
+                "hiddenNames": [ "6d", "6573", "73", "6167", "65", "b16" ],
+                "title": "Message",
+                "description": "Invia un messaggio e calcola il tempo necessario per inviare quel messaggio."
+              }
+            }
+          },
+          "prefix": {
+            "title": "Prefix",
+            "description": "Mostra il prefisso del bot nel server.",
+            "subcommands": {
+              "set": {
+                "title": "Set",
+                "description": "Imposta il prefisso del bot nel server a quello specificato."
+              }
+            }
+          },
+          "shortcuts": {
+            "title": "Shortcuts",
+            "description": "Mostra se le scorciatoie sono attivate su questo server.",
+            "subcommands": {
+              "set": {
+                "title": "Set",
+                "description": "Abilita o Disabilita le scorciatoie su questo server."
+              }
+            }
+          }
+        }
+      },
+      "emptyDoc": {
+        "title": "Nessun Comando Trovato",
+        "description": "Nessun comando con il nome specificato è stato trovato."
+      },
+      "subcommandsList": "Sottocomandi: {0}",
+      "noSubcommands": "Qusto comando non ha sottocomandi."
+    },
+    "language": {
+      "available": "Lingue disponibili:\n{0}",
+      "invalid": "La lingua specificata non esiste.",
+      "changed": "La lingua è stata cambiata a: `{0}`",
+      "current": "Lingua corrente: `{0}`"
+    },
+    "ping": {
+      "subcommands": {
+        "message": {
+          "calculating": "Calcolo Ping...",
+          "result": "Il Ping è di {0}ms"
+        }
+      },
+      "pong": "Pong!"
+    },
+    "prefix": {
+      "changed": "Prefisso impostato a: `{0}`",
+      "current": "Prefisso corrente: `{0}`"
+    },
+    "shortcuts": {
+      "changed": "Scorciatoie impostate a: `{0}`",
+      "current": "Le scorciatoie sono impostate a: `{0}`"
+    }
+  },
+  "common": {
+    "permissions": {
+      "CREATE_INSTANT_INVITE": "Crea Invito Istantaneo",
+      "KICK_MEMBERS": "Espelli Membri",
+      "BAN_MEMBERS": "Banna Membri",
+      "ADMINISTRATOR": "Amministratori",
+      "MANAGE_CHANNELS": "Gestisci Canali",
+      "MANAGE_GUILD": "Gestisci Server",
+      "ADD_REACTIONS": "Aggiungi Reazioni",
+      "VIEW_AUDIT_LOG": "Visualizza Registro Attività",
+      "PRIORITY_SPEAKER": "Priorità di Parola",
+      "STREAM": "Stream",
+      "VIEW_CHANNEL": "Vedi Canali",
+      "SEND_MESSAGES": "Invia Messaggi",
+      "SEND_TTS_MESSAGES": "Manda Messaggi TTS",
+      "MANAGE_MESSAGES": "Gestisci Messaggi",
+      "EMBED_LINKS": "Invia Link",
+      "ATTACH_FILES": "Invia Files",
+      "READ_MESSAGE_HISTORY": "Visualizza Cronologia Messaggi",
+      "MENTION_EVERYONE": "Menziona Everyone",
+      "USE_EXTERNAL_EMOJIS": "Usare Emoji Esterne",
+      "VIEW_GUILD_INSIGHTS": "Visualizza Dettagli Server",
+      "CONNECT": "Connetti",
+      "SPEAK": "Parla",
+      "MUTE_MEMBERS": "Muta Membri",
+      "DEAFEN_MEMBERS": "Silenzia l'Audio dei Membri",
+      "MOVE_MEMBERS": "Sposta Membri",
+      "USE_VAD": "Utilizza il VAD",
+      "CHANGE_NICKNAME": "Cambia Nickname",
+      "MANAGE_NICKNAMES": "Gestisci i Nickname",
+      "MANAGE_ROLES": "Gestisci Ruoli",
+      "MANAGE_WEBHOOKS": "Gestisci Webhooks",
+      "MANAGE_EMOJIS_AND_STICKERS": "Gestisci Emoji e Sticker",
+      "USE_APPLICATION_COMMANDS": "Usa i Comandi dell'Applicazione",
+      "REQUEST_TO_SPEAK": "Richiedi per Parlare",
+      "MANAGE_THREADS": "Gestisci Threads",
+      "USE_PUBLIC_THREADS": "Usa Thread Pubblici",
+      "CREATE_PUBLIC_THREADS": "Crea Thread Pubblici",
+      "USE_PRIVATE_THREADS": "Usa Thread Privati",
+      "CREATE_PRIVATE_THREADS": "Crea Thread Privati",
+      "USE_EXTERNAL_STICKERS": "Usa Sticker Esterni",
+      "SEND_MESSAGES_IN_THREADS": "Invia i Messaggi nei Thread",
+      "START_EMBEDDED_ACTIVITIES": "Avvia Attività"
+    },
+    "argumentTypes": {
+      "string": "Testo",
+      "number": "Numero",
+      "boolean": "True o False",
+      "text-channel": "Canale di Testo",
+      "user": "Utente"
+    },
+    "checkmark": "✅",
+    "crossmark": "❌",
+    "listSeparator": ", ",
+    "listDelimiter": "[ {0} ]",
+    "listEntry": " - `{0}`",
+    "noChannelPerms": "Non possiedi abbastanza permessi nel canale {1} per eseguire questo comando ( Mancano: `{0}` ).",
+    "noGuildPerms": "Non possiedi abbastanza permessi per eseguire qeusto comando ( Mancano: `{0}` ).",
+    "noSubcommand": "Un sottocomando valido deve essere utilizzato.",
+    "missingArg": "Argomento `{0}` ( alla posizione {1} ) mancante.",
+    "wrongArgType": "Argomento `{0}` ( alla posizione {1} ) è del tipo errato ( Tipi Possibili: {2} ).",
+    "invalidCommand": "Il comando specificato non esiste."
+  }
+}
