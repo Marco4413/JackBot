@@ -193,7 +193,9 @@
     "argumentTypes": {
       "string": "Text",
       "number": "Number",
-      "boolean": "True or False"
+      "boolean": "True or False",
+      "text-channel": "Text Channel",
+      "user": "User"
     },
     "checkmark": "✅",
     "crossmark": "❌",
