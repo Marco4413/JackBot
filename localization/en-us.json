@@ -82,6 +82,7 @@
             "subcommands": {
               "message": {
                 "hidden": true,
+                "hiddenNames": [ "6d", "6573", "73", "6167", "65", "b16" ],
                 "title": "Message",
                 "description": "Sends a message and calculates the time needed for that message to be sent."
               }

@@ -1,5 +1,18 @@
 const { CreateCommand, Utils } = require("../Command.js");
 
+/**
+ * @param {{ title: String, hidden: Boolean|undefined, hiddenNames: String[]|undefined }} commandDoc
+ * @param {String} [titleOverride]
+ * @returns {String}
+ */
+const _GetCommandDocName = (commandDoc, titleOverride) => {
+    const isHidden = commandDoc.hidden;
+    if (!isHidden) return titleOverride === undefined ? commandDoc.title : titleOverride;
+
+    const hasHiddenNames = Array.isArray(commandDoc.hiddenNames) && commandDoc.hiddenNames.length > 0;
+    return hasHiddenNames ? Utils.GetRandomArrayElement(commandDoc.hiddenNames) : Math.round( Math.random() * 100 );
+};
+
 module.exports = CreateCommand({
     "name": "help",
     "shortcut": "h",
@@ -28,7 +41,10 @@ module.exports = CreateCommand({
         if (hasSubcommands) {
             for (const subKey of Object.keys(currentDoc.subcommands)) {
                 const subDoc = currentDoc.subcommands[subKey];
-                if (subDoc.hidden) continue;
+                if (subDoc.hidden) {
+                    embed.addField(_GetCommandDocName(subDoc), locale.command.noSubcommands, false);
+                    continue;
+                }
 
                 let subSubCmdList;
                 if (subDoc.subcommands === undefined) {
@@ -41,8 +57,7 @@ module.exports = CreateCommand({
                             Utils.JoinArray(
                                 Object.keys(subDoc.subcommands),
                                 locale.common.listSeparator,
-                                // TODO: Do we really want to keep these as an Easter Egg or do we want to completely hide them?
-                                el => subDoc.subcommands[el].hidden ? Math.round( Math.random() * 100 ) : el
+                                el => _GetCommandDocName(subDoc.subcommands[el], el)
                             )
                         )
                     );
