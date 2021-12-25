@@ -33,6 +33,7 @@ _MathContext.import([
     MathJS.logDependencies,
     MathJS.leftShiftDependencies,
     MathJS.rightArithShiftDependencies,
+    MathJS.rightLogShiftDependencies,
     MathJS.maxDependencies,
     MathJS.minDependencies,
     MathJS.acosDependencies,
