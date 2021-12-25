@@ -32,6 +32,17 @@ const JoinArray = (array, separator = ",", elFormatter = el => el) => {
 };
 
 /**
+ * Returns a random element from the specified array
+ * @template {Object} T
+ * @param {T[]} array The array to get the random element from
+ * @returns {T|undefined} The random element taken from the specified array or undefined if its length is 0
+ */
+const GetRandomArrayElement = (array) => {
+    if (array.length === 0) return undefined;
+    return array[ Math.round(Math.random() * ( array.length - 1 )) ];
+};
+
+/**
  * Returns the Default Embed for the Specified Message
  * @param {Message} msg The Message to create the Embed from
  * @param {boolean} [addThumbnail] Whether or not to add a Thumbnail to the Embed
@@ -72,4 +83,4 @@ const MentionTextChannel = (channelId) => {
     return `<#${channelId}>`;
 };
 
-module.exports = { FormatString, JoinArray, GetDefaultEmbedForMessage, MentionUser, MentionTextChannel };
+module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, MentionUser, MentionTextChannel };
