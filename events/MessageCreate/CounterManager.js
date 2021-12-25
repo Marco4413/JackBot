@@ -38,6 +38,8 @@ module.exports = async (msg, guild) => {
                 });
                 
                 await msg.react(locale.common.checkmark);
+            } else if (!counter.allowErrors) {
+                await msg.delete();
             } else if (counter.count !== counterStartValue) {
                 await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
                     "count": counterStartValue,

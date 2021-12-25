@@ -1,5 +1,31 @@
 const { CreateCommand, IsMissingPermissions, Permissions, Database, Utils } = require("../Command.js");
 
+/** @type {import("../Command.js").CommandArgument[]} */
+const _ConfigArguments = [ { "name": "[Enable]", "types": [ "boolean" ], "default": null } ];
+
+/**
+ * @param {String} settingName
+ * @returns {import("../Command.js").CommandExecute}
+ */
+const _GetConfigCallback = (settingName) => {
+    return async (msg, guild, locale, [ enable ]) => {
+        let counter = undefined;
+        if (enable === null) {
+            counter = await Database.GetGuildCounter(msg.guild.id, msg.channel.id);
+        } else {
+            counter = await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
+                [settingName]: enable
+            });
+        }
+
+        if (counter === undefined) {
+            await msg.reply(locale.command.noCountingHere);
+        } else {
+            await msg.reply(Utils.FormatString(locale.command[`${settingName}Value`], counter[settingName]));
+        }
+    };
+};
+
 module.exports = CreateCommand({
     "name": "counter",
     "shortcut": "count",
@@ -69,44 +95,20 @@ module.exports = CreateCommand({
                 {
                     "name": "allow-messages",
                     "shortcut": "am",
-                    "arguments": [
-                        {
-                            "name": "[Enable]",
-                            "types": [ "boolean" ]
-                        }
-                    ],
-                    "execute": async (msg, guild, locale, [ enable ]) => {
-                        const counter = await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
-                            "allowMessages": enable
-                        });
-        
-                        if (counter === undefined) {
-                            await msg.reply(locale.command.noCountingHere);
-                        } else {
-                            await msg.reply(Utils.FormatString(locale.command.allowMessagesChange, counter.allowMessages));
-                        }
-                    }
+                    "arguments": _ConfigArguments,
+                    "execute": _GetConfigCallback("allowMessages")
+                },
+                {
+                    "name": "allow-errors",
+                    "shortcut": "ae",
+                    "arguments": _ConfigArguments,
+                    "execute": _GetConfigCallback("allowErrors")
                 },
                 {
                     "name": "alternate-member",
                     "shortcut": "altm",
-                    "arguments": [
-                        {
-                            "name": "[Enable]",
-                            "types": [ "boolean" ]
-                        }
-                    ],
-                    "execute": async (msg, guild, locale, [ enable ]) => {
-                        const counter = await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
-                            "alternateMember": enable
-                        });
-        
-                        if (counter === undefined) {
-                            await msg.reply(locale.command.noCountingHere);
-                        } else {
-                            await msg.reply(Utils.FormatString(locale.command.alternateMemberChange, counter.alternateMember));
-                        }
-                    }
+                    "arguments": _ConfigArguments,
+                    "execute": _GetConfigCallback("alternateMember")
                 }
             ]
         },

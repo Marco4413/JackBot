@@ -18,8 +18,9 @@
       "stoppedCountingThere": "Counter stopped for channel {1}, best count: {0}",
       "bestCount": "Best Count: {0}",
       "currentCount": "Current Count: {0}",
-      "allowMessagesChange": "Allow Messages for this channel was set to `{0}`",
-      "alternateMemberChange": "Alternate Member for this channel was set to `{0}`"
+      "allowMessagesValue": "Allow Messages for this channel is set to `{0}`",
+      "allowErrorsValue": "Allow Errors for this channel is set to `{0}`",
+      "alternateMemberValue": "Alternate Member for this channel is set to `{0}`"
     },
     "help": {
       "docs": {
@@ -49,6 +50,10 @@
                   "allow-messages": {
                     "title": "Allow Messages",
                     "description": "If false Messages that aren't numbers will be deleted."
+                  },
+                  "allow-errors": {
+                    "title": "Allow Errors",
+                    "description": "If false Messages that are the wrong number will be ignored and deleted."
                   },
                   "alternate-member": {
                     "title": "Alternate Member",
