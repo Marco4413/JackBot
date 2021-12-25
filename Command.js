@@ -17,6 +17,10 @@ const Utils = require("./Utils.js");
  */
 
 /**
+ * @typedef {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<void>} CommandExecute The callback of a Command
+ */
+
+/**
  * @typedef {Object} Command A Command's Definition
  * @property {String} name The name of the Command
  * @property {String} [shortcut] The shortcut for the Command
@@ -24,7 +28,7 @@ const Utils = require("./Utils.js");
  * @property {Boolean} [channelPermissions] Whether or not the specified permissions are for the channel
  * @property {discord.PermissionResolvable} [permissions] The permissions required to run the Command
  * @property {CommandArgument[]} [arguments] The Arguments of the Command ( If not specified all arguments are given as Strings )
- * @property {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<void>} execute The function called to Execute the Command
+ * @property {CommandExecute} execute The function called to Execute the Command
  */
 
 /** @private @typedef {"none"|"invalid_type"|"not_provided"} _ArgumentParseError */
