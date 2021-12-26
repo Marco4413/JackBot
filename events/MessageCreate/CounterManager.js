@@ -3,7 +3,7 @@ const Database = require("../../Database.js");
 const DatabaseDefinitions = require("../../DatabaseDefinitions.js");
 const Utils = require("../../Utils.js");
 
-const SMath = require("../../SandboxedMath.js");
+const SMath = require("../../SandMath.js");
 const { Message } = require("discord.js");
 
 /**
@@ -21,7 +21,7 @@ module.exports = async (msg, guild) => {
             result = SMath.evaluate(msg.content);
         } catch (err) { /* Do nothing on error */ }
         
-        if (typeof result === "number") {
+        if (Utils.IsNaN(result)) {
             if (counter.alternateMember && counter.lastMemberId === msg.member.id) {
                 await msg.delete();
                 return true;

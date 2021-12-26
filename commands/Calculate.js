@@ -1,5 +1,5 @@
 const { CreateCommand, Utils } = require("../Command.js");
-const SMath = require("../SandboxedMath.js");
+const SMath = require("../SandMath.js");
 
 module.exports = CreateCommand({
     "name": "calculate",
@@ -8,6 +8,7 @@ module.exports = CreateCommand({
         const mathExpr = Utils.JoinArray(args, " ");
         try {
             const result = SMath.evaluate(mathExpr);
+            console.log(result);
             await msg.reply(Utils.FormatString(
                 locale.command.expressionResult,
                 mathExpr, Utils.TranslateNumber(result, locale)
