@@ -8,7 +8,6 @@ module.exports = CreateCommand({
         const mathExpr = Utils.JoinArray(args, " ");
         try {
             const result = SMath.evaluate(mathExpr);
-            console.log(result);
             await msg.reply(Utils.FormatString(
                 locale.command.expressionResult,
                 mathExpr, Utils.TranslateNumber(result, locale)
