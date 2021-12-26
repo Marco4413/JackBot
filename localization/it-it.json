@@ -1,5 +1,9 @@
 {
   "commands": {
+    "calculate": {
+      "expressionError": "C'è un errore nell'Espressione Matematica.",
+      "expressionResult": "= {1}"
+    },
     "counter": {
       "subcommands": {
         "list": {
@@ -197,6 +201,9 @@
       "text-channel": "Canale di Testo",
       "user": "Utente"
     },
+    "nan": "NaN",
+    "positiveInfinity": "+∞",
+    "negativeInfinity": "-∞",
     "checkmark": "✅",
     "crossmark": "❌",
     "listSeparator": ", ",
