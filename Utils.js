@@ -1,4 +1,5 @@
 const { Message, MessageEmbed } = require("discord.js");
+const Localization = require("./Localization.js");
 
 /**
  * Formats the specified String with the specified Formats
@@ -66,6 +67,23 @@ const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
 };
 
 /**
+ * Translates the specified Number using the specified Locale
+ * @param {Any} n The Number to translate
+ * @param {Localization.CommandLocale} locale The locale to translate the Number with
+ * @returns {String} The translated Number
+ */
+const TranslateNumber = (n, locale) => {
+    if (typeof n !== "number" || Number.isNaN(n)) {
+        return locale.common.nan;
+    } else if (n === Number.POSITIVE_INFINITY) {
+        return locale.common.positiveInfinity;
+    } else if (n === Number.NEGATIVE_INFINITY) {
+        return locale.common.negativeInfinity;
+    }
+    return n.toString();
+};
+
+/**
  * Creates a mention to the specified User
  * @param {String} userId The ID of the User to create the mention for
  * @returns {String} The mention for the specified User
@@ -83,4 +101,4 @@ const MentionTextChannel = (channelId) => {
     return `<#${channelId}>`;
 };
 
-module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, MentionUser, MentionTextChannel };
+module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, TranslateNumber, MentionUser, MentionTextChannel };
