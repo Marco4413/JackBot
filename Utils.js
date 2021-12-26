@@ -73,7 +73,7 @@ const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
  * @returns {String} The translated Number
  */
 const TranslateNumber = (n, locale) => {
-    if (typeof n !== "number" || Number.isNaN(n)) {
+    if (IsNaN(n)) {
         return locale.common.nan;
     } else if (n === Number.POSITIVE_INFINITY) {
         return locale.common.positiveInfinity;
@@ -81,6 +81,16 @@ const TranslateNumber = (n, locale) => {
         return locale.common.negativeInfinity;
     }
     return n.toString();
+};
+
+/**
+ * Same as Number.isNaN but with type checking
+ * @param {Any} n The Number to check if it's NaN
+ * @returns {Boolean} Whether or not the Number is not NaN and of a Number type
+ */
+const IsNaN = (n) => {
+    const nType = typeof n;
+    return Number.isNaN(n) || nType !== "number" && nType !== "bigint";
 };
 
 /**
@@ -101,4 +111,4 @@ const MentionTextChannel = (channelId) => {
     return `<#${channelId}>`;
 };
 
-module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, TranslateNumber, MentionUser, MentionTextChannel };
+module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, TranslateNumber, IsNaN, MentionUser, MentionTextChannel };
