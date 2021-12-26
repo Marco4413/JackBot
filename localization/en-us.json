@@ -35,6 +35,10 @@
             "title": "Help",
             "description": "Shows these help messages."
           },
+          "calculate": {
+            "title": "Calculate",
+            "description": "Calculates the specified Math Expression."
+          },
           "counter": {
             "title": "Counter",
             "description": "Shows the current count of this Channel.",

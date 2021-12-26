@@ -35,6 +35,10 @@
             "title": "Help",
             "description": "Mostra questi messaggi di aiuto."
           },
+          "calculate": {
+            "title": "Calculate",
+            "description": "Calcola l'Espressione Matematica specificata."
+          },
           "counter": {
             "title": "Counter",
             "description": "Mostra l'attuale conteggio di questo canale.",
