@@ -1,6 +1,11 @@
 const MathJS = require("mathjs");
 
 const _MathContext = MathJS.create();
+
+_MathContext.config({
+    "number": "number"
+});
+
 _MathContext.import([
     MathJS.evaluateDependencies,
     MathJS.unaryMinusDependencies,
