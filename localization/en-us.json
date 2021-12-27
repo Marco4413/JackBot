@@ -218,6 +218,7 @@
     "noSubcommand": "A valid subcommand must be provided.",
     "missingArg": "Argument `{0}` ( at {1} ) is missing.",
     "wrongArgType": "Argument `{0}` ( at {1} ) is of wrong type ( Expected Types: {2} ).",
-    "invalidCommand": "The specified command isn't valid."
+    "invalidCommand": "The specified command isn't valid.",
+    "richPresence": "Watching {0}/{1} Users in {2} Guilds."
   }
 }

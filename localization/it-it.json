@@ -24,7 +24,7 @@
       "currentCount": "Conteggio attuale: {0}",
       "allowMessagesValue": "Permetti Messaggi su questo canale è impostato a: `{0}`",
       "allowErrorsValue": "Permetti Errori su questo canale è impostato a: `{0}`",
-      "alternateMemberValue": "Alternanza Membri su questo canale è impostato a:`{0}`"
+      "alternateMemberValue": "Alternanza Membri su questo canale è impostato a: `{0}`"
     },
     "help": {
       "docs": {
@@ -218,6 +218,7 @@
     "noSubcommand": "Un sottocomando valido deve essere utilizzato.",
     "missingArg": "Argomento `{0}` ( alla posizione {1} ) mancante.",
     "wrongArgType": "Argomento `{0}` ( alla posizione {1} ) è del tipo errato ( Tipi Possibili: {2} ).",
-    "invalidCommand": "Il comando specificato non esiste."
+    "invalidCommand": "Il comando specificato non esiste.",
+    "richPresence": "Watching {0}/{1} Utenti in {2} Server."
   }
 }
