@@ -7,6 +7,9 @@
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
 
+# The Default Locale for the Bot ( This field is not required )
+DEFAULT_LOCALE = "en-us"
+
 # Rich Presence Settings
 # RP Update Interval in Milliseconds
 RP_UPDATE_INTERVAL = 3600e3

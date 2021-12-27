@@ -27,7 +27,12 @@ const GuildModel = {
     },
     "locale": {
         "type": DataTypes.STRING(MAX_LOCALE_NAME_LENGTH),
-        "defaultValue": "en-us",
+        "defaultValue": (() => {
+            const preferredDefaultLocale = process.env["DEFAULT_LOCALE"];
+            if (typeof preferredDefaultLocale === "string" && preferredDefaultLocale.length <= MAX_LOCALE_NAME_LENGTH)
+                return preferredDefaultLocale;
+            return "en-us";
+        })(),
         "allowNull": false
     }
 };
