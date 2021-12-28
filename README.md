@@ -7,9 +7,6 @@
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
 
-# Whether or not to Enable Debug Logging ( This field is not required )
-DEBUG_LOG = false
-
 # The Default Locale for the Bot ( This field is not required )
 DEFAULT_LOCALE = "en-us"
 

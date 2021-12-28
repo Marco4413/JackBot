@@ -1,7 +1,7 @@
 const chalk = require("chalk");
 const { JoinArray } = require("./Utils.js");
 
-const _ENABLE_DEBUG_LOG = process.env["DEBUG_LOG"] === "true";
+const _ENABLE_DEBUG_LOG = process.env["NODE_ENV"] === "development";
 
 const _GROUP_INDENT_SIZE = 2;
 
