@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
-    "dev": "cross-env DEBUG_LOG=true node ."
+    "dev": "cross-env-shell DEBUG_LOG=true node ."
   },
   "repository": {
     "type": "git",
