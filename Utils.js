@@ -1,5 +1,4 @@
 const { Message, MessageEmbed } = require("discord.js");
-const Localization = require("./Localization.js");
 
 /**
  * Formats the specified String with the specified Formats
@@ -66,10 +65,12 @@ const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
     });
 };
 
+/** @typedef {import("./Localization.js").CommandLocale} CommandLocale */
+
 /**
  * Translates the specified Number using the specified Locale
  * @param {Any} n The Number to translate
- * @param {Localization.CommandLocale} locale The locale to translate the Number with
+ * @param {CommandLocale} locale The locale to translate the Number with
  * @returns {String} The translated Number
  */
 const TranslateNumber = (n, locale) => {
