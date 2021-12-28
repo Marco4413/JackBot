@@ -2,6 +2,7 @@ const { Client } = require("./Client.js");
 const { CreateInterval } = require("./Timing.js");
 const { GetLocale } = require("./Localization.js");
 const Utils = require("./Utils.js");
+const Logger = require("./Logger.js");
 
 const _RP_DEFAULT_UPDATE_INTERVAL = 3600e3;
 
@@ -23,12 +24,12 @@ const StartRichPresence = async () => {
     let updateInterval = Number(process.env["RP_UPDATE_INTERVAL"]);
     if (Number.isNaN(updateInterval)) {
         updateInterval = _RP_DEFAULT_UPDATE_INTERVAL;
-        console.warn(`Rich Presence Update Interval in Process Environment is NaN, using the default value: ${_RP_DEFAULT_UPDATE_INTERVAL}ms`);
+        Logger.Warn(`Rich Presence Update Interval in Process Environment is NaN, using the default value: ${_RP_DEFAULT_UPDATE_INTERVAL}ms`);
     }
 
     const activityOptions = GetLocale().common.richPresence;
     if (typeof activityOptions !== "string") {
-        console.warn("Rich Presence Failed to Run: DefaultLocale.common.richPresence is not a String.");
+        Logger.Warn("Rich Presence Failed to Run: DefaultLocale.common.richPresence is not a String.");
     } else {
         /** @type {[ import("discord.js").ActivityType, String ]} */
         let [ activityType, ...activityWords ] = activityOptions.trim().split(" ");
@@ -58,7 +59,7 @@ const StartRichPresence = async () => {
                 });
             }, updateInterval, false, true);
         } else {
-            console.warn(
+            Logger.Warn(
                 `Rich Presence Failed to Run: DefaultLocale.common.richPresence has invalid activity type: ${
                     activityType
                 }. Valid Types are [ ${

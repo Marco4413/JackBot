@@ -1,4 +1,5 @@
 const discord = require("discord.js");
+const Logger = require("./Logger.js");
 
 /**
  * @typedef {Object} EventListener An Event Listener for the Discord Client
@@ -22,7 +23,7 @@ const CreateEventListener = (event, callback, once = false) => {
             try {
                 await callback(...args);
             } catch (err) {
-                console.warn(`Event "${event}" has thrown an exception:\n${err.stack}`);
+                Logger.Warn(`Event "${event}" has thrown an exception:\n${err.stack}`);
             }
         },
         once

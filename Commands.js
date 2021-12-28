@@ -1,5 +1,6 @@
 const fs = require("fs");
 const command = require("./Command.js");
+const Logger = require("./Logger.js");
 
 /** @type {command.Command[]} */
 const _Commands = [ ];
@@ -14,9 +15,9 @@ const RegisterCommands = () => {
             const script = require(`${commandsFolder}/${file}`);
             if (command.IsValidCommand(script)) {
                 _Commands.push(script);
-                console.info(`Command "${script.name}" registered!`);
+                Logger.Info(`Command "${script.name}" registered!`);
             } else {
-                console.warn(`Command "${file}" couldn't be loaded because it returned an invalid Command.`);
+                Logger.Warn(`Command "${file}" couldn't be loaded because it returned an invalid Command.`);
             }
         }
     });

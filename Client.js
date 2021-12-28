@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { Client: DiscordClient, Intents } = require("discord.js");
+const Logger = require("./Logger.js");
 
 const Client = new DiscordClient({
     "intents": Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES | Intents.FLAGS.GUILD_MEMBERS | Intents.FLAGS.GUILD_PRESENCES
@@ -7,13 +8,17 @@ const Client = new DiscordClient({
 
 Client.token = process.env["TOKEN"];
 
+Client.on("error", Logger.Error);
+Client.on("debug", Logger.Debug);
+Client.on("warn" , Logger.Warn );
+
 Client.once("ready", () => {
-    console.log("Bot Ready!");
+    Logger.Info("Bot Ready!");
 });
 
 process.once("SIGINT", () => {
     Client.destroy();
-    console.log("Bot Destroyed.");
+    Logger.Info("Bot Destroyed.");
 });
 
 /**
@@ -34,9 +39,9 @@ const RegisterEventListeners = () => {
                 } else {
                     Client.on(script.event, script.callback);
                 }
-                console.info(`Event Listener "${file}" registered to "${script.event}"!`);
+                Logger.Info(`Event Listener "${file}" registered to "${script.event}"!`);
             } else {
-                console.warn(`Event Listener "${file}" couldn't be loaded because it returned an invalid Event Listener.`);
+                Logger.Warn(`Event Listener "${file}" couldn't be loaded because it returned an invalid Event Listener.`);
             }
         }
     });

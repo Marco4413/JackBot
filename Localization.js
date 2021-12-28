@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { MAX_LOCALE_NAME_LENGTH, GuildModel } = require("./DatabaseDefinitions.js");
+const Logger = require("./Logger.js");
 
 /** The Default Locale that should always be present */
 const DEFAULT_LOCALE = GuildModel.locale.defaultValue;
@@ -15,9 +16,9 @@ const RegisterLocales = () => {
             const localeName = file.substring(0, file.length - ".json".length);
             if (localeName.length <= MAX_LOCALE_NAME_LENGTH) {
                 _Locales[localeName] = require(`${localesFolder}/${file}`);
-                console.info(`Locale "${localeName}" registered!`);
+                Logger.Info(`Locale "${localeName}" registered!`);
             } else {
-                console.warn(`Locale "${localeName}" couldn't be loaded because its name exceeds the max locale name length of ${MAX_LOCALE_NAME_LENGTH}.`);
+                Logger.Warn(`Locale "${localeName}" couldn't be loaded because its name exceeds the max locale name length of ${MAX_LOCALE_NAME_LENGTH}.`);
             }
         }
     });
