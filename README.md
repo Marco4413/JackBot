@@ -7,6 +7,9 @@
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
 
+# The Save Interval between Log Saves
+LOGGER_SAVE_INTERVAL = 3600e3
+
 # The Default Locale for the Bot ( This field is not required )
 DEFAULT_LOCALE = "en-us"
 
