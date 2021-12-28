@@ -1,10 +1,11 @@
 const fs = require("fs");
 const chalk = require("chalk");
 const { CreateInterval } = require("./Timing.js");
-const { JoinArray } = require("./Utils.js");
+const { JoinArray, GetFormattedDateComponents } = require("./Utils.js");
 
 const _DEFAULT_LOGGER_SAVE_INTERVAL = 1800e3;
 const _ENABLE_DEBUG_LOG = process.env["NODE_ENV"] === "development";
+const _INDENT_TEXT = " ";
 const _GROUP_INDENT_SIZE = 2;
 
 const _Times = { };
@@ -28,9 +29,9 @@ const _SimpleLog = (chalk, prefix, ...message) => {
  * @param {...Any} message
  */
 const _ExtendedLog = (chalk, prefix, chalkAll, prefixColon, ...message) => {
-    const date = new Date().toISOString();
-    const indentStr = " ".repeat(_GroupIndentTotal);
-    const fullPrefix = `[ ${date} ][ ${prefix} ]`;
+    const logDate = GetFormattedDateComponents();
+    const indentStr = _INDENT_TEXT.repeat(_GroupIndentTotal);
+    const fullPrefix = `[ ${logDate.date} ${logDate.time} ][ ${prefix} ]`;
     const logMessage = JoinArray(message, " ").replace(/\n/g, "\n" + indentStr);
 
 
@@ -118,10 +119,15 @@ const TimeEnd = (label) => {
 const _SaveLog = () => {
     if (_LoggedLines.length === 0) return;
     Info("Saving Log...");
+
     const logData = JoinArray(_LoggedLines, "\n");
     _LoggedLines = [ ];
-    const logName = new Date().toISOString().replace(/[^\w\s]/g, "-");
-    fs.writeFileSync(`./data/${logName}.log.txt`, logData, { "flag": "w" });
+
+    const logDate = GetFormattedDateComponents(undefined, "-", "-", "_");
+    const logDir = "./data/logs/" + logDate.date;
+
+    fs.mkdirSync(logDir, { "recursive": true });
+    fs.writeFileSync(`${logDir}/${logDate.date}T${logDate.time}.log.txt`, logData, { "flag": "w" });
 };
 
 CreateInterval(_SaveLog, (() => {
