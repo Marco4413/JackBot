@@ -65,6 +65,25 @@ const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
     });
 };
 
+/** @param {Number} number */
+const _NumberFormatter = (number, digits, fillerDigit = "0") => fillerDigit.repeat(Math.max(digits - ("" + number).length, 0)) + number;
+
+/**
+ * Gets the formatted components of the specified Date
+ * @param {Date} [date] The Date to get the components of
+ * @param {String} [dateSep] The separator for the Date Component
+ * @param {String} [timeSep] The separator for the Time Component
+ * @param {String} [millisSep] The separator used between Seconds and Milliseconds
+ * @returns {{ date: String, time: String }} The formatted components of the Date
+ */
+const GetFormattedDateComponents = (date = new Date(), dateSep = "/", timeSep = ":", millisSep = ".") => {
+    return {
+        "date": JoinArray([ date.getFullYear(), date.getMonth() + 1, date.getDate() ], dateSep, n => _NumberFormatter(n, 2)),
+        "time": JoinArray([ date.getHours(), date.getMinutes(), date.getSeconds() ], timeSep, n => _NumberFormatter(n, 2))
+            + millisSep + _NumberFormatter(date.getMilliseconds(), 3)
+    };
+};
+
 /** @typedef {import("./Localization.js").CommandLocale} CommandLocale */
 
 /**
@@ -112,4 +131,4 @@ const MentionTextChannel = (channelId) => {
     return `<#${channelId}>`;
 };
 
-module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, TranslateNumber, IsNaN, MentionUser, MentionTextChannel };
+module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, GetFormattedDateComponents, TranslateNumber, IsNaN, MentionUser, MentionTextChannel };
