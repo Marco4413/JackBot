@@ -3,7 +3,7 @@ const chalk = require("chalk");
 const { CreateInterval } = require("./Timing.js");
 const { JoinArray, GetFormattedDateComponents } = require("./Utils.js");
 
-const _DEFAULT_LOGGER_SAVE_INTERVAL = 1800e3;
+const _DEFAULT_LOGGER_SAVE_INTERVAL = 3600e3;
 const _ENABLE_DEBUG_LOG = process.env["NODE_ENV"] === "development";
 const _INDENT_TEXT = " ";
 const _GROUP_INDENT_SIZE = 2;
