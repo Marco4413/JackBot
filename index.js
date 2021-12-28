@@ -6,11 +6,15 @@ const { Client, RegisterEventListeners } = require("./Client.js");
 const { RegisterCommands } = require("./Commands.js");
 const { RegisterLocales } = require("./Localization.js");
 const db = require("./Database.js");
+const Logger = require("./Logger.js");
 
 (async () => {
+    Logger.TimeStart("StartupTime");
+
+    Logger.GroupStart("Database Start:");
     await db.Start({
         "mode": process.env["DB_MODE"],
-        "logging": false,
+        "logging": Logger.Debug,
         "sqlite": {
             "storage": process.env["SQLITE_STORAGE"]
         },
@@ -22,10 +26,31 @@ const db = require("./Database.js");
             "password": process.env["MARIADB_PASSWORD"]
         }
     });
+    Logger.GroupEnd();
     
+    Logger.GroupStart("Registering External Dependencies:");
+
+    Logger.GroupStart("Locales:");
     RegisterLocales();
+    Logger.GroupEnd();
+    
+    Logger.GroupStart("Commands:");
     RegisterCommands();
+    Logger.GroupEnd();
+    
+    Logger.GroupStart("Event Listeners:");
     RegisterEventListeners();
+    Logger.GroupEnd();
+    
+    Logger.GroupEnd();
+    
+    Logger.GroupStart("Client Login:");
     await Client.login();
+    Logger.GroupEnd();
+
+    Logger.GroupStart("Rich Presence:");
     await StartRichPresence();
+    Logger.GroupEnd();
+    
+    Logger.TimeEnd("StartupTime");
 })();
