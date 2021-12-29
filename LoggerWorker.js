@@ -7,7 +7,7 @@ let _CurrentIndent = 0;
 let _LoggedLines = [ ];
 
 /**
- * @typedef {"save"|"indent-change"|"message"} LoggerWorkerMessageType The Type of the Message sent to LoggerWorker
+ * @typedef {"save"|"save-complete"|"indent-change"|"message"} LoggerWorkerMessageType The Type of the Message sent to LoggerWorker
  */
 
 /**
@@ -34,6 +34,7 @@ parentPort.on("message", /** @param {LoggerWorkerMessage} msg */ msg => {
 
         fs.mkdirSync(logDir, { "recursive": true });
         fs.writeFileSync(`${logDir}/${logDate.date}T${logDate.time}.log.txt`, logData, { "flag": "w" });
+        parentPort.postMessage({ "type": "save-complete" });
         break;
     }
     case "indent-change": {
