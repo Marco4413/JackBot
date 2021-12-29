@@ -7,7 +7,7 @@ let _CurrentIndent = 0;
 let _LoggedLines = [ ];
 
 /**
- * @typedef {"save"|"save-complete"|"indent-change"|"message"} LoggerWorkerMessageType The Type of the Message sent to LoggerWorker
+ * @typedef {"close"|"save"|"indent-change"|"message"} LoggerWorkerMessageType The Type of the Message sent to LoggerWorker
  */
 
 /**
@@ -23,6 +23,9 @@ let _LoggedLines = [ ];
 
 parentPort.on("message", /** @param {LoggerWorkerMessage} msg */ msg => {
     switch (msg.type) {
+    case "close":
+        parentPort.close();
+        // Fall through to save
     case "save": {
         if (_LoggedLines.length === 0) return;
 
