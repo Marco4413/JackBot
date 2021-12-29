@@ -41,11 +41,13 @@ const ClearInterval = (intervalId, signal = null) => {
     _Intervals[intervalId] = undefined;
 };
 
-process.once("SIGINT", () => {
+const _ClearAllIntervals = (signal = null) => {
     for (const intervalId of Object.keys(_Intervals)) {
-        ClearInterval(intervalId, "SIGINT");
+        ClearInterval(intervalId, signal);
     }
-});
+};
+
+process.once("SIGINT", () => _ClearAllIntervals("SIGINT"));
 
 module.exports = {
     CreateInterval, ClearInterval
