@@ -1,58 +1,29 @@
 
-const _Timeouts = { };
 const _Intervals = { };
 
-/**
- * Creates a new Timeout which will be automatically cleared on Interrupt
- * @param {(args: ...Any) => Promise<void>|undefined)} handler The Timeout handler
- * @param {Number} timeout The time in milliseconds elapsed for handler to be called
- * @param {Boolean} [callOnClear] Whether or not to call the handler on {@link ClearTimeout}
- * @param {...Any} args The arguments for handler
- * @returns {NodeJS.Timeout} The id of the created Timeout
- */
-const CreateTimeout = (handler, timeout, callOnClear = false, ...args) => {
-    const wHandler = async () => {
-        await handler(...args);
-        _Timeouts[timeoutId] = undefined;
-    };
+// TODO: Add Timeouts again if they'll ever be needed
 
-    const timeoutId = setTimeout(wHandler, timeout);
-    _Timeouts[timeoutId] = { callOnClear, "handler": wHandler };
-    return timeoutId;
-};
-
-/**
- * Clears the specified Timeout
- * @param {NodeJS.Timeout} timeoutId The Timeout to Clear
- */
-const ClearTimeout = async (timeoutId) => {
-    clearTimeout(timeoutId);
-    if (_Timeouts[timeoutId] !== undefined && _Timeouts[timeoutId].callOnClear)
-        await _Timeouts[timeoutId].handler();
-    _Timeouts[timeoutId] = undefined;
-};
+/** @typedef {(id: NodeJS.Timer, signal: String?) => void)} TimerHandler */
 
 /**
  * Creates a new Interval which will be automatically cleared on Interrupt
- * @param {(args: ...Any) => Promise<Boolean>|Boolean)} handler The Interval handler, if it returns true then the Interval will be Cleared
+ * @param {TimerHandler} handler The Interval handler, if it returns true then the Interval will be Cleared
  * @param {Number} timeout The time in milliseconds between calls to handler
- * @param {Boolean} [callOnClear] Whether or not to call the handler on {@link ClearInterval}
- * @param {Boolean} [callOnCreate] Whether or not to call the handler at Creation
- * @param  {...Any} args The arguments for handler
+ * @param {"use-handler"|TimerHandler} [clearHandler] The handler to call on Clear
+ * @param {"use-handler"|TimerHandler} [createHandler] The handler to call on Create
  * @returns {NodeJS.Timer} The id of the created Interval
  */
-const CreateInterval = async (handler, timeout, callOnClear = false, callOnCreate = false, ...args) => {
-    const wHandler = async () => {
-        if (await handler(...args)) {
-            clearInterval(intervalId);
-            _Intervals[intervalId] = undefined;
-        }
-    };
+const CreateInterval = (handler, timeout, clearHandler, createHandler) => {
+    if (clearHandler  === "use-handler") clearHandler  = handler;
+    if (createHandler === "use-handler") createHandler = handler;
 
-    const intervalId = setInterval(wHandler, timeout);
-    _Intervals[intervalId] = { callOnClear, "handler": wHandler };
+    let intervalId;
+    const wHandler = () => handler(intervalId, null);
 
-    if (callOnCreate) await wHandler();
+    intervalId = setInterval(wHandler, timeout);
+    _Intervals[intervalId] = { clearHandler, "handler": wHandler };
+
+    if (createHandler !== undefined) createHandler(intervalId, null);
 
     return intervalId;
 };
@@ -60,25 +31,22 @@ const CreateInterval = async (handler, timeout, callOnClear = false, callOnCreat
 /**
  * Clears the specified Interval
  * @param {NodeJS.Timer} intervalId The Interval to Clear
+ * @param {String?} signal The Signal to send to the Clear Handler
  */
-const ClearInterval = async (intervalId) => {
+const ClearInterval = (intervalId, signal = null) => {
     clearInterval(intervalId);
-    if (_Intervals[intervalId] !== undefined && _Intervals[intervalId].callOnClear)
-        await _Intervals[intervalId].handler();
+    const interval = _Intervals[intervalId];
+    if (interval !== undefined && interval.clearHandler !== undefined)
+        interval.clearHandler(intervalId, signal);
     _Intervals[intervalId] = undefined;
 };
 
-process.once("SIGINT", async () => {
-    for (const timeoutId of Object.keys(_Timeouts)) {
-        await ClearTimeout(timeoutId);
-    }
-
+process.once("SIGINT", () => {
     for (const intervalId of Object.keys(_Intervals)) {
-        await ClearInterval(intervalId);
+        ClearInterval(intervalId, "SIGINT");
     }
 });
 
 module.exports = {
-    CreateTimeout, ClearTimeout,
     CreateInterval, ClearInterval
 };

@@ -105,9 +105,21 @@ const TimeEnd = (label) => {
 
 // #endregion
 
+/** Whether or not this Worker should be terminated */
+let _TerminateWorker = false;
+_LoggerWorker.on("message", (msg) => {
+    // The Worker can terminate if the log was saved
+    const canTerminateWorker = msg.type === "save-complete";
+    if (canTerminateWorker && _TerminateWorker)
+        _LoggerWorker.terminate();
+});
+
 CreateInterval(
-    () => {
+    (id, signal) => {
         Info("Saving Log...");
+        // If we've got a signal then the Worker should terminate after saving
+        _TerminateWorker = signal !== null;
+        // Telling the Worker to save
         _LoggerWorker.postMessage({ "type": "save" });
     },
     (() => {
@@ -117,7 +129,7 @@ CreateInterval(
             Warn(`Logger Save Interval in Process Environment is NaN, using the default value: ${_DEFAULT_LOGGER_SAVE_INTERVAL}ms`);
         }
         return saveInterval;
-    })(), true, false
+    })(), "use-handler"
 );
 
 module.exports = {

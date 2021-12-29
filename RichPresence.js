@@ -57,7 +57,7 @@ const StartRichPresence = async () => {
                     "name": Utils.FormatString(activityName, onlineMembers, totalMembers, Client.guilds.cache.size),
                     "type": activityType
                 });
-            }, updateInterval, false, true);
+            }, updateInterval, undefined, "use-handler");
         } else {
             Logger.Warn(
                 `Rich Presence Failed to Run: DefaultLocale.common.richPresence has invalid activity type: ${
