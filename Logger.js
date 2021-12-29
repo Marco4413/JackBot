@@ -14,10 +14,10 @@ const _Times = { };
  * @param {chalk.Chalk} chalk
  * @param {String} prefix
  * @param {Any[]} message
- * @param {Boolean} chalkAll
- * @param {Boolean} prefixColon
+ * @param {Boolean} [chalkAll]
+ * @param {Boolean} [prefixColon]
  */
-const _ConsoleLog = (chalk, prefix, message, chalkAll = false, prefixColon = true) => {
+const _ConsoleLog = (chalk, prefix, message = [ ], chalkAll = false, prefixColon = true) => {
     _LoggerWorker.postMessage({
         "type": "message",
         "chalk": chalk("{0}"),
@@ -66,7 +66,7 @@ const Warn     = (...message) => _ConsoleLog(_WarnChalk , "WARN", message);
 const Trace = (...data) => {
     const err = new Error(JoinArray(data, " "));
     err.name = "";
-    _ConsoleLog(_TraceChalk, "TRACE", err.stack);
+    _ConsoleLog(_TraceChalk, "TRACE", [ err.stack ]);
 };
 
 /** Starts a Group with the specified Name */
