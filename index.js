@@ -53,4 +53,16 @@ const db = require("./Database.js");
     Logger.GroupEnd();
     
     Logger.TimeEnd("StartupTime");
-})();
+})().catch(async error => {
+    // Logging any error that happens within the main function
+    Logger.Error(error.stack);
+
+    const _INTERRUPT_STAGES_DELAY = 1000; // 1 Second should be more than enough
+    // This delay is to make sure that the Logger has Logged the Error
+    await new Promise(r => setTimeout(r, _INTERRUPT_STAGES_DELAY));
+    // Adding some delay if the event has listeners to make sure that async functions have terminated
+    if (process.emit("SIGINT")) await new Promise(r => setTimeout(r, _INTERRUPT_STAGES_DELAY));
+
+    // "Gracefully" exiting
+    process.exit(0);
+});
