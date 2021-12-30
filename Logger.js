@@ -1,12 +1,12 @@
 const chalk = require("chalk");
 const { CreateInterval } = require("./Timing.js");
 const { JoinArray } = require("./Utils.js");
+const { DEVELOPMENT } = require("./NodeEnv.js");
 
 const { Worker } = require("worker_threads");
 const _LoggerWorker = new Worker("./LoggerWorker.js");
 
 const _DEFAULT_LOGGER_SAVE_INTERVAL = 3600e3;
-const _ENABLE_DEBUG_LOG = process.env["NODE_ENV"] === "development";
 const _GROUP_INDENT_SIZE = 2;
 const _Times = { };
 
@@ -51,7 +51,7 @@ const Log      = (...message) => _ConsoleLog(_LogChalk  , "LOG", message);
 /** Logs the specified Info Message */
 const Info     = (...message) => _ConsoleLog(_InfoChalk , "INFO", message);
 /** Logs the specified Debug Message */
-const Debug    = (...message) => { if (_ENABLE_DEBUG_LOG) _ConsoleLog(_DebugChalk, "DEBUG", message); };
+const Debug    = (...message) => { if (DEVELOPMENT) _ConsoleLog(_DebugChalk, "DEBUG", message); };
 /**
  * Logs the specified Message if the specified condition is true
  * @param {Boolean} condition
