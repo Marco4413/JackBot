@@ -14,7 +14,7 @@ const db = require("./Database.js");
     Logger.GroupStart("Database Start:");
     await db.Start({
         "mode": process.env["DB_MODE"],
-        "logging": Logger.Debug,
+        "logging": process.env["ENABLE_SEQUELIZE_LOGGING"] === "true" ? Logger.Debug : undefined,
         "sqlite": {
             "storage": process.env["SQLITE_STORAGE"]
         },
