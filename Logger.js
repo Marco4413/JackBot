@@ -4,6 +4,7 @@ const { JoinArray } = require("./Utils.js");
 const { DEVELOPMENT } = require("./NodeEnv.js");
 
 const { Worker } = require("worker_threads");
+const { inspect } = require("util");
 const _LoggerWorker = new Worker("./LoggerWorker.js");
 
 const _DEFAULT_LOGGER_SAVE_INTERVAL = 3600e3;
@@ -51,7 +52,16 @@ const Log      = (...message) => _ConsoleLog(_LogChalk  , "LOG", message);
 /** Logs the specified Info Message */
 const Info     = (...message) => _ConsoleLog(_InfoChalk , "INFO", message);
 /** Logs the specified Debug Message */
-const Debug    = (...message) => { if (DEVELOPMENT) _ConsoleLog(_DebugChalk, "DEBUG", message); };
+const Debug    = (...message) => {
+    if (DEVELOPMENT) {
+        _ConsoleLog(_DebugChalk, "DEBUG", [ JoinArray(
+            message, " ",
+            el =>
+                Array.isArray(el) || typeof el === "object" ?
+                    inspect(el, false, null, false) : el
+        ) ]);
+    }
+};
 /**
  * Logs the specified Message if the specified condition is true
  * @param {Boolean} condition
