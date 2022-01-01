@@ -3,7 +3,7 @@ const { Client: DiscordClient, Intents } = require("discord.js");
 const Logger = require("./Logger.js");
 
 const Client = new DiscordClient({
-    "intents": Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES | Intents.FLAGS.GUILD_MEMBERS | Intents.FLAGS.GUILD_PRESENCES
+    "intents": Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES | Intents.FLAGS.GUILD_MEMBERS | Intents.FLAGS.GUILD_PRESENCES | Intents.FLAGS.GUILD_VOICE_STATES
 });
 
 Client.token = process.env["TOKEN"];
