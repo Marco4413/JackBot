@@ -231,75 +231,6 @@ const _CreateVoiceConnection = (voiceChannel) => {
     return voiceConnection.subscribe(audioPlayer);
 };
 
-module.exports = CreateCommand({
-    "name": "sound",
-    "shortcut": "s",
-    "subcommands": [
-        {
-            "name": "list",
-            "shortcut": "l",
-            "execute": async (msg, guild, locale) => {
-                if (_AUDIO_LOADING_PROMISE !== null) return;
-
-                const embed = Utils.GetDefaultEmbedForMessage(msg, true);
-                embed.setTitle(locale.command.title).setDescription(locale.command.description);
-
-                for (const soundName of Object.keys(_AUDIO_NAME_TO_FILE)) {
-                    /** @type {AudioFileData} */
-                    const sound = _AUDIO_NAME_TO_FILE[soundName];
-                    embed.addField(soundName, _FormatAudioMetadata(locale, sound.metadata));
-                }
-
-                await msg.channel.send({
-                    "embeds": [ embed ]
-                });
-            }
-        },
-        {
-            "name": "stop",
-            "shortcut": "s",
-            "execute": async (msg, guild, locale) => {
-                // Check if we're connected to a voice channel
-                const voiceConnection = getVoiceConnection(msg.guildId);
-                if (voiceConnection === undefined) {
-                    await msg.reply(locale.command.notConnected);
-                    return;
-                }
-                
-                // User can't speak
-                if (msg.member.voice.serverMute) {
-                    await msg.reply(locale.command.guildMuted);
-                    return;
-                }
-        
-                if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, msg.guild.me.voice.channelId)) {
-                    return;
-                }
-
-                // Check if we're actually playing anything and if the user is in the same voice channel
-                /** @type {PlayerSubscription} */
-                const playerSubscription = voiceConnection.state.subscription;
-                Logger.Assert(playerSubscription !== null, "Player Subscription is null ( Check Assertion on base command ).");
-
-                if (playerSubscription.player.state.status === AudioPlayerStatus.Idle) {
-                    await msg.reply(locale.command.notPlaying);
-                } else if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
-                    playerSubscription.player.stop(true);
-                    await msg.reply(locale.command.stopped);
-                } else {
-                    await msg.reply(locale.command.sameChannel);
-                }
-            }
-        },
-        {
-            "name": "play",
-            "shortcut": "p",
-            "execute": _ExecutePlaySound
-        }
-    ],
-    "execute": _ExecutePlaySound
-});
-
 /** @type {import("../Command.js").CommandExecute} */
 const _ExecutePlaySound = async (msg, guild, locale, args) => {
     if (_AUDIO_LOADING_PROMISE !== null) return;
@@ -373,3 +304,72 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
     playerSubscription.player.play(resource);
     await msg.reply(Utils.FormatString(locale.command.playing, soundName));
 };
+
+module.exports = CreateCommand({
+    "name": "sound",
+    "shortcut": "s",
+    "subcommands": [
+        {
+            "name": "list",
+            "shortcut": "l",
+            "execute": async (msg, guild, locale) => {
+                if (_AUDIO_LOADING_PROMISE !== null) return;
+
+                const embed = Utils.GetDefaultEmbedForMessage(msg, true);
+                embed.setTitle(locale.command.title).setDescription(locale.command.description);
+
+                for (const soundName of Object.keys(_AUDIO_NAME_TO_FILE)) {
+                    /** @type {AudioFileData} */
+                    const sound = _AUDIO_NAME_TO_FILE[soundName];
+                    embed.addField(soundName, _FormatAudioMetadata(locale, sound.metadata));
+                }
+
+                await msg.channel.send({
+                    "embeds": [ embed ]
+                });
+            }
+        },
+        {
+            "name": "stop",
+            "shortcut": "s",
+            "execute": async (msg, guild, locale) => {
+                // Check if we're connected to a voice channel
+                const voiceConnection = getVoiceConnection(msg.guildId);
+                if (voiceConnection === undefined) {
+                    await msg.reply(locale.command.notConnected);
+                    return;
+                }
+                
+                // User can't speak
+                if (msg.member.voice.serverMute) {
+                    await msg.reply(locale.command.guildMuted);
+                    return;
+                }
+        
+                if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, msg.guild.me.voice.channelId)) {
+                    return;
+                }
+
+                // Check if we're actually playing anything and if the user is in the same voice channel
+                /** @type {PlayerSubscription} */
+                const playerSubscription = voiceConnection.state.subscription;
+                Logger.Assert(playerSubscription !== null, "Player Subscription is null ( Check Assertion on base command ).");
+
+                if (playerSubscription.player.state.status === AudioPlayerStatus.Idle) {
+                    await msg.reply(locale.command.notPlaying);
+                } else if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
+                    playerSubscription.player.stop(true);
+                    await msg.reply(locale.command.stopped);
+                } else {
+                    await msg.reply(locale.command.sameChannel);
+                }
+            }
+        },
+        {
+            "name": "play",
+            "shortcut": "p",
+            "execute": _ExecutePlaySound
+        }
+    ],
+    "execute": _ExecutePlaySound
+});
