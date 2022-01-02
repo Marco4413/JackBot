@@ -1,8 +1,9 @@
 const fs = require("fs");
-const { Client: DiscordClient, Intents, BaseGuildVoiceChannel, Guild, VoiceChannel } = require("discord.js");
+const { Client: DiscordClient, Intents, BaseGuildVoiceChannel, Guild } = require("discord.js");
 const { getVoiceConnection, PlayerSubscription, joinVoiceChannel, createAudioPlayer, VoiceConnectionStatus, AudioPlayerStatus } = require("@discordjs/voice");
 const Logger = require("./Logger.js");
 const { CreateInterval, ClearInterval } = require("./Timing.js");
+const Utils = require("./Utils.js");
 
 const Client = new DiscordClient({
     "intents": Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES | Intents.FLAGS.GUILD_MEMBERS | Intents.FLAGS.GUILD_PRESENCES | Intents.FLAGS.GUILD_VOICE_STATES
@@ -10,8 +11,8 @@ const Client = new DiscordClient({
 
 Client.token = process.env["TOKEN"];
 
-const _PLAYER_UPDATE_INTERVAL = 1e3;
-const _PLAYER_IDLE_TIME = 10e3;
+const _PLAYER_UPDATE_INTERVAL = Utils.GetEnvVariable("CLIENT_PLAYER_UPDATE_INTERVAL", Utils.AnyToNumber, 10e3, Logger.Warn);
+const _PLAYER_IDLE_TIME = Utils.GetEnvVariable("CLIENT_PLAYER_IDLE_TIME", Utils.AnyToNumber, 60e3, Logger.Warn);
 
 Client.on("error", Logger.Error);
 Client.on("debug", Logger.Debug);

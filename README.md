@@ -7,6 +7,13 @@
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
 
+# Client Settings
+# The Update Interval used by the Client to check Voice Channel State when playing Audio
+#  This must be less than the Number specified in CLIENT_PLAYER_IDLE_TIME
+CLIENT_PLAYER_UPDATE_INTERVAL = 10e3
+# The Time to wait to Destroy the Voice Connection after it Starts Idling
+CLIENT_PLAYER_IDLE_TIME = 60e3
+
 # The Save Interval between Log Saves
 LOGGER_SAVE_INTERVAL = 3600e3
 
