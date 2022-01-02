@@ -152,6 +152,34 @@
     "shortcuts": {
       "changed": "Shortcuts set to: `{0}`",
       "current": "Shortcuts are set to: `{0}`"
+    },
+    "sound": {
+      "subcommands": {
+        "list": {
+          "title": "Sound List",
+          "description": "A list of all available sounds.",
+          "noMetadata": "No Metadata.",
+          "decimalPrecision": 2,
+          "metadata": {
+            "artist": "Artist: {0}",
+            "duration": "Duration: {0} Seconds."
+          }
+        },
+        "stop": {
+          "notConnected": "I'm not connected to any voice channel.",
+          "guildMuted": "You can't stop a sound if you're muted on the guild.",
+          "notPlaying": "I'm not currently playing any sound.",
+          "stopped": "Stopped playing sounds.",
+          "sameChannel": "You must be on my voice channel to stop sounds."
+        }
+      },
+      "noSoundSpecified": "You must specify the name of the sound to play.",
+      "notConnected": "You must be connected to a voice channel to play sounds.",
+      "guildMuted": "You can't play a sound if you're muted on the guild.",
+      "noSoundFound": "The specified sound was not found.",
+      "cantJoinChannel": "Can't join your voice channel.",
+      "alreadyPlaying": "I'm already playing a sound, please wait.",
+      "playing": "Playing `{0}`..."
     }
   },
   "common": {

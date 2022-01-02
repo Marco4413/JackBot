@@ -152,6 +152,34 @@
     "shortcuts": {
       "changed": "Scorciatoie impostate a: `{0}`",
       "current": "Le scorciatoie sono impostate a: `{0}`"
+    },
+    "sound": {
+      "subcommands": {
+        "list": {
+          "title": "Lista Audio",
+          "description": "Una lista di tutti gli audio disponibili.",
+          "noMetadata": "Nessun Metadato.",
+          "decimalPrecision": 2,
+          "metadata": {
+            "artist": "Artista: {0}",
+            "duration": "Durata: {0} Secondi."
+          }
+        },
+        "stop": {
+          "notConnected": "Non sono connesso in nessun canale vocale.",
+          "guildMuted": "Non puoi terminare un audio se sei mutato nel server.",
+          "notPlaying": "Non sto riproducendo nessun audio.",
+          "stopped": "Terminata la riproduzione dell'audio.",
+          "sameChannel": "Devi essere nel mio stesso canale vocale per terminare la riproduzione di audio."
+        }
+      },
+      "noSoundSpecified": "Devi specificare il nome dell'audio da riprodurre.",
+      "notConnected": "Devi essere connesso ad un canale vocale per poter riprodurre audio.",
+      "guildMuted": "Non puoi riprodurre un audio se sei mutato nel server.",
+      "noSoundFound": "L'audio specificato non è stato trovato.",
+      "cantJoinChannel": "Non posso entrare nel tuo canale vocale.",
+      "alreadyPlaying": "Sto già riproducendo un audio, per favore aspetta.",
+      "playing": "Riproducendo `{0}`..."
     }
   },
   "common": {
