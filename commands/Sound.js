@@ -11,7 +11,8 @@ const Logger = require("../Logger.js");
 
 const _PLAYER_IDLE_CHECK_INTERVAL = 10e3;
 const _SOUNDS_FOLDER = "./data/sounds";
-const _SOUNDS_CONFIG = path.join(_SOUNDS_FOLDER, "config.json");
+const _SOUNDS_ALT_FOLDER = path.join(_SOUNDS_FOLDER, "alts");
+const _SOUNDS_CONFIG_PATH = path.join(_SOUNDS_FOLDER, "config.json");
 const _AUDIO_NAME_TO_FILE = { };
 
 const _AUDIO_EXTENSIONS = [ "mp3", "wav" ];
@@ -72,19 +73,32 @@ const _GetSoundPath = (soundName) => {
 {
     fs.mkdirSync(_SOUNDS_FOLDER, { "recursive": true });
 
-    // Check if the config exists, is so parse it
+    // Check if the config exists, if so parse it
+    const hasConfig = fs.existsSync(_SOUNDS_CONFIG_PATH);
+    const soundsConfigFolder = path.dirname(_SOUNDS_CONFIG_PATH);
+    
     let soundsConfig = { };
-    const soundsConfigFolder = path.dirname(_SOUNDS_CONFIG);
-
-    const hasSoundConfig = fs.existsSync(_SOUNDS_CONFIG);
-    if (hasSoundConfig) {
+    let altsRootFolder = _SOUNDS_ALT_FOLDER;
+    
+    if (hasConfig) {
+        let config = { };
         try {
-            soundsConfig = JSON.parse(fs.readFileSync(_SOUNDS_CONFIG));
+            config = JSON.parse(fs.readFileSync(_SOUNDS_CONFIG_PATH));
         } catch (error) {
             Logger.Error("Error when reading/parsing sound config file:", error.stack);
         }
+
+        if (config.altsRoot === undefined) { /* Ignore */ }
+        else if (typeof config.altsRoot === "string")
+            altsRootFolder = path.join(soundsConfigFolder, config.altsRoot);
+        else Logger.Warn(`Sound Config's altsRoot field is of wrong type, using the default value: "${altsRootFolder}"`);
+
+        if (config.sounds === undefined) { /* Ignore */ }
+        else if (typeof config.sounds === "object")
+            soundsConfig = config.sounds;
+        else Logger.Warn("Sound Config's sounds field is of wrong type.");
     } else {
-        Logger.Warn(`No config for sounds found at "${_SOUNDS_CONFIG}"`);
+        Logger.Warn(`No config for sounds found at "${_SOUNDS_CONFIG_PATH}"`);
     }
 
     const soundPromises = [ ];
@@ -111,7 +125,7 @@ const _GetSoundPath = (soundName) => {
 
             // Get Alts Folder Path
             if (typeof soundConfig.altsFolder === "string") {
-                const fullAltsPath = path.join(soundsConfigFolder, soundConfig.altsFolder);
+                const fullAltsPath = path.join(altsRootFolder, soundConfig.altsFolder);
                 if (fs.existsSync(fullAltsPath)) {
                     alts = _GetAllAudioInFolder(fullAltsPath).map(alt => alt.path);
                 } else Logger.Warn(`The path specified by config field altsFolder for sound "${soundName}" doesn't exist, no alt will be loaded.`);
