@@ -11,45 +11,124 @@ const Logger = require("../Logger.js");
 
 const _PLAYER_IDLE_CHECK_INTERVAL = 10e3;
 const _SOUNDS_FOLDER = "./data/sounds";
-const _AUDIO_EXTENSIONS = [ "mp3", "wav" ];
+const _SOUNDS_CONFIG = path.join(_SOUNDS_FOLDER, "config.json");
 const _AUDIO_NAME_TO_FILE = { };
+
+const _AUDIO_EXTENSIONS = [ "mp3", "wav" ];
+const _AUDIO_REGEXP = new RegExp(`^(.+)\\.(?:${Utils.JoinArray(_AUDIO_EXTENSIONS, "|")})$`);
 
 /**
  * @typedef {Object} AudioFileData
  * @property {String} path
  * @property {IAudioMetadata?} metadata
+ * @property {Number} altChance
+ * @property {String[]} alts
  */
 
 // #region Loading Sounds
 
 let _AUDIO_LOADING_PROMISE = null;
 
+/**
+ * @param {String} folderPath 
+ * @returns {{ name: String, path: String }[]}
+ */
+const _GetAllAudioInFolder = (folderPath) => {
+    const validAudio = [ ];
+    const allAudio = fs.readdirSync(folderPath);
+    for (let i = 0; i < allAudio.length; i++) {
+        const audio = allAudio[i];
+        const audioMatch = _AUDIO_REGEXP.exec(audio);
+        if (audioMatch !== null) {
+            validAudio.push({
+                "name": audioMatch[1],
+                "path": path.join(folderPath, audioMatch[0])
+            });
+        }
+    }
+    return validAudio;
+};
+
+/**
+ * @param {String} soundName
+ * @returns {String}
+ */
+const _GetSoundPath = (soundName) => {
+    /** @type {AudioFileData} */
+    const sound = _AUDIO_NAME_TO_FILE[soundName];
+    // If no sound exists then return undefined
+    if (sound === undefined) return undefined;
+
+    // If no alt exists then return the original sound
+    if (sound.alts.length === 0) return sound.path;
+
+    // Choose between alts and the original sound
+    const random = Math.random();
+    if (random <= sound.altChance) {
+        return Utils.GetRandomArrayElement(sound.alts);
+    } else return sound.path;
+};
+
 {
     fs.mkdirSync(_SOUNDS_FOLDER, { "recursive": true });
-    const audioRegex = new RegExp(`^(.+)\\.(?:${Utils.JoinArray(_AUDIO_EXTENSIONS, "|")})$`);
-    const allSounds = fs.readdirSync(_SOUNDS_FOLDER);
+
+    // Check if the config exists, is so parse it
+    let soundsConfig = { };
+    const soundsConfigFolder = path.dirname(_SOUNDS_CONFIG);
+
+    const hasSoundConfig = fs.existsSync(_SOUNDS_CONFIG);
+    if (hasSoundConfig) {
+        try {
+            soundsConfig = JSON.parse(fs.readFileSync(_SOUNDS_CONFIG));
+        } catch (error) {
+            Logger.Error("Error when reading/parsing sound config file:", error.stack);
+        }
+    } else {
+        Logger.Warn(`No config for sounds found at "${_SOUNDS_CONFIG}"`);
+    }
 
     const soundPromises = [ ];
-    for (let i = 0; i < allSounds.length; i++) {
-        const sound = allSounds[i];
-        const soundMatch = audioRegex.exec(sound);
-        if (soundMatch !== null) {
-            const soundName = soundMatch[1].replace(/\s+/g, " ").trim().toLowerCase();
-            const soundPath = path.join(_SOUNDS_FOLDER, soundMatch[0]);
+    // Load all sounds from the sounds' folder
+    for (const sound of _GetAllAudioInFolder(_SOUNDS_FOLDER)) {
+        // Normalize the sound name
+        const soundName = sound.name.replace(/\s+/g, " ").trim().toLowerCase();
 
-            if (_AUDIO_NAME_TO_FILE[soundName] !== undefined) {
-                Logger.Warn(`Sound ${soundName} at "${_AUDIO_NAME_TO_FILE[soundName].path} is being replaced by "${soundPath}".`);
-            }
-
-            _AUDIO_NAME_TO_FILE[soundName] = {
-                "path": soundPath,
-                "metadata": null
-            };
-
-            soundPromises.push((async () => {
-                _AUDIO_NAME_TO_FILE[soundName].metadata = await parseFile(soundPath);
-            })());
+        // If a sound with the same name was already defined discard it
+        if (_AUDIO_NAME_TO_FILE[soundName] !== undefined) {
+            Logger.Warn(`Sound ${soundName} at "${_AUDIO_NAME_TO_FILE[soundName].path} is being skipped by "${sound.path}".`);
+            continue;
         }
+        
+        // Get settings from the config file
+        let altChance = 0.5;
+        let alts = [ ];
+        if (soundsConfig[soundName] !== undefined) {
+            const soundConfig = soundsConfig[soundName];
+
+            // Get Alt Chance Settings
+            if (typeof soundConfig.altChance === "number") altChance = soundConfig.altChance;
+            else Logger.Warn(`Invalid config field altChance for sound "${soundName}", using the default value: ${altChance}.`);
+
+            // Get Alts Folder Path
+            if (typeof soundConfig.altsFolder === "string") {
+                const fullAltsPath = path.join(soundsConfigFolder, soundConfig.altsFolder);
+                if (fs.existsSync(fullAltsPath)) {
+                    alts = _GetAllAudioInFolder(fullAltsPath).map(alt => alt.path);
+                } else Logger.Warn(`The path specified by config field altsFolder for sound "${soundName}" doesn't exist, no alt will be loaded.`);
+            } else Logger.Warn(`Invalid config field altsFolder for sound "${soundName}", no alt will be loaded.`);
+        }
+
+        // Register the Sound
+        _AUDIO_NAME_TO_FILE[soundName] = {
+            "path": sound.path,
+            "metadata": null,
+            "altChance": altChance,
+            "alts": alts
+        };
+
+        soundPromises.push((async () => {
+            _AUDIO_NAME_TO_FILE[soundName].metadata = await parseFile(sound.path);
+        })());
     }
 
     _AUDIO_LOADING_PROMISE = Promise.allSettled(soundPromises);
@@ -233,10 +312,9 @@ module.exports = CreateCommand({
 
         // Getting sound and checking if it exists
         const soundName = Utils.JoinArray(args, " ").toLowerCase();
-        /** @type {AudioFileData} */
-        const sound = _AUDIO_NAME_TO_FILE[soundName];
+        const soundPath = _GetSoundPath(soundName);
 
-        if (sound === undefined) {
+        if (soundPath === undefined) {
             await msg.reply(locale.command.noSoundFound);
             return;
         }
@@ -268,7 +346,7 @@ module.exports = CreateCommand({
         }
 
         // Playing the sound
-        const resource = createAudioResource(sound.path);
+        const resource = createAudioResource(soundPath);
         playerSubscription.player.play(resource);
         await msg.reply(Utils.FormatString(locale.command.playing, soundName));
     }
