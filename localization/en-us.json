@@ -35,6 +35,10 @@
             "title": "Help",
             "description": "Shows these help messages."
           },
+          "info": {
+            "title": "Info",
+            "description": "Shows info about this bot."
+          },
           "calculate": {
             "title": "Calculate",
             "description": "Calculates the specified Math Expression."
