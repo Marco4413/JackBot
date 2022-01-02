@@ -148,6 +148,23 @@
       "subcommandsList": "Sottocomandi: {0}",
       "noSubcommands": "Qusto comando non ha sottocomandi."
     },
+    "info": {
+      "title": "Info:",
+      "description": "Informazioni sul bot.",
+      "package": {
+        "name": "Nome:",
+        "version": "Versione:",
+        "description": "Descrizione:",
+        "author": "Autore:",
+        "authorValue": "{0} ({1})",
+        "license": "Copyright:",
+        "homepage": "Pagina Web:",
+        "contributors": "Contributori:",
+        "contributorsValue": "{0}: {2} ({1})",
+        "dependencies": "Dipendenze:",
+        "dependenciesValue": "`{0}`{1}"
+      }
+    },
     "language": {
       "available": "Lingue disponibili:\n{0}",
       "invalid": "La lingua specificata non esiste.",
@@ -258,7 +275,7 @@
     "crossmark": "❌",
     "listSeparator": ", ",
     "listDelimiter": "[ {0} ]",
-    "listEntry": " - `{0}`",
+    "listEntry": " - {0}",
     "noChannelPerms": "Non possiedi abbastanza permessi nel canale {1} per eseguire questo comando ( Mancano: `{0}` ).",
     "noGuildPerms": "Non possiedi abbastanza permessi per eseguire qeusto comando ( Mancano: `{0}` ).",
     "noSubcommand": "Un sottocomando valido deve essere utilizzato.",
