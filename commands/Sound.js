@@ -177,6 +177,7 @@ const _FormatAudioMetadata = (locale, metadata) => {
         return locale.command.noMetadata;
     
     const metadataList = [ ];
+    _PushAudioMetadatum(metadataList, locale, "title"   , metadata.common.title   );
     _PushAudioMetadatum(metadataList, locale, "artist"  , metadata.common.artist  );
     _PushAudioMetadatum(metadataList, locale, "duration", metadata.format.duration);
     

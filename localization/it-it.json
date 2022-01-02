@@ -200,6 +200,7 @@
           "noMetadata": "Nessun Metadato.",
           "decimalPrecision": 2,
           "metadata": {
+            "title": "Titolo: {0}",
             "artist": "Artista: {0}",
             "duration": "Durata: {0} Secondi."
           }
