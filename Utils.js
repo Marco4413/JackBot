@@ -131,4 +131,42 @@ const MentionTextChannel = (channelId) => {
     return `<#${channelId}>`;
 };
 
-module.exports = { FormatString, JoinArray, GetRandomArrayElement, GetDefaultEmbedForMessage, GetFormattedDateComponents, TranslateNumber, IsNaN, MentionUser, MentionTextChannel };
+/**
+ * Gets the specified environment variable
+ * @template {Object} T The type of the variable
+ * @param {String} varKey The key of the variable to get
+ * @param {(value: Any, defaultValue: T) => T|undefined} valueConverter A function that converts the env value to the one needed, returns undefined if the conversion failed
+ * @param {T} defaultValue The default value to return if the
+ * @param {(data: ...Any) => void} logger The logger to log when defaultValue is used
+ * @returns {T} The value of the Environment Variable
+ */
+const GetEnvVariable = (varKey, valueConverter, defaultValue, logger = console.warn) => {
+    const varValue = valueConverter(process.env[varKey], defaultValue);
+    if (varValue === undefined) {
+        if (defaultValue === undefined)
+            throw new TypeError(`Field ${varKey} in .env is of the wrong type`);
+        logger(`Field ${varKey} in .env is of the wrong type, using the default value of ${defaultValue}`);
+        return defaultValue;
+    }
+    return varValue;
+};
+
+/**
+ * Converts a value to a Number or undefined if NaN
+ * @param {Any} value The value to convert to a Number
+ * @returns {Number|undefined} Value to Number or undefined if NaN
+ */
+const AnyToNumber = (value) => {
+    const asNumber = Number(value);
+    if (IsNaN(asNumber)) return undefined;
+    return asNumber;
+};
+
+module.exports = {
+    FormatString,
+    JoinArray, GetRandomArrayElement,
+    GetDefaultEmbedForMessage, GetFormattedDateComponents,
+    TranslateNumber, IsNaN,
+    MentionUser, MentionTextChannel,
+    GetEnvVariable, AnyToNumber
+};
