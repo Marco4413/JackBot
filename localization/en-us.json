@@ -120,6 +120,24 @@
                 "description": "Enables or disables shortcuts for this Guild."
               }
             }
+          },
+          "sound": {
+            "title": "Sound",
+            "description": "Plays the specified sound.\nUse `sound play` if a sound has the same name as a subcommand.",
+            "subcommands": {
+              "list": {
+                "title": "List",
+                "description": "Lists all available Sounds."
+              },
+              "stop": {
+                "title": "Stop",
+                "description": "Stops playing the currently playing Sound if any."
+              },
+              "play": {
+                "title": "Play",
+                "description": "Plays the specified sound.\nThis is an alias for `sound`, use this is a sound has the same name as a subcommand."
+              }
+            }
           }
         }
       },
