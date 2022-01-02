@@ -117,7 +117,9 @@ const TimeEnd = (label) => {
 
 CreateInterval(
     (id, signal) => {
-        Info("Saving Log...");
+        if (signal !== null) Info("Saving Log...");
+        else Debug("Saving Log...");
+        
         _LoggerWorker.postMessage({
             "type": signal === null ? "save" : "close"
         });
