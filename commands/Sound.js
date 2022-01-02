@@ -215,8 +215,8 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
         return;
     }
 
-    // User's channel is not joinable
-    if (!userVoiceChannel.joinable) {
+    // User's channel is not joinable and is not the same as the bot
+    if (!userVoiceChannel.joinable && userVoiceChannel.id !== msg.guild.me.voice.channelId) {
         await msg.reply(locale.command.cantJoinChannel);
         return;
     }
