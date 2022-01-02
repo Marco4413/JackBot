@@ -10,4 +10,5 @@ temp/
 
 # Project-Specific
 .env
-data/
+data/*
+!data/README.md
