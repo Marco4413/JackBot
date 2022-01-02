@@ -21,11 +21,7 @@ const _IsValidActivityType = (activityType) => {
 };
 
 const StartRichPresence = async () => {
-    let updateInterval = Number(process.env["RP_UPDATE_INTERVAL"]);
-    if (Number.isNaN(updateInterval)) {
-        updateInterval = _RP_DEFAULT_UPDATE_INTERVAL;
-        Logger.Warn(`Rich Presence Update Interval in Process Environment is NaN, using the default value: ${_RP_DEFAULT_UPDATE_INTERVAL}ms`);
-    }
+    const updateInterval = Utils.GetEnvVariable("RP_UPDATE_INTERVAL", Utils.AnyToNumber, _RP_DEFAULT_UPDATE_INTERVAL, Logger.Warn);
 
     const activityOptions = GetLocale().common.richPresence;
     if (typeof activityOptions !== "string") {

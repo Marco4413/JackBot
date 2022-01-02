@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 const { CreateInterval } = require("./Timing.js");
-const { JoinArray } = require("./Utils.js");
+const Utils = require("./Utils.js");
 const { DEVELOPMENT } = require("./NodeEnv.js");
 
 const { Worker } = require("worker_threads");
@@ -26,7 +26,7 @@ const _ConsoleLog = (chalk, prefix, message = [ ], chalkAll = false, prefixColon
         "prefix": prefix,
         "prefixColon": prefixColon,
         // Joining Array Here to make sure that it's Cloneable
-        "message": JoinArray(message, " ")
+        "message": Utils.JoinArray(message, " ")
     });
 };
 
@@ -54,7 +54,7 @@ const Info     = (...message) => _ConsoleLog(_InfoChalk , "INFO", message);
 /** Logs the specified Debug Message */
 const Debug    = (...message) => {
     if (DEVELOPMENT) {
-        _ConsoleLog(_DebugChalk, "DEBUG", [ JoinArray(
+        _ConsoleLog(_DebugChalk, "DEBUG", [ Utils.JoinArray(
             message, " ",
             el =>
                 Array.isArray(el) || typeof el === "object" ?
@@ -74,7 +74,7 @@ const Warn     = (...message) => _ConsoleLog(_WarnChalk , "WARN", message);
 
 /** Logs a Traceback preceded by the specified Message */
 const Trace = (...data) => {
-    const err = new Error(JoinArray(data, " "));
+    const err = new Error(Utils.JoinArray(data, " "));
     err.name = "";
     _ConsoleLog(_TraceChalk, "TRACE", [ err.stack ]);
 };
@@ -122,14 +122,8 @@ CreateInterval(
             "type": signal === null ? "save" : "close"
         });
     },
-    (() => {
-        let saveInterval = Number(process.env["LOGGER_SAVE_INTERVAL"]);
-        if (Number.isNaN(saveInterval)) {
-            saveInterval = _DEFAULT_LOGGER_SAVE_INTERVAL;
-            Warn(`Logger Save Interval in Process Environment is NaN, using the default value: ${_DEFAULT_LOGGER_SAVE_INTERVAL}ms`);
-        }
-        return saveInterval;
-    })(), "use-handler"
+    Utils.GetEnvVariable("LOGGER_SAVE_INTERVAL", Utils.AnyToNumber, _DEFAULT_LOGGER_SAVE_INTERVAL, Warn),
+    "use-handler"
 );
 
 module.exports = {

@@ -1,5 +1,7 @@
 const Sequelize = require("sequelize");
+const Logger = require("./Logger.js");
 const { DataTypes } = Sequelize;
+const Utils = require("./Utils.js");
 
 // This should be safe, IDs are 64bit Numbers and the biggest 64bit Number shouldn't
 //  have more then 20 digits so we also have room to spare
@@ -27,12 +29,12 @@ const GuildModel = {
     },
     "locale": {
         "type": DataTypes.STRING(MAX_LOCALE_NAME_LENGTH),
-        "defaultValue": (() => {
-            const preferredDefaultLocale = process.env["DEFAULT_LOCALE"];
-            if (typeof preferredDefaultLocale === "string" && preferredDefaultLocale.length <= MAX_LOCALE_NAME_LENGTH)
-                return preferredDefaultLocale;
-            return "en-us";
-        })(),
+        "defaultValue": Utils.GetEnvVariable("DEFAULT_LOCALE", (value, defaultValue) => {
+            if (typeof value !== "string") return undefined;
+            else if (value.length <= MAX_LOCALE_NAME_LENGTH)
+                return value;
+            else return defaultValue;
+        }, "en-us", Logger.Warn),
         "allowNull": false
     }
 };
