@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { Client: DiscordClient, Intents, BaseGuildVoiceChannel, Guild } = require("discord.js");
-const { getVoiceConnection, PlayerSubscription, joinVoiceChannel, createAudioPlayer, VoiceConnectionStatus, AudioPlayerStatus } = require("@discordjs/voice");
+const { getVoiceConnection, PlayerSubscription, joinVoiceChannel, createAudioPlayer, VoiceConnectionStatus, AudioPlayerStatus, createAudioResource } = require("@discordjs/voice");
 const Logger = require("./Logger.js");
 const { CreateInterval, ClearInterval } = require("./Timing.js");
 const Utils = require("./Utils.js");
@@ -80,6 +80,11 @@ const IsVoiceConnectionIdle = (guild) => {
     return voiceConnection === undefined || voiceConnection.player.state.status === AudioPlayerStatus.Idle;
 };
 
+let _GENTLEMAN_MODE = "./data/goodbye.wav";
+if (!fs.existsSync(_GENTLEMAN_MODE))
+    _GENTLEMAN_MODE = null;
+else Logger.Info("GENTLEMAN MODE ACTIVATED!");
+
 /** @param {BaseGuildVoiceChannel} voiceChannel */
 const _CreateVoiceConnection = (voiceChannel) => {
     const voiceConnection = joinVoiceChannel({
@@ -112,7 +117,21 @@ const _CreateVoiceConnection = (voiceChannel) => {
             // If the bot is alone in the channel or the player has been idling for _PLAYER_IDLE_TIME
             voiceChannel.members.size <= 1 ||
             ( idleStartEpoch >= 0 && Date.now() - idleStartEpoch >= _PLAYER_IDLE_TIME )
-        )) voiceConnection.destroy();
+        )) {
+            if (_GENTLEMAN_MODE === null) {
+                voiceConnection.destroy();
+            } else {
+                // This gentleman is a real CHAD, he says goodbye even if he's disconnecting
+                //  because he's alone in the voice channel
+                ClearInterval(id);
+                const goodbye = createAudioResource(_GENTLEMAN_MODE);
+                audioPlayer.on("stateChange", (oldState, newState) => {
+                    if (newState.status === AudioPlayerStatus.Idle)
+                        voiceConnection.destroy();
+                });
+                audioPlayer.play(goodbye);
+            }
+        }
     }, _PLAYER_UPDATE_INTERVAL);
 
     audioPlayer.on("stateChange", (oldState, newState) => {
