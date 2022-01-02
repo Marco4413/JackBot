@@ -79,7 +79,7 @@ const _GetSoundPath = (soundName) => {
     
     let soundsConfig = { };
     let altsRootFolder = _SOUNDS_ALT_FOLDER;
-    
+
     if (hasConfig) {
         let config = { };
         try {
@@ -290,78 +290,86 @@ module.exports = CreateCommand({
                     await msg.reply(locale.command.sameChannel);
                 }
             }
+        },
+        {
+            "name": "play",
+            "shortcut": "p",
+            "execute": _ExecutePlaySound
         }
     ],
-    "execute": async (msg, guild, locale, args) => {
-        if (_AUDIO_LOADING_PROMISE !== null) return;
-
-        // No audio specified
-        if (args.length === 0) {
-            await msg.reply(locale.command.noSoundSpecified);
-            return;
-        }
-
-        // User is not connected
-        const userVoiceChannel = msg.member.voice.channel;
-        if (userVoiceChannel === null) {
-            await msg.reply(locale.command.notConnected);
-            return;
-        }
-
-        // User can't speak
-        if (msg.member.voice.serverMute) {
-            await msg.reply(locale.command.guildMuted);
-            return;
-        }
-
-        if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, userVoiceChannel)) {
-            return;
-        }
-
-        // User's channel is not joinable
-        if (!userVoiceChannel.joinable) {
-            await msg.reply(locale.command.cantJoinChannel);
-            return;
-        }
-
-        // Getting sound and checking if it exists
-        const soundName = Utils.JoinArray(args, " ").toLowerCase();
-        const soundPath = _GetSoundPath(soundName);
-
-        if (soundPath === undefined) {
-            await msg.reply(locale.command.noSoundFound);
-            return;
-        }
-
-        // Getting the voice connection
-        const voiceConnection = getVoiceConnection(msg.guildId);
-        /** @type {PlayerSubscription} */
-        let playerSubscription;
-        
-        const voice = msg.guild.me.voice;
-        if (voiceConnection === undefined) {
-            // If the voice connection doesn't exist then create one
-            playerSubscription = _CreateVoiceConnection(userVoiceChannel);
-        } else {
-            // If we have a voice connection we need to make sure that we're not playing anything
-            playerSubscription = voiceConnection.state.subscription;
-            Logger.Assert(playerSubscription !== null, "Player Subscription is null, why shouldn't this be the case you may ask... Well, we create one every time.");
-
-            if (playerSubscription.player.state.status !== AudioPlayerStatus.Idle) {
-                await msg.reply(locale.command.alreadyPlaying);
-                return;
-            }
-            
-            // If we need to change channel we destroy the connection and create it again
-            if (voice.channelId !== userVoiceChannel.id) {
-                voiceConnection.destroy();
-                playerSubscription = _CreateVoiceConnection(userVoiceChannel);
-            }
-        }
-
-        // Playing the sound
-        const resource = createAudioResource(soundPath);
-        playerSubscription.player.play(resource);
-        await msg.reply(Utils.FormatString(locale.command.playing, soundName));
-    }
+    "execute": _ExecutePlaySound
 });
+
+/** @type {import("../Command.js").CommandExecute} */
+const _ExecutePlaySound = async (msg, guild, locale, args) => {
+    if (_AUDIO_LOADING_PROMISE !== null) return;
+
+    // No audio specified
+    if (args.length === 0) {
+        await msg.reply(locale.command.noSoundSpecified);
+        return;
+    }
+
+    // User is not connected
+    const userVoiceChannel = msg.member.voice.channel;
+    if (userVoiceChannel === null) {
+        await msg.reply(locale.command.notConnected);
+        return;
+    }
+
+    // User can't speak
+    if (msg.member.voice.serverMute) {
+        await msg.reply(locale.command.guildMuted);
+        return;
+    }
+
+    if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, userVoiceChannel)) {
+        return;
+    }
+
+    // User's channel is not joinable
+    if (!userVoiceChannel.joinable) {
+        await msg.reply(locale.command.cantJoinChannel);
+        return;
+    }
+
+    // Getting sound and checking if it exists
+    const soundName = Utils.JoinArray(args, " ").toLowerCase();
+    const soundPath = _GetSoundPath(soundName);
+
+    if (soundPath === undefined) {
+        await msg.reply(locale.command.noSoundFound);
+        return;
+    }
+
+    // Getting the voice connection
+    const voiceConnection = getVoiceConnection(msg.guildId);
+    /** @type {PlayerSubscription} */
+    let playerSubscription;
+    
+    const voice = msg.guild.me.voice;
+    if (voiceConnection === undefined) {
+        // If the voice connection doesn't exist then create one
+        playerSubscription = _CreateVoiceConnection(userVoiceChannel);
+    } else {
+        // If we have a voice connection we need to make sure that we're not playing anything
+        playerSubscription = voiceConnection.state.subscription;
+        Logger.Assert(playerSubscription !== null, "Player Subscription is null, why shouldn't this be the case you may ask... Well, we create one every time.");
+
+        if (playerSubscription.player.state.status !== AudioPlayerStatus.Idle) {
+            await msg.reply(locale.command.alreadyPlaying);
+            return;
+        }
+        
+        // If we need to change channel we destroy the connection and create it again
+        if (voice.channelId !== userVoiceChannel.id) {
+            voiceConnection.destroy();
+            playerSubscription = _CreateVoiceConnection(userVoiceChannel);
+        }
+    }
+
+    // Playing the sound
+    const resource = createAudioResource(soundPath);
+    playerSubscription.player.play(resource);
+    await msg.reply(Utils.FormatString(locale.command.playing, soundName));
+};
