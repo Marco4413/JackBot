@@ -1,15 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 const { parseFile, IAudioMetadata } = require("music-metadata");
-
-const { BaseGuildVoiceChannel } = require("discord.js");
-const { joinVoiceChannel, getVoiceConnection, createAudioResource, createAudioPlayer, AudioPlayerStatus, VoiceConnectionStatus, PlayerSubscription } = require("@discordjs/voice");
+const { createAudioResource } = require("@discordjs/voice");
 
 const { CreateCommand, IsMissingPermissions, Permissions, Utils } = require("../Command.js");
-const { CreateInterval, ClearInterval } = require("../Timing.js");
+const { IsVoiceConnectionIdle, GetOrCreateVoiceConnection, GetVoiceConnection } = require("../Client.js");
 const Logger = require("../Logger.js");
 
-const _PLAYER_IDLE_CHECK_INTERVAL = 10e3;
 const _SOUNDS_FOLDER = "./data/sounds";
 const _SOUNDS_ALT_FOLDER = path.join(_SOUNDS_FOLDER, "alts");
 const _SOUNDS_CONFIG_PATH = path.join(_SOUNDS_FOLDER, "config.json");
@@ -191,46 +188,6 @@ const _FormatAudioMetadata = (locale, metadata) => {
 
 // #endregion
 
-/**
- * @param {BaseGuildVoiceChannel} voiceChannel
- * @returns {PlayerSubscription}
- */
-const _CreateVoiceConnection = (voiceChannel) => {
-    const voiceConnection = joinVoiceChannel({
-        "guildId": voiceChannel.guildId,
-        "channelId": voiceChannel.id,
-        "adapterCreator": voiceChannel.guild.voiceAdapterCreator,
-        "selfDeaf": true,
-        "selfMute": false
-    });
-
-    const audioPlayer = createAudioPlayer({ "debug": true });
-
-    /*  So here's the deal...
-        Hear me out, because this is quite finicky to understand.
-        We create an Interval which checks is the player status is Idle
-        because we don't want to destroy the connection as soon as the
-        resource ends.
-        Then we add a listener for state change on the connection to clear
-        the interval on destroy ( which is also called when the interval's
-        id can't be accessed ) and destroy the connection when it's disconnected.
-    */
-    const intervalId = CreateInterval(id => {
-        if (voiceConnection.state.status !== VoiceConnectionStatus.Destroyed &&
-            audioPlayer.state.status === AudioPlayerStatus.Idle
-        ) voiceConnection.destroy();
-    }, _PLAYER_IDLE_CHECK_INTERVAL);
-
-    voiceConnection.on("stateChange", (oldState, newState) => {
-        if (newState.status === VoiceConnectionStatus.Destroyed)
-            ClearInterval(intervalId);
-        else if (newState.status === VoiceConnectionStatus.Disconnected)
-            voiceConnection.destroy();
-    });
-
-    return voiceConnection.subscribe(audioPlayer);
-};
-
 /** @type {import("../Command.js").CommandExecute} */
 const _ExecutePlaySound = async (msg, guild, locale, args) => {
     if (_AUDIO_LOADING_PROMISE !== null) return;
@@ -273,35 +230,14 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
         return;
     }
 
-    // Getting the voice connection
-    const voiceConnection = getVoiceConnection(msg.guildId);
-    /** @type {PlayerSubscription} */
-    let playerSubscription;
-    
-    const voice = msg.guild.me.voice;
-    if (voiceConnection === undefined) {
-        // If the voice connection doesn't exist then create one
-        playerSubscription = _CreateVoiceConnection(userVoiceChannel);
-    } else {
-        // If we have a voice connection we need to make sure that we're not playing anything
-        playerSubscription = voiceConnection.state.subscription;
-        Logger.Assert(playerSubscription !== null, "Player Subscription is null, why shouldn't this be the case you may ask... Well, we create one every time.");
-
-        if (playerSubscription.player.state.status !== AudioPlayerStatus.Idle) {
-            await msg.reply(locale.command.alreadyPlaying);
-            return;
-        }
-        
-        // If we need to change channel we destroy the connection and create it again
-        if (voice.channelId !== userVoiceChannel.id) {
-            voiceConnection.destroy();
-            playerSubscription = _CreateVoiceConnection(userVoiceChannel);
-        }
+    if (!IsVoiceConnectionIdle(msg.guild)) {
+        await msg.reply(locale.command.alreadyPlaying);
+        return;
     }
 
     // Playing the sound
     const resource = createAudioResource(soundPath);
-    playerSubscription.player.play(resource);
+    GetOrCreateVoiceConnection(userVoiceChannel, true).player.play(resource);
     await msg.reply(Utils.FormatString(locale.command.playing, soundName));
 };
 
@@ -334,7 +270,7 @@ module.exports = CreateCommand({
             "shortcut": "s",
             "execute": async (msg, guild, locale) => {
                 // Check if we're connected to a voice channel
-                const voiceConnection = getVoiceConnection(msg.guildId);
+                const voiceConnection = GetVoiceConnection(msg.guild);
                 if (voiceConnection === undefined) {
                     await msg.reply(locale.command.notConnected);
                     return;
@@ -350,15 +286,10 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                // Check if we're actually playing anything and if the user is in the same voice channel
-                /** @type {PlayerSubscription} */
-                const playerSubscription = voiceConnection.state.subscription;
-                Logger.Assert(playerSubscription !== null, "Player Subscription is null ( Check Assertion on base command ).");
-
-                if (playerSubscription.player.state.status === AudioPlayerStatus.Idle) {
+                if (IsVoiceConnectionIdle(msg.guild)) {
                     await msg.reply(locale.command.notPlaying);
                 } else if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
-                    playerSubscription.player.stop(true);
+                    voiceConnection.player.stop(true);
                     await msg.reply(locale.command.stopped);
                 } else {
                     await msg.reply(locale.command.sameChannel);
