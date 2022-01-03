@@ -308,6 +308,35 @@ module.exports = CreateCommand({
             }
         },
         {
+            "name": "leave",
+            "shortcut": "l",
+            "execute": async (msg, guild, locale) => {
+                // Check if we're connected to a voice channel
+                const voiceConnection = GetVoiceConnection(msg.guild);
+                if (voiceConnection === undefined) {
+                    await msg.reply(locale.command.notConnected);
+                    return;
+                }
+                
+                // User can't speak
+                if (msg.member.voice.serverMute) {
+                    await msg.reply(locale.command.guildMuted);
+                    return;
+                }
+        
+                if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, msg.guild.me.voice.channelId)) {
+                    return;
+                }
+
+                if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
+                    voiceConnection.player.emit("softDestroy");
+                    await msg.reply(locale.command.leaving);
+                } else {
+                    await msg.reply(locale.command.sameChannel);
+                }
+            }
+        },
+        {
             "name": "play",
             "shortcut": "p",
             "execute": _ExecutePlaySound

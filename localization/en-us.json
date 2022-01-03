@@ -212,6 +212,12 @@
           "notPlaying": "I'm not currently playing any sound.",
           "stopped": "Stopped playing sounds.",
           "sameChannel": "You must be on my voice channel to stop sounds."
+        },
+        "leave": {
+          "notConnected": "I'm not connected to any voice channel.",
+          "guildMuted": "You can't make me leave the channel if you're muted on the guild.",
+          "leaving": "I'm leaving the voice channel.",
+          "sameChannel": "You must be on my voice channel to make me leave."
         }
       },
       "noSoundSpecified": "You must specify the name of the sound to play.",
