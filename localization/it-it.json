@@ -137,6 +137,10 @@
                 "title": "Stop",
                 "description": "Termina la riproduzione dell'audio corrente."
               },
+              "leave": {
+                "title": "Leave",
+                "description": "Esce dal canale corrente se connesso."
+              },
               "play": {
                 "title": "Play",
                 "description": "Riproduce l'audio specificato.\nQuesto è un soprannome per `sound`, usa `sound play` se l'audio ha lo stesso nome di un sottocomando."

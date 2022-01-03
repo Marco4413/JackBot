@@ -137,6 +137,10 @@
                 "title": "Stop",
                 "description": "Stops playing the currently playing Sound if any."
               },
+              "leave": {
+                "title": "Leave",
+                "description": "Leaves the current channel if connected."
+              },
               "play": {
                 "title": "Play",
                 "description": "Plays the specified sound.\nThis is an alias for `sound`, use this is a sound has the same name as a subcommand."
