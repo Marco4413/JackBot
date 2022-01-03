@@ -197,12 +197,13 @@
         "list": {
           "title": "Sound List",
           "description": "A list of all available sounds.",
+          "fieldTitle": "`{0}`",
           "noMetadata": "No Metadata.",
           "decimalPrecision": 2,
           "metadata": {
-            "title": "Title: {0}",
-            "artist": "Artist: {0}",
-            "duration": "Duration: {0} Seconds."
+            "title": "**Title:** {0}",
+            "artist": "**Artist:** {0}",
+            "duration": "**Duration:** {0} Seconds."
           }
         },
         "stop": {

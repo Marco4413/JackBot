@@ -15,6 +15,8 @@ const _AUDIO_NAME_TO_FILE = { };
 const _AUDIO_EXTENSIONS = [ "mp3", "wav" ];
 const _AUDIO_REGEXP = new RegExp(`^(.+)\\.(?:${Utils.JoinArray(_AUDIO_EXTENSIONS, "|")})$`);
 
+const _INLINE_LINE_CHAR_LIMIT = 60;
+
 /**
  * @typedef {Object} AudioFileData
  * @property {String} path
@@ -170,21 +172,25 @@ const _PushAudioMetadatum = (metadataList, locale, metadatumKey, metadatum) => {
 /**
  * @param {import("../Localization.js").CommandLocale} locale
  * @param {IAudioMetadata} metadata
- * @returns {String}
+ * @returns {{ maxLineLength: Number, text: String }}
  */
 const _FormatAudioMetadata = (locale, metadata) => {
     if (locale.command.metadata === undefined)
         return locale.command.noMetadata;
     
+    /** @type {String[]} */
     const metadataList = [ ];
     _PushAudioMetadatum(metadataList, locale, "title"   , metadata.common.title   );
     _PushAudioMetadatum(metadataList, locale, "artist"  , metadata.common.artist  );
     _PushAudioMetadatum(metadataList, locale, "duration", metadata.format.duration);
     
     if (metadataList.length === 0)
-        return locale.command.noMetadata;
+        return { "maxLineLength": locale.command.noMetadata.length, "text": locale.command.noMetadata };
     
-    return Utils.JoinArray(metadataList, "\n");
+    return {
+        "maxLineLength": metadataList.reduce((prev, curr) => Math.max(prev, curr.length), 0),
+        "text": Utils.JoinArray(metadataList, "\n")
+    };
 };
 
 // #endregion
@@ -258,7 +264,12 @@ module.exports = CreateCommand({
                 for (const soundName of Object.keys(_AUDIO_NAME_TO_FILE)) {
                     /** @type {AudioFileData} */
                     const sound = _AUDIO_NAME_TO_FILE[soundName];
-                    embed.addField(soundName, _FormatAudioMetadata(locale, sound.metadata));
+                    const formattedMetadata = _FormatAudioMetadata(locale, sound.metadata);
+                    embed.addField(
+                        Utils.FormatString(locale.command.fieldTitle, soundName),
+                        formattedMetadata.text,
+                        formattedMetadata.maxLineLength <= _INLINE_LINE_CHAR_LIMIT
+                    );
                 }
 
                 await msg.channel.send({
