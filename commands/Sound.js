@@ -254,7 +254,6 @@ module.exports = CreateCommand({
     "subcommands": [
         {
             "name": "list",
-            "shortcut": "l",
             "execute": async (msg, guild, locale) => {
                 if (_AUDIO_LOADING_PROMISE !== null) return;
 
