@@ -54,9 +54,18 @@ const RegisterEventListeners = () => {
 };
 
 /**
+ * To destroy the connection immediatly use `ClientVoiceConnection.player.emit("destroy")`
+ * 
+ * To destroy the connection "softly" use `ClientVoiceConnection.player.emit("softDestroy")`
+ * 
+ * Always soft destroy the connection unless you really need to destroy it immediately.
+ * @typedef {PlayerSubscription} ClientVoiceConnection
+ */
+
+/**
  * Gets the voice connection for the guild or undefined if none
  * @param {Guild} guild The guild to get the voice connection for
- * @returns {PlayerSubscription|undefined} The voice connection of the guild or undefined if none
+ * @returns {ClientVoiceConnection|undefined} The voice connection of the guild or undefined if none
  */
 const GetVoiceConnection = (guild) => {
     const guildVoiceConnection = getVoiceConnection(guild.id);
@@ -97,49 +106,45 @@ const _CreateVoiceConnection = (voiceChannel) => {
 
     const audioPlayer = createAudioPlayer({ "debug": true });
 
-    /*  So here's the deal...
-        Hear me out, because this is quite finicky to understand.
-        We create an Interval which checks if the player status is Idle
-        and there's no one left in the channel, if either one of those
-        conditions is true we destroy the connection.
-        This is done to not destroy the connection as soon as the player stops
-        ( although it may happen if the interval triggers ).
-        Then we add a listener for state change on the connection to clear
-        the interval on destroy and destroy the connection when it's disconnected.
-    */
-
     /** If -1 then it's not idle */
     let idleStartEpoch = -1;
-    const intervalId = CreateInterval(id => {
-        // The first condition should always be true because we clear the interval
-        //  when it's destroyed
-        if (voiceConnection.state.status !== VoiceConnectionStatus.Destroyed && (
-            // If the bot is alone in the channel or the player has been idling for _PLAYER_IDLE_TIME
-            voiceChannel.members.size <= 1 ||
-            ( idleStartEpoch >= 0 && Date.now() - idleStartEpoch >= _PLAYER_IDLE_TIME )
-        )) {
-            if (_GENTLEMAN_MODE === null) {
-                voiceConnection.destroy();
-            } else {
-                // This gentleman is a real CHAD, he says goodbye even if he's disconnecting
-                //  because he's alone in the voice channel
-                ClearInterval(id);
-                const goodbye = createAudioResource(_GENTLEMAN_MODE);
-                audioPlayer.on("stateChange", (oldState, newState) => {
-                    if (newState.status === AudioPlayerStatus.Idle)
-                        voiceConnection.destroy();
-                });
-                audioPlayer.play(goodbye);
-            }
-        }
-    }, _PLAYER_UPDATE_INTERVAL);
-
     audioPlayer.on("stateChange", (oldState, newState) => {
         // If it's idle we save the epoch
         if (newState.status === AudioPlayerStatus.Idle)
             idleStartEpoch = Date.now();
         // Else we set the epoch to -1
         else idleStartEpoch = -1;
+    });
+
+    // We use an interval instead of a timeout because a timeout should
+    //  be created and cleared each time and that can get slow
+    const intervalId = CreateInterval(() => {
+        // If no one is connected to the channel or we've
+        //  been idling for too long destroy the connection
+        if (voiceChannel.members.size <= 1 ||
+            ( idleStartEpoch >= 0 && Date.now() - idleStartEpoch >= _PLAYER_IDLE_TIME )
+        ) audioPlayer.emit("softDestroy");
+    }, _PLAYER_UPDATE_INTERVAL);
+
+    audioPlayer.once("softDestroy", () => {
+        if (voiceConnection.state.status === VoiceConnectionStatus.Destroyed) return;
+        
+        if (_GENTLEMAN_MODE === null) {
+            audioPlayer.emit("destroy");
+        } else {
+            ClearInterval(intervalId);
+            const goodbye = createAudioResource(_GENTLEMAN_MODE);
+            audioPlayer.on("stateChange", (oldState, newState) => {
+                if (newState.status === AudioPlayerStatus.Idle)
+                    audioPlayer.emit("destroy");
+            });
+            audioPlayer.play(goodbye);
+        }
+    });
+
+    audioPlayer.once("destroy", () => {
+        if (voiceConnection.state.status === VoiceConnectionStatus.Destroyed) return;
+        voiceConnection.destroy();
     });
 
     voiceConnection.on("stateChange", (oldState, newState) => {
@@ -156,7 +161,7 @@ const _CreateVoiceConnection = (voiceChannel) => {
  * This gets or creates a new Voice Connection on the specified Channel and switches channel if needed
  * @param {BaseGuildVoiceChannel} voiceChannel The channel to create the connection on
  * @param {Boolean} [switchChannel] Whether or not to switch channel if already in one
- * @returns {PlayerSubscription} The new connection
+ * @returns {ClientVoiceConnection} The new connection
  */
 const GetOrCreateVoiceConnection = (voiceChannel, switchChannel = true) => {
     const voiceSub = GetVoiceConnection(voiceChannel.guild);
