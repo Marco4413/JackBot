@@ -329,7 +329,7 @@ module.exports = CreateCommand({
                 }
 
                 if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
-                    voiceConnection.player.emit("softDestroy");
+                    voiceConnection.softDestroy();
                     await msg.reply(locale.command.leaving);
                 } else {
                     await msg.reply(locale.command.sameChannel);

@@ -1,6 +1,9 @@
 const fs = require("fs");
 const { Client: DiscordClient, Intents, BaseGuildVoiceChannel, Guild } = require("discord.js");
-const { getVoiceConnection, PlayerSubscription, joinVoiceChannel, createAudioPlayer, VoiceConnectionStatus, AudioPlayerStatus, createAudioResource } = require("@discordjs/voice");
+const {
+    getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource,
+    PlayerSubscription, VoiceConnectionStatus, VoiceConnection, AudioPlayerStatus
+} = require("@discordjs/voice");
 const Logger = require("./Logger.js");
 const { CreateInterval, ClearInterval } = require("./Timing.js");
 const Utils = require("./Utils.js");
@@ -54,13 +57,25 @@ const RegisterEventListeners = () => {
 };
 
 /**
- * To destroy the connection immediatly use `ClientVoiceConnection.player.emit("destroy")`
- * 
- * To destroy the connection "softly" use `ClientVoiceConnection.player.emit("softDestroy")`
- * 
- * Always soft destroy the connection unless you really need to destroy it immediately.
- * @typedef {PlayerSubscription} ClientVoiceConnection
+ * @typedef {Object} ClientVoiceConnection
+ * @property {AudioPlayer} player The {@link AudioPlayer} of the Connection
+ * @property {VoiceConnection} connection The actual {@link VoiceConnection}
+ * @property {() => Void} softDestroy Gently destroy the {@link VoiceConnection}, use this instead of {@link ClientVoiceConnection.destroy}
+ * @property {() => Void} destroy Immediately destroy the {@link VoiceConnection}, using {@link ClientVoiceConnection.softDestroy} is preferred
  */
+
+/**
+ * @param {PlayerSubscription} playerSubscription
+ * @returns {ClientVoiceConnection}
+ */
+const _WrapPlayerSubscription = (playerSubscription) => {
+    return {
+        "player": playerSubscription.player,
+        "connection": playerSubscription.connection,
+        "softDestroy": () => playerSubscription.player.emit("softDestroy"),
+        "destroy": () => playerSubscription.player.emit("destroy")
+    };
+};
 
 /**
  * Gets the voice connection for the guild or undefined if none
@@ -76,7 +91,9 @@ const GetVoiceConnection = (guild) => {
         return undefined;
     }
 
-    return guildVoiceConnection.state.subscription;
+    return _WrapPlayerSubscription(
+        guildVoiceConnection.state.subscription
+    );
 };
 
 /**
@@ -154,7 +171,9 @@ const _CreateVoiceConnection = (voiceChannel) => {
             voiceConnection.destroy();
     });
 
-    return voiceConnection.subscribe(audioPlayer);
+    return _WrapPlayerSubscription(
+        voiceConnection.subscribe(audioPlayer)
+    );
 };
 
 /**
