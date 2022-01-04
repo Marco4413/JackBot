@@ -37,6 +37,6 @@ file which holds the following info:
 The name of the sounds is their name lower-cased with no extra whitespaces.
 
 **NOTE:** All Sounds must be either `mp3` or `wav`, other formats are not officially
-supported but can be added to the `_AUDIO_EXTENSIONS` array defined at the top
-of the file in [`commands/Sound.js`](../commands/Sound.js), be sure that they can be
+supported but can be added to the `_AUDIO_EXTENSIONS` array defined above the `GetAudioFilesInDirectory`
+function near the end of the file [`Utils.js`](../Utils.js), be sure that they can be
 converted by `FFMpeg`.
