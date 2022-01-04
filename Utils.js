@@ -1,4 +1,7 @@
+const fs = require("fs");
+const { parseFile } = require("music-metadata");
 const { Message, MessageEmbed } = require("discord.js");
+const path = require("path");
 
 /**
  * Formats the specified String with the specified Formats
@@ -171,11 +174,71 @@ const AnyToNumber = (value) => {
     return asNumber;
 };
 
+
+// TODO: Maybe make a generic method to fitler files by an array of extensions
+const _AUDIO_EXTENSIONS = [ "mp3", "wav" ];
+const _AUDIO_REGEXP = new RegExp(`^(.+)\\.(${JoinArray(_AUDIO_EXTENSIONS, "|")})$`);
+
+/**
+ * Checks if the specified path points to a file
+ * @param {String} filePath The path to the file to check
+ * @returns {Boolean} Whether or not the specified path points to a file
+ */
+const IsFile = (filePath) => {
+    return fs.lstatSync(filePath, { "throwIfNoEntry": false })?.isFile() ?? false;
+};
+
+/**
+ * Checks if the specified path points to a directory
+ * @param {String} filePath The path to the directory to check
+ * @returns {Boolean} Whether or not the specified path points to a directory
+ */
+const IsDirectory = (dirPath) => {
+    return fs.lstatSync(dirPath, { "throwIfNoEntry": false })?.isDirectory() ?? false;
+};
+
+/**
+ * @typedef {Object} FileInfo Information about a specific File
+ * @property {String} name The name of the file ( With no extension )
+ * @property {String} extension The extension of the file ( Without the dot )
+ * @property {String} path The path to the file relative to its root ( Usually the full file name )
+ * @property {String} fullPath The full path to the file
+ */
+
+/**
+ * Returns all audio files from the specified directory ( Valid Audio Extensions are Specified in {@link _AUDIO_EXTENSIONS} )
+ * @param {String} dirPath The path to the directory to query
+ * @returns {FileInfo[]} A list of all audio files in the specified dir or 0 if either there's none or the dir doesn't exist
+ */
+const GetAudioFilesInDirectory = (dirPath) => {
+    if (!IsDirectory(dirPath)) return [ ];
+
+    const validFiles = [ ];
+    const allFiles = fs.readdirSync(dirPath);
+    for (let i = 0; i < allFiles.length; i++) {
+        const fileMatch = _AUDIO_REGEXP.exec(allFiles[i]);
+        if (fileMatch !== null) {
+            const fullPath = path.join(dirPath, fileMatch[0]);
+            if (IsFile(fullPath)) {
+                validFiles.push({
+                    "name": fileMatch[1],
+                    "extension": fileMatch[2],
+                    "path": fileMatch[0],
+                    "fullPath": fullPath
+                });
+            }
+        }
+    }
+
+    return validFiles;
+};
+
 module.exports = {
     FormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     TranslateNumber, IsNaN,
     MentionUser, MentionTextChannel, MentionRole,
-    GetEnvVariable, AnyToNumber
+    GetEnvVariable, AnyToNumber,
+    IsFile, IsDirectory, GetAudioFilesInDirectory
 };
