@@ -129,6 +129,16 @@
             "title": "Sound",
             "description": "Plays the specified sound.\nUse `sound play` if a sound has the same name as a subcommand.",
             "subcommands": {
+              "blacklist-role": {
+                "title": "Blacklist Role",
+                "description": "Blacklists the specified role from sound commands.",
+                "subcommands": {
+                  "now": {
+                    "title": "Now",
+                    "description": "Shows the currenly blacklisted role from sound commands."
+                  }
+                }
+              },
               "list": {
                 "title": "List",
                 "description": "Lists all available Sounds."

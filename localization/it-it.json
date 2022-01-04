@@ -129,6 +129,16 @@
             "title": "Sound",
             "description": "Riproduce l'audio specificato.\nUsa `sound play` se l'audio ha lo stesso nome di un sottocomando.",
             "subcommands": {
+              "blacklist-role": {
+                "title": "Blacklist Role",
+                "description": "Bandisce il ruolo specificato dai comandi audio.",
+                "subcommands": {
+                  "now": {
+                    "title": "Now",
+                    "description": "Mostra il ruolo bandito dai comandi audio."
+                  }
+                }
+              },
               "list": {
                 "title": "List",
                 "description": "Mostra tutti gli audio disponibili."
