@@ -42,7 +42,7 @@ const JoinArray = (array, separator = ",", elFormatter = el => el) => {
  */
 const GetRandomArrayElement = (array) => {
     if (array.length === 0) return undefined;
-    return array[ Math.round(Math.random() * ( array.length - 1 )) ];
+    return array[ Math.min( Math.floor(Math.random() * array.length), array.length - 1 ) ];
 };
 
 /**
