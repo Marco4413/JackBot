@@ -31,7 +31,7 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                const { locale: newLocale } = await Database.SetGuildAttr(msg.guild.id, { "locale": localeName });
+                const { locale: newLocale } = await Database.SetRowAttr("guild", { "id": msg.guildId }, { "locale": localeName });
                 await msg.reply(Utils.FormatString(locale.command.changed, newLocale));
             }
         }

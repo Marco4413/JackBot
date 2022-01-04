@@ -1,6 +1,6 @@
 const SQLite = require("./databases/SQLite.js");
 const MariaDB = require("./databases/MariaDB.js");
-const DBDefinitions = require("./DatabaseDefinitions.js");
+const Definitions = require("./DatabaseDefinitions.js");
 const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
 
 /** @typedef {(boolean|((sql: string, timing?: number) => Void))?} SequelizeLogging */
@@ -18,10 +18,13 @@ const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
 /** @type {Sequelize} */
 let _DBInstance = null;
 
-/** @type {ModelCtor<Model>} */
-let _Guild = null;
-/** @type {ModelCtor<Model>} */
-let _Counter = null;
+
+const _Models = {
+    /** @type {ModelCtor<Model>} */
+    "guild": null,
+    /** @type {ModelCtor<Model>} */
+    "counter": null
+};
 
 // #region Basic Methods
 
@@ -57,16 +60,16 @@ const Start = async (settings) => {
     const syncOptions = { "alter": true };
 
     // Defining and Syncing Models
-    _Guild = _DBInstance.define("Guild", DBDefinitions.GuildModel);
-    _Counter = _DBInstance.define("Counter", DBDefinitions.CounterModel, { "timestamps": true });
+    _Models.guild = _DBInstance.define("Guild", Definitions.GuildModel);
+    _Models.counter = _DBInstance.define("Counter", Definitions.CounterModel, { "timestamps": true });
     
     if (settings.dropDatabase) {
-        await _Guild.drop();
-        await _Counter.drop();
+        await _Models.guild.drop();
+        await _Models.counter.drop();
     }
 
-    await _Guild.sync(syncOptions);
-    await _Counter.sync(syncOptions);
+    await _Models.guild.sync(syncOptions);
+    await _Models.counter.sync(syncOptions);
 
     // Trying to authenticate to the Database
     await _DBInstance.authenticate();
@@ -75,156 +78,100 @@ const Start = async (settings) => {
 // #endregion
 
 /**
- * @param {String} id
- * @returns {Model}
+ * Gets one Row from the Database
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table to get the row from
+ * @param {U} [where] The attributes that the row should have
+ * @returns {U|undefined} The Row or undefined if none was found
  */
-const _FindOrCreateGuild = async (id) => {
-    const [ instance ] = await _Guild.findOrCreate({
-        "where":    { id },
-        "defaults": { id }
-    });
-    return instance;
-};
-
-/**
- * @template {Object} T
- * @param {Model} model
- * @param {T} attributes
- * @returns {T}
- */
-const _SetModelAttr = async (model, attributes) => {
-    for (const key of Object.keys(attributes))
-        model.set(key, attributes[key]);
-    await model.save();
-    return model.get();
-};
-
-// #region Guild Methods
-
-/**
- * Creates an entry for the Guild with the specified id if it doesn't exist and returns it
- * @param {String} id The id of the Guild to Get or Create
- * @returns {DBDefinitions.GuildRow} The Row of the Guild
- */
-const GetGuild = async (id) => {
+const GetRow = async (table, where = { }) => {
     _EnsureStart();
-    const instance = await _FindOrCreateGuild(id);
-    return instance.get();
+    const instance = await _Models[table].findOne({ where });
+    return instance?.get();
 };
 
 /**
- * Sets the specified Guild Attributes
- * @param {String} id The Guild to set the attributes for
- * @param {DBDefinitions.GuildRow} attributes The Attributes to set ( undefined keys don't change attributes )
- * @returns {DBDefinitions.GuildRow} The updated Guild Row
+ * Gets all Rows from the Database
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table to get the rows from
+ * @param {U} [where] The attributes that the rows should have
+ * @returns {U[]} The Rows
  */
-const SetGuildAttr = async (id, attributes) => {
+const GetRows = async (table, where = { }) => {
     _EnsureStart();
-    const instance = await _FindOrCreateGuild(id);
-    return await _SetModelAttr(instance, attributes);
-};
-
-/**
- * Removes the specified Guild from the Database
- * @param {String} id The id of the Guild to Remove
- * @returns {Boolean} Whether or not the Guild was removed
- */
-const RemoveGuild = async (id) => {
-    _EnsureStart();
-    await RemoveGuildCounters(id);
-    return await _Guild.destroy({ "where": { id } }) > 0;
-};
-
-// #endregion
-
-// #region Counter Methods
-
-/**
- * Creates a new Counter for the specified Guild and Channel
- * @param {String} guildId The id of the Guild to create the Counter for
- * @param {String} channelId The id of the Channel to create the Counter for
- * @returns {DBDefinitions.CounterRow|undefined} The new Counter or undefined if one was present
- */
-const CreateGuildCounter = async (guildId, channelId) => {
-    _EnsureStart();
-    const counter = await GetGuildCounter(guildId, channelId);
-    if (counter !== undefined) return undefined;
-
-    const instance = await _Counter.create({
-        channelId, guildId
-    });
-    return instance.get();
-};
-
-/**
- * Removes the Counter for the specified Guild and Channel
- * @param {String} guildId The id of the Guild to remove the Counter for
- * @param {String} channelId The id of the Channel to remove the Counter for
- * @returns {Boolean} Whether or not the Guild's Counter was removed
- */
-const RemoveGuildCounter = async (guildId, channelId) => {
-    _EnsureStart();
-    return await _Counter.destroy({ "where": { guildId, channelId } }) > 0;
-};
-
-/**
- * Removes all Counters in the specified Guild
- * @param {String} guildId The id of the Guild to remove the Counters for
- * @returns {Boolean} Whether or not one Guild Counter was removed
- */
-const RemoveGuildCounters = async (guildId) => {
-    _EnsureStart();
-    return await _Counter.destroy({ "where": { guildId } }) > 0;
-};
-
-/**
- * Returns the Counter for the specified Guild and Channel
- * @param {String} guildId The id of the Guild to get the Counter for
- * @param {String} channelId The id of the Channel to get the Counter for
- * @returns {DBDefinitions.CounterRow|undefined} The Counter for the specified Guild and Channel or undefined if none
- */
-const GetGuildCounter = async (guildId, channelId) => {
-    _EnsureStart();
-    const instance = await _Counter.findOne({
-        "where": { guildId, channelId }
-    });
-    return instance === null ? undefined : instance.get();
-};
-
-/**
- * Returns the Counters for the specified Guild
- * @param {String} guildId The id of the Guild to get the Counters for
- * @returns {DBDefinitions.CounterRow[]} The Counters for the specified Guild
- */
-const GetGuildCounters = async (guildId) => {
-    _EnsureStart();
-    const instances = await _Counter.findAll({
-        "where": { guildId }
-    });
+    const instances = await _Models[table].findAll({ where });
     return instances.map(m => m.get());
 };
 
 /**
- * Sets the specified Counter Attributes
- * @param {String} guildId The id of the Guild to set the Counter attributes for
- * @param {String} channelId The id of the Channel to set the Counter attributes for
- * @param {DBDefinitions.CounterRow} attributes The Attributes to set
- * @returns {DBDefinitions.CounterRow|undefined} The updated Counter Row
+ * Gets one Row or creates it from the database
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table to get or create the row in
+ * @param {U} [where] The attributes that the row should have
+ * @param {U} [defaults] The default values for the row ( If it gets created )
+ * @returns {U} The Row
  */
-const SetGuildCounterAttr = async (guildId, channelId, attributes) => {
+const GetOrCreateRow = async (table, where = { }, defaults = where) => {
     _EnsureStart();
-    const instance = await _Counter.findOne({
-        "where": { guildId, channelId }
-    });
-    
-    if (instance === null) return undefined;
-    return await _SetModelAttr(instance, attributes);
+    const [ instance ] = await _Models[table].findOrCreate({ where, defaults });
+    return instance?.get();
 };
 
-// #endregion
+/**
+ * Sets the specified Attributes to the specified Row and returns the new Row
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table where the row is in
+ * @param {U} [where] The attributes that the row to modify should have
+ * @param {U} [attributes] The new attributes for the row ( Undefined keys don't change attributes )
+ * @returns {U|undefined} The modified Row or undefined if none
+ */
+const SetRowAttr = async (table, where = { }, attributes = { }) => {
+    _EnsureStart();
+    const instance = await _Models[table].findOne({ where });
+    if (instance === null) return undefined;
+
+    for (const key of Object.keys(attributes))
+        instance.set(key, attributes[key]);
+    await instance.save();
+    return instance.get();
+};
+
+/**
+ * Creates a Row with the specified values
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table to create the row in
+ * @param {U} [values] The values to create the row with
+ * @returns {U|undefined} The created Row or undefined if none was created
+ */
+const CreateRow = async (table, values = { }) => {
+    _EnsureStart();
+    const counter = await GetRow(table, values);
+    if (counter !== undefined) return undefined;
+
+    const instance = await _Models[table].create(values);
+    return instance.get();
+};
+
+/**
+ * Removes all specified Rows
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table to remove the rows from
+ * @param {U} [where] The attributes that the Rows to remove should have
+ * @returns {Number} The count of Rows Removed
+ */
+const RemoveRows = async (table, where = { }) => {
+    _EnsureStart();
+    return await _Models[table].destroy({ where });
+};
 
 module.exports = {
     IsStarted, Start,
-    GetGuild, SetGuildAttr, RemoveGuild,
-    CreateGuildCounter, RemoveGuildCounter, RemoveGuildCounters, GetGuildCounter, GetGuildCounters, SetGuildCounterAttr
+    GetRow, GetRows, GetOrCreateRow,
+    SetRowAttr, CreateRow, RemoveRows
 };

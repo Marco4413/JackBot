@@ -13,7 +13,7 @@ const { Message } = require("discord.js");
  * @returns {Boolean}
  */
 module.exports = async (msg, guild) => {
-    const counter = await Database.GetGuildCounter(msg.guild.id, msg.channel.id);
+    const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
 
     if (counter !== undefined) {
         let result = undefined;
@@ -31,7 +31,7 @@ module.exports = async (msg, guild) => {
             const locale = GetCommandLocale(guild.locale, [ "counter" ]);
             
             if (result === counter.count + 1) {
-                await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
+                await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
                     "count": result,
                     "bestCount": result > counter.bestCount ? result : counter.bestCount,
                     "lastMemberId": msg.member.id
@@ -41,7 +41,7 @@ module.exports = async (msg, guild) => {
             } else if (!counter.allowErrors) {
                 await msg.delete();
             } else if (counter.count !== counterStartValue) {
-                await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
+                await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
                     "count": counterStartValue,
                     "bestCount": counter.count > counter.bestCount ? counter.count : counter.bestCount,
                     "lastMemberId": msg.member.id

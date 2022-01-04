@@ -269,7 +269,7 @@ module.exports = CreateCommand({
             ],
             "execute": async (msg, guild, locale, [ roleId ]) => {
                 if (guild.soundBlacklistRoleId === roleId) {
-                    await Database.SetGuildAttr(msg.guildId, {
+                    await Database.SetRowAttr("guild", { "id": msg.guildId }, {
                         "soundBlacklistRoleId": null
                     });
                     
@@ -279,7 +279,7 @@ module.exports = CreateCommand({
                         guild.soundBlacklistRoleId, Utils.MentionRole(guild.soundBlacklistRoleId)
                     ));
                 } else {
-                    const newGuild = await Database.SetGuildAttr(msg.guildId, {
+                    const newGuild = await Database.SetRowAttr("guild", { "id": msg.guildId }, {
                         "soundBlacklistRoleId": roleId
                     });
                     

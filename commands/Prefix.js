@@ -17,7 +17,7 @@ module.exports = CreateCommand({
             "execute": async (msg, guild, locale, [ prefix ]) => {
                 /** @type {String} */
                 const constrainedPrefix = prefix.substring(0, DatabaseDefinitions.MAX_PREFIX_LENGTH);
-                const { prefix: newPrefix } = await Database.SetGuildAttr(msg.guild.id, { "prefix": constrainedPrefix });
+                const { prefix: newPrefix } = await Database.SetRowAttr("guild", { "id": msg.guildId }, { "prefix": constrainedPrefix });
                 await msg.reply(Utils.FormatString(locale.command.changed, newPrefix));
             }
         }

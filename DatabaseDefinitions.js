@@ -115,4 +115,10 @@ const CounterModel = {
  * @typedef {DatabaseRow&_CounterRowType} CounterRow A Database Row for a specific Counter
  */
 
+/**
+ * @typedef {Object} DatabaseTables
+ * @property {GuildRow} guild
+ * @property {CounterRow} counter
+ */
+
 module.exports = { MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH, GuildModel, CounterModel };

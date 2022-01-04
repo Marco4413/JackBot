@@ -11,9 +11,9 @@ const _GetConfigCallback = (settingName) => {
     return async (msg, guild, locale, [ enable ]) => {
         let counter = undefined;
         if (enable === null) {
-            counter = await Database.GetGuildCounter(msg.guild.id, msg.channel.id);
+            counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
         } else {
-            counter = await Database.SetGuildCounterAttr(msg.guild.id, msg.channel.id, {
+            counter = await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
                 [settingName]: enable
             });
         }
@@ -36,7 +36,7 @@ module.exports = CreateCommand({
             "channelPermissions": true,
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "execute": async (msg, guild, locale) => {
-                const counter = await Database.CreateGuildCounter(msg.guild.id, msg.channel.id);
+                const counter = await Database.CreateRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
                 if (counter === undefined) {
                     await msg.reply(locale.command.alreadyCounting);
                 } else {
@@ -61,7 +61,7 @@ module.exports = CreateCommand({
             "execute": async (msg, guild, locale, [ targetChannel ]) => {
                 const isHere = targetChannel === null;
 
-                let channelId = msg.channel.id;
+                let channelId = msg.channelId;
                 if (!isHere) {
                     channelId = targetChannel;
                     const textChannel = await msg.guild.channels.resolve(channelId);
@@ -69,7 +69,7 @@ module.exports = CreateCommand({
                         return;
                 }
 
-                const counter = await Database.GetGuildCounter(msg.guild.id, channelId);
+                const counter = await Database.GetRow("counter", { "guildId": msg.guildId, channelId });
 
                 if (counter === undefined) {
                     await msg.reply(
@@ -78,7 +78,7 @@ module.exports = CreateCommand({
                             Utils.FormatString(locale.command.noCountingThere, Utils.MentionTextChannel(channelId))
                     );
                 } else {
-                    await Database.RemoveGuildCounter(msg.guild.id, channelId);
+                    await Database.RemoveRows("counter", { "guildId": msg.guildId, channelId });
                     await msg.reply(Utils.FormatString(
                         isHere ? locale.command.stoppedCountingHere : locale.command.stoppedCountingThere,
                         counter.bestCount, Utils.MentionTextChannel(channelId)
@@ -116,7 +116,7 @@ module.exports = CreateCommand({
             "name": "best",
             "shortcut": "b",
             "execute": async (msg, guild, locale) => {
-                const counter = await Database.GetGuildCounter(msg.guild.id, msg.channel.id);
+                const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
                 if (counter === undefined) {
                     await msg.reply(locale.command.noCountingHere);
                 } else {
@@ -128,7 +128,7 @@ module.exports = CreateCommand({
             "name": "list",
             "shortcut": "l",
             "execute": async (msg, guild, locale) => {
-                const counters = await Database.GetGuildCounters(msg.guild.id);
+                const counters = await Database.GetRows("counter", { "guildId": msg.guildId });
                 const embed =
                     Utils.GetDefaultEmbedForMessage(msg, false)
                         .setTitle(locale.command.title);
@@ -160,7 +160,7 @@ module.exports = CreateCommand({
         }
     ],
     "execute": async (msg, guild, locale) => {
-        const counter = await Database.GetGuildCounter(msg.guild.id, msg.channel.id);
+        const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
         if (counter === undefined) {
             await msg.reply(locale.command.noCountingHere);
         } else {
