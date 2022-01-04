@@ -115,7 +115,7 @@ const IsNaN = (n) => {
 
 /**
  * Creates a mention to the specified User
- * @param {String} userId The ID of the User to create the mention for
+ * @param {String} userId The Id of the User to create the mention for
  * @returns {String} The mention for the specified User
  */
 const MentionUser = (userId) => {
@@ -124,11 +124,20 @@ const MentionUser = (userId) => {
 
 /**
  * Creates a mention to the specified Text Channel
- * @param {String} channelId The ID of the Text Channel to create the mention for
+ * @param {String} channelId The Id of the Text Channel to create the mention for
  * @returns {String} The mention for the specified Text Channel
  */
 const MentionTextChannel = (channelId) => {
     return `<#${channelId}>`;
+};
+
+/**
+ * Creates a mention to the specified Role
+ * @param {String} roleId The Id of the Role to create the mention for
+ * @returns {String} The mention for the specified Role
+ */
+const MentionRole = (roleId) => {
+    return `<@&${roleId}>`;
 };
 
 /**
@@ -167,6 +176,6 @@ module.exports = {
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     TranslateNumber, IsNaN,
-    MentionUser, MentionTextChannel,
+    MentionUser, MentionTextChannel, MentionRole,
     GetEnvVariable, AnyToNumber
 };
