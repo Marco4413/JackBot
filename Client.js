@@ -106,10 +106,8 @@ const IsVoiceConnectionIdle = (guild) => {
     return voiceConnection === undefined || voiceConnection.player.state.status === AudioPlayerStatus.Idle;
 };
 
-let _GENTLEMAN_MODE = "./data/goodbye.wav";
-if (!fs.existsSync(_GENTLEMAN_MODE))
-    _GENTLEMAN_MODE = null;
-else Logger.Info("GENTLEMAN MODE ACTIVATED!");
+let _GENTLEMEN = Utils.GetAudioFilesInDirectory("./data/gentlemen").map(file => file.fullPath);
+if (_GENTLEMEN.length > 0) Logger.Info(`(${_GENTLEMEN.length}) GENTLEMEN MODE ACTIVATED!`);
 
 /** @param {BaseGuildVoiceChannel} voiceChannel */
 const _CreateVoiceConnection = (voiceChannel) => {
@@ -146,11 +144,11 @@ const _CreateVoiceConnection = (voiceChannel) => {
     audioPlayer.once("softDestroy", () => {
         if (voiceConnection.state.status === VoiceConnectionStatus.Destroyed) return;
         
-        if (_GENTLEMAN_MODE === null) {
+        if (_GENTLEMEN.length === 0) {
             audioPlayer.emit("destroy");
         } else {
             ClearInterval(intervalId);
-            const goodbye = createAudioResource(_GENTLEMAN_MODE);
+            const goodbye = createAudioResource(Utils.GetRandomArrayElement(_GENTLEMEN));
             audioPlayer.on("stateChange", (oldState, newState) => {
                 if (newState.status === AudioPlayerStatus.Idle)
                     audioPlayer.emit("destroy");

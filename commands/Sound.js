@@ -12,9 +12,6 @@ const _SOUNDS_ALT_FOLDER = path.join(_SOUNDS_FOLDER, "alts");
 const _SOUNDS_CONFIG_PATH = path.join(_SOUNDS_FOLDER, "config.json");
 const _AUDIO_NAME_TO_FILE = { };
 
-const _AUDIO_EXTENSIONS = [ "mp3", "wav" ];
-const _AUDIO_REGEXP = new RegExp(`^(.+)\\.(?:${Utils.JoinArray(_AUDIO_EXTENSIONS, "|")})$`);
-
 const _INLINE_LINE_CHAR_LIMIT = 60;
 
 /**
@@ -28,26 +25,6 @@ const _INLINE_LINE_CHAR_LIMIT = 60;
 // #region Loading Sounds
 
 let _AUDIO_LOADING_PROMISE = null;
-
-/**
- * @param {String} folderPath 
- * @returns {{ name: String, path: String }[]}
- */
-const _GetAllAudioInFolder = (folderPath) => {
-    const validAudio = [ ];
-    const allAudio = fs.readdirSync(folderPath);
-    for (let i = 0; i < allAudio.length; i++) {
-        const audio = allAudio[i];
-        const audioMatch = _AUDIO_REGEXP.exec(audio);
-        if (audioMatch !== null) {
-            validAudio.push({
-                "name": audioMatch[1],
-                "path": path.join(folderPath, audioMatch[0])
-            });
-        }
-    }
-    return validAudio;
-};
 
 /**
  * @param {String} soundName
@@ -73,7 +50,7 @@ const _GetSoundPath = (soundName) => {
     fs.mkdirSync(_SOUNDS_FOLDER, { "recursive": true });
 
     // Check if the config exists, if so parse it
-    const hasConfig = fs.existsSync(_SOUNDS_CONFIG_PATH);
+    const hasConfig = Utils.IsFile(_SOUNDS_CONFIG_PATH);
     const soundsConfigFolder = path.dirname(_SOUNDS_CONFIG_PATH);
     
     let soundsConfig = { };
@@ -102,13 +79,13 @@ const _GetSoundPath = (soundName) => {
 
     const soundPromises = [ ];
     // Load all sounds from the sounds' folder
-    for (const sound of _GetAllAudioInFolder(_SOUNDS_FOLDER)) {
+    for (const sound of Utils.GetAudioFilesInDirectory(_SOUNDS_FOLDER)) {
         // Normalize the sound name
         const soundName = sound.name.replace(/\s+/g, " ").trim().toLowerCase();
 
         // If a sound with the same name was already defined discard it
         if (_AUDIO_NAME_TO_FILE[soundName] !== undefined) {
-            Logger.Warn(`Sound ${soundName} at "${_AUDIO_NAME_TO_FILE[soundName].path} is being skipped by "${sound.path}".`);
+            Logger.Warn(`Sound ${soundName} at "${_AUDIO_NAME_TO_FILE[soundName].path} is being skipped by "${sound.fullPath}".`);
             continue;
         }
         
@@ -125,22 +102,22 @@ const _GetSoundPath = (soundName) => {
             // Get Alts Folder Path
             if (typeof soundConfig.altsFolder === "string") {
                 const fullAltsPath = path.join(altsRootFolder, soundConfig.altsFolder);
-                if (fs.existsSync(fullAltsPath)) {
-                    alts = _GetAllAudioInFolder(fullAltsPath).map(alt => alt.path);
+                if (Utils.IsDirectory(fullAltsPath)) {
+                    alts = Utils.GetAudioFilesInDirectory(fullAltsPath).map(alt => alt.fullPath);
                 } else Logger.Warn(`The path specified by config field altsFolder for sound "${soundName}" doesn't exist, no alt will be loaded.`);
             } else Logger.Warn(`Invalid config field altsFolder for sound "${soundName}", no alt will be loaded.`);
         }
 
         // Register the Sound
         _AUDIO_NAME_TO_FILE[soundName] = {
-            "path": sound.path,
+            "path": sound.fullPath,
             "metadata": null,
             "altChance": altChance,
             "alts": alts
         };
 
         soundPromises.push((async () => {
-            _AUDIO_NAME_TO_FILE[soundName].metadata = await parseFile(sound.path);
+            _AUDIO_NAME_TO_FILE[soundName].metadata = await parseFile(sound.fullPath);
         })());
     }
 
@@ -327,6 +304,7 @@ module.exports = CreateCommand({
                 for (const soundName of Object.keys(_AUDIO_NAME_TO_FILE)) {
                     /** @type {AudioFileData} */
                     const sound = _AUDIO_NAME_TO_FILE[soundName];
+                    Logger.Debug(sound);
                     const formattedMetadata = _FormatAudioMetadata(locale, sound.metadata);
                     embed.addField(
                         Utils.FormatString(locale.command.fieldTitle, soundName),
