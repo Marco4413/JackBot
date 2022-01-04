@@ -3,7 +3,7 @@ const path = require("path");
 const { parseFile, IAudioMetadata } = require("music-metadata");
 const { createAudioResource } = require("@discordjs/voice");
 
-const { CreateCommand, IsMissingPermissions, Permissions, Utils } = require("../Command.js");
+const { CreateCommand, IsMissingPermissions, Permissions, Database, Utils } = require("../Command.js");
 const { IsVoiceConnectionIdle, GetOrCreateVoiceConnection, GetVoiceConnection } = require("../Client.js");
 const Logger = require("../Logger.js");
 
@@ -196,8 +196,22 @@ const _FormatAudioMetadata = (locale, metadata) => {
 // #endregion
 
 /** @type {import("../Command.js").CommandExecute} */
+const _IsBlacklisted = async (msg, guild, locale) => {
+    if (guild.soundBlacklistRoleId !== null &&
+        !msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
+        msg.member.roles.cache.has(guild.soundBlacklistRoleId)
+    ) {
+        await msg.reply(locale.command.roleBlacklisted);
+        return true;
+    }
+    return false;
+};
+
+/** @type {import("../Command.js").CommandExecute} */
 const _ExecutePlaySound = async (msg, guild, locale, args) => {
     if (_AUDIO_LOADING_PROMISE !== null) return;
+
+    if (await _IsBlacklisted(msg, guild, locale)) return;
 
     // No audio specified
     if (args.length === 0) {
@@ -253,6 +267,56 @@ module.exports = CreateCommand({
     "shortcut": "s",
     "subcommands": [
         {
+            "name": "blacklist-role",
+            "shortcut": "br",
+            "permissions": Permissions.FLAGS.MANAGE_ROLES,
+            "subcommands": [
+                {
+                    "name": "now",
+                    "shortcut": "n",
+                    "execute": async (msg, guild, locale) => {
+                        await msg.reply(Utils.FormatString(
+                            locale.command.currentRole,
+                            guild.soundBlacklistRoleId ?? locale.command.noRole,
+                            guild.soundBlacklistRoleId === null ?
+                                locale.command.noRole : Utils.MentionRole(guild.soundBlacklistRoleId)
+                        ));
+                    }
+                }
+            ],
+            "arguments": [
+                {
+                    "name": "[ROLE MENTION/ID]",
+                    "types": [ "role", "string" ]
+                }
+            ],
+            "execute": async (msg, guild, locale, [ roleId ]) => {
+                if (guild.soundBlacklistRoleId === roleId) {
+                    await Database.SetGuildAttr(msg.guildId, {
+                        "soundBlacklistRoleId": null
+                    });
+                    
+                    // Here guild.soundBlacklistRoleId is never null
+                    await msg.reply(Utils.FormatString(
+                        locale.command.removedRole,
+                        guild.soundBlacklistRoleId, Utils.MentionRole(guild.soundBlacklistRoleId)
+                    ));
+                } else {
+                    const newGuild = await Database.SetGuildAttr(msg.guildId, {
+                        "soundBlacklistRoleId": roleId
+                    });
+                    
+                    await msg.reply(Utils.FormatString(
+                        locale.command.changedRole,
+                        guild.soundBlacklistRoleId ?? locale.command.noRole,
+                        guild.soundBlacklistRoleId === null ?
+                            locale.command.noRole : Utils.MentionRole(guild.soundBlacklistRoleId),
+                        newGuild.soundBlacklistRoleId, Utils.MentionRole(newGuild.soundBlacklistRoleId)
+                    ));
+                }
+            }
+        },
+        {
             "name": "list",
             "execute": async (msg, guild, locale) => {
                 if (_AUDIO_LOADING_PROMISE !== null) return;
@@ -280,6 +344,8 @@ module.exports = CreateCommand({
             "name": "stop",
             "shortcut": "s",
             "execute": async (msg, guild, locale) => {
+                if (await _IsBlacklisted(msg, guild, locale)) return;
+
                 // Check if we're connected to a voice channel
                 const voiceConnection = GetVoiceConnection(msg.guild);
                 if (voiceConnection === undefined) {
@@ -311,6 +377,8 @@ module.exports = CreateCommand({
             "name": "leave",
             "shortcut": "l",
             "execute": async (msg, guild, locale) => {
+                if (await _IsBlacklisted(msg, guild, locale)) return;
+
                 // Check if we're connected to a voice channel
                 const voiceConnection = GetVoiceConnection(msg.guild);
                 if (voiceConnection === undefined) {

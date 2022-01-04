@@ -198,6 +198,12 @@
     },
     "sound": {
       "subcommands": {
+        "blacklist-role": {
+          "noRole": "Nessuno",
+          "currentRole": "Il ruolo con id {0} è bandito dai comandi audio in questo server.",
+          "removedRole": "Il ruolo con id {0} non è più bandito dai comandi audio in questo server.",
+          "changedRole": "L'id del ruolo bandito dai comandi audio in questo server è stato cambiato da {0} a {2}."
+        },
         "list": {
           "title": "Lista Audio",
           "description": "Una lista di tutti gli audio disponibili.",
@@ -211,6 +217,7 @@
           }
         },
         "stop": {
+          "roleBlacklisted": "Non posso smettere di riprodurre audio perché hai un ruolo che è bandito dai comandi audio.",
           "notConnected": "Non sono connesso in nessun canale vocale.",
           "guildMuted": "Non puoi terminare un audio se sei mutato nel server.",
           "notPlaying": "Non sto riproducendo nessun audio.",
@@ -218,12 +225,14 @@
           "sameChannel": "Devi essere nel mio stesso canale vocale per terminare la riproduzione di audio."
         },
         "leave": {
+          "roleBlacklisted": "Non posso uscire dal canale perché hai un ruolo che è bandito dai comandi audio.",
           "notConnected": "Non sono connesso in nessun canale vocale.",
           "guildMuted": "Non puoi farmi uscire dal canale se sei mutato nel server.",
           "leaving": "Sto uscendo dal canale.",
           "sameChannel": "Devi essere nel mio stesso canale vocale per farmi uscire."
         }
       },
+      "roleBlacklisted": "Non posso riprodurre audio perché hai un ruolo che è bandito dai comandi audio.",
       "noSoundSpecified": "Devi specificare il nome dell'audio da riprodurre.",
       "notConnected": "Devi essere connesso ad un canale vocale per poter riprodurre audio.",
       "guildMuted": "Non puoi riprodurre un audio se sei mutato nel server.",
