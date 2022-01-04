@@ -137,7 +137,7 @@ const MentionTextChannel = (channelId) => {
  * @param {String} varKey The key of the variable to get
  * @param {(value: Any, defaultValue: T) => T|undefined} [valueConverter] A function that converts the env value to the one needed, returns undefined if the conversion failed
  * @param {T} [defaultValue] The default value to return if the
- * @param {(data: ...Any) => void} [logger] The logger to log when defaultValue is used
+ * @param {(data: ...Any) => Void} [logger] The logger to log when defaultValue is used
  * @returns {T} The value of the Environment Variable
  */
 const GetEnvVariable = (varKey, valueConverter = v => v, defaultValue, logger = console.warn) => {

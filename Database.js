@@ -3,7 +3,7 @@ const MariaDB = require("./databases/MariaDB.js");
 const DBDefinitions = require("./DatabaseDefinitions.js");
 const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
 
-/** @typedef {(boolean|((sql: string, timing?: number) => void))?} SequelizeLogging */
+/** @typedef {(boolean|((sql: string, timing?: number) => Void))?} SequelizeLogging */
 
 /**
  * Generic Settings for Databases

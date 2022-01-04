@@ -17,7 +17,7 @@ const Utils = require("./Utils.js");
  */
 
 /**
- * @typedef {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<void>} CommandExecute The callback of a Command
+ * @typedef {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<Void>} CommandExecute The callback of a Command
  */
 
 /**
