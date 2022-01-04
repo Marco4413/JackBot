@@ -36,6 +36,11 @@ const GuildModel = {
             else return defaultValue;
         }, "en-us", Logger.Warn),
         "allowNull": false
+    },
+    "soundBlacklistRoleId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
     }
 };
 
@@ -93,6 +98,7 @@ const CounterModel = {
  * @property {String} prefix The prefix used by the Guild
  * @property {Boolean} shortcuts Whether or not shortcuts are enabled in the Guild
  * @property {String} locale The Guild's Locale
+ * @property {String} soundBlacklistRoleId The Id of the Blacklisted Role for Sound Commands
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
 
