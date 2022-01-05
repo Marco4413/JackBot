@@ -65,6 +65,26 @@
             "title": "Info",
             "description": "Shows info about this bot."
           },
+          "boost": {
+            "title": "Boost",
+            "description": "Used to manage Boost Announcements for this Guild from the Bot.",
+            "subcommands": {
+              "channel": {
+                "title": "Channel",
+                "description": "Shows the currently set Channel for Nitro Boost Announcements.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Sets the Channel for Nitro Boost Announcements to the one specified."
+                  }
+                }
+              },
+              "test": {
+                "title": "Test",
+                "description": "Tests Nitro Boost Announcements by sending the Announcement either to the specified Channel or the default one."
+              }
+            }
+          },
           "calculate": {
             "title": "Calculate",
             "description": "Calculates the specified Math Expression."

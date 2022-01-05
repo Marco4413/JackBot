@@ -65,6 +65,26 @@
             "title": "Info",
             "description": "Mostra informazioni sul bot."
           },
+          "boost": {
+            "title": "Boost",
+            "description": "Gestisce gli annunci per i Boost Nitro in questo server da parte del Bot.",
+            "subcommands": {
+              "channel": {
+                "title": "Channel",
+                "description": "Mostra il Canale corrente per gli annunci Boost Nitro.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Imposta il Canale per gli annunci Boost Nitro a quello specificato."
+                  }
+                }
+              },
+              "test": {
+                "title": "Test",
+                "description": "Testa gli annunci Boost Nitro inviando l'Annuncio o nel Canale specificato o quello impostato."
+              }
+            }
+          },
           "calculate": {
             "title": "Calculate",
             "description": "Calcola l'Espressione Matematica specificata."
@@ -190,7 +210,7 @@
         "description": "Nessun comando con il nome specificato è stato trovato."
       },
       "subcommandsList": "Sottocomandi: {0}",
-      "noSubcommands": "Qusto comando non ha sottocomandi."
+      "noSubcommands": "Questo comando non ha sottocomandi."
     },
     "info": {
       "title": "Info:",
