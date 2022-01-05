@@ -72,7 +72,7 @@ const GetAvailableLocales = () => {
 
 /**
  * Gets the Locale for the specified Command
- * @param {String} localeName The name of the Locale to get the {@link sCommandLocale} from
+ * @param {String} localeName The name of the Locale to get the {@link CommandLocale} from
  * @param {String[]} commandPath The path to the Command
  * @returns {CommandLocale} The Locale for the Command
  */
