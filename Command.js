@@ -304,6 +304,7 @@ const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
  */
 const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandList) => {
     const [ commandName, ...commandArgs ] = splittedMessage;
+    if (commandName === undefined) return false;
 
     for (let i = 0; i < commandList.length; i++) {
         const command = commandList[i];
