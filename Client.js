@@ -2,7 +2,7 @@ const fs = require("fs");
 const { Client: DiscordClient, Intents, BaseGuildVoiceChannel, Guild } = require("discord.js");
 const {
     getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource,
-    PlayerSubscription, VoiceConnectionStatus, VoiceConnection, AudioPlayerStatus
+    PlayerSubscription, VoiceConnectionStatus, VoiceConnection, AudioPlayerStatus, AudioPlayer
 } = require("@discordjs/voice");
 const Logger = require("./Logger.js");
 const { CreateInterval, ClearInterval } = require("./Timing.js");
@@ -106,7 +106,7 @@ const IsVoiceConnectionIdle = (guild) => {
     return voiceConnection === undefined || voiceConnection.player.state.status === AudioPlayerStatus.Idle;
 };
 
-let _GENTLEMEN = Utils.GetAudioFilesInDirectory("./data/gentlemen").map(file => file.fullPath);
+const _GENTLEMEN = Utils.GetAudioFilesInDirectory("./data/gentlemen").map(file => file.fullPath);
 if (_GENTLEMEN.length > 0) Logger.Info(`(${_GENTLEMEN.length}) GENTLEMEN MODE ACTIVATED!`);
 
 /** @param {BaseGuildVoiceChannel} voiceChannel */
