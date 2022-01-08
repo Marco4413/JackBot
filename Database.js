@@ -1,7 +1,7 @@
 const SQLite = require("./databases/SQLite.js");
 const MariaDB = require("./databases/MariaDB.js");
 const Definitions = require("./DatabaseDefinitions.js");
-const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
+const { Sequelize, Model, ModelCtor, SyncOptions, ModelOptions } = require("sequelize");
 
 /** @typedef {(boolean|((sql: string, timing?: number) => Void))?} SequelizeLogging */
 
@@ -18,12 +18,13 @@ const { Sequelize, Model, ModelCtor, SyncOptions } = require("sequelize");
 /** @type {Sequelize} */
 let _DBInstance = null;
 
-
 const _Models = {
     /** @type {ModelCtor<Model>} */
     "guild": null,
     /** @type {ModelCtor<Model>} */
-    "counter": null
+    "counter": null,
+    /** @type {ModelCtor<Model>} */
+    "sound": null
 };
 
 // #region Basic Methods
@@ -58,18 +59,19 @@ const Start = async (settings) => {
 
     /** @type {SyncOptions} */
     const syncOptions = { "alter": true };
+    /** @type {ModelOptions} */
+    const modelOptions = { "timestamps": true };
 
     // Defining and Syncing Models
-    _Models.guild = _DBInstance.define("Guild", Definitions.GuildModel);
-    _Models.counter = _DBInstance.define("Counter", Definitions.CounterModel, { "timestamps": true });
+    _Models.guild   = _DBInstance.define("Guild"  , Definitions.GuildModel  , modelOptions);
+    _Models.counter = _DBInstance.define("Counter", Definitions.CounterModel, modelOptions);
+    _Models.sound   = _DBInstance.define("Sound"  , Definitions.SoundModel  , modelOptions);
     
-    if (settings.dropDatabase) {
-        await _Models.guild.drop();
-        await _Models.counter.drop();
+    for (const model of Object.values(_Models)) {
+        if (settings.dropDatabase)
+            await model.drop();
+        await model.sync(syncOptions);
     }
-
-    await _Models.guild.sync(syncOptions);
-    await _Models.counter.sync(syncOptions);
 
     // Trying to authenticate to the Database
     await _DBInstance.authenticate();

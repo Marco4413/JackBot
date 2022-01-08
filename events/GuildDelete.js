@@ -3,7 +3,8 @@ const Database = require("../Database.js");
 
 module.exports = CreateEventListener(
     "guildDelete", async guild => {
-        await Database.RemoveRows("guild", { "id": guild.id });
+        await Database.RemoveRows("guild"  , { "id": guild.id });
         await Database.RemoveRows("counter", { "guildId": guild.id });
+        await Database.RemoveRows("sound"  , { "guildId": guild.id });
     }
 );

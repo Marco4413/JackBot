@@ -174,9 +174,11 @@ const _FormatAudioMetadata = (locale, metadata) => {
 
 /** @type {import("../Command.js").CommandExecute} */
 const _IsBlacklisted = async (msg, guild, locale) => {
-    if (guild.soundBlacklistRoleId !== null &&
+    const soundSettings = await Database.GetOrCreateRow("sound", { "guildId": guild.id });
+    if (soundSettings.soundBlacklistRoleId !== null &&
         !msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
-        msg.member.roles.cache.has(guild.soundBlacklistRoleId)
+        // All roles should be cached so this should be safe
+        msg.member.roles.cache.has(soundSettings.soundBlacklistRoleId)
     ) {
         await msg.reply(locale.command.roleBlacklisted);
         return true;
@@ -252,11 +254,12 @@ module.exports = CreateCommand({
                     "name": "now",
                     "shortcut": "n",
                     "execute": async (msg, guild, locale) => {
+                        const soundSettings = await Database.GetOrCreateRow("sound", { "guildId": guild.id });
                         await msg.reply(Utils.FormatString(
                             locale.command.currentRole,
-                            guild.soundBlacklistRoleId ?? locale.command.noRole,
-                            guild.soundBlacklistRoleId === null ?
-                                locale.command.noRole : Utils.MentionRole(guild.soundBlacklistRoleId)
+                            soundSettings.soundBlacklistRoleId ?? locale.command.noRole,
+                            soundSettings.soundBlacklistRoleId === null ?
+                                locale.command.noRole : Utils.MentionRole(soundSettings.soundBlacklistRoleId)
                         ));
                     }
                 }
@@ -268,27 +271,28 @@ module.exports = CreateCommand({
                 }
             ],
             "execute": async (msg, guild, locale, [ roleId ]) => {
-                if (guild.soundBlacklistRoleId === roleId) {
-                    await Database.SetRowAttr("guild", { "id": msg.guildId }, {
+                const soundSettings = await Database.GetOrCreateRow("sound", { "guildId": guild.id });
+                if (soundSettings.soundBlacklistRoleId === roleId) {
+                    await Database.SetRowAttr("sound", { "guildId": msg.guildId }, {
                         "soundBlacklistRoleId": null
                     });
                     
-                    // Here guild.soundBlacklistRoleId is never null
+                    // Here soundSettings.soundBlacklistRoleId is never null
                     await msg.reply(Utils.FormatString(
                         locale.command.removedRole,
-                        guild.soundBlacklistRoleId, Utils.MentionRole(guild.soundBlacklistRoleId)
+                        soundSettings.soundBlacklistRoleId, Utils.MentionRole(soundSettings.soundBlacklistRoleId)
                     ));
                 } else {
-                    const newGuild = await Database.SetRowAttr("guild", { "id": msg.guildId }, {
+                    const newSoundSettings = await Database.SetRowAttr("sound", { "guildId": msg.guildId }, {
                         "soundBlacklistRoleId": roleId
                     });
                     
                     await msg.reply(Utils.FormatString(
                         locale.command.changedRole,
-                        guild.soundBlacklistRoleId ?? locale.command.noRole,
-                        guild.soundBlacklistRoleId === null ?
-                            locale.command.noRole : Utils.MentionRole(guild.soundBlacklistRoleId),
-                        newGuild.soundBlacklistRoleId, Utils.MentionRole(newGuild.soundBlacklistRoleId)
+                        soundSettings.soundBlacklistRoleId ?? locale.command.noRole,
+                        soundSettings.soundBlacklistRoleId === null ?
+                            locale.command.noRole : Utils.MentionRole(soundSettings.soundBlacklistRoleId),
+                        newSoundSettings.soundBlacklistRoleId, Utils.MentionRole(newSoundSettings.soundBlacklistRoleId)
                     ));
                 }
             }

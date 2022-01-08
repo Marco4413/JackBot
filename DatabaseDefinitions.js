@@ -91,6 +91,19 @@ const CounterModel = {
     }
 };
 
+const SoundModel = {
+    "guildId": {
+        "primaryKey": true,
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "soundBlacklistRoleId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    }
+};
+
 /**
  * @typedef {Object} DatabaseRow A Generic Database Row
  * @property {Date} createdAt The time this Row was created at
@@ -99,7 +112,7 @@ const CounterModel = {
 
 /**
  * @typedef {Object} _GuildRowType
- * @property {String} id The ID of the Guild
+ * @property {String} id The Id of the Guild
  * @property {String} prefix The prefix used by the Guild
  * @property {Boolean} shortcuts Whether or not shortcuts are enabled in the Guild
  * @property {String} locale The Guild's Locale
@@ -110,8 +123,8 @@ const CounterModel = {
 
 /**
  * @typedef {Object} _CounterRowType
- * @property {String} channelId The ID of the Counter's Channel
- * @property {String} guildId The ID of the Guild this Counter belongs to
+ * @property {String} channelId The Id of the Counter's Channel
+ * @property {String} guildId The Id of the Guild this Counter belongs to
  * @property {BigInt} count The current Count of this Counter
  * @property {BigInt} bestCount The best Count that this Counter has reached
  * @property {String} lastMemberId The Id of the Last Member who changed the count
@@ -122,9 +135,20 @@ const CounterModel = {
  */
 
 /**
+ * @typedef {Object} _SoundRowType
+ * @property {String} guildId The Id of the Guild these Sound settings belong to
+ * @property {String} blacklistRoleId The Id of the Blacklisted Role for Sound Commands
+ * @typedef {DatabaseRow&_SoundRowType} SoundRow A Database Row for a specific Counter
+ */
+
+/**
  * @typedef {Object} DatabaseTables
  * @property {GuildRow} guild
  * @property {CounterRow} counter
+ * @property {SoundRow} sound
  */
 
-module.exports = { MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH, GuildModel, CounterModel };
+module.exports = {
+    MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
+    GuildModel, CounterModel, SoundModel
+};
