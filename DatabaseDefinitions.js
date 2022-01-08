@@ -37,11 +37,6 @@ const GuildModel = {
         }, "en-us", Logger.Warn),
         "allowNull": false
     },
-    "soundBlacklistRoleId": {
-        "type": _SNOWFLAKE_DATATYPE,
-        "defaultValue": null,
-        "allowNull": true
-    },
     "nitroBoostChannelId": {
         "type": _SNOWFLAKE_DATATYPE,
         "defaultValue": null,
@@ -116,7 +111,6 @@ const SoundModel = {
  * @property {String} prefix The prefix used by the Guild
  * @property {Boolean} shortcuts Whether or not shortcuts are enabled in the Guild
  * @property {String} locale The Guild's Locale
- * @property {String} soundBlacklistRoleId The Id of the Blacklisted Role for Sound Commands
  * @property {String} nitroBoostChannelId The Id of the Channel where Nitro Boost Announcements are sent
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
