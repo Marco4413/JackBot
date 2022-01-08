@@ -176,7 +176,7 @@ const _FormatAudioMetadata = (locale, metadata) => {
 const _IsBlacklisted = async (msg, guild, locale) => {
     const soundSettings = await Database.GetOrCreateRow("sound", { "guildId": guild.id });
     if (soundSettings.soundBlacklistRoleId !== null &&
-        !msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) &&
+        !msg.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES) &&
         // All roles should be cached so this should be safe
         msg.member.roles.cache.has(soundSettings.soundBlacklistRoleId)
     ) {
@@ -189,8 +189,6 @@ const _IsBlacklisted = async (msg, guild, locale) => {
 /** @type {import("../Command.js").CommandExecute} */
 const _ExecutePlaySound = async (msg, guild, locale, args) => {
     if (_AUDIO_LOADING_PROMISE !== null) return;
-
-    if (await _IsBlacklisted(msg, guild, locale)) return;
 
     // No audio specified
     if (args.length === 0) {
@@ -244,6 +242,7 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
 module.exports = CreateCommand({
     "name": "sound",
     "shortcut": "s",
+    "canExecute": async (msg, guild, locale) => !await _IsBlacklisted(msg, guild, locale),
     "subcommands": [
         {
             "name": "blacklist-role",
@@ -326,8 +325,6 @@ module.exports = CreateCommand({
             "name": "stop",
             "shortcut": "s",
             "execute": async (msg, guild, locale) => {
-                if (await _IsBlacklisted(msg, guild, locale)) return;
-
                 // Check if we're connected to a voice channel
                 const voiceConnection = GetVoiceConnection(msg.guild);
                 if (voiceConnection === undefined) {
@@ -359,8 +356,6 @@ module.exports = CreateCommand({
             "name": "leave",
             "shortcut": "l",
             "execute": async (msg, guild, locale) => {
-                if (await _IsBlacklisted(msg, guild, locale)) return;
-
                 // Check if we're connected to a voice channel
                 const voiceConnection = GetVoiceConnection(msg.guild);
                 if (voiceConnection === undefined) {

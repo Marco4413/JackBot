@@ -273,7 +273,6 @@
           }
         },
         "stop": {
-          "roleBlacklisted": "Can't stop playing sounds because you've got a role that's blacklisted from sound commands.",
           "notConnected": "I'm not connected to any voice channel.",
           "guildMuted": "You can't stop a sound if you're muted on the guild.",
           "notPlaying": "I'm not currently playing any sound.",
@@ -281,14 +280,13 @@
           "sameChannel": "You must be on my voice channel to stop sounds."
         },
         "leave": {
-          "roleBlacklisted": "Can't leave the channel because you've got a role that's blacklisted from sound commands.",
           "notConnected": "I'm not connected to any voice channel.",
           "guildMuted": "You can't make me leave the channel if you're muted on the guild.",
           "leaving": "I'm leaving the voice channel.",
           "sameChannel": "You must be on my voice channel to make me leave."
         }
       },
-      "roleBlacklisted": "Can't play sounds because you've got a role that's blacklisted from sound commands.",
+      "roleBlacklisted": "Can't use sound commands because you've got a role that's blacklisted from them.",
       "noSoundSpecified": "You must specify the name of the sound to play.",
       "notConnected": "You must be connected to a voice channel to play sounds.",
       "guildMuted": "You can't play a sound if you're muted on the guild.",
