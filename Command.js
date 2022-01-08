@@ -1,4 +1,4 @@
-const discord = require("discord.js");
+const Discord = require("Discord.js");
 const Database = require("./Database.js");
 const DatabaseDefinitions = require("./DatabaseDefinitions.js");
 const Localization = require("./Localization.js");
@@ -17,16 +17,18 @@ const Utils = require("./Utils.js");
  */
 
 /**
- * @typedef {(msg: discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<Void>} CommandExecute The callback of a Command
+ * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<Void>} CommandExecute The callback of a Command
+ * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale) => Promise<Boolean>} CommandCanExecute
  */
 
 /**
  * @typedef {Object} Command A Command's Definition
  * @property {String} name The name of the Command
  * @property {String} [shortcut] The shortcut for the Command
+ * @property {CommandCanExecute} [canExecute] The function called to check whether or not the Command can be executed
  * @property {Command[]} [subcommands] A List of Subcommands
  * @property {Boolean} [channelPermissions] Whether or not the specified permissions are for the channel
- * @property {discord.PermissionResolvable} [permissions] The permissions required to run the Command
+ * @property {Discord.PermissionResolvable} [permissions] The permissions required to run the Command
  * @property {CommandArgument[]} [arguments] The Arguments of the Command ( If not specified all arguments are given as Strings )
  * @property {CommandExecute} execute The function called to Execute the Command
  */
@@ -55,7 +57,7 @@ const Utils = require("./Utils.js");
 // #region Private Functions
 
 /**
- * @param {discord.Message} msg
+ * @param {Discord.Message} msg
  * @param {String} [arg]
  * @param {Number} argIndex
  * @param {CommandArgument} argDef
@@ -125,7 +127,7 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
 };
 
 /**
- * @param {discord.Message} msg
+ * @param {Discord.Message} msg
  * @param {String[]} args
  * @param {CommandArgument[]} [argDefs]
  * @returns {_ArgumentsParseResult}
@@ -165,16 +167,16 @@ const _ParseArguments = (args, argDefs) => {
 };
 
 /**
- * @param {discord.Permissions} memberPerms
- * @param {discord.PermissionResolvable} requiredPermsResolvable
+ * @param {Discord.Permissions} memberPerms
+ * @param {Discord.PermissionResolvable} requiredPermsResolvable
  * @param {Localization.CommandLocale} locale
  * @returns {String}
  */
 const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
     const adminKey = "ADMINISTRATOR";
-    const requiredPerms = discord.Permissions.resolve(requiredPermsResolvable);
+    const requiredPerms = Discord.Permissions.resolve(requiredPermsResolvable);
     const missingPerms =
-        requiredPerms === discord.Permissions.FLAGS.ADMINISTRATOR ?
+        requiredPerms === Discord.Permissions.FLAGS.ADMINISTRATOR ?
             [ adminKey ] : memberPerms.missing(requiredPerms);
 
     const hasLocale = locale.common.permissions !== undefined;
@@ -215,6 +217,7 @@ const IsValidCommand = (command) => {
     let isValid = (
         typeof command === "object" &&
         typeof command.name === "string" &&
+        ( command.canExecute === undefined || typeof command.canExecute === "function" ) &&
         ( command.execute === undefined || typeof command.execute === "function" ) &&
         ( command.channelPermissions === undefined || typeof command.channelPermissions === "boolean" ) &&
         ( command.permissions === undefined || typeof command.permissions === "number" || typeof command.permissions === "bigint" ) &&
@@ -264,10 +267,10 @@ const SplitCommand = (msg) => {
  * Tests if the author of the specified Message has the specified Permissions
  * in the guild or the specified Channel and replies to the Message whether or
  * not the author has the Permissions with the specified CommandLocale
- * @param {discord.Message} msg The Message to use
+ * @param {Discord.Message} msg The Message to use
  * @param {CommandLocale} locale The Locale to use
- * @param {discord.PermissionResolvable} requiredPerms The Permissions Required
- * @param {discord.GuildChannel} [channel] The Channel to test the Permissions on ( undefined for Guild )
+ * @param {Discord.PermissionResolvable} requiredPerms The Permissions Required
+ * @param {Discord.GuildChannel} [channel] The Channel to test the Permissions on ( undefined for Guild )
  * @returns {Boolean} Whether or not the Message's author has the specified Permissions
  */
 const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
@@ -295,7 +298,7 @@ const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
 
 /**
  * Executes the Commands from the specified commandList and splittedMessage ( Obtained with {@link SplitCommand} )
- * @param {discord.Message} msg The message to be given to Commands when executing and to reply with error feedback
+ * @param {Discord.Message} msg The message to be given to Commands when executing and to reply with error feedback
  * @param {DatabaseDefinitions.GuildRow} guildRow The Guild Row from the Database
  * @param {Localization.CommandLocale} locale The locale to use for messages
  * @param {String[]} splittedMessage The splitted message containing the "raw" commands
@@ -327,6 +330,10 @@ const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandLis
             "command": locale.command.subcommands === undefined || locale.command.subcommands[command.name] === undefined ?
                 locale.command : locale.command.subcommands[command.name]
         };
+
+        if (command.canExecute !== undefined &&
+            !await command.canExecute(msg, guildRow, commandLocale)
+        ) return true;
 
         // If this command has subcommands then try to execute those
         if (command.subcommands !== undefined) {
@@ -381,5 +388,5 @@ const CreateCommand = cmd => cmd;
 
 module.exports = {
     IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand, IsMissingPermissions,
-    Utils, Database, DatabaseDefinitions, Permissions: discord.Permissions
+    Utils, Database, DatabaseDefinitions, Permissions: Discord.Permissions
 };
