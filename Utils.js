@@ -148,7 +148,7 @@ const MentionRole = (roleId) => {
  * @template {Object} T The type of the variable
  * @param {String} varKey The key of the variable to get
  * @param {(value: Any, defaultValue: T) => T|undefined} [valueConverter] A function that converts the env value to the one needed, returns undefined if the conversion failed
- * @param {T} [defaultValue] The default value to return if the
+ * @param {T} [defaultValue] The default value to return if valueConverter returns undefined
  * @param {(data: ...Any) => Void} [logger] The logger to log when defaultValue is used
  * @returns {T} The value of the Environment Variable
  */
