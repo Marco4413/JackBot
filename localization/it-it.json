@@ -1,5 +1,8 @@
 {
   "commands": {
+    "banana": {
+      "noBanana": "Nessuna 🍌 Trovata :("
+    },
     "blacklist": {
       "currentUserBlacklistEmpty": "Nessun utente è nella blacklist.",
       "currentUserBlacklist": "Utenti nella blacklist:",
@@ -78,6 +81,10 @@
           "info": {
             "title": "Info",
             "description": "Mostra informazioni sul bot."
+          },
+          "banana": {
+            "title": "Banana",
+            "description": "Prende una GIF casuale di Banane da Tenor."
           },
           "blacklist": {
             "title": "Blacklist",

@@ -1,5 +1,8 @@
 {
   "commands": {
+    "banana": {
+      "noBanana": "No 🍌 was Found :("
+    },
     "blacklist": {
       "currentUserBlacklistEmpty": "No user is currently blacklisted.",
       "currentUserBlacklist": "Currently blacklisted users:",
@@ -78,6 +81,10 @@
           "info": {
             "title": "Info",
             "description": "Shows info about this bot."
+          },
+          "banana": {
+            "title": "Banana",
+            "description": "Gets a random Banana GIF from Tenor."
           },
           "blacklist": {
             "title": "Blacklist",
