@@ -38,6 +38,7 @@
     "mariadb": "^2.5.5",
     "mathjs": "^10.0.0",
     "music-metadata": "^7.11.4",
+    "node-fetch": "^2.6.6",
     "sequelize": "^6.12.0-beta.2",
     "sqlite3": "^5.0.2"
   },
