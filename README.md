@@ -7,6 +7,10 @@
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
 
+# Your Tenor API Key Here
+# Only required to enable GIF search functions, remove the field to disable them
+TENOR_API_KEY = "MyTenorAPIKey"
+
 # Client Settings
 # The Update Interval used by the Client to check Voice Channel State when playing Audio
 #  This must be less than the Number specified in CLIENT_PLAYER_IDLE_TIME
