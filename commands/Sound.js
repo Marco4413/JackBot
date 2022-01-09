@@ -1,15 +1,16 @@
-const fs = require("fs");
-const path = require("path");
+const FS = require("fs");
+const Path = require("path");
 const { parseFile, IAudioMetadata } = require("music-metadata");
 const { createAudioResource } = require("@discordjs/voice");
 
 const { CreateCommand, IsMissingPermissions, Permissions, Database, Utils } = require("../Command.js");
 const { IsVoiceConnectionIdle, GetOrCreateVoiceConnection, GetVoiceConnection } = require("../Client.js");
+const { IsBlacklisted } = require("./Blacklist.js");
 const Logger = require("../Logger.js");
 
 const _SOUNDS_FOLDER = "./data/sounds";
-const _SOUNDS_ALT_FOLDER = path.join(_SOUNDS_FOLDER, "alts");
-const _SOUNDS_CONFIG_PATH = path.join(_SOUNDS_FOLDER, "config.json");
+const _SOUNDS_ALT_FOLDER = Path.join(_SOUNDS_FOLDER, "alts");
+const _SOUNDS_CONFIG_PATH = Path.join(_SOUNDS_FOLDER, "config.json");
 const _AUDIO_NAME_TO_FILE = { };
 
 const _INLINE_LINE_CHAR_LIMIT = 60;
@@ -47,11 +48,11 @@ const _GetSoundPath = (soundName) => {
 };
 
 {
-    fs.mkdirSync(_SOUNDS_FOLDER, { "recursive": true });
+    FS.mkdirSync(_SOUNDS_FOLDER, { "recursive": true });
 
     // Check if the config exists, if so parse it
     const hasConfig = Utils.IsFile(_SOUNDS_CONFIG_PATH);
-    const soundsConfigFolder = path.dirname(_SOUNDS_CONFIG_PATH);
+    const soundsConfigFolder = Path.dirname(_SOUNDS_CONFIG_PATH);
     
     let soundsConfig = { };
     let altsRootFolder = _SOUNDS_ALT_FOLDER;
@@ -59,14 +60,14 @@ const _GetSoundPath = (soundName) => {
     if (hasConfig) {
         let config = { };
         try {
-            config = JSON.parse(fs.readFileSync(_SOUNDS_CONFIG_PATH));
+            config = JSON.parse(FS.readFileSync(_SOUNDS_CONFIG_PATH));
         } catch (error) {
             Logger.Error("Error when reading/parsing sound config file:", error.stack);
         }
 
         if (config.altsRoot === undefined) { /* Ignore */ }
         else if (typeof config.altsRoot === "string")
-            altsRootFolder = path.join(soundsConfigFolder, config.altsRoot);
+            altsRootFolder = Path.join(soundsConfigFolder, config.altsRoot);
         else Logger.Warn(`Sound Config's altsRoot field is of wrong type, using the default value: "${altsRootFolder}"`);
 
         if (config.sounds === undefined) { /* Ignore */ }
@@ -101,7 +102,7 @@ const _GetSoundPath = (soundName) => {
 
             // Get Alts Folder Path
             if (typeof soundConfig.altsFolder === "string") {
-                const fullAltsPath = path.join(altsRootFolder, soundConfig.altsFolder);
+                const fullAltsPath = Path.join(altsRootFolder, soundConfig.altsFolder);
                 if (Utils.IsDirectory(fullAltsPath)) {
                     alts = Utils.GetAudioFilesInDirectory(fullAltsPath).map(alt => alt.fullPath);
                 } else Logger.Warn(`The path specified by config field altsFolder for sound "${soundName}" doesn't exist, no alt will be loaded.`);
@@ -173,20 +174,6 @@ const _FormatAudioMetadata = (locale, metadata) => {
 // #endregion
 
 /** @type {import("../Command.js").CommandExecute} */
-const _IsBlacklisted = async (msg, guild, locale) => {
-    const soundSettings = await Database.GetOrCreateRow("sound", { "guildId": guild.id });
-    if (soundSettings.soundBlacklistRoleId !== null &&
-        !msg.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES) &&
-        // All roles should be cached so this should be safe
-        msg.member.roles.cache.has(soundSettings.soundBlacklistRoleId)
-    ) {
-        await msg.reply(locale.command.roleBlacklisted);
-        return true;
-    }
-    return false;
-};
-
-/** @type {import("../Command.js").CommandExecute} */
 const _ExecutePlaySound = async (msg, guild, locale, args) => {
     if (_AUDIO_LOADING_PROMISE !== null) return;
 
@@ -242,60 +229,13 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
 module.exports = CreateCommand({
     "name": "sound",
     "shortcut": "s",
-    "canExecute": async (msg, guild, locale) => !await _IsBlacklisted(msg, guild, locale),
+    "canExecute": async (msg, guild, locale) => {
+        const isBlacklisted = await IsBlacklisted(msg.member, "soundBlacklist");
+        if (isBlacklisted)
+            await msg.reply(locale.command.blacklisted);
+        return !isBlacklisted;
+    },
     "subcommands": [
-        {
-            "name": "blacklist-role",
-            "shortcut": "br",
-            "permissions": Permissions.FLAGS.MANAGE_ROLES,
-            "subcommands": [
-                {
-                    "name": "now",
-                    "shortcut": "n",
-                    "execute": async (msg, guild, locale) => {
-                        const soundSettings = await Database.GetOrCreateRow("sound", { "guildId": guild.id });
-                        await msg.reply(Utils.FormatString(
-                            locale.command.currentRole,
-                            soundSettings.soundBlacklistRoleId ?? locale.command.noRole,
-                            soundSettings.soundBlacklistRoleId === null ?
-                                locale.command.noRole : Utils.MentionRole(soundSettings.soundBlacklistRoleId)
-                        ));
-                    }
-                }
-            ],
-            "arguments": [
-                {
-                    "name": "[ROLE MENTION/ID]",
-                    "types": [ "role", "string" ]
-                }
-            ],
-            "execute": async (msg, guild, locale, [ roleId ]) => {
-                const soundSettings = await Database.GetOrCreateRow("sound", { "guildId": guild.id });
-                if (soundSettings.soundBlacklistRoleId === roleId) {
-                    await Database.SetRowAttr("sound", { "guildId": msg.guildId }, {
-                        "soundBlacklistRoleId": null
-                    });
-                    
-                    // Here soundSettings.soundBlacklistRoleId is never null
-                    await msg.reply(Utils.FormatString(
-                        locale.command.removedRole,
-                        soundSettings.soundBlacklistRoleId, Utils.MentionRole(soundSettings.soundBlacklistRoleId)
-                    ));
-                } else {
-                    const newSoundSettings = await Database.SetRowAttr("sound", { "guildId": msg.guildId }, {
-                        "soundBlacklistRoleId": roleId
-                    });
-                    
-                    await msg.reply(Utils.FormatString(
-                        locale.command.changedRole,
-                        soundSettings.soundBlacklistRoleId ?? locale.command.noRole,
-                        soundSettings.soundBlacklistRoleId === null ?
-                            locale.command.noRole : Utils.MentionRole(soundSettings.soundBlacklistRoleId),
-                        newSoundSettings.soundBlacklistRoleId, Utils.MentionRole(newSoundSettings.soundBlacklistRoleId)
-                    ));
-                }
-            }
-        },
         {
             "name": "list",
             "execute": async (msg, guild, locale) => {

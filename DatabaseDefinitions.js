@@ -86,16 +86,39 @@ const CounterModel = {
     }
 };
 
-const SoundModel = {
+const UserModel = {
     "guildId": {
         "primaryKey": true,
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
-    "soundBlacklistRoleId": {
+    "userId": {
+        "primaryKey": true,
         "type": _SNOWFLAKE_DATATYPE,
-        "defaultValue": null,
-        "allowNull": true
+        "allowNull": false
+    },
+    "soundBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    }
+};
+
+const RoleModel = {
+    "guildId": {
+        "primaryKey": true,
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "roleId": {
+        "primaryKey": true,
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "soundBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
     }
 };
 
@@ -129,20 +152,30 @@ const SoundModel = {
  */
 
 /**
- * @typedef {Object} _SoundRowType
- * @property {String} guildId The Id of the Guild these Sound settings belong to
- * @property {String} blacklistRoleId The Id of the Blacklisted Role for Sound Commands
- * @typedef {DatabaseRow&_SoundRowType} SoundRow A Database Row for a specific Counter
+ * @typedef {Object} _UserRowType
+ * @property {String} guildId The Id of the Guild this User belongs to
+ * @property {String} userId The Id of the User
+ * @property {Boolean} soundBlacklist Whether or not the User is blacklisted from Sound Commands
+ * @typedef {DatabaseRow&_UserRowType} UserRow
+ */
+
+/**
+ * @typedef {Object} _RoleRowType
+ * @property {String} guildId The Id of the Guild this Role belongs to
+ * @property {String} roleId The Id of the Role
+ * @property {Boolean} soundBlacklist Whether or not the Role is blacklisted from Sound Commands
+ * @typedef {DatabaseRow&_RoleRowType} RoleRow
  */
 
 /**
  * @typedef {Object} DatabaseTables
  * @property {GuildRow} guild
  * @property {CounterRow} counter
- * @property {SoundRow} sound
+ * @property {UserRow} user
+ * @property {RoleRow} role
  */
 
 module.exports = {
     MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
-    GuildModel, CounterModel, SoundModel
+    GuildModel, CounterModel, UserModel, RoleModel
 };

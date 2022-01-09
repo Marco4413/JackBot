@@ -1,5 +1,19 @@
 {
   "commands": {
+    "blacklist": {
+      "currentUserBlacklistEmpty": "Nessun utente è nella blacklist.",
+      "currentUserBlacklist": "Utenti nella blacklist:",
+      "addedUserBlacklistEmpty": "Nessun utente è stato aggiunto alla blacklist.",
+      "addedUserBlacklist": "Utenti aggiungi alla blacklist:",
+      "removedUserBlacklistEmpty": "Nessun utente è stato rimosso dalla blacklist.",
+      "removedUserBlacklist": "Utenti rimossi dalla blacklist:",
+      "currentRoleBlacklistEmpty": "Nessun ruolo è nella blacklist.",
+      "currentRoleBlacklist": "Ruoli nella blacklist:",
+      "addedRoleBlacklistEmpty": "Nessun ruolo è stato aggiunto alla blacklist.",
+      "addedRoleBlacklist": "Ruoli aggiungi alla blacklist:",
+      "removedRoleBlacklistEmpty": "Nessun ruolo è stato rimosso dalla blacklist.",
+      "removedRoleBlacklist": "Ruoli rimossi dalla blacklist:"
+    },
     "boost": {
       "subcommands": {
         "channel": {
@@ -175,16 +189,6 @@
             "title": "Sound",
             "description": "Riproduce l'audio specificato.\nUsa `sound play` se l'audio ha lo stesso nome di un sottocomando.",
             "subcommands": {
-              "blacklist-role": {
-                "title": "Blacklist Role",
-                "description": "Bandisce il ruolo specificato dai comandi audio.",
-                "subcommands": {
-                  "now": {
-                    "title": "Now",
-                    "description": "Mostra il ruolo bandito dai comandi audio."
-                  }
-                }
-              },
               "list": {
                 "title": "List",
                 "description": "Mostra tutti gli audio disponibili."
@@ -254,12 +258,6 @@
     },
     "sound": {
       "subcommands": {
-        "blacklist-role": {
-          "noRole": "Nessuno",
-          "currentRole": "Il ruolo con id {0} è bandito dai comandi audio in questo server.",
-          "removedRole": "Il ruolo con id {0} non è più bandito dai comandi audio in questo server.",
-          "changedRole": "L'id del ruolo bandito dai comandi audio in questo server è stato cambiato da {0} a {2}."
-        },
         "list": {
           "title": "Lista Audio",
           "description": "Una lista di tutti gli audio disponibili.",
@@ -286,7 +284,7 @@
           "sameChannel": "Devi essere nel mio stesso canale vocale per farmi uscire."
         }
       },
-      "roleBlacklisted": "Non puoi utilizzare audio perché hai un ruolo che è bandito dai comandi audio.",
+      "blacklisted": "Non puoi utilizzare audio perché sei bandito dai comandi audio.",
       "noSoundSpecified": "Devi specificare il nome dell'audio da riprodurre.",
       "notConnected": "Devi essere connesso ad un canale vocale per poter riprodurre audio.",
       "guildMuted": "Non puoi riprodurre un audio se sei mutato nel server.",
@@ -355,6 +353,10 @@
     "listSeparator": ", ",
     "listDelimiter": "[ {0} ]",
     "listEntry": " - {0}",
+    "userListEntry": " - {0} (`{1}`)",
+    "unknownUser": "Utente Sconosciuto",
+    "roleListEntry": " - {0} (`{1}`)",
+    "unknownRole": "Ruolo Sconosciuto",
     "noChannelPerms": "Non possiedi abbastanza permessi nel canale {1} per eseguire questo comando ( Mancano: `{0}` ).",
     "noGuildPerms": "Non possiedi abbastanza permessi per eseguire qeusto comando ( Mancano: `{0}` ).",
     "noSubcommand": "Un sottocomando valido deve essere utilizzato.",

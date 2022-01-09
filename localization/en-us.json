@@ -1,5 +1,19 @@
 {
   "commands": {
+    "blacklist": {
+      "currentUserBlacklistEmpty": "No user is currently blacklisted.",
+      "currentUserBlacklist": "Currently blacklisted users:",
+      "addedUserBlacklistEmpty": "No user was blacklisted.",
+      "addedUserBlacklist": "Users blacklisted:",
+      "removedUserBlacklistEmpty": "No user was removed from the blacklist.",
+      "removedUserBlacklist": "Users removed from the blacklist:",
+      "currentRoleBlacklistEmpty": "No role is currently blacklisted.",
+      "currentRoleBlacklist": "Currently blacklisted roles:",
+      "addedRoleBlacklistEmpty": "No role was blacklisted.",
+      "addedRoleBlacklist": "Roles blacklisted:",
+      "removedRoleBlacklistEmpty": "No role was removed from the blacklist.",
+      "removedRoleBlacklist": "Roles removed from the blacklist:"
+    },
     "boost": {
       "subcommands": {
         "channel": {
@@ -175,16 +189,6 @@
             "title": "Sound",
             "description": "Plays the specified sound.\nUse `sound play` if a sound has the same name as a subcommand.",
             "subcommands": {
-              "blacklist-role": {
-                "title": "Blacklist Role",
-                "description": "Blacklists the specified role from sound commands.",
-                "subcommands": {
-                  "now": {
-                    "title": "Now",
-                    "description": "Shows the currenly blacklisted role from sound commands."
-                  }
-                }
-              },
               "list": {
                 "title": "List",
                 "description": "Lists all available Sounds."
@@ -254,12 +258,6 @@
     },
     "sound": {
       "subcommands": {
-        "blacklist-role": {
-          "noRole": "None",
-          "currentRole": "The role with id {0} is currently blacklisted from sound commands on this guild.",
-          "removedRole": "The role with id {0} was removed from the sound commands blacklist on this guild.",
-          "changedRole": "The blacklisted role id for sound commands on this guild was changed from {0} to {2}."
-        },
         "list": {
           "title": "Sound List",
           "description": "A list of all available sounds.",
@@ -286,7 +284,7 @@
           "sameChannel": "You must be on my voice channel to make me leave."
         }
       },
-      "roleBlacklisted": "Can't use sound commands because you've got a role that's blacklisted from them.",
+      "blacklisted": "Can't use sound commands because you're blacklisted from them.",
       "noSoundSpecified": "You must specify the name of the sound to play.",
       "notConnected": "You must be connected to a voice channel to play sounds.",
       "guildMuted": "You can't play a sound if you're muted on the guild.",
@@ -355,6 +353,10 @@
     "listSeparator": ", ",
     "listDelimiter": "[ {0} ]",
     "listEntry": " - {0}",
+    "userListEntry": " - {0} (`{1}`)",
+    "unknownUser": "Unknown User",
+    "roleListEntry": " - {0} (`{1}`)",
+    "unknownRole": "Unknown Role",
     "noChannelPerms": "Not enough permissions in channel {1} to run this command ( Missing: `{0}` ).",
     "noGuildPerms": "Not enough permissions to run this command ( Missing: `{0}` ).",
     "noSubcommand": "A valid subcommand must be provided.",

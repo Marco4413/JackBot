@@ -5,6 +5,7 @@ module.exports = CreateEventListener(
     "guildDelete", async guild => {
         await Database.RemoveRows("guild"  , { "id": guild.id });
         await Database.RemoveRows("counter", { "guildId": guild.id });
-        await Database.RemoveRows("sound"  , { "guildId": guild.id });
+        await Database.RemoveRows("user"   , { "guildId": guild.id });
+        await Database.RemoveRows("role"   , { "guildId": guild.id });
     }
 );

@@ -24,7 +24,9 @@ const _Models = {
     /** @type {ModelCtor<Model>} */
     "counter": null,
     /** @type {ModelCtor<Model>} */
-    "sound": null
+    "user": null,
+    /** @type {ModelCtor<Model>} */
+    "role": null
 };
 
 // #region Basic Methods
@@ -65,7 +67,8 @@ const Start = async (settings) => {
     // Defining and Syncing Models
     _Models.guild   = _DBInstance.define("Guild"  , Definitions.GuildModel  , modelOptions);
     _Models.counter = _DBInstance.define("Counter", Definitions.CounterModel, modelOptions);
-    _Models.sound   = _DBInstance.define("Sound"  , Definitions.SoundModel  , modelOptions);
+    _Models.user    = _DBInstance.define("User"   , Definitions.UserModel   , modelOptions);
+    _Models.role    = _DBInstance.define("Role"   , Definitions.RoleModel   , modelOptions);
     
     for (const model of Object.values(_Models)) {
         if (settings.dropDatabase)
