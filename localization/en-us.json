@@ -79,6 +79,54 @@
             "title": "Info",
             "description": "Shows info about this bot."
           },
+          "blacklist": {
+            "title": "Blacklist",
+            "description": "Used to manage User and Role Blacklists.",
+            "subcommands": {
+              "sound": {
+                "title": "Sound",
+                "description": "Used to manage the Blacklist for the Sound command.",
+                "subcommands": {
+                  "user": {
+                    "title": "User",
+                    "description": "Used to manage the User Blacklist.",
+                    "subcommands": {
+                      "list": {
+                        "title": "List",
+                        "description": "Lists all currently Blacklisted Users."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Adds all the specified Users to the Blacklist."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Removes all the specified Users from the Blacklist."
+                      }
+                    }
+                  },
+                  "role": {
+                    "title": "Role",
+                    "description": "Used to manage the Role Blacklist.",
+                    "subcommands": {
+                      "list": {
+                        "title": "List",
+                        "description": "Lists all currently Blacklisted Roles."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Adds all the specified Roles to the Blacklist."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Removes all the specified Roles from the Blacklist."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "boost": {
             "title": "Boost",
             "description": "Used to manage Boost Announcements for this Guild from the Bot.",

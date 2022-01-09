@@ -79,6 +79,54 @@
             "title": "Info",
             "description": "Mostra informazioni sul bot."
           },
+          "blacklist": {
+            "title": "Blacklist",
+            "description": "Gestisce le Blacklist per Utenti e Ruoli.",
+            "subcommands": {
+              "sound": {
+                "title": "Sound",
+                "description": "Gestisce la Blacklist per il comando Sound.",
+                "subcommands": {
+                  "user": {
+                    "title": "User",
+                    "description": "Gestisce la Blacklist degli Utenti.",
+                    "subcommands": {
+                      "list": {
+                        "title": "List",
+                        "description": "Mostra tutti gli Utenti nella Blacklist."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Aggiunge gli Utenti specificati alla Blacklist."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Rimuove gli Utenti specificati dalla Blacklist."
+                      }
+                    }
+                  },
+                  "role": {
+                    "title": "Role",
+                    "description": "Gestisce la Blacklist dei Ruoli.",
+                    "subcommands": {
+                      "list": {
+                        "title": "List",
+                        "description": "Mostra tutti i Ruoli nella Blacklist."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Aggiunge i Ruoli specificati alla Blacklist."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Rimuove i Ruoli specificati dalla Blacklist."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "boost": {
             "title": "Boost",
             "description": "Gestisce gli annunci per i Boost Nitro in questo server da parte del Bot.",
