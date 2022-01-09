@@ -51,7 +51,7 @@ const SendNitroBoostEmbed = async (member, textChannel = null) => {
 
 module.exports = CreateEventListener(
     "guildMemberUpdate", async (oldMember, newMember) => {
-        if (oldMember.premiumSince === newMember.premiumSince) return;
+        if (oldMember.premiumSinceTimestamp === newMember.premiumSinceTimestamp) return;
         await SendNitroBoostEmbed(newMember);
     }
 );
