@@ -54,7 +54,7 @@ module.exports = CreateCommand({
             "arguments": [
                 {
                     "name": "[CHANNEL MENTION/ID]",
-                    "types": [ "text-channel", "string" ],
+                    "types": [ "text-channel" ],
                     "default": null
                 }
             ],
