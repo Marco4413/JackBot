@@ -74,13 +74,13 @@ module.exports = CreateCommand({
                     textChannel = await msg.guild.channels.fetch(channelId);
 
                     if (textChannel === null || !textChannel.isText()) {
-                        await msg.reply(locale.invalidChannel);
+                        await msg.reply(locale.command.invalidChannel);
                         return;
                     }
                 }
 
                 if (!await SendNitroBoostEmbed(msg.member, textChannel)) {
-                    await msg.reply(locale.noChannelSet);
+                    await msg.reply(locale.command.noChannelSet);
                 }
             }
         }

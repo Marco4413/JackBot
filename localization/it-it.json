@@ -31,7 +31,7 @@
           "noCurrent": "Nessun canale è correntemente impostato per ricevere gli annunci dei Boost Nitro.",
           "current": "Il canale corrente per ricevere gli annunci dei Boost Nitro è {0}"
         },
-        "text": {
+        "test": {
           "invalidChannel": "Il canale testuale specificato non è valido.",
           "noChannelSet": "Nessun canale testuale è correntemente impostato per ricevere annunci dei Boost Nitro."
         }

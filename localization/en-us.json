@@ -31,7 +31,7 @@
           "noCurrent": "No channel is currently set for Nitro Boost Announcements.",
           "current": "The current channel for Nitro Boost Announcement is {0}"
         },
-        "text": {
+        "test": {
           "invalidChannel": "The specified text channel is not valid.",
           "noChannelSet": "No valid text channel is currently set to receive Nitro Boost Announcements."
         }
