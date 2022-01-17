@@ -89,6 +89,72 @@
             "title": "Info",
             "description": "Shows info about this bot."
           },
+          "access-list": {
+            "title": "Access List",
+            "description": "Used to manage User and Role Blacklists/Whitelists.",
+            "subcommands": {
+              "<COMMAND-NAME>": {
+                "title": "<COMMAND-NAME>",
+                "description": "Used to manage the Access List for the specified command.\nWorks with: `sound`.",
+                "subcommands": {
+                  "type": {
+                    "title": "Type",
+                    "description": "Shows the current type of the Access List.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Sets the type of the Access List.\nValid types: `blacklist`, `whitelist`."
+                      }
+                    }
+                  },
+                  "user": {
+                    "title": "User",
+                    "description": "Used to manage the User Access List.",
+                    "subcommands": {
+                      "clear": {
+                        "title": "Clear",
+                        "description": "Clears the User Access List."
+                      },
+                      "list": {
+                        "title": "List",
+                        "description": "Lists all Users in the Access List."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Adds all the specified Users to the Access List."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Removes all the specified Users from the Access List."
+                      }
+                    }
+                  },
+                  "role": {
+                    "title": "Role",
+                    "description": "Used to manage the Role Access List.",
+                    "subcommands": {
+                      "clear": {
+                        "title": "Clear",
+                        "description": "Clears the Role Access List."
+                      },
+                      "list": {
+                        "title": "List",
+                        "description": "Lists all Roles in the Access List."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Adds all the specified Roles to the Access List."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Removes all the specified Roles from the Access List."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "banana": {
             "title": "Banana",
             "description": "Gets a random Banana GIF from Tenor."

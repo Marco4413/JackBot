@@ -89,6 +89,72 @@
             "title": "Info",
             "description": "Mostra informazioni sul bot."
           },
+          "access-list": {
+            "title": "Access List",
+            "description": "Gestisce le Blacklist/Whitelist degli Utenti e Ruoli.",
+            "subcommands": {
+              "<COMMAND-NAME>": {
+                "title": "<COMMAND-NAME>",
+                "description": "Gestisce la Access List per il comando specificato.\nFunziona con: `sound`.",
+                "subcommands": {
+                  "type": {
+                    "title": "Type",
+                    "description": "Mostra il tipo della Access List.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Imposta il tipo della Access List.\nTipi validi: `blacklist`, `whitelist`."
+                      }
+                    }
+                  },
+                  "user": {
+                    "title": "User",
+                    "description": "Gestisce la Access List degli Utenti.",
+                    "subcommands": {
+                      "clear": {
+                        "title": "Clear",
+                        "description": "Svuota la Access List degli Utenti."
+                      },
+                      "list": {
+                        "title": "List",
+                        "description": "Mostra tutti gli Utenti nella Access List."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Aggiunge tutti gli Utenti specificati alla Access List."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Rimuove tutti gli Utenti specificati dalla Access List."
+                      }
+                    }
+                  },
+                  "role": {
+                    "title": "Role",
+                    "description": "Gestisce la Access List dei Ruoli.",
+                    "subcommands": {
+                      "clear": {
+                        "title": "Clear",
+                        "description": "Svuota la Access List dei Ruoli."
+                      },
+                      "list": {
+                        "title": "List",
+                        "description": "Mostra tutti i Ruoli nella Access List."
+                      },
+                      "add": {
+                        "title": "Add",
+                        "description": "Aggiunge tutti i Ruoli specificati alla Access List."
+                      },
+                      "remove": {
+                        "title": "Remove",
+                        "description": "Rimuove tutti i Ruoli specificati dalla Access List."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "banana": {
             "title": "Banana",
             "description": "Prende una GIF casuale di Banane da Tenor."
