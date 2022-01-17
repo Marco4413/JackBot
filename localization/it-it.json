@@ -1,21 +1,28 @@
 {
   "commands": {
+    "access-list": {
+      "blacklist": "blacklist",
+      "whitelist": "whitelist",
+      "invalidListType": "Tipo di lista non valido, i tipi validi sono `blacklist` o `whitelist`.",
+      "setListType": "Il tipo della lista è stato impostato a `{0}`.",
+      "currentListType": "Il tipo di lista corrente è `{0}`.",
+      "clearedUserList": "{1} Utenti sono stati rimossi dalla {0}.",
+      "currentUserListEmpty": "Nessun utente è nella {0}.",
+      "currentUserList": "Utenti nella {0}:",
+      "addedUserListEmpty": "Nessun utente aggiunto alla {0}.",
+      "addedUserList": "Utenti aggiunti alla {0}:",
+      "removedUserListEmpty": "Nessun utente è stato rimosso dalla {0}.",
+      "removedUserList": "Utenti rimossi dalla {0}:",
+      "clearedRoleList": "{1} Ruoli sono stati rimossi dalla {0}.",
+      "currentRoleListEmpty": "Nessun ruolo è nella {0}.",
+      "currentRoleList": "Ruoli nella {0}:",
+      "addedRoleListEmpty": "Nessun ruolo aggiunto alla {0}.",
+      "addedRoleList": "Ruoli aggiunti alla {0}:",
+      "removedRoleListEmpty": "Nessun ruolo è stato rimosso dalla {0}.",
+      "removedRoleList": "Ruoli rimossi dalla {0}:"
+    },
     "banana": {
       "noBanana": "Nessuna 🍌 Trovata :("
-    },
-    "blacklist": {
-      "currentUserBlacklistEmpty": "Nessun utente è nella blacklist.",
-      "currentUserBlacklist": "Utenti nella blacklist:",
-      "addedUserBlacklistEmpty": "Nessun utente è stato aggiunto alla blacklist.",
-      "addedUserBlacklist": "Utenti aggiungi alla blacklist:",
-      "removedUserBlacklistEmpty": "Nessun utente è stato rimosso dalla blacklist.",
-      "removedUserBlacklist": "Utenti rimossi dalla blacklist:",
-      "currentRoleBlacklistEmpty": "Nessun ruolo è nella blacklist.",
-      "currentRoleBlacklist": "Ruoli nella blacklist:",
-      "addedRoleBlacklistEmpty": "Nessun ruolo è stato aggiunto alla blacklist.",
-      "addedRoleBlacklist": "Ruoli aggiungi alla blacklist:",
-      "removedRoleBlacklistEmpty": "Nessun ruolo è stato rimosso dalla blacklist.",
-      "removedRoleBlacklist": "Ruoli rimossi dalla blacklist:"
     },
     "boost": {
       "subcommands": {
@@ -85,54 +92,6 @@
           "banana": {
             "title": "Banana",
             "description": "Prende una GIF casuale di Banane da Tenor."
-          },
-          "blacklist": {
-            "title": "Blacklist",
-            "description": "Gestisce le Blacklist per Utenti e Ruoli.",
-            "subcommands": {
-              "sound": {
-                "title": "Sound",
-                "description": "Gestisce la Blacklist per il comando Sound.",
-                "subcommands": {
-                  "user": {
-                    "title": "User",
-                    "description": "Gestisce la Blacklist degli Utenti.",
-                    "subcommands": {
-                      "list": {
-                        "title": "List",
-                        "description": "Mostra tutti gli Utenti nella Blacklist."
-                      },
-                      "add": {
-                        "title": "Add",
-                        "description": "Aggiunge gli Utenti specificati alla Blacklist."
-                      },
-                      "remove": {
-                        "title": "Remove",
-                        "description": "Rimuove gli Utenti specificati dalla Blacklist."
-                      }
-                    }
-                  },
-                  "role": {
-                    "title": "Role",
-                    "description": "Gestisce la Blacklist dei Ruoli.",
-                    "subcommands": {
-                      "list": {
-                        "title": "List",
-                        "description": "Mostra tutti i Ruoli nella Blacklist."
-                      },
-                      "add": {
-                        "title": "Add",
-                        "description": "Aggiunge i Ruoli specificati alla Blacklist."
-                      },
-                      "remove": {
-                        "title": "Remove",
-                        "description": "Rimuove i Ruoli specificati dalla Blacklist."
-                      }
-                    }
-                  }
-                }
-              }
-            }
           },
           "boost": {
             "title": "Boost",

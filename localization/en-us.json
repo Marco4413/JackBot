@@ -1,21 +1,28 @@
 {
   "commands": {
+    "access-list": {
+      "blacklist": "blacklist",
+      "whitelist": "whitelist",
+      "invalidListType": "Invalid list type, expected either `blacklist` or `whitelist`.",
+      "setListType": "List type set to `{0}`.",
+      "currentListType": "Current list type is `{0}`.",
+      "clearedUserList": "{1} Users were removed from the {0}.",
+      "currentUserListEmpty": "No user is currently in the {0}.",
+      "currentUserList": "Users in {0}:",
+      "addedUserListEmpty": "No user was added to {0}.",
+      "addedUserList": "Users added to {0}:",
+      "removedUserListEmpty": "No user was removed from the {0}.",
+      "removedUserList": "Users removed from the {0}:",
+      "clearedRoleList": "{1} Roles were removed from the {0}.",
+      "currentRoleListEmpty": "No role is currently in the {0}.",
+      "currentRoleList": "Roles in {0}:",
+      "addedRoleListEmpty": "No role was added to {0}.",
+      "addedRoleList": "Roles added to {0}:",
+      "removedRoleListEmpty": "No role was removed from the {0}.",
+      "removedRoleList": "Roles removed from the {0}:"
+    },
     "banana": {
       "noBanana": "No 🍌 was Found :("
-    },
-    "blacklist": {
-      "currentUserBlacklistEmpty": "No user is currently blacklisted.",
-      "currentUserBlacklist": "Currently blacklisted users:",
-      "addedUserBlacklistEmpty": "No user was blacklisted.",
-      "addedUserBlacklist": "Users blacklisted:",
-      "removedUserBlacklistEmpty": "No user was removed from the blacklist.",
-      "removedUserBlacklist": "Users removed from the blacklist:",
-      "currentRoleBlacklistEmpty": "No role is currently blacklisted.",
-      "currentRoleBlacklist": "Currently blacklisted roles:",
-      "addedRoleBlacklistEmpty": "No role was blacklisted.",
-      "addedRoleBlacklist": "Roles blacklisted:",
-      "removedRoleBlacklistEmpty": "No role was removed from the blacklist.",
-      "removedRoleBlacklist": "Roles removed from the blacklist:"
     },
     "boost": {
       "subcommands": {
@@ -85,54 +92,6 @@
           "banana": {
             "title": "Banana",
             "description": "Gets a random Banana GIF from Tenor."
-          },
-          "blacklist": {
-            "title": "Blacklist",
-            "description": "Used to manage User and Role Blacklists.",
-            "subcommands": {
-              "sound": {
-                "title": "Sound",
-                "description": "Used to manage the Blacklist for the Sound command.",
-                "subcommands": {
-                  "user": {
-                    "title": "User",
-                    "description": "Used to manage the User Blacklist.",
-                    "subcommands": {
-                      "list": {
-                        "title": "List",
-                        "description": "Lists all currently Blacklisted Users."
-                      },
-                      "add": {
-                        "title": "Add",
-                        "description": "Adds all the specified Users to the Blacklist."
-                      },
-                      "remove": {
-                        "title": "Remove",
-                        "description": "Removes all the specified Users from the Blacklist."
-                      }
-                    }
-                  },
-                  "role": {
-                    "title": "Role",
-                    "description": "Used to manage the Role Blacklist.",
-                    "subcommands": {
-                      "list": {
-                        "title": "List",
-                        "description": "Lists all currently Blacklisted Roles."
-                      },
-                      "add": {
-                        "title": "Add",
-                        "description": "Adds all the specified Roles to the Blacklist."
-                      },
-                      "remove": {
-                        "title": "Remove",
-                        "description": "Removes all the specified Roles from the Blacklist."
-                      }
-                    }
-                  }
-                }
-              }
-            }
           },
           "boost": {
             "title": "Boost",

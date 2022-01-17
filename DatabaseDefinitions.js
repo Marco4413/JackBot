@@ -41,6 +41,11 @@ const GuildModel = {
         "type": _SNOWFLAKE_DATATYPE,
         "defaultValue": null,
         "allowNull": true
+    },
+    "isSoundAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": true,
+        "allowNull": true
     }
 };
 
@@ -97,7 +102,7 @@ const UserModel = {
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
-    "soundBlacklist": {
+    "inSoundAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -115,7 +120,7 @@ const RoleModel = {
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
-    "soundBlacklist": {
+    "inSoundAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -135,6 +140,7 @@ const RoleModel = {
  * @property {Boolean} shortcuts Whether or not shortcuts are enabled in the Guild
  * @property {String} locale The Guild's Locale
  * @property {String} nitroBoostChannelId The Id of the Channel where Nitro Boost Announcements are sent
+ * @property {Boolean} isSoundAccessBlacklist Whether or not the Sound Access List is a Blacklist
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
 
@@ -155,7 +161,7 @@ const RoleModel = {
  * @typedef {Object} _UserRowType
  * @property {String} guildId The Id of the Guild this User belongs to
  * @property {String} userId The Id of the User
- * @property {Boolean} soundBlacklist Whether or not the User is blacklisted from Sound Commands
+ * @property {Boolean} inSoundAccessList Whether or not this User is in the Sound Access List
  * @typedef {DatabaseRow&_UserRowType} UserRow
  */
 
@@ -163,7 +169,7 @@ const RoleModel = {
  * @typedef {Object} _RoleRowType
  * @property {String} guildId The Id of the Guild this Role belongs to
  * @property {String} roleId The Id of the Role
- * @property {Boolean} soundBlacklist Whether or not the Role is blacklisted from Sound Commands
+ * @property {Boolean} inSoundAccessList Whether or not this Role is in the Sound Access List
  * @typedef {DatabaseRow&_RoleRowType} RoleRow
  */
 
