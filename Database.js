@@ -146,6 +146,32 @@ const SetRowAttr = async (table, where = { }, attributes = { }) => {
 };
 
 /**
+ * Sets the specified Attributes to the specified Rows and returns the new Rows
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table where the rows are in
+ * @param {U} [where] The attributes that the rows to modify should have
+ * @param {U} [attributes] The new attributes for the rows ( Undefined keys don't change attributes )
+ * @returns {U[]} The modified Rows
+ */
+const SetRowsAttr = async (table, where = { }, attributes = { }) => {
+    _EnsureStart();
+    const instances = await _Models[table].findAll({ where });
+
+    const newRows = [ ];
+    for (let i = 0; i < instances.length; i++) {
+        for (const key of Object.keys(attributes))
+            instances[i].set(key, attributes[key]);
+        await instances[i].save();
+        
+        newRows.push(
+            instances[i].get()
+        );
+    }
+    return newRows;
+};
+
+/**
  * Creates a Row with the specified values
  * @template {keyof Definitions.DatabaseTables} T
  * @template {Definitions.DatabaseTables[T]} U
@@ -178,5 +204,6 @@ const RemoveRows = async (table, where = { }) => {
 module.exports = {
     IsStarted, Start,
     GetRow, GetRows, GetOrCreateRow,
-    SetRowAttr, CreateRow, RemoveRows
+    SetRowAttr, SetRowsAttr,
+    CreateRow, RemoveRows
 };
