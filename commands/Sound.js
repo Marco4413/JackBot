@@ -136,14 +136,14 @@ const _GetSoundPath = (soundName) => {
  * @param {IAudioMetadata?} [metadatum]
  */
 const _PushAudioMetadatum = (metadataList, locale, metadatumKey, metadatum) => {
-    const metadatumLocale = locale.command.metadata[metadatumKey];
+    const metadatumLocale = locale.Get("metadata", false)[metadatumKey];
     if (metadatumLocale === undefined) return;
     if (metadatum === undefined || metadatum === null) return;
 
     metadataList.push(Utils.FormatString(
         metadatumLocale,
         typeof metadatum === "number" ?
-            metadatum.toFixed(locale.command.decimalPrecision) : "" + metadatum
+            metadatum.toFixed(locale.Get("decimalPrecision", false) ?? 2) : "" + metadatum
     ));
 };
 
@@ -153,8 +153,8 @@ const _PushAudioMetadatum = (metadataList, locale, metadatumKey, metadatum) => {
  * @returns {{ maxLineLength: Number, text: String }}
  */
 const _FormatAudioMetadata = (locale, metadata) => {
-    if (locale.command.metadata === undefined)
-        return locale.command.noMetadata;
+    if (locale.Get("metadata") === undefined)
+        return locale.Get("noMetadata");
     
     /** @type {String[]} */
     const metadataList = [ ];
@@ -163,7 +163,7 @@ const _FormatAudioMetadata = (locale, metadata) => {
     _PushAudioMetadatum(metadataList, locale, "duration", metadata.format.duration);
     
     if (metadataList.length === 0)
-        return { "maxLineLength": locale.command.noMetadata.length, "text": locale.command.noMetadata };
+        return { "maxLineLength": locale.Get("noMetadata.length"), "text": locale.Get("noMetadata") };
     
     return {
         "maxLineLength": metadataList.reduce((prev, curr) => Math.max(prev, curr.length), 0),
@@ -179,20 +179,20 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
 
     // No audio specified
     if (args.length === 0) {
-        await msg.reply(locale.command.noSoundSpecified);
+        await msg.reply(locale.Get("noSoundSpecified"));
         return;
     }
 
     // User is not connected
     const userVoiceChannel = msg.member.voice.channel;
     if (userVoiceChannel === null) {
-        await msg.reply(locale.command.notConnected);
+        await msg.reply(locale.Get("notConnected"));
         return;
     }
 
     // User can't speak
     if (msg.member.voice.serverMute) {
-        await msg.reply(locale.command.guildMuted);
+        await msg.reply(locale.Get("guildMuted"));
         return;
     }
 
@@ -202,7 +202,7 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
 
     // User's channel is not joinable and is not the same as the bot
     if (!userVoiceChannel.joinable && userVoiceChannel.id !== msg.guild.me.voice.channelId) {
-        await msg.reply(locale.command.cantJoinChannel);
+        await msg.reply(locale.Get("cantJoinChannel"));
         return;
     }
 
@@ -211,19 +211,19 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
     const soundPath = _GetSoundPath(soundName);
 
     if (soundPath === undefined) {
-        await msg.reply(locale.command.noSoundFound);
+        await msg.reply(locale.Get("noSoundFound"));
         return;
     }
 
     if (!IsVoiceConnectionIdle(msg.guild)) {
-        await msg.reply(locale.command.alreadyPlaying);
+        await msg.reply(locale.Get("alreadyPlaying"));
         return;
     }
 
     // Playing the sound
     const resource = createAudioResource(soundPath);
     GetOrCreateVoiceConnection(userVoiceChannel, true).player.play(resource);
-    await msg.reply(Utils.FormatString(locale.command.playing, soundName));
+    await msg.reply(locale.GetFormatted("playing", soundName));
 };
 
 module.exports = CreateCommand({
@@ -232,7 +232,7 @@ module.exports = CreateCommand({
     "canExecute": async (msg, guild, locale) => {
         const isBlacklisted = await IsBlacklisted(msg.member, "inSoundAccessList", "isSoundAccessBlacklist");
         if (isBlacklisted)
-            await msg.reply(locale.command.blacklisted);
+            await msg.reply(locale.Get("blacklisted"));
         return !isBlacklisted;
     },
     "subcommands": [
@@ -242,7 +242,7 @@ module.exports = CreateCommand({
                 if (_AUDIO_LOADING_PROMISE !== null) return;
 
                 const embed = Utils.GetDefaultEmbedForMessage(msg, true);
-                embed.setTitle(locale.command.title).setDescription(locale.command.description);
+                embed.setTitle(locale.Get("title")).setDescription(locale.Get("description"));
 
                 for (const soundName of Object.keys(_AUDIO_NAME_TO_FILE)) {
                     /** @type {AudioFileData} */
@@ -250,7 +250,7 @@ module.exports = CreateCommand({
                     Logger.Debug(sound);
                     const formattedMetadata = _FormatAudioMetadata(locale, sound.metadata);
                     embed.addField(
-                        Utils.FormatString(locale.command.fieldTitle, soundName),
+                        locale.GetFormatted("fieldTitle", soundName),
                         formattedMetadata.text,
                         formattedMetadata.maxLineLength <= _INLINE_LINE_CHAR_LIMIT
                     );
@@ -268,13 +268,13 @@ module.exports = CreateCommand({
                 // Check if we're connected to a voice channel
                 const voiceConnection = GetVoiceConnection(msg.guild);
                 if (voiceConnection === undefined) {
-                    await msg.reply(locale.command.notConnected);
+                    await msg.reply(locale.Get("notConnected"));
                     return;
                 }
                 
                 // User can't speak
                 if (msg.member.voice.serverMute) {
-                    await msg.reply(locale.command.guildMuted);
+                    await msg.reply(locale.Get("guildMuted"));
                     return;
                 }
         
@@ -283,12 +283,12 @@ module.exports = CreateCommand({
                 }
 
                 if (IsVoiceConnectionIdle(msg.guild)) {
-                    await msg.reply(locale.command.notPlaying);
+                    await msg.reply(locale.Get("notPlaying"));
                 } else if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
                     voiceConnection.player.stop(true);
-                    await msg.reply(locale.command.stopped);
+                    await msg.reply(locale.Get("stopped"));
                 } else {
-                    await msg.reply(locale.command.sameChannel);
+                    await msg.reply(locale.Get("sameChannel"));
                 }
             }
         },
@@ -299,13 +299,13 @@ module.exports = CreateCommand({
                 // Check if we're connected to a voice channel
                 const voiceConnection = GetVoiceConnection(msg.guild);
                 if (voiceConnection === undefined) {
-                    await msg.reply(locale.command.notConnected);
+                    await msg.reply(locale.Get("notConnected"));
                     return;
                 }
                 
                 // User can't speak
                 if (msg.member.voice.serverMute) {
-                    await msg.reply(locale.command.guildMuted);
+                    await msg.reply(locale.Get("guildMuted"));
                     return;
                 }
         
@@ -315,9 +315,9 @@ module.exports = CreateCommand({
 
                 if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
                     voiceConnection.softDestroy();
-                    await msg.reply(locale.command.leaving);
+                    await msg.reply(locale.Get("leaving"));
                 } else {
-                    await msg.reply(locale.command.sameChannel);
+                    await msg.reply(locale.Get("sameChannel"));
                 }
             }
         },

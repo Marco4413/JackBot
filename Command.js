@@ -17,8 +17,8 @@ const Utils = require("./Utils.js");
  */
 
 /**
- * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale, args: Any[]) => Promise<Void>} CommandExecute The callback of a Command
- * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.CommandLocale) => Promise<Boolean>} CommandCanExecute
+ * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.Locale, args: Any[]) => Promise<Void>} CommandExecute The callback of a Command
+ * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.Locale) => Promise<Boolean>} CommandCanExecute
  */
 
 /**
@@ -169,7 +169,7 @@ const _ParseArguments = (args, argDefs) => {
 /**
  * @param {Discord.Permissions} memberPerms
  * @param {Discord.PermissionResolvable} requiredPermsResolvable
- * @param {Localization.CommandLocale} locale
+ * @param {Localization.Locale} locale
  * @returns {String}
  */
 const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
@@ -179,27 +179,27 @@ const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
         requiredPerms === Discord.Permissions.FLAGS.ADMINISTRATOR ?
             [ adminKey ] : memberPerms.missing(requiredPerms);
 
-    const hasLocale = locale.common.permissions !== undefined;
-    if (!hasLocale) Utils.JoinArray(missingPerms, locale.common.listSeparator);
+    const permsLocale = locale.GetSubLocale("common.permissions", false);
+    if (permsLocale === null) Utils.JoinArray(missingPerms, locale.GetCommon("listSeparator"));
     return Utils.JoinArray(
         missingPerms,
-        locale.common.listSeparator,
-        el => locale.common.permissions[el] === undefined ? el : locale.common.permissions[el]
+        locale.GetCommon("listSeparator"),
+        el => permsLocale.Get(el, false) ?? el
     );
 };
 
 /**
  * @param {CommandArgument} argDef
- * @param {Localization.CommandLocale} locale
+ * @param {Localization.Locale} locale
  * @returns {String}
  */
 const _ListPossibleTypes = (argDef, locale) => {
-    const hasLocale = locale.common.argumentTypes !== undefined;
-    if (!hasLocale) Utils.JoinArray(argDef.types, locale.common.listSeparator);
+    const typesLocale = locale.GetSubLocale("common.argumentTypes", false);
+    if (typesLocale === null) Utils.JoinArray(argDef.types, locale.GetCommon("listSeparator"));
     return Utils.JoinArray(
         argDef.types,
-        locale.common.listSeparator,
-        el => locale.common.argumentTypes[el] === undefined ? el : locale.common.argumentTypes[el]
+        locale.GetCommon("listSeparator"),
+        el => typesLocale.Get(el, false) ?? el
     );
 };
 
@@ -268,7 +268,7 @@ const SplitCommand = (msg) => {
  * in the guild or the specified Channel and replies to the Message whether or
  * not the author has the Permissions with the specified CommandLocale
  * @param {Discord.Message} msg The Message to use
- * @param {CommandLocale} locale The Locale to use
+ * @param {Localization.Locale} locale The Locale to use
  * @param {Discord.PermissionResolvable} requiredPerms The Permissions Required
  * @param {Discord.GuildChannel} [channel] The Channel to test the Permissions on ( undefined for Guild )
  * @returns {Boolean} Whether or not the Message's author has the specified Permissions
@@ -276,8 +276,8 @@ const SplitCommand = (msg) => {
 const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
     if (channel === undefined) {
         if (!msg.member.permissions.has(requiredPerms)) {
-            await msg.reply(Utils.FormatString(
-                locale.common.noGuildPerms,
+            await msg.reply(locale.GetCommonFormatted(
+                "noGuildPerms",
                 _ListMissingPerms(msg.member.permissions, requiredPerms, locale)
             ));
             return true;
@@ -285,8 +285,8 @@ const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
     } else {
         const channelPerms = msg.member.permissionsIn(channel);
         if (!channelPerms.has(requiredPerms)) {
-            await msg.reply(Utils.FormatString(
-                locale.common.noChannelPerms,
+            await msg.reply(locale.GetCommonFormatted(
+                "noChannelPerms",
                 _ListMissingPerms(channelPerms, requiredPerms, locale),
                 channel.name
             ));
@@ -300,7 +300,7 @@ const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
  * Executes the Commands from the specified commandList and splittedMessage ( Obtained with {@link SplitCommand} )
  * @param {Discord.Message} msg The message to be given to Commands when executing and to reply with error feedback
  * @param {DatabaseDefinitions.GuildRow} guildRow The Guild Row from the Database
- * @param {Localization.CommandLocale} locale The locale to use for messages
+ * @param {Localization.Locale} locale The locale to use for messages
  * @param {String[]} splittedMessage The splitted message containing the "raw" commands
  * @param {Command[]} commandList The list of Commands to check for
  * @returns {Boolean} Whether or not a candidate Command was Found ( It may have failed Execution )
@@ -324,12 +324,8 @@ const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandLis
                 return true;
         }
 
-        /** @type {Localization.CommandLocale} */
-        const commandLocale = {
-            "common": locale.common,
-            "command": locale.command.subcommands === undefined || locale.command.subcommands[command.name] === undefined ?
-                locale.command : locale.command.subcommands[command.name]
-        };
+        /** @type {Localization.Locale} */
+        const commandLocale = locale.GetCommandLocale(command.name, true) ?? locale;
 
         if (command.canExecute !== undefined &&
             !await command.canExecute(msg, guildRow, commandLocale)
@@ -343,7 +339,7 @@ const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandLis
 
         // If this command can't be executed then it must have subcommands
         if (command.execute === undefined) {
-            await msg.reply(locale.common.noSubcommand);
+            await msg.reply(locale.GetCommon("noSubcommand"));
             return true;
         }
 
@@ -355,11 +351,15 @@ const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandLis
         case "none":
             break;
         case "not_provided":
-            await msg.reply(Utils.FormatString(locale.common.missingArg, errorArgDef.name, errorArgIndex + 1));
+            await msg.reply(locale.GetCommonFormatted(
+                "missingArg",
+                errorArgDef.name, errorArgIndex + 1
+            ));
             return true;
         case "invalid_type":
-            await msg.reply(Utils.FormatString(
-                locale.common.wrongArgType, errorArgDef.name, errorArgIndex + 1,
+            await msg.reply(locale.GetCommonFormatted(
+                "wrongArgType",
+                errorArgDef.name, errorArgIndex + 1,
                 _ListPossibleTypes(errorArgDef, locale)
             ));
             return true;

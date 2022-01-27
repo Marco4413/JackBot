@@ -25,35 +25,33 @@ module.exports = CreateCommand({
                                 "nitroBoostChannelId": null
                             });
 
-                            await msg.reply(locale.command.removedChannel);
+                            await msg.reply(locale.Get("removedChannel"));
                             return;
                         }
 
                         const textChannel = await msg.guild.channels.fetch(channelId);
                         if (textChannel === null) {
-                            await msg.reply(locale.command.noChannel);
+                            await msg.reply(locale.Get("noChannel"));
                         } else if (textChannel.isText()) {
                             const newGuild = await Database.SetRowAttr("guild", { "id": msg.guildId }, {
                                 "nitroBoostChannelId": channelId
                             });
 
-                            await msg.reply(Utils.FormatString(
-                                locale.command.setChannel,
-                                Utils.MentionTextChannel(newGuild.nitroBoostChannelId)
+                            await msg.reply(locale.GetFormatted(
+                                "setChannel", Utils.MentionTextChannel(newGuild.nitroBoostChannelId)
                             ));
                         } else {
-                            await msg.reply(locale.command.noTextChannel);
+                            await msg.reply(locale.Get("noTextChannel"));
                         }
                     }
                 }
             ],
             "execute": async (msg, guild, locale) => {
                 if (guild.nitroBoostChannelId === null) {
-                    await msg.reply(locale.command.noCurrent);
+                    await msg.reply(locale.Get("noCurrent"));
                 } else {
-                    await msg.reply(Utils.FormatString(
-                        locale.command.current,
-                        Utils.MentionTextChannel(guild.nitroBoostChannelId)
+                    await msg.reply(locale.GetFormatted(
+                        "current", Utils.MentionTextChannel(guild.nitroBoostChannelId)
                     ));
                 }
             }
@@ -74,13 +72,13 @@ module.exports = CreateCommand({
                     textChannel = await msg.guild.channels.fetch(channelId);
 
                     if (textChannel === null || !textChannel.isText()) {
-                        await msg.reply(locale.command.invalidChannel);
+                        await msg.reply(locale.Get("invalidChannel"));
                         return;
                     }
                 }
 
                 if (!await SendNitroBoostEmbed(msg.member, textChannel)) {
-                    await msg.reply(locale.command.noChannelSet);
+                    await msg.reply(locale.Get("noChannelSet"));
                 }
             }
         }

@@ -17,16 +17,16 @@ module.exports = CreateCommand({
     "name": "help",
     "shortcut": "h",
     "execute": async (msg, guild, locale, docsPath) => {
-        let currentDoc = locale.command.docs;
+        let currentDoc = locale.Get("docs", false);
         for (let i = 0; i < docsPath.length; i++) {
             if (currentDoc.subcommands === undefined) {
-                currentDoc = locale.command.emptyDoc;
+                currentDoc = locale.Get("emptyDoc");
                 break;
             }
             
             const subDoc = currentDoc.subcommands[docsPath[i]];
             if (subDoc === undefined) {
-                currentDoc = locale.command.emptyDoc;
+                currentDoc = locale.Get("emptyDoc");
                 break;
             }
 
@@ -42,21 +42,21 @@ module.exports = CreateCommand({
             for (const subKey of Object.keys(currentDoc.subcommands)) {
                 const subDoc = currentDoc.subcommands[subKey];
                 if (subDoc.hidden) {
-                    embed.addField(_GetCommandDocName(subDoc), locale.command.noSubcommands, false);
+                    embed.addField(_GetCommandDocName(subDoc), locale.Get("noSubcommands"), false);
                     continue;
                 }
 
                 let subSubCmdList;
                 if (subDoc.subcommands === undefined) {
-                    subSubCmdList = locale.command.noSubcommands;
+                    subSubCmdList = locale.Get("noSubcommands");
                 } else {
-                    subSubCmdList = Utils.FormatString(
-                        locale.command.subcommandsList,
-                        Utils.FormatString(
-                            locale.common.listDelimiter,
+                    subSubCmdList = locale.GetFormatted(
+                        "subcommandsList",
+                        locale.GetCommonFormatted(
+                            "listDelimiter",
                             Utils.JoinArray(
                                 Object.keys(subDoc.subcommands),
-                                locale.common.listSeparator,
+                                locale.GetCommon("listSeparator"),
                                 el => _GetCommandDocName(subDoc.subcommands[el], el)
                             )
                         )

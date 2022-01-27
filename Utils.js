@@ -87,21 +87,21 @@ const GetFormattedDateComponents = (date = new Date(), dateSep = "/", timeSep = 
     };
 };
 
-/** @typedef {import("./Localization.js").CommandLocale} CommandLocale */
+/** @typedef {import("./Localization.js").Locale} Locale */
 
 /**
  * Translates the specified Number using the specified Locale
  * @param {Any} n The Number to translate
- * @param {CommandLocale} locale The locale to translate the Number with
+ * @param {Locale} locale The locale to translate the Number with
  * @returns {String} The translated Number
  */
 const TranslateNumber = (n, locale) => {
     if (IsNaN(n)) {
-        return locale.common.nan;
+        return locale.GetCommon("nan");
     } else if (n === Number.POSITIVE_INFINITY) {
-        return locale.common.positiveInfinity;
+        return locale.GetCommon("positiveInfinity");
     } else if (n === Number.NEGATIVE_INFINITY) {
-        return locale.common.negativeInfinity;
+        return locale.GetCommon("negativeInfinity");
     }
     return n.toString();
 };

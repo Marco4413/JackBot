@@ -37,7 +37,7 @@ module.exports = async (msg, guild) => {
                     "lastMemberId": msg.member.id
                 });
                 
-                await msg.react(locale.common.checkmark);
+                await msg.react(locale.GetCommon("checkmark"));
             } else if (!counter.allowErrors) {
                 await msg.delete();
             } else if (counter.count !== counterStartValue) {
@@ -47,9 +47,9 @@ module.exports = async (msg, guild) => {
                     "lastMemberId": msg.member.id
                 });
 
-                await msg.channel.send(Utils.FormatString(locale.command.countFailed, Utils.MentionUser(msg.member.id), counter.count));
-                await (await msg.channel.send(counterStartValue.toString())).react(locale.common.checkmark);
-                await msg.react(locale.common.crossmark);
+                await msg.channel.send(locale.GetFormatted("countFailed", Utils.MentionUser(msg.member.id), counter.count));
+                await (await msg.channel.send(counterStartValue.toString())).react(locale.GetCommon("checkmark"));
+                await msg.react(locale.GetCommon("crossmark"));
             }
         } else if (!counter.allowMessages) {
             await msg.delete();

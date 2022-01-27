@@ -8,12 +8,11 @@ module.exports = CreateCommand({
         const mathExpr = Utils.JoinArray(args, " ");
         try {
             const result = SMath.evaluate(mathExpr);
-            await msg.reply(Utils.FormatString(
-                locale.command.expressionResult,
-                mathExpr, Utils.TranslateNumber(result, locale)
+            await msg.reply(locale.GetFormatted(
+                "expressionResult", mathExpr, Utils.TranslateNumber(result, locale)
             ));
         } catch (err) {
-            await msg.reply(locale.command.expressionError);
+            await msg.reply(locale.Get("expressionError"));
         }
     }
 });

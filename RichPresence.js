@@ -23,7 +23,7 @@ const _IsValidActivityType = (activityType) => {
 const StartRichPresence = async () => {
     const updateInterval = Utils.GetEnvVariable("RP_UPDATE_INTERVAL", Utils.AnyToNumber, _RP_DEFAULT_UPDATE_INTERVAL, Logger.Warn);
 
-    const activityOptions = GetLocale().common.richPresence;
+    const activityOptions = GetLocale().GetCommon("richPresence");
     if (typeof activityOptions !== "string") {
         Logger.Warn("Rich Presence Failed to Run: DefaultLocale.common.richPresence is not a String.");
     } else {

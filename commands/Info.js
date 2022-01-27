@@ -9,44 +9,49 @@ module.exports = CreateCommand({
         const embed = Utils.GetDefaultEmbedForMessage(msg, true);
 
         embed.setTitle(
-            locale.command.title
+            locale.Get("title")
         ).setDescription(
-            locale.command.description
+            locale.Get("description")
         ).addField(
-            locale.command.package.name,
+            locale.Get("package.name"),
             package.name, true
         ).addField(
-            locale.command.package.version,
+            locale.Get("package.version"),
             package.version, true
         ).addField(
-            locale.command.package.description,
+            locale.Get("package.description"),
             package.description
         ).addField(
-            locale.command.package.author,
-            Utils.FormatString(
-                locale.command.package.authorValue,
+            locale.Get("package.author"),
+            locale.GetFormatted("package.authorValue",
                 package.author.name, package.author.url
             ), true
         ).addField(
-            locale.command.package.license,
+            locale.Get("package.license"),
             package.license, true
         ).addField(
-            locale.command.package.homepage,
+            locale.Get("package.homepage"),
             package.homepage
         ).addField(
-            locale.command.package.contributors,
+            locale.Get("package.contributors"),
             Utils.JoinArray(
                 package.contributors, "\n",
-                el => Utils.FormatString(locale.common.listEntry, Utils.FormatString(locale.command.package.contributorsValue, el.name, el.url, el.contribution))
+                el => locale.GetCommonFormatted(
+                    "listEntry",
+                    locale.GetFormatted(
+                        "package.contributorsValue",
+                        el.name, el.url, el.contribution
+                    )
+                )
             )
         ).addField(
-            locale.command.package.dependencies,
+            locale.Get("package.dependencies"),
             Utils.JoinArray(
                 Object.keys(package.dependencies), "\n", depName =>
-                    Utils.FormatString(
-                        locale.common.listEntry,
-                        Utils.FormatString(
-                            locale.command.package.dependenciesValue,
+                    locale.GetCommonFormatted(
+                        "listEntry",
+                        locale.GetFormatted(
+                            "package.dependenciesValue",
                             depName, package.dependencies[depName]
                         )
                     )
