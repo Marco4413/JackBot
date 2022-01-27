@@ -6,7 +6,7 @@ const Utils = require("./Utils.js");
 
 // #region typedefs
 
-/** @typedef {"string"|"number"|"boolean"|"text-channel"|"user"|"role"} CommandArgumentType */
+/** @typedef {"string"|"number"|"boolean"|"channel"|"user"|"role"} CommandArgumentType */
 
 /**
  * @typedef {Object} CommandArgument A Command's Argument Definition
@@ -94,7 +94,7 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
             if (isTrue || isFalse) parsedArg = isTrue;
             break;
         }
-        case "text-channel": {
+        case "channel": {
             const channelIdMatcher = /^<#([0-9]+)>|([0-9]+)$/g;
             const channelId = channelIdMatcher.exec(arg);
             if (channelId !== null) parsedArg = channelId[1] ?? channelId[2];

@@ -424,7 +424,7 @@
       "number": "Number",
       "boolean": "True or False",
       "role": "Role",
-      "text-channel": "Text Channel",
+      "channel": "Channel",
       "user": "User"
     },
     "nan": "NaN",
@@ -439,6 +439,8 @@
     "unknownUser": "Unknown User",
     "roleListEntry": " - {0} (`{1}`)",
     "unknownRole": "Unknown Role",
+    "unknownChannel": "Unknown Channel",
+    "softMention": "{0} (`{1}`)",
     "noChannelPerms": "Not enough permissions in channel {1} to run this command ( Missing: `{0}` ).",
     "noGuildPerms": "Not enough permissions to run this command ( Missing: `{0}` ).",
     "noSubcommand": "A valid subcommand must be provided.",

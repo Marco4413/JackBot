@@ -15,7 +15,7 @@ module.exports = CreateCommand({
                     "arguments": [
                         {
                             "name": "[CHANNEL MENTION/ID]",
-                            "types": [ "text-channel" ],
+                            "types": [ "channel" ],
                             "default": null
                         }
                     ],
@@ -62,7 +62,7 @@ module.exports = CreateCommand({
             "arguments": [
                 {
                     "name": "[CHANNEL MENTION/ID]",
-                    "types": [ "text-channel" ],
+                    "types": [ "channel" ],
                     "default": null
                 }
             ],
