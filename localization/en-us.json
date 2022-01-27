@@ -423,6 +423,7 @@
       "string": "Text",
       "number": "Number",
       "boolean": "True or False",
+      "role": "Role",
       "text-channel": "Text Channel",
       "user": "User"
     },
