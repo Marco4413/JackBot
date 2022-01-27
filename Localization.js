@@ -176,12 +176,13 @@ class Locale {
     GetCommandLocale(path, relativePath = true) {
         /** @type {String[]} */
         const commandPathComponents = Array.isArray(path) ? path : path.split(".");
+        const subKey = relativePath && this._root !== this._locale ? "subcommands" : "commands";
         if (commandPathComponents.length === 0 ||
-            ( this._locale.subcommands ?? undefined ) === undefined) return null;
+            // We don't even bother to search for a Command if there can't be any
+            ( this._locale[subKey] ?? undefined ) === undefined) return null;
 
         const fullPath = [
-            relativePath && this._root !== this._locale ? "subcommands" : "commands",
-            commandPathComponents[0]
+            subKey, commandPathComponents[0]
         ];
 
         for (let i = 1; i < commandPathComponents.length; i++) {
