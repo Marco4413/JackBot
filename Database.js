@@ -1,9 +1,13 @@
 const SQLite = require("./databases/SQLite.js");
 const MariaDB = require("./databases/MariaDB.js");
 const Definitions = require("./DatabaseDefinitions.js");
-const { Sequelize, Model, ModelCtor, SyncOptions, ModelOptions } = require("sequelize");
+const { Sequelize, Model, ModelStatic, SyncOptions, ModelAttributes, ModelOptions } = require("sequelize");
 
-/** @typedef {(boolean|((sql: string, timing?: number) => Void))?} SequelizeLogging */
+/**
+ * @typedef {(modelName: String, attributes: ModelAttributes<Model<Any, Any>>, options: ModelOptions<Model<Any, Any>>?) => ModelStatic<Model>} DefineWrapper
+ * @typedef {(boolean|((sql: string, timing?: number) => Void))?} SequelizeLogging
+ * @typedef {Sequelize&{ SafeDefine: DefineWrapper }} WrappedDatabase
+ */
 
 /**
  * Generic Settings for Databases
@@ -15,17 +19,17 @@ const { Sequelize, Model, ModelCtor, SyncOptions, ModelOptions } = require("sequ
  * @property {MariaDB.MariaDBSettings} [mariadb] Specific Database Settings for "mariadb" mode
  */
 
-/** @type {Sequelize} */
+/** @type {DatabaseWrapper} */
 let _DBInstance = null;
 
 const _Models = {
-    /** @type {ModelCtor<Model>} */
+    /** @type {ModelStatic<Model>} */
     "guild": null,
-    /** @type {ModelCtor<Model>} */
+    /** @type {ModelStatic<Model>} */
     "counter": null,
-    /** @type {ModelCtor<Model>} */
+    /** @type {ModelStatic<Model>} */
     "user": null,
-    /** @type {ModelCtor<Model>} */
+    /** @type {ModelStatic<Model>} */
     "role": null
 };
 
@@ -65,10 +69,10 @@ const Start = async (settings) => {
     const modelOptions = { "timestamps": true };
 
     // Defining and Syncing Models
-    _Models.guild   = _DBInstance.define("Guild"  , Definitions.GuildModel  , modelOptions);
-    _Models.counter = _DBInstance.define("Counter", Definitions.CounterModel, modelOptions);
-    _Models.user    = _DBInstance.define("User"   , Definitions.UserModel   , modelOptions);
-    _Models.role    = _DBInstance.define("Role"   , Definitions.RoleModel   , modelOptions);
+    _Models.guild   = _DBInstance.SafeDefine("Guild"  , Definitions.GuildModel  , modelOptions);
+    _Models.counter = _DBInstance.SafeDefine("Counter", Definitions.CounterModel, modelOptions);
+    _Models.user    = _DBInstance.SafeDefine("User"   , Definitions.UserModel   , modelOptions);
+    _Models.role    = _DBInstance.SafeDefine("Role"   , Definitions.RoleModel   , modelOptions);
     
     for (const model of Object.values(_Models)) {
         if (settings.dropDatabase)

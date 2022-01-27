@@ -9,12 +9,16 @@ const { Sequelize } = require("sequelize");
  * @property {String} password The Password of the User to log in with
  */
 
-/** @typedef {import("../Database.js").SequelizeLogging} SequelizeLogging */
+
+/**
+ * @typedef {import("../Database.js").SequelizeLogging} SequelizeLogging
+ * @typedef {import("../Database.js").WrappedDatabase} WrappedDatabase
+ */
 
 /**
  * @param {MariaDBSettings} settings
  * @param {SequelizeLogging} logging
- * @returns {Sequelize}
+ * @returns {WrappedDatabase}
  */
 module.exports = (settings, logging) => {
     if (typeof settings !== "object") throw new Error("Settings must be Specified for MariaDB Database.");
@@ -25,7 +29,7 @@ module.exports = (settings, logging) => {
         typeof settings.username === "string" &&
         typeof settings.password === "string"
     )) throw new Error("A Valid Host, Port, Database, Username and Password Must be Specified for MariaDB Database.");
-    return new Sequelize({
+    const instance = new Sequelize({
         "dialect": "mariadb",
         "host": settings.host,
         "port": settings.port,
@@ -34,4 +38,9 @@ module.exports = (settings, logging) => {
         "password": settings.password,
         logging
     });
+
+    instance.SafeDefine = (modelName, attributes, options) =>
+        instance.define(modelName, attributes, options);
+
+    return instance;
 };
