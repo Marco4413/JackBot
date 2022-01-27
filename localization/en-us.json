@@ -22,6 +22,7 @@
       "removedRoleList": "Roles removed from the {0}:"
     },
     "banana": {
+      "title": "Banana",
       "noBanana": "No 🍌 was Found :("
     },
     "boost": {

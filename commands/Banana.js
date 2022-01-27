@@ -10,9 +10,10 @@ module.exports = CreateCommand({
         );
 
         if (gif === undefined) {
-            await msg.reply("No 🍌 was Found :(");
+            await msg.reply(locale.Get("noBanana"));
         } else {
             const embed = Utils.GetDefaultEmbedForMessage(msg, false)
+                .setTitle(locale.Get("title"))
                 .setImage(gif.media[0].gif.url);
             await msg.channel.send({ "embeds": [ embed ] });
         }
