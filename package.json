@@ -39,7 +39,7 @@
     "mathjs": "^10.0.0",
     "music-metadata": "^7.11.4",
     "node-fetch": "^2.6.6",
-    "sequelize": "^6.12.0-beta.2",
+    "sequelize": "^6.14.1",
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
