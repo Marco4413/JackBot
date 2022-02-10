@@ -42,6 +42,26 @@ const GuildModel = {
         "defaultValue": null,
         "allowNull": true
     },
+    "privateChannelEveryoneTemplateRoleId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
+    "privateChannelOwnerTemplateRoleId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
+    "privateChannelCategoryId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
+    "privateVoiceCreateChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
     "isSoundAccessBlacklist": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": true,
@@ -102,6 +122,16 @@ const UserModel = {
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
+    "privateVoiceChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
+    "privateTextChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
     "inSoundAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
@@ -140,6 +170,10 @@ const RoleModel = {
  * @property {Boolean} shortcuts Whether or not shortcuts are enabled in the Guild
  * @property {String} locale The Guild's Locale
  * @property {String} nitroBoostChannelId The Id of the Channel where Nitro Boost Announcements are sent
+ * @property {String?} privateChannelEveryoneTemplateRoleId The template role for everyone on private channels
+ * @property {String?} privateChannelOwnerTemplateRoleId The template role for the channel owner on private channels
+ * @property {String?} privateChannelCategoryId The Id of the category Private Channels should be created under
+ * @property {String?} privateVoiceCreateChannelId The Id of the Voice Channel to create a VC upon user connection
  * @property {Boolean} isSoundAccessBlacklist Whether or not the Sound Access List is a Blacklist
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
@@ -161,6 +195,8 @@ const RoleModel = {
  * @typedef {Object} _UserRowType
  * @property {String} guildId The Id of the Guild this User belongs to
  * @property {String} userId The Id of the User
+ * @property {String?} privateVoiceChannelId The User's Private Voice Channel Id
+ * @property {String?} privateTextChannelId The User's Private Text Channel Id
  * @property {Boolean} inSoundAccessList Whether or not this User is in the Sound Access List
  * @typedef {DatabaseRow&_UserRowType} UserRow
  */

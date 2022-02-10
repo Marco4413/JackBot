@@ -11,6 +11,14 @@ TOKEN = "MyBotToken"
 # Only required to enable GIF search functions, remove the field to disable them
 TENOR_API_KEY = "MyTenorAPIKey"
 
+# Private Channels Settings
+# The interval for checking inactive Private Text/Voice Channels
+CHANNEL_SWEEP_INTERVAL = 900e3
+# The time that a text channel should be inactive for to sweep it
+CHANNEL_MAX_INACTIVITY = 1700e3
+# The time that needs to elapse for a channel to be considered not new
+CHANNEL_JUST_CREATED_THRESHOLD = 120e3
+
 # Client Settings
 # The Update Interval used by the Client to check Voice Channel State when playing Audio
 #  This must be less than the Number specified in CLIENT_PLAYER_IDLE_TIME

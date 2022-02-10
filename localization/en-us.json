@@ -55,6 +55,50 @@
       "expressionError": "There's an error in the Math Expression.",
       "expressionResult": "= {1}"
     },
+    "channel": {
+      "subcommands": {
+        "text": {
+          "welcome": "Welcome to your new Text Channel {0}!",
+          "cantDelete": "Can't delete your text channel.",
+          "noChannel": "There's no private text channel.",
+          "created": "Text channel created!",
+          "deleted": "Text channel deleted."
+        },
+        "voice": {
+          "cantDelete": "Can't delete your voice channel.",
+          "noChannel": "There's no private voice channel.",
+          "created": "Voice channel created!",
+          "deleted": "Voice channel deleted."
+        },
+        "category": {
+          "categorySet": "Channel category set.",
+          "categoryRemoved": "Channel category removed.",
+          "invalidCategory": "The specified channel is not a category.",
+          "noCategory": "There's no category channel set.",
+          "currentCategory": "{0} is the current channel category."
+        },
+        "voice-creation-channel": {
+          "channelSet": "Voice creation channel set.",
+          "channelRemoved": "Voice creation channel removed.",
+          "invalidChannel": "The specified channel is not a voice channel.",
+          "noChannel": "There's no voice channel set.",
+          "currentChannel": "{0} is the current voice creation channel."
+        },
+        "template-role": {
+          "invalidRole": "The specified role doesn't exist.",
+          "higherRole": "The role must be in a lower position than your highest one to be able to set it.",
+          "lowerRolePerms": "You must have all the permissions from the specified role to be able to set it.",
+          "ownerSet": "Owner's template role was set.",
+          "ownerRemoved": "Owner's template role was removed.",
+          "currentOwner": "{0} is the current owner template role.",
+          "noOwner": "No owner role set.",
+          "everyoneSet": "Everyone's template role was set.",
+          "everyoneRemoved": "Everyone's template role was removed.",
+          "currentEveryone": "{0} is the current everyone template role.",
+          "noEveryone": "No everyone role set."
+        }
+      }
+    },
     "counter": {
       "subcommands": {
         "list": {

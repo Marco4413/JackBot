@@ -55,6 +55,50 @@
       "expressionError": "C'è un errore nell'Espressione Matematica.",
       "expressionResult": "= {1}"
     },
+    "channel": {
+      "subcommands": {
+        "text": {
+          "welcome": "{0}, Benvenuto/a nel tuo nuovo Canale Testuale!",
+          "cantDelete": "Non è possibile cancellare il tuo canale testuale.",
+          "noChannel": "Non hai nessun canale testuale.",
+          "created": "Canale testuale creato!",
+          "deleted": "Canale testuale rimosso."
+        },
+        "voice": {
+          "cantDelete": "Non è possibile cancellare il tuo canale vocale.",
+          "noChannel": "Non hai nessun canale vocale.",
+          "created": "Canale vocale creato!",
+          "deleted": "Canale vocale rimosso."
+        },
+        "category": {
+          "categorySet": "Categoria dei canali impostata.",
+          "categoryRemoved": "Categoria dei canali rimossa.",
+          "invalidCategory": "Il canale specificato non è una categoria.",
+          "noCategory": "Non c'è nessuna categoria per i canali.",
+          "currentCategory": "{0} è la categoria dei canali."
+        },
+        "voice-creation-channel": {
+          "channelSet": "Voice creation channel set.",
+          "channelRemoved": "Voice creation channel removed.",
+          "invalidChannel": "The specified channel is not a voice channel.",
+          "noChannel": "There's no voice channel set.",
+          "currentChannel": "{0} is the current voice creation channel."
+        },
+        "template-role": {
+          "invalidRole": "Il ruolo specificato non esiste.",
+          "higherRole": "Per poter impostare il ruolo specificato dev'essere sotto a quello più alto che possiedi.",
+          "lowerRolePerms": "Per poter impostare il ruolo specificato devi avere tutti i suoi permessi.",
+          "ownerSet": "Il template per il ruolo dell'owner è stato impostato.",
+          "ownerRemoved": "Il template per il ruolo dell'owner è stato rimosso.",
+          "currentOwner": "{0} è il ruolo template per l'owner.",
+          "noOwner": "Nessun ruolo owner impostato.",
+          "everyoneSet": "Il template per il ruolo everyone è stato impostato.",
+          "everyoneRemoved": "Il template per il ruolo everyone è stato rimosso.",
+          "currentEveryone": "{0} è il ruolo template per everyone.",
+          "noEveryone": "Nessun ruolo everyone impostato."
+        }
+      }
+    },
     "counter": {
       "subcommands": {
         "list": {
