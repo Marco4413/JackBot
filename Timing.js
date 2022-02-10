@@ -3,7 +3,7 @@ const _Intervals = { };
 
 // TODO: Add Timeouts again if they'll ever be needed
 
-/** @typedef {(id: NodeJS.Timer, signal: String?) => Void)} TimerHandler */
+/** @typedef {(id: NodeJS.Timer, signal: String?) => Void} TimerHandler */
 
 /**
  * Creates a new Interval which will be automatically cleared on Interrupt
