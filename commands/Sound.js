@@ -5,7 +5,7 @@ const { createAudioResource } = require("@discordjs/voice");
 
 const { CreateCommand, IsMissingPermissions, Permissions, Database, Utils } = require("../Command.js");
 const { IsVoiceConnectionIdle, GetOrCreateVoiceConnection, GetVoiceConnection } = require("../Client.js");
-const { IsBlacklisted } = require("./AccessList.js");
+const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 const Logger = require("../Logger.js");
 
 const _SOUNDS_FOLDER = "./data/sounds";
@@ -229,12 +229,8 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
 module.exports = CreateCommand({
     "name": "sound",
     "shortcut": "s",
-    "canExecute": async (msg, guild, locale) => {
-        const isBlacklisted = await IsBlacklisted(msg.member, "inSoundAccessList", "isSoundAccessBlacklist");
-        if (isBlacklisted)
-            await msg.reply(locale.Get("blacklisted"));
-        return !isBlacklisted;
-    },
+    "canExecute": async (msg, guild, locale) =>
+        !await ReplyIfBlacklisted(locale, "sound", msg, "inSoundAccessList", "isSoundAccessBlacklist"),
     "subcommands": [
         {
             "name": "list",

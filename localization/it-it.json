@@ -409,7 +409,6 @@
           "sameChannel": "Devi essere nel mio stesso canale vocale per farmi uscire."
         }
       },
-      "blacklisted": "Non puoi utilizzare audio perché sei bandito dai comandi audio.",
       "noSoundSpecified": "Devi specificare il nome dell'audio da riprodurre.",
       "notConnected": "Devi essere connesso ad un canale vocale per poter riprodurre audio.",
       "guildMuted": "Non puoi riprodurre un audio se sei mutato nel server.",
@@ -487,6 +486,7 @@
     "softMention": "{0} (`{1}`)",
     "noChannelPerms": "Non possiedi abbastanza permessi nel canale {1} per eseguire questo comando ( Mancano: `{0}` ).",
     "noGuildPerms": "Non possiedi abbastanza permessi per eseguire qeusto comando ( Mancano: `{0}` ).",
+    "blacklistedCommand": "Al momento non hai accesso ai comandi `{0}` in questo server.",
     "noSubcommand": "Un sottocomando valido deve essere utilizzato.",
     "missingArg": "Argomento `{0}` ( alla posizione {1} ) mancante.",
     "wrongArgType": "Argomento `{0}` ( alla posizione {1} ) è del tipo errato ( Tipi Possibili: {2} ).",

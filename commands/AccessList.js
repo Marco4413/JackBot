@@ -1,41 +1,8 @@
-const { GuildMember } = require("discord.js");
 const { CreateCommand, Permissions, Database, Utils } = require("../Command.js");
 
 // Don't know why but if I import DatabaseDefinitions from Command.js auto-completion doesn't work
 /** @typedef {import("../DatabaseDefinitions.js").UserRow & import("../DatabaseDefinitions.js").RoleRow} UserRoleRows */
 /** @typedef {import("../DatabaseDefinitions.js").GuildRow} GuildRow */
-
-/**
- * Checks if the specified member is blacklisted based on the value at the key dbColumn
- * on both user and role Database Rows
- * @template {keyof UserRoleRows} T
- * @param {GuildMember} member The Member to check
- * @param {T} dbInListColumn The column that specifies if the Member is in the Access List
- * @param {keyof GuildRow} dbIsBlacklistColumn The column that specifies if the Access List is a Blacklist
- * @returns {Boolean} Whether or not the specified member is blacklisted
- */
-const IsBlacklisted = async (member, dbInListColumn, dbIsBlacklistColumn) => {
-    const isBlacklist = (await Database.GetOrCreateRow("guild", {
-        "id": member.guild.id
-    }))[dbIsBlacklistColumn];
-
-    const isUserInList = await Database.GetRow("user", {
-        "guildId": member.guild.id,
-        "userId": member.id,
-        [dbInListColumn]: true
-    }) !== undefined;
-    if (isBlacklist && isUserInList) return true;
-    
-    const isRoleInList = member.roles.cache.hasAny(
-        ...(await Database.GetRows("role", {
-            "guildId": member.guild.id,
-            [dbInListColumn]: true
-        })).map(role => role.roleId)
-    );
-    if (isBlacklist) return isRoleInList;
-
-    return !(isUserInList || isRoleInList);
-};
 
 /**
  * @param {String} name
@@ -372,5 +339,3 @@ module.exports = CreateCommand({
         _CreateBlacklistCommand("sound", "s", "inSoundAccessList", "isSoundAccessBlacklist")
     ]
 });
-
-module.exports.IsBlacklisted = IsBlacklisted;

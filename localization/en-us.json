@@ -409,7 +409,6 @@
           "sameChannel": "You must be on my voice channel to make me leave."
         }
       },
-      "blacklisted": "Can't use sound commands because you're blacklisted from them.",
       "noSoundSpecified": "You must specify the name of the sound to play.",
       "notConnected": "You must be connected to a voice channel to play sounds.",
       "guildMuted": "You can't play a sound if you're muted on the guild.",
@@ -487,6 +486,7 @@
     "softMention": "{0} (`{1}`)",
     "noChannelPerms": "Not enough permissions in channel {1} to run this command ( Missing: `{0}` ).",
     "noGuildPerms": "Not enough permissions to run this command ( Missing: `{0}` ).",
+    "blacklistedCommand": "You currently have no access to `{0}` commands on this guild.",
     "noSubcommand": "A valid subcommand must be provided.",
     "missingArg": "Argument `{0}` ( at {1} ) is missing.",
     "wrongArgType": "Argument `{0}` ( at {1} ) is of wrong type ( Expected Types: {2} ).",
