@@ -92,7 +92,7 @@ const Start = async (settings) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to get the row from
  * @param {U} [where] The attributes that the row should have
- * @returns {U|undefined} The Row or undefined if none was found
+ * @returns {Promise<U>|Promise<undefined>} The Row or undefined if none was found
  */
 const GetRow = async (table, where = { }) => {
     _EnsureStart();
@@ -106,7 +106,7 @@ const GetRow = async (table, where = { }) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to get the rows from
  * @param {U} [where] The attributes that the rows should have
- * @returns {U[]} The Rows
+ * @returns {Promise<U[]>} The Rows
  */
 const GetRows = async (table, where = { }) => {
     _EnsureStart();
@@ -121,7 +121,7 @@ const GetRows = async (table, where = { }) => {
  * @param {T} table The table to get or create the row in
  * @param {U} [where] The attributes that the row should have
  * @param {U} [defaults] The default values for the row ( If it gets created )
- * @returns {U} The Row
+ * @returns {Promise<U>} The Row
  */
 const GetOrCreateRow = async (table, where = { }, defaults = where) => {
     _EnsureStart();
@@ -136,7 +136,7 @@ const GetOrCreateRow = async (table, where = { }, defaults = where) => {
  * @param {T} table The table where the row is in
  * @param {U} [where] The attributes that the row to modify should have
  * @param {U} [attributes] The new attributes for the row ( Undefined keys don't change attributes )
- * @returns {U|undefined} The modified Row or undefined if none
+ * @returns {Promise<U>|Promise<undefined>} The modified Row or undefined if none
  */
 const SetRowAttr = async (table, where = { }, attributes = { }) => {
     _EnsureStart();
@@ -156,7 +156,7 @@ const SetRowAttr = async (table, where = { }, attributes = { }) => {
  * @param {T} table The table where the rows are in
  * @param {U} [where] The attributes that the rows to modify should have
  * @param {U} [attributes] The new attributes for the rows ( Undefined keys don't change attributes )
- * @returns {U[]} The modified Rows
+ * @returns {Promise<U[]>} The modified Rows
  */
 const SetRowsAttr = async (table, where = { }, attributes = { }) => {
     _EnsureStart();
@@ -181,7 +181,7 @@ const SetRowsAttr = async (table, where = { }, attributes = { }) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to create the row in
  * @param {U} [values] The values to create the row with
- * @returns {U|undefined} The created Row or undefined if none was created
+ * @returns {Promise<U>|Promise<undefined>} The created Row or undefined if none was created
  */
 const CreateRow = async (table, values = { }) => {
     _EnsureStart();
@@ -198,7 +198,7 @@ const CreateRow = async (table, values = { }) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to remove the rows from
  * @param {U} [where] The attributes that the Rows to remove should have
- * @returns {Number} The count of Rows Removed
+ * @returns {Promise<Number>} The count of Rows Removed
  */
 const RemoveRows = async (table, where = { }) => {
     _EnsureStart();
