@@ -1,4 +1,4 @@
-const { GuildMember, Message } = require("discord.js");
+const { GuildMember, Message, Permissions } = require("discord.js");
 const Database = require("../../Database.js");
 const DatabaseDefinitions = require("../../DatabaseDefinitions.js");
 const { Locale } = require("../../Localization.js");
@@ -15,6 +15,8 @@ const { Locale } = require("../../Localization.js");
  * @returns {Promise<Boolean>} Whether or not the specified member is blacklisted
  */
 const IsBlacklisted = async (member, dbInListColumn, dbIsBlacklistColumn) => {
+    if (member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return false;
+    
     const isBlacklist = (await Database.GetOrCreateRow("guild", {
         "id": member.guild.id
     }))[dbIsBlacklistColumn];
