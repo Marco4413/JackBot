@@ -1,5 +1,5 @@
 const { CreateCommand, Permissions, Database, Utils } = require("../Command.js");
-const { SendNitroBoostEmbed } = require("../events/GuildMemberUpdate.js");
+const { SendNitroBoostEmbed } = require("./utils/BoostUtils.js");
 
 module.exports = CreateCommand({
     "name": "boost",
