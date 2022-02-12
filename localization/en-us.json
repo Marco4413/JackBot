@@ -59,27 +59,29 @@
       "subcommands": {
         "text": {
           "welcome": "Welcome to your new Text Channel {0}!",
-          "cantDelete": "Can't delete your text channel.",
-          "noChannel": "There's no private text channel.",
-          "created": "Text channel created!",
-          "deleted": "Text channel deleted."
+          "cantDelete": "Can't delete your private text channel.",
+          "noChannel": "You've got no private text channel.",
+          "created": "Your private text channel was created!",
+          "alreadyCreated": "You've already got a private text channel.",
+          "deleted": "Your private text channel was deleted."
         },
         "voice": {
-          "cantDelete": "Can't delete your voice channel.",
-          "noChannel": "There's no private voice channel.",
-          "created": "Voice channel created!",
-          "deleted": "Voice channel deleted."
+          "cantDelete": "Can't delete your private voice channel.",
+          "noChannel": "You've got no private voice channel.",
+          "created": "Your private voice channel was created!",
+          "alreadyCreated": "You've already got a private voice channel.",
+          "deleted": "Your private voice channel was deleted."
         },
         "category": {
-          "categorySet": "Channel category set.",
-          "categoryRemoved": "Channel category removed.",
+          "categorySet": "Private channel category was set.",
+          "categoryRemoved": "Private channel category was removed.",
           "invalidCategory": "The specified channel is not a category.",
-          "noCategory": "There's no category channel set.",
-          "currentCategory": "{0} is the current channel category."
+          "noCategory": "There's no private channel category set.",
+          "currentCategory": "{0} is the current private channel category."
         },
         "voice-creation-channel": {
           "channelSet": "Voice creation channel set.",
-          "channelRemoved": "Voice creation channel removed.",
+          "channelRemoved": "Voice creation channel was removed.",
           "invalidChannel": "The specified channel is not a voice channel.",
           "noChannel": "There's no voice channel set.",
           "currentChannel": "{0} is the current voice creation channel."

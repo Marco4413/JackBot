@@ -59,30 +59,32 @@
       "subcommands": {
         "text": {
           "welcome": "{0}, Benvenuto/a nel tuo nuovo Canale Testuale!",
-          "cantDelete": "Non è possibile cancellare il tuo canale testuale.",
-          "noChannel": "Non hai nessun canale testuale.",
-          "created": "Canale testuale creato!",
-          "deleted": "Canale testuale rimosso."
+          "cantDelete": "Non è possibile cancellare il tuo canale testuale privato.",
+          "noChannel": "Non hai nessun canale testuale privato.",
+          "created": "Il tuo canale testuale privato è stato creato!",
+          "alreadyCreated": "Hai già un canale testuale privato.",
+          "deleted": "Il tuo canale testuale privato è stato rimosso."
         },
         "voice": {
-          "cantDelete": "Non è possibile cancellare il tuo canale vocale.",
-          "noChannel": "Non hai nessun canale vocale.",
-          "created": "Canale vocale creato!",
-          "deleted": "Canale vocale rimosso."
+          "cantDelete": "Non è possibile cancellare il tuo canale vocale privato.",
+          "noChannel": "Non hai nessun canale vocale privato.",
+          "created": "Il tuo canale vocale privato è stato creato!",
+          "alreadyCreated": "Hai già un canale vocale privato.",
+          "deleted": "Il tuo canale vocale privato è stato rimosso."
         },
         "category": {
-          "categorySet": "Categoria dei canali impostata.",
-          "categoryRemoved": "Categoria dei canali rimossa.",
+          "categorySet": "La categoria per i canali privati è stata impostata.",
+          "categoryRemoved": "La categoria per i canali privati è stata rimossa.",
           "invalidCategory": "Il canale specificato non è una categoria.",
-          "noCategory": "Non c'è nessuna categoria per i canali.",
-          "currentCategory": "{0} è la categoria dei canali."
+          "noCategory": "Non c'è nessuna categoria per i canali privati.",
+          "currentCategory": "{0} è la categoria per i canali privati."
         },
         "voice-creation-channel": {
-          "channelSet": "Voice creation channel set.",
-          "channelRemoved": "Voice creation channel removed.",
-          "invalidChannel": "The specified channel is not a voice channel.",
-          "noChannel": "There's no voice channel set.",
-          "currentChannel": "{0} is the current voice creation channel."
+          "channelSet": "Il canale per la creazione dei canali vocali è stato impostato.",
+          "channelRemoved": "Il canale per la creazione dei canali vocali è stato rimosso.",
+          "invalidChannel": "Il canale specificato non è un canale vocale.",
+          "noChannel": "Nessun canale vocale è stato impostato.",
+          "currentChannel": "{0} è attualmente il canale vocale per la creazione di canali vocali."
         },
         "template-role": {
           "invalidRole": "Il ruolo specificato non esiste.",
