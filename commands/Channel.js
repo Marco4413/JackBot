@@ -5,6 +5,7 @@ const { CreateCommand, Permissions, Database, Utils } = require("../Command.js")
 const { Locale } = require("../Localization.js");
 const Logger = require("../Logger.js");
 const { CreateInterval } = require("../Timing.js");
+const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 
 /**
  * @param {"GUILD_TEXT"|"GUILD_VOICE"} channelType
@@ -211,6 +212,8 @@ module.exports = CreateCommand({
     "name": "channel",
     "shortcut": "ch",
     "permissions": Permissions.FLAGS.VIEW_CHANNEL,
+    "canExecute": async (msg, guild, locale) =>
+        !await ReplyIfBlacklisted(locale, "channel", msg, "inChannelAccessList", "isChannelAccessBlacklist"),
     "subcommands": [
         {
             "name": "text",

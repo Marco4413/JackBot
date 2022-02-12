@@ -11,7 +11,7 @@ const { CreateCommand, Permissions, Database, Utils } = require("../Command.js")
  * @param {keyof GuildRow} dbIsBlacklistColumn
  * @returns {import("../Command.js").Command}
  */
-const _CreateBlacklistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistColumn) => {
+const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistColumn) => {
     const _GetListTypeLocale = (locale, guild) =>
         guild[dbIsBlacklistColumn] ? locale.Get("blacklist") : locale.Get("whitelist");
 
@@ -336,6 +336,7 @@ module.exports = CreateCommand({
     "shortcut": "al",
     "permissions": Permissions.FLAGS.MANAGE_ROLES,
     "subcommands": [
-        _CreateBlacklistCommand("sound", "s", "inSoundAccessList", "isSoundAccessBlacklist")
+        _CreateAccesslistCommand("sound", "s", "inSoundAccessList", "isSoundAccessBlacklist"),
+        _CreateAccesslistCommand("channel", "ch", "inChannelAccessList", "isChannelAccessBlacklist")
     ]
 });

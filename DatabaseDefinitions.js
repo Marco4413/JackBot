@@ -66,6 +66,11 @@ const GuildModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": true,
         "allowNull": true
+    },
+    "isChannelAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": true
     }
 };
 
@@ -141,6 +146,11 @@ const UserModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
+    },
+    "inChannelAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
     }
 };
 
@@ -156,6 +166,11 @@ const RoleModel = {
         "allowNull": false
     },
     "inSoundAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inChannelAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -180,6 +195,7 @@ const RoleModel = {
  * @property {String?} privateChannelCategoryId The Id of the category Private Channels should be created under
  * @property {String?} privateVoiceCreateChannelId The Id of the Voice Channel to create a VC upon user connection
  * @property {Boolean} isSoundAccessBlacklist Whether or not the Sound Access List is a Blacklist
+ * @property {Boolean} isChannelAccessBlacklist Whether or not the Channel Access List is a Blacklist
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
 
@@ -204,6 +220,7 @@ const RoleModel = {
  * @property {String?} privateVoiceChannelId The User's Private Voice Channel Id
  * @property {String?} privateTextChannelId The User's Private Text Channel Id
  * @property {Boolean} inSoundAccessList Whether or not this User is in the Sound Access List
+ * @property {Boolean} inChannelAccessList Whether or not this User is in the Channel Access List
  * @typedef {DatabaseRow&_UserRowType} UserRow
  */
 
@@ -212,6 +229,7 @@ const RoleModel = {
  * @property {String} guildId The Id of the Guild this Role belongs to
  * @property {String} roleId The Id of the Role
  * @property {Boolean} inSoundAccessList Whether or not this Role is in the Sound Access List
+ * @property {Boolean} inChannelAccessList Whether or not this Role is in the Channel Access List
  * @typedef {DatabaseRow&_RoleRowType} RoleRow
  */
 
