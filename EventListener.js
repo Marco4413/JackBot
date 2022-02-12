@@ -1,4 +1,4 @@
-const discord = require("discord.js");
+const Discord = require("discord.js");
 const Logger = require("./Logger.js");
 
 /**
@@ -11,9 +11,9 @@ const Logger = require("./Logger.js");
 /**
  * Helper function to give better autocompletion when creating EventListeners ( Doesn't check for validity ).
  * Wraps callback to catch errors and print them to the console
- * @template {keyof discord.ClientEvents} T
+ * @template {keyof Discord.ClientEvents} T
  * @param {T} event
- * @param {(...args: discord.ClientEvents[T]) => Void} callback
+ * @param {(...args: Discord.ClientEvents[T]) => Void} callback
  * @returns {EventListener}
  */
 const CreateEventListener = (event, callback, once = false) => {
