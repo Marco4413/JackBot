@@ -229,6 +229,86 @@
             "title": "Calculate",
             "description": "Calculates the specified Math Expression."
           },
+          "channel": {
+            "title": "Channel",
+            "description": "Manages Private Voice and Text Channels.",
+            "subcommands": {
+              "text": {
+                "title": "Text",
+                "description": "Manages Private Text Channels.",
+                "subcommands": {
+                  "create": {
+                    "title": "Create",
+                    "description": "Creates a new Private Text Channel."
+                  },
+                  "delete": {
+                    "title": "Delete",
+                    "description": "Deletes your Private Text Channel."
+                  }
+                }
+              },
+              "voice": {
+                "title": "Voice",
+                "description": "Manages Private Voice Channels.",
+                "subcommands": {
+                  "create": {
+                    "title": "Create",
+                    "description": "Creates a new Private Voice Channel."
+                  },
+                  "delete": {
+                    "title": "Delete",
+                    "description": "Deletes your Private Voice Channel."
+                  }
+                }
+              },
+              "category": {
+                "title": "Category",
+                "description": "Shows the Category for new Private Channels.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Sets the Category for new Private Channels."
+                  }
+                }
+              },
+              "voice-creation-channel": {
+                "title": "Voice Creation Channel",
+                "description": "Shows the Channel that an User should join to automatically create a new Voice Channel.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Sets the Voice Creation Channel."
+                  }
+                }
+              },
+              "template-role": {
+                "title": "Template Role",
+                "description": "Manages Template Roles for new Channels' Permissions.",
+                "subcommands": {
+                  "everyone": {
+                    "title": "Everyone",
+                    "description": "Shows the Template Role for Everyone.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Sets the Template Role for Everyone."
+                      }
+                    }
+                  },
+                  "owner": {
+                    "title": "Owner",
+                    "description": "Shows the Template Role for the Channel Owner.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Sets the Template Role for the Channel Owner."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "counter": {
             "title": "Counter",
             "description": "Shows the current count of this Channel.",

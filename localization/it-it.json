@@ -229,6 +229,86 @@
             "title": "Calculate",
             "description": "Calcola l'Espressione Matematica specificata."
           },
+          "channel": {
+            "title": "Channel",
+            "description": "Gestisce i Canali Vocali e Testuali Privati.",
+            "subcommands": {
+              "text": {
+                "title": "Text",
+                "description": "Gestisce i Canali Testuali Privati.",
+                "subcommands": {
+                  "create": {
+                    "title": "Create",
+                    "description": "Crea un nuovo Canale Testuale Privato."
+                  },
+                  "delete": {
+                    "title": "Delete",
+                    "description": "Cancella il tuo Canale Testuale Privato."
+                  }
+                }
+              },
+              "voice": {
+                "title": "Voice",
+                "description": "Gestisce i Canali Vocali Privati.",
+                "subcommands": {
+                  "create": {
+                    "title": "Create",
+                    "description": "Crea un nuovo Canale Vocale Privato."
+                  },
+                  "delete": {
+                    "title": "Delete",
+                    "description": "Cancella il tuo Canale Vocale Privato"
+                  }
+                }
+              },
+              "category": {
+                "title": "Category",
+                "description": "Mostra la Categoria per i nuovi Canali Privati.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Imposta la Categoria per i nuovi Canali Privati."
+                  }
+                }
+              },
+              "voice-creation-channel": {
+                "title": "Voice Creation Channel",
+                "description": "Mostra il Canale in cui un Utente dovrebbe entrare per creare in automatico un nuovo Canale Vocale.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Imposta il Canale per Creare nuovi Canali Vocali."
+                  }
+                }
+              },
+              "template-role": {
+                "title": "Template Role",
+                "description": "Gestisce i Ruoli Template per i Permessi dei nuovi Canali.",
+                "subcommands": {
+                  "everyone": {
+                    "title": "Everyone",
+                    "description": "Mostra il Ruolo Template per Everyone.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Imposta il Ruolo Template per Everyone."
+                      }
+                    }
+                  },
+                  "owner": {
+                    "title": "Owner",
+                    "description": "Mostra il Ruolo Template per il Creatore del Canale.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Imposta il Ruolo Template per il Creatore del Canale."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "counter": {
             "title": "Counter",
             "description": "Mostra l'attuale conteggio di questo canale.",
