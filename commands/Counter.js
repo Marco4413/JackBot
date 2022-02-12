@@ -42,6 +42,9 @@ module.exports = CreateCommand({
                 } else {
                     await msg.reply(locale.Get("startedCounting"));
                     const response = await msg.channel.send(counter.count.toString());
+                    await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
+                        "lastMessageId": response.id
+                    });
                     await response.react(locale.GetCommon("checkmark"));
                 }
             }

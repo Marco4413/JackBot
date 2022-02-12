@@ -108,6 +108,7 @@
           "counterDescription": "Found in channel {0} with a current count of {1} and a best of {2}."
         }
       },
+      "messageDeleted": "{1}, {0}!",
       "countFailed": "Count Failed at `{1}` thanks to {0}",
       "alreadyCounting": "A Counter is already ongoing in this channel.",
       "noCountingHere": "No Counter was found in this channel.",

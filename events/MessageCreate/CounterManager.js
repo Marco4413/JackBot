@@ -34,21 +34,24 @@ module.exports = async (msg, guild) => {
                 await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
                     "count": result,
                     "bestCount": result > counter.bestCount ? result : counter.bestCount,
-                    "lastMemberId": msg.member.id
+                    "lastMemberId": msg.member.id,
+                    "lastMessageId": msg.id
                 });
                 
                 await msg.react(locale.GetCommon("checkmark"));
             } else if (!counter.allowErrors) {
                 await msg.delete();
             } else if (counter.count !== counterStartValue) {
+                await msg.channel.send(locale.GetFormatted("countFailed", Utils.MentionUser(msg.member.id), counter.count));
+                const counterMessage = await msg.channel.send(counterStartValue.toString());
                 await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
                     "count": counterStartValue,
                     "bestCount": counter.count > counter.bestCount ? counter.count : counter.bestCount,
-                    "lastMemberId": msg.member.id
+                    "lastMemberId": msg.member.id,
+                    "lastMessageId": counterMessage.id
                 });
 
-                await msg.channel.send(locale.GetFormatted("countFailed", Utils.MentionUser(msg.member.id), counter.count));
-                await (await msg.channel.send(counterStartValue.toString())).react(locale.GetCommon("checkmark"));
+                await counterMessage.react(locale.GetCommon("checkmark"));
                 await msg.react(locale.GetCommon("crossmark"));
             }
         } else if (!counter.allowMessages) {

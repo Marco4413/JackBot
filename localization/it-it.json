@@ -108,6 +108,7 @@
           "counterDescription": "Nel canale {0} con un coteggio di {1} ed un migliore di {2}."
         }
       },
+      "messageDeleted": "{1}, {0}!",
       "countFailed": "Conteggio fallito a `{1}` grazie a {0}",
       "alreadyCounting": "Un conteggio è già stato avviato in questo canale.",
       "noCountingHere": "Nessun conteggio è stato trovato in questo canale.",

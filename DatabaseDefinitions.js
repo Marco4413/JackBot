@@ -94,6 +94,11 @@ const CounterModel = {
         "defaultValue": null,
         "allowNull": true
     },
+    "lastMessageId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
     "allowMessages": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": true,
@@ -185,6 +190,7 @@ const RoleModel = {
  * @property {BigInt} count The current Count of this Counter
  * @property {BigInt} bestCount The best Count that this Counter has reached
  * @property {String} lastMemberId The Id of the Last Member who changed the count
+ * @property {String} lastMessageId The Id of the Last Message that changed the count
  * @property {Boolean} allowMessages Whether or not to allow NaN messages in the Counter's Channel
  * @property {Boolean} allowErrors Whether or not to allow wrong numbers in the Counter's Channel
  * @property {Boolean} alternateMember Whether or not the Last Member who changed the count can do it more than once in a row
