@@ -271,7 +271,7 @@ const SplitCommand = (msg) => {
  * @param {Localization.Locale} locale The Locale to use
  * @param {Discord.PermissionResolvable} requiredPerms The Permissions Required
  * @param {Discord.GuildChannel} [channel] The Channel to test the Permissions on ( undefined for Guild )
- * @returns {Boolean} Whether or not the Message's author has the specified Permissions
+ * @returns {Promise<Boolean>} Whether or not the Message's author has the specified Permissions
  */
 const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
     if (channel === undefined) {
@@ -303,7 +303,7 @@ const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
  * @param {Localization.Locale} locale The locale to use for messages
  * @param {String[]} splittedMessage The splitted message containing the "raw" commands
  * @param {Command[]} commandList The list of Commands to check for
- * @returns {Boolean} Whether or not a candidate Command was Found ( It may have failed Execution )
+ * @returns {Promise<Boolean>} Whether or not a candidate Command was Found ( It may have failed Execution )
  */
 const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandList) => {
     const [ commandName, ...commandArgs ] = splittedMessage;
