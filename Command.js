@@ -1,4 +1,4 @@
-const Discord = require("Discord.js");
+const Discord = require("discord.js");
 const Database = require("./Database.js");
 const DatabaseDefinitions = require("./DatabaseDefinitions.js");
 const Localization = require("./Localization.js");
