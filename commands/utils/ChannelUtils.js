@@ -4,6 +4,20 @@ const { GetLocale } = require("../../Localization");
 const Utils = require("../../Utils.js");
 
 /**
+ * @param {Permissions} perms
+ * @returns {Object}
+ */
+const _PermissionToOverwrites = (perms) => {
+    return perms.toArray().reduce((map, perm) => {
+        map[perm] = true;
+        return map;
+    }, { });
+};
+
+const _OVERWRITE_TYPES_ROLE   = 0;
+const _OVERWRITE_TYPES_MEMBER = 1;
+
+/**
  * Creates a new Voice Channel for the specified Member
  * @param {GuildMember} member The Member to create the new Voice Channel for
  * @param {String} [channelName] The name of the new Channel
@@ -34,7 +48,7 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
             if (everyoneTemplateRole !== null) {
                 permissionOverwrites.push({
                     "id": member.guild.roles.everyone.id,
-                    "type": "role",
+                    "type": _OVERWRITE_TYPES_ROLE,
                     "allow": parent?.permissionsFor(everyoneTemplateRole) ?? everyoneTemplateRole.permissions
                 });
             }
@@ -48,7 +62,7 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
             if (ownerTemplateRole !== null) {
                 permissionOverwrites.push({
                     "id": member.id,
-                    "type": "member",
+                    "type": _OVERWRITE_TYPES_MEMBER,
                     "allow": parent?.permissionsFor(ownerTemplateRole) ?? ownerTemplateRole.permissions
                 });
             }
@@ -62,7 +76,16 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
         );
 
         if (permissionOverwrites.length > 0) {
-            await userChannel.permissionOverwrites.set(permissionOverwrites, "Setting Voice Channel Permissions to the Templates.");
+            for (let i = 0; i < permissionOverwrites.length; i++) {
+                const overwrites = permissionOverwrites[i];
+                await userChannel.permissionOverwrites.edit(
+                    overwrites.id,
+                    _PermissionToOverwrites(overwrites.allow), {
+                        "type": overwrites.type,
+                        "reason": "Setting Text Channel Permissions to Templates."
+                    }
+                );
+            }
         }
 
         await Database.SetRowAttr("user", {
@@ -177,7 +200,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
             if (everyoneTemplateRole !== null) {
                 permissionOverwrites.push({
                     "id": member.guild.roles.everyone.id,
-                    "type": "role",
+                    "type": _OVERWRITE_TYPES_ROLE,
                     "allow": parent?.permissionsFor(everyoneTemplateRole) ?? everyoneTemplateRole.permissions
                 });
             }
@@ -191,7 +214,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
             if (ownerTemplateRole !== null) {
                 permissionOverwrites.push({
                     "id": member.id,
-                    "type": "member",
+                    "type": _OVERWRITE_TYPES_MEMBER,
                     "allow": parent?.permissionsFor(ownerTemplateRole) ?? ownerTemplateRole.permissions
                 });
             }
@@ -205,7 +228,16 @@ const CreateTextChannel = async (member, channelName, msg) => {
         );
 
         if (permissionOverwrites.length > 0) {
-            await userChannel.permissionOverwrites.set(permissionOverwrites, "Setting Text Channel Permissions to the Templates.");
+            for (let i = 0; i < permissionOverwrites.length; i++) {
+                const overwrites = permissionOverwrites[i];
+                await userChannel.permissionOverwrites.edit(
+                    overwrites.id,
+                    _PermissionToOverwrites(overwrites.allow), {
+                        "type": overwrites.type,
+                        "reason": "Setting Text Channel Permissions to Templates."
+                    }
+                );
+            }
         }
 
         await Database.SetRowAttr("user", {
