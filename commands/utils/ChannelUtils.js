@@ -13,7 +13,7 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
     const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
 
     let locale;
-    if (msg == null) {
+    if (msg != null) {
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "voice" ]);
     }
 
@@ -87,7 +87,7 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
  */
 const DeleteVoiceChannel = async (member, scatterUsers = true, msg) => {
     let locale;
-    if (msg == null) {
+    if (msg != null) {
         const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "voice" ]);
     }
@@ -156,7 +156,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
     const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
 
     let locale;
-    if (msg == null) {
+    if (msg != null) {
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "text" ]);
     }
 
@@ -230,7 +230,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
  */
 const DeleteTextChannel = async (member, msg) => {
     let locale;
-    if (msg == null) {
+    if (msg != null) {
         const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "text" ]);
     }
