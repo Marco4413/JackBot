@@ -13,7 +13,7 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
     const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
 
     let locale;
-    if ((msg ?? undefined) !== undefined) {
+    if (msg == null) {
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "voice" ]);
     }
 
@@ -57,10 +57,13 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
         userChannel = await member.guild.channels.create(
             channelName ?? `${member.displayName}'s Voice Channel`, {
                 "type": "GUILD_VOICE",
-                "parent": parent?.type === "GUILD_CATEGORY" ? parent : null,
-                permissionOverwrites
+                "parent": parent?.type === "GUILD_CATEGORY" ? parent : null
             }
         );
+
+        if (permissionOverwrites.length > 0) {
+            await userChannel.permissionOverwrites.set(permissionOverwrites, "Setting Voice Channel Permissions to the Templates.");
+        }
 
         await Database.SetRowAttr("user", {
             "guildId": member.guild.id,
@@ -84,7 +87,7 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
  */
 const DeleteVoiceChannel = async (member, scatterUsers = true, msg) => {
     let locale;
-    if ((msg ?? undefined) !== undefined) {
+    if (msg == null) {
         const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "voice" ]);
     }
@@ -153,7 +156,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
     const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
 
     let locale;
-    if ((msg ?? undefined) !== undefined) {
+    if (msg == null) {
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "text" ]);
     }
 
@@ -197,10 +200,13 @@ const CreateTextChannel = async (member, channelName, msg) => {
         userChannel = await member.guild.channels.create(
             channelName ?? `${member.displayName}'s Text Channel`, {
                 "type": "GUILD_TEXT",
-                "parent": parent?.type === "GUILD_CATEGORY" ? parent : null,
-                permissionOverwrites
+                "parent": parent?.type === "GUILD_CATEGORY" ? parent : null
             }
         );
+
+        if (permissionOverwrites.length > 0) {
+            await userChannel.permissionOverwrites.set(permissionOverwrites, "Setting Text Channel Permissions to the Templates.");
+        }
 
         await Database.SetRowAttr("user", {
             "guildId": member.guild.id,
@@ -224,7 +230,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
  */
 const DeleteTextChannel = async (member, msg) => {
     let locale;
-    if ((msg ?? undefined) !== undefined) {
+    if (msg == null) {
         const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
         locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "text" ]);
     }
@@ -255,7 +261,7 @@ const DeleteTextChannel = async (member, msg) => {
         "guildId": member.guild.id,
         "userId": member.id
     }, { "privateTextChannelId": null });
-    if (!((msg ?? undefined) === undefined || msg.deleted)) await msg?.reply(locale.Get("deleted"));
+    if (!(msg == null || msg.deleted)) await msg?.reply(locale.Get("deleted"));
 };
 
 module.exports = {
