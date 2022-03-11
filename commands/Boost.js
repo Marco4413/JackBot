@@ -7,7 +7,7 @@ module.exports = CreateCommand({
     "subcommands": [
         {
             "name": "channel",
-            "shortcut": "s",
+            "shortcut": "ch",
             "subcommands": [
                 {
                     "name": "set",
