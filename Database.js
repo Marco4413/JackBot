@@ -212,9 +212,40 @@ const RemoveRows = async (table, where = { }) => {
     return await _Models[table].destroy({ where });
 };
 
+/**
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table
+ * @param {U} definition
+ * @returns {Promise<Number>}
+ */
+const _CleanupTable = async (table, definition) => {
+    // Getting table defaults
+    const defaults = { };
+    for (const k of Object.keys(definition)) {
+        const columnDefinition = definition[k];
+        if (!columnDefinition.primaryKey)
+            defaults[k] = definition[k].defaultValue ?? null; // If it doesn't have a default value then it should be nullable
+    }
+    // Removing rows where fields have their default value
+    return await RemoveRows(table, defaults);
+};
+
+/**
+ * Removes unaltered tables to free up space
+ * @returns {Promise<Number>} The count of the rows that were removed
+ */
+const Cleanup = async () => {
+    return (
+        await _CleanupTable("role", Definitions.RoleModel) +
+        await _CleanupTable("user", Definitions.UserModel)
+    );
+};
+
 module.exports = {
     IsStarted, Start,
     GetRow, GetRows, GetOrCreateRow,
     SetRowAttr, SetRowsAttr,
-    CreateRow, RemoveRows
+    CreateRow, RemoveRows,
+    Cleanup
 };
