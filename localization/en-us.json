@@ -388,23 +388,27 @@
             "description": "Manages User Roles.",
             "subcommands": {
               "managers": {
-                "add": {
-                  "title": "Add",
-                  "description": "Adds all the specified roles to the specified manager (role)."
-                },
-                "remove": {
-                  "title": "Remove",
-                  "description": "Removes all the specified roles from the specified manager (role).",
-                  "subcommands": {
-                    "all": {
-                      "title": "All",
-                      "description": "Removes all roles from the specified manager (role)."
+                "title": "Managers",
+                "description": "Manages role managers of this guild.",
+                "subcommands": {
+                  "add": {
+                    "title": "Add",
+                    "description": "Adds all the specified roles to the specified manager (role)."
+                  },
+                  "remove": {
+                    "title": "Remove",
+                    "description": "Removes all the specified roles from the specified manager (role).",
+                    "subcommands": {
+                      "all": {
+                        "title": "All",
+                        "description": "Removes all roles from the specified manager (role)."
+                      }
                     }
+                  },
+                  "clear": {
+                    "title": "Clear",
+                    "description": "Removes all managers from this guild."
                   }
-                },
-                "clear": {
-                  "title": "Clear",
-                  "description": "Removes all managers from this guild."
                 }
               },
               "add": {
@@ -451,6 +455,7 @@
           }
         }
       },
+      "noTitle": "That idiot of a Developer forgot this command's Locale Entry.",
       "emptyDoc": {
         "title": "No Command Found",
         "description": "No command with the specified name was found in the documentation."

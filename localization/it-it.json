@@ -388,23 +388,27 @@
             "description": "Gestisce i Ruoli degli Utenti.",
             "subcommands": {
               "managers": {
-                "add": {
-                  "title": "Add",
-                  "description": "Aggiunge tutti i ruoli specificati al manager (ruolo) specificato."
-                },
-                "remove": {
-                  "title": "Remove",
-                  "description": "Rimuove tutti i ruoli specificati dal manager (ruolo) specificato.",
-                  "subcommands": {
-                    "all": {
-                      "title": "All",
-                      "description": "Rimuove tutti i ruoli dal manager (ruolo) specificato."
+                "title": "Managers",
+                "description": "Gestisce i manager di questo server.",
+                "subcommands": {
+                  "add": {
+                    "title": "Add",
+                    "description": "Aggiunge tutti i ruoli specificati al manager (ruolo) specificato."
+                  },
+                  "remove": {
+                    "title": "Remove",
+                    "description": "Rimuove tutti i ruoli specificati dal manager (ruolo) specificato.",
+                    "subcommands": {
+                      "all": {
+                        "title": "All",
+                        "description": "Rimuove tutti i ruoli dal manager (ruolo) specificato."
+                      }
                     }
+                  },
+                  "clear": {
+                    "title": "Clear",
+                    "description": "Rimuove tutti i manager da questo server."
                   }
-                },
-                "clear": {
-                  "title": "Clear",
-                  "description": "Rimuove tutti i manager da questo server."
                 }
               },
               "add": {
@@ -451,6 +455,7 @@
           }
         }
       },
+      "noTitle": "Quell'idiota di uno sviluppatore ha dimenticato la traduzione per questo comando.",
       "emptyDoc": {
         "title": "Nessun Comando Trovato",
         "description": "Nessun comando con il nome specificato è stato trovato."
