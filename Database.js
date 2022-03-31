@@ -2,6 +2,7 @@ const SQLite = require("./databases/SQLite.js");
 const MariaDB = require("./databases/MariaDB.js");
 const Definitions = require("./DatabaseDefinitions.js");
 const { Sequelize, Model, ModelStatic, SyncOptions, ModelAttributes, ModelOptions } = require("sequelize");
+const Logger = require("./Logger.js");
 
 /**
  * @typedef {(modelName: String, attributes: ModelAttributes<Model<Any, Any>>, options: ModelOptions<Model<Any, Any>>?) => ModelStatic<Model>} DefineWrapper
@@ -63,6 +64,8 @@ const Start = async (settings) => {
         throw new Error("Database Mode not Valid.");
     }
 
+    Logger.Debug(`Using ${settings.mode} Database`);
+
     /** @type {SyncOptions} */
     const syncOptions = { "alter": true };
     /** @type {ModelOptions} */
@@ -75,8 +78,12 @@ const Start = async (settings) => {
     _Models.role    = _DBInstance.SafeDefine("Role"   , Definitions.RoleModel   , modelOptions);
     
     for (const model of Object.values(_Models)) {
-        if (settings.dropDatabase)
+        if (settings.dropDatabase) {
+            Logger.Debug(`Dropping ${model.name} Model`);
             await model.drop();
+        }
+
+        Logger.Debug(`Syncing ${model.name} Model`);
         await model.sync(syncOptions);
     }
 
