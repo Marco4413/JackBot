@@ -33,10 +33,11 @@ module.exports = CreateCommand({
             currentDoc = subDoc;
         }
 
+        const noTitle = locale.Get("noTitle");
         const hasSubcommands = currentDoc.subcommands;
         const embed = Utils.GetDefaultEmbedForMessage(msg, true)
-            .setTitle(currentDoc.title)
-            .setDescription(currentDoc.description);
+            .setTitle(currentDoc.title ?? noTitle)
+            .setDescription(currentDoc.description ?? "");
 
         if (hasSubcommands) {
             for (const subKey of Object.keys(currentDoc.subcommands)) {
@@ -63,7 +64,7 @@ module.exports = CreateCommand({
                     );
                 }
 
-                embed.addField(subDoc.title, `${subDoc.description}\n${subSubCmdList}`, false);
+                embed.addField(subDoc.title ?? noTitle, `${subDoc.description ?? ""}\n${subSubCmdList}`, false);
             }
         }
 
