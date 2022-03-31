@@ -460,6 +460,28 @@
       "changed": "Prefisso impostato a: `{0}`",
       "current": "Prefisso corrente: `{0}`"
     },
+    "role": {
+      "subcommands": {
+        "managers": {
+          "noTargetRole": "Non è stato possibile trovare il ruolo specificato.",
+          "noRoleAdded": "Nessun ruolo aggiunto al manager.",
+          "noRoleRemoved": "Nessun ruolo rimosso dal manager.",
+          "maxManagersExceeded": "Il numero massimo di ruoli che il manager può gestire ({0}) è stato superato ({1}).",
+          "rolesAdded": "Ruoli aggiunti al manager:",
+          "rolesRemoved": "Ruoli rimossi dal manager:",
+          "allRolesRemoved": "Il manager specificato è stato rimosso.",
+          "allManagersRemoved": "Rimossi tutti i manager del server."
+        }
+      },
+      "noRoleSpecified": "Nessun ruolo specificato.",
+      "cantAddAll": "Non puoi aggiungere tutti i ruoli specificati.",
+      "cantRemoveAll": "Non puoi rimuovere tutti i ruoli specificati.",
+      "userNotFound": "Non è stato possibile trovare il membro specificato.",
+      "rolesAdded": "Ruoli aggiunti al membro specificato.",
+      "rolesRemoved": "Ruoli rimossi dal membro specificato.",
+      "notEnoughPermissionsToAdd": "Non ho abbastanza permessi per aggiungere tutti i ruoli specificati.",
+      "notEnoughPermissionsToRemove": "Non ho abbastanza permessi per rimuovere tutti i ruoli specificati."
+    },
     "shortcuts": {
       "changed": "Scorciatoie impostate a: `{0}`",
       "current": "Le scorciatoie sono impostate a: `{0}`"

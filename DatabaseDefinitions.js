@@ -8,8 +8,13 @@ const Utils = require("./Utils.js");
 const MAX_SNOWFLAKE_LENGTH = 24;
 const MAX_PREFIX_LENGTH = 6;
 const MAX_LOCALE_NAME_LENGTH = 8;
+const MAX_MANAGEABLE_ROLES = 16;
 
 const _SNOWFLAKE_DATATYPE = DataTypes.STRING(MAX_SNOWFLAKE_LENGTH);
+const _MANAGEABLE_ROLES_DATATYPE = DataTypes.STRING(
+    MAX_MANAGEABLE_ROLES * MAX_SNOWFLAKE_LENGTH + MAX_MANAGEABLE_ROLES + 1
+    // All role Ids + All semicolons + Semicolon at the end
+);
 
 const GuildModel = {
     "id": {
@@ -68,6 +73,11 @@ const GuildModel = {
         "allowNull": true
     },
     "isChannelAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": true
+    },
+    "isRoleAccessBlacklist": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": true
@@ -151,6 +161,11 @@ const UserModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
+    },
+    "inRoleAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
     }
 };
 
@@ -165,12 +180,22 @@ const RoleModel = {
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
+    "manageableRoles": {
+        "type": _MANAGEABLE_ROLES_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
     "inSoundAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
     },
     "inChannelAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inRoleAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -196,6 +221,7 @@ const RoleModel = {
  * @property {String?} privateVoiceCreateChannelId The Id of the Voice Channel to create a VC upon user connection
  * @property {Boolean} isSoundAccessBlacklist Whether or not the Sound Access List is a Blacklist
  * @property {Boolean} isChannelAccessBlacklist Whether or not the Channel Access List is a Blacklist
+ * @property {Boolean} isRoleAccessBlacklist Whether or not the Role Access List is a Blacklist
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
 
@@ -221,6 +247,7 @@ const RoleModel = {
  * @property {String?} privateTextChannelId The User's Private Text Channel Id
  * @property {Boolean} inSoundAccessList Whether or not this User is in the Sound Access List
  * @property {Boolean} inChannelAccessList Whether or not this User is in the Channel Access List
+ * @property {Boolean} inRoleAccessList Whether or not this User is in the Role Access List
  * @typedef {DatabaseRow&_UserRowType} UserRow
  */
 
@@ -228,8 +255,10 @@ const RoleModel = {
  * @typedef {Object} _RoleRowType
  * @property {String} guildId The Id of the Guild this Role belongs to
  * @property {String} roleId The Id of the Role
+ * @property {String} manageableRoles A List of Role Ids that this Role can manage with the Role Command. The list looks like this: ";role1;role2;"
  * @property {Boolean} inSoundAccessList Whether or not this Role is in the Sound Access List
  * @property {Boolean} inChannelAccessList Whether or not this Role is in the Channel Access List
+ * @property {Boolean} inRoleAccessList Whether or not this Role is in the Role Access List
  * @typedef {DatabaseRow&_RoleRowType} RoleRow
  */
 
@@ -243,5 +272,6 @@ const RoleModel = {
 
 module.exports = {
     MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
+    MAX_MANAGEABLE_ROLES,
     GuildModel, CounterModel, UserModel, RoleModel
 };

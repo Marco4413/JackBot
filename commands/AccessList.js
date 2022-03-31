@@ -308,7 +308,7 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
         
                                 const role = msg.guild.roles.resolve(roleId);
                                 removedFromList.push(locale.GetCommonFormatted(
-                                    "roleListEntry", role.name ?? locale.GetCommon("roleListEntry"), roleId
+                                    "roleListEntry", role.name, roleId
                                 ));
                             }
                             
@@ -337,6 +337,7 @@ module.exports = CreateCommand({
     "permissions": Permissions.FLAGS.MANAGE_ROLES,
     "subcommands": [
         _CreateAccesslistCommand("sound", "s", "inSoundAccessList", "isSoundAccessBlacklist"),
-        _CreateAccesslistCommand("channel", "ch", "inChannelAccessList", "isChannelAccessBlacklist")
+        _CreateAccesslistCommand("channel", "ch", "inChannelAccessList", "isChannelAccessBlacklist"),
+        _CreateAccesslistCommand("role", "r", "inRoleAccessList", "isRoleAccessBlacklist")
     ]
 });

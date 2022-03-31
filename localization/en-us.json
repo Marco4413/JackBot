@@ -460,6 +460,28 @@
       "changed": "Prefix set to: `{0}`",
       "current": "Current Prefix: `{0}`"
     },
+    "role": {
+      "subcommands": {
+        "managers": {
+          "noTargetRole": "Couldn't find the specified target role.",
+          "noRoleAdded": "No role was added to the manager.",
+          "noRoleRemoved": "No role was removed from the manager.",
+          "maxManagersExceeded": "The max amount of manageable roles ({0}) was exceeded ({1}).",
+          "rolesAdded": "Roles added to the manager:",
+          "rolesRemoved": "Roles removed from the manager:",
+          "allRolesRemoved": "Removed the specified manager.",
+          "allManagersRemoved": "Removed all role managers of this guild."
+        }
+      },
+      "noRoleSpecified": "No role specified.",
+      "cantAddAll": "You can't add all the specified roles.",
+      "cantRemoveAll": "You can't remove all the specified roles.",
+      "userNotFound": "Couldn't find the specified member.",
+      "rolesAdded": "Roles added to the specified member.",
+      "rolesRemoved": "Roles removed from the specified member.",
+      "notEnoughPermissionsToAdd": "I don't have enough permissions to add all the specified roles.",
+      "notEnoughPermissionsToRemove": "I don't have enough permissions to remove all the specified roles."
+    },
     "shortcuts": {
       "changed": "Shortcuts set to: `{0}`",
       "current": "Shortcuts are set to: `{0}`"
