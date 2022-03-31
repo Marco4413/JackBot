@@ -26,10 +26,14 @@ module.exports = (settings, logging) => {
     });
 
     instance.SafeDefine = (modelName, attributes, options) => {
+        const attributesClone = { };
+
         const primaryKeys = [ ];
-        for (const column of Object.values(attributes)) {
-            if (column.primaryKey)
-                primaryKeys.push(column);
+        for (const columnName of Object.keys(attributes)) {
+            const columnClone = { ...attributes[columnName] };
+            attributesClone[columnName] = columnClone;
+            if (columnClone.primaryKey)
+                primaryKeys.push(columnClone);
         }
 
         if (primaryKeys.length > 1) {
@@ -37,7 +41,7 @@ module.exports = (settings, logging) => {
                 column.primaryKey = false;
             }
 
-            attributes._sqliteCompoundIdFallback = {
+            attributesClone._sqliteCompoundIdFallback = {
                 "primaryKey": true,
                 "autoIncrement": true,
                 "type": DataTypes.INTEGER,
@@ -45,7 +49,7 @@ module.exports = (settings, logging) => {
             };
         }
         
-        return instance.define(modelName, attributes, options);
+        return instance.define(modelName, attributesClone, options);
     };
 
     return instance;
