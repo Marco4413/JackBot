@@ -383,6 +383,40 @@
               }
             }
           },
+          "role": {
+            "title": "Role",
+            "description": "Gestisce i Ruoli degli Utenti.",
+            "subcommands": {
+              "managers": {
+                "add": {
+                  "title": "Add",
+                  "description": "Aggiunge tutti i ruoli specificati al manager (ruolo) specificato."
+                },
+                "remove": {
+                  "title": "Remove",
+                  "description": "Rimuove tutti i ruoli specificati dal manager (ruolo) specificato.",
+                  "subcommands": {
+                    "all": {
+                      "title": "All",
+                      "description": "Rimuove tutti i ruoli dal manager (ruolo) specificato."
+                    }
+                  }
+                },
+                "clear": {
+                  "title": "Clear",
+                  "description": "Rimuove tutti i manager da questo server."
+                }
+              },
+              "add": {
+                "title": "Add",
+                "description": "Aggiunge tutti i ruoli specificati all'utente specificato."
+              },
+              "remove": {
+                "title": "Remove",
+                "description": "Rimuove tutti i ruoli specificati dall'utente specificato."
+              }
+            }
+          },
           "shortcuts": {
             "title": "Shortcuts",
             "description": "Mostra se le scorciatoie sono attivate su questo server.",

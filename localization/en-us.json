@@ -383,6 +383,40 @@
               }
             }
           },
+          "role": {
+            "title": "Role",
+            "description": "Manages User Roles.",
+            "subcommands": {
+              "managers": {
+                "add": {
+                  "title": "Add",
+                  "description": "Adds all the specified roles to the specified manager (role)."
+                },
+                "remove": {
+                  "title": "Remove",
+                  "description": "Removes all the specified roles from the specified manager (role).",
+                  "subcommands": {
+                    "all": {
+                      "title": "All",
+                      "description": "Removes all roles from the specified manager (role)."
+                    }
+                  }
+                },
+                "clear": {
+                  "title": "Clear",
+                  "description": "Removes all managers from this guild."
+                }
+              },
+              "add": {
+                "title": "Add",
+                "description": "Adds all specified roles to the specified user."
+              },
+              "remove": {
+                "title": "Remove",
+                "description": "Removes all specified roles from the specified user."
+              }
+            }
+          },
           "shortcuts": {
             "title": "Shortcuts",
             "description": "Shows if shortcuts are enabled in this Guild.",
