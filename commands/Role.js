@@ -224,7 +224,7 @@ module.exports = CreateCommand({
                     await targetMember.roles.add(rolesToGive, `Roles added by ${msg.member.id}`);
                     await msg.reply(locale.Get("rolesAdded"));
                 } catch (error) {
-                    await msg.reply(locale.Get("notEnoughPermissions"));
+                    await msg.reply(locale.Get("notEnoughPermissionsToAdd"));
                 }
             }
         },
