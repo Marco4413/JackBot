@@ -30,16 +30,37 @@ const _ArrayToStringList = (arr) => {
  * @returns {Promise<Boolean>}
  */
 const _CanManageRoles = async (roles, member) => {
-    return roles.length > 0 && member.roles.cache.hasAny(
-        ...(await Database.GetRows("role", {
-            "guildId": member.guild.id,
-            "manageableRoles": {
-                [Sequelize.Op.and]: roles.map(val => {
-                    return { [Sequelize.Op.like]: `%;${val};%` };
-                })
-            }
-        })).map(val => val.roleId)
-    );
+    if (roles.length === 0) return false;
+
+    // Get all managers owned by the user which also have at least
+    //  one of the roles that it needs to manage
+    const managerRows = await Database.GetRows("role", {
+        "guildId": member.guild.id,
+        "roleId": {
+            [Sequelize.Op.or]: member.roles.cache.keys()
+        },
+        "manageableRoles": {
+            [Sequelize.Op.or]: roles.map(val => {
+                return { [Sequelize.Op.like]: `%;${val};%` };
+            })
+        }
+    });
+
+    // Get the list of all roles that aren't manageable by the user
+    const disallowedRoles = roles.slice();
+    for (const managerRow of managerRows) {
+        // If no role is disallowed then we can stop
+        if (disallowedRoles.length === 0) break;
+        // For each currently disallowed role check if it is allowed
+        //  by the current manager if so remove it from the list
+        for (let i = disallowedRoles.length - 1; i >= 0; i--) {
+            const isAllowed = managerRow.manageableRoles.includes(`;${disallowedRoles[i]};`);
+            if (isAllowed) disallowedRoles.splice(i, 1);
+        }
+    }
+
+    // If no role is disallowed then the user can manage all of them
+    return disallowedRoles.length === 0;
 };
 
 module.exports = CreateCommand({
