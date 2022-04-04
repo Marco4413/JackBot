@@ -200,6 +200,73 @@ module.exports = CreateCommand({
                     }
                 },
                 {
+                    "name": "list",
+                    "arguments": [
+                        {
+                            "name": "[ROLE MENTION/ID]",
+                            "types": [ "role" ]
+                        }
+                    ],
+                    "subcommands": [{
+                        "name": "all",
+                        "execute": async (msg, guild, locale) => {
+                            const managerRows = await Database.GetRows("role", {
+                                "guildId": msg.guildId,
+                                "manageableRoles": {
+                                    [Sequelize.Op.ne]: null
+                                }
+                            });
+
+                            if (managerRows.length === 0) {
+                                await msg.reply(locale.Get("noManager"));
+                                return;
+                            }
+
+                            let response = locale.Get("roleManagersList") + "\n";
+                            for (const managerRow of managerRows) {
+                                const managerRole = msg.guild.roles.resolve(managerRow.roleId);
+                                response += locale.GetCommonFormatted(
+                                    "softMention", managerRole?.name ?? locale.GetCommon("unknownRole"), managerRow.roleId
+                                ) + "\n";
+
+                                for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
+                                    const manageableRole = msg.guild.roles.resolve(manageableRoleId);
+                                    response += locale.GetCommonFormatted(
+                                        "roleListEntry", manageableRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
+                                    ) + "\n";
+                                }
+                            }
+
+                            await msg.reply(response);
+                        }
+                    }],
+                    "execute": async (msg, guild, locale, [ managerId ]) => {
+                        const managerRow = await Database.GetRow("role", { "guildId": msg.guildId, "roleId": managerId });
+
+                        if (managerRow == null || managerRow.manageableRoles == null) {
+                            await msg.reply(locale.Get("noManageable"));
+                            return;
+                        }
+
+                        const managerRole = msg.guild.roles.resolve(managerRow.roleId);
+                        let response = (
+                            locale.Get("roleManageableList") + "\n" +
+                            locale.GetCommonFormatted(
+                                "softMention", managerRole?.name ?? locale.GetCommon("unknownRole"), managerRow.roleId
+                            ) + "\n"
+                        );
+
+                        for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
+                            const managerRole = msg.guild.roles.resolve(manageableRoleId);
+                            response += locale.GetCommonFormatted(
+                                "roleListEntry", managerRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
+                            ) + "\n";
+                        }
+
+                        await msg.reply(response);
+                    }
+                },
+                {
                     "name": "clear",
                     "execute": async (msg, guild, locale) => {
                         await Database.SetRowsAttr("role",

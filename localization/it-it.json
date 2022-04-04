@@ -509,7 +509,11 @@
           "rolesAdded": "Ruoli aggiunti al manager:",
           "rolesRemoved": "Ruoli rimossi dal manager:",
           "allRolesRemoved": "Il manager specificato è stato rimosso.",
-          "allManagersRemoved": "Rimossi tutti i manager del server."
+          "allManagersRemoved": "Rimossi tutti i manager del server.",
+          "roleManagersList": "Manager di ruoli di questo server:",
+          "noManager": "Non ci sono manager di ruoli in questo server.",
+          "roleManageableList": "Ruoli gestibili dal ruolo specificato:",
+          "noManageable": "Il ruolo specificato non è un manager."
         }
       },
       "noRoleSpecified": "Nessun ruolo specificato.",

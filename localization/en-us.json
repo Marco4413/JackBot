@@ -509,7 +509,11 @@
           "rolesAdded": "Roles added to the manager:",
           "rolesRemoved": "Roles removed from the manager:",
           "allRolesRemoved": "Removed the specified manager.",
-          "allManagersRemoved": "Removed all role managers of this guild."
+          "allManagersRemoved": "Removed all role managers of this guild.",
+          "roleManagersList": "Role managers of this guild:",
+          "noManager": "There are no role managers on this guild.",
+          "roleManageableList": "Manageable roles of the specified role:",
+          "noManageable": "The specified role isn't a manager."
         }
       },
       "noRoleSpecified": "No role specified.",
