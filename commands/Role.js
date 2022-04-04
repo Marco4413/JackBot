@@ -202,7 +202,7 @@ module.exports = CreateCommand({
                 {
                     "name": "clear",
                     "execute": async (msg, guild, locale) => {
-                        await Database.SetRowAttr("role",
+                        await Database.SetRowsAttr("role",
                             { "guildId": msg.guildId },
                             { "manageableRoles": null }
                         );
