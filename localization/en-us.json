@@ -405,6 +405,16 @@
                       }
                     }
                   },
+                  "list": {
+                    "title": "List",
+                    "description": "Lists all role manageable by the specified manager (role).",
+                    "subcommands": {
+                      "all": {
+                        "title": "All",
+                        "description": "Lists all manager roles and their manageable roles."
+                      }
+                    }
+                  },
                   "clear": {
                     "title": "Clear",
                     "description": "Removes all managers from this guild."

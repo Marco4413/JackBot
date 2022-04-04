@@ -405,6 +405,16 @@
                       }
                     }
                   },
+                  "list": {
+                    "title": "List",
+                    "description": "Mostra tutti i ruoli gestibili dal manager (ruolo) specificato.",
+                    "subcommands": {
+                      "all": {
+                        "title": "All",
+                        "description": "Mostra tutti i gestori di ruoli e i ruoli gestibili da loro."
+                      }
+                    }
+                  },
                   "clear": {
                     "title": "Clear",
                     "description": "Rimuove tutti i manager da questo server."
