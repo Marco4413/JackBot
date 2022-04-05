@@ -37,7 +37,9 @@ const _CanManageRoles = async (roles, member) => {
     const managerRows = await Database.GetRows("role", {
         "guildId": member.guild.id,
         "roleId": {
-            [Sequelize.Op.or]: member.roles.cache.keys()
+            [Sequelize.Op.or]: member.roles.cache.map((role, roleId) => {
+                return { [Sequelize.Op.eq]: roleId };
+            })
         },
         "manageableRoles": {
             [Sequelize.Op.or]: roles.map(val => {
