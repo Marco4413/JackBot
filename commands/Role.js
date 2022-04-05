@@ -27,10 +27,11 @@ const _ArrayToStringList = (arr) => {
 /**
  * @param {String[]} roles
  * @param {GuildMember} member
- * @returns {Promise<Boolean>}
+ * @returns {Promise<String[]>}
  */
-const _CanManageRoles = async (roles, member) => {
-    if (roles.length === 0) return false;
+const _GetUnmanageableRoles = async (roles, member) => {
+    if (roles.length === 0) return [ ];
+    if (member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return [ ];
 
     // Get all managers owned by the user which also have at least
     //  one of the roles that it needs to manage
@@ -62,7 +63,7 @@ const _CanManageRoles = async (roles, member) => {
     }
 
     // If no role is disallowed then the user can manage all of them
-    return disallowedRoles.length === 0;
+    return disallowedRoles;
 };
 
 module.exports = CreateCommand({
@@ -299,8 +300,19 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                if (!(msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || await _CanManageRoles(rolesToGive, msg.member))) {
-                    await msg.reply(locale.Get("cantAddAll"));
+                const unmanageableRoles = await _GetUnmanageableRoles(rolesToGive, msg.member);
+                if (unmanageableRoles.length > 0) {
+                    const unmanageableRolesList = Utils.JoinArray(
+                        unmanageableRoles, "\n",
+                        roleId => {
+                            const role = msg.guild.roles.resolve(roleId);
+                            return locale.GetCommonFormatted(
+                                "roleListEntry", role?.name ?? locale.GetCommon("unknownRole"), roleId
+                            );
+                        }
+                    );
+
+                    await msg.reply(`${locale.Get("cantAddThese")}\n${unmanageableRolesList}`);
                     return;
                 }
 
@@ -337,8 +349,19 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                if (!(msg.member.permissions.has(Permissions.FLAGS.ADMINISTRATOR) || await _CanManageRoles(rolesToRemove, msg.member))) {
-                    await msg.reply(locale.Get("cantRemoveAll"));
+                const unmanageableRoles = await _GetUnmanageableRoles(rolesToRemove, msg.member);
+                if (unmanageableRoles.length > 0) {
+                    const unmanageableRolesList = Utils.JoinArray(
+                        unmanageableRoles, "\n",
+                        roleId => {
+                            const role = msg.guild.roles.resolve(roleId);
+                            return locale.GetCommonFormatted(
+                                "roleListEntry", role?.name ?? locale.GetCommon("unknownRole"), roleId
+                            );
+                        }
+                    );
+
+                    await msg.reply(`${locale.Get("cantRemoveThese")}\n${unmanageableRolesList}`);
                     return;
                 }
 

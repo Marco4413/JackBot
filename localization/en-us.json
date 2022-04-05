@@ -527,8 +527,8 @@
         }
       },
       "noRoleSpecified": "No role specified.",
-      "cantAddAll": "You can't add all the specified roles.",
-      "cantRemoveAll": "You can't remove all the specified roles.",
+      "cantAddThese": "You can't add the following roles:",
+      "cantRemoveThese": "You can't remove the following roles:",
       "userNotFound": "Couldn't find the specified member.",
       "rolesAdded": "Roles added to the specified member.",
       "rolesRemoved": "Roles removed from the specified member.",

@@ -527,8 +527,8 @@
         }
       },
       "noRoleSpecified": "Nessun ruolo specificato.",
-      "cantAddAll": "Non puoi aggiungere tutti i ruoli specificati.",
-      "cantRemoveAll": "Non puoi rimuovere tutti i ruoli specificati.",
+      "cantAddThese": "Non puoi aggiungere questi ruoli:",
+      "cantRemoveThese": "Non puoi rimuovere questi ruoli:",
       "userNotFound": "Non è stato possibile trovare il membro specificato.",
       "rolesAdded": "Ruoli aggiunti al membro specificato.",
       "rolesRemoved": "Ruoli rimossi dal membro specificato.",
