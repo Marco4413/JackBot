@@ -324,9 +324,9 @@ module.exports = CreateCommand({
 
                 try {
                     await targetMember.roles.add(rolesToGive, `Roles added by ${msg.member.id}`);
-                    await msg.reply(locale.Get("rolesAdded"));
+                    await msg.reply(locale.GetFormatted("rolesAdded", targetMember.displayName, targetId));
                 } catch (error) {
-                    await msg.reply(locale.Get("notEnoughPermissionsToAdd"));
+                    await msg.reply(locale.GetFormatted("notEnoughPermissionsToAdd", targetMember.displayName, targetId));
                 }
             }
         },
@@ -373,9 +373,9 @@ module.exports = CreateCommand({
 
                 try {
                     await targetMember.roles.remove(rolesToRemove, `Roles removed by ${msg.member.id}`);
-                    await msg.reply(locale.Get("rolesRemoved"));
+                    await msg.reply(locale.GetFormatted("rolesRemoved", targetMember.displayName, targetId));
                 } catch (error) {
-                    await msg.reply(locale.Get("notEnoughPermissionsToRemove"));
+                    await msg.reply(locale.GetFormatted("notEnoughPermissionsToRemove", targetMember.displayName, targetId));
                 }
             }
         }

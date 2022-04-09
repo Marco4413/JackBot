@@ -530,10 +530,10 @@
       "cantAddThese": "Non puoi aggiungere questi ruoli:",
       "cantRemoveThese": "Non puoi rimuovere questi ruoli:",
       "userNotFound": "Non è stato possibile trovare il membro specificato.",
-      "rolesAdded": "Ruoli aggiunti al membro specificato.",
-      "rolesRemoved": "Ruoli rimossi dal membro specificato.",
-      "notEnoughPermissionsToAdd": "Non ho abbastanza permessi per aggiungere tutti i ruoli specificati.",
-      "notEnoughPermissionsToRemove": "Non ho abbastanza permessi per rimuovere tutti i ruoli specificati."
+      "rolesAdded": "Ruoli aggiunti a {0} (`{1}`).",
+      "rolesRemoved": "Ruoli rimossi da {0} (`{1}`).",
+      "notEnoughPermissionsToAdd": "Non ho abbastanza permessi per aggiungere tutti i ruoli specificati a {0} (`{1}`).",
+      "notEnoughPermissionsToRemove": "Non ho abbastanza permessi per rimuovere tutti i ruoli specificati da {0} (`{1}`)."
     },
     "shortcuts": {
       "changed": "Scorciatoie impostate a: `{0}`",

@@ -530,10 +530,10 @@
       "cantAddThese": "You can't add the following roles:",
       "cantRemoveThese": "You can't remove the following roles:",
       "userNotFound": "Couldn't find the specified member.",
-      "rolesAdded": "Roles added to the specified member.",
-      "rolesRemoved": "Roles removed from the specified member.",
-      "notEnoughPermissionsToAdd": "I don't have enough permissions to add all the specified roles.",
-      "notEnoughPermissionsToRemove": "I don't have enough permissions to remove all the specified roles."
+      "rolesAdded": "Roles added to {0} (`{1}`).",
+      "rolesRemoved": "Roles removed from {0} (`{1}`).",
+      "notEnoughPermissionsToAdd": "I don't have enough permissions to add all the specified roles to {0} (`{1}`).",
+      "notEnoughPermissionsToRemove": "I don't have enough permissions to remove all the specified roles from {0} (`{1}`)."
     },
     "shortcuts": {
       "changed": "Shortcuts set to: `{0}`",
