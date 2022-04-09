@@ -95,19 +95,19 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
             break;
         }
         case "channel": {
-            const channelIdMatcher = /^<#([0-9]+)>|([0-9]+)$/g;
+            const channelIdMatcher = /^<#([0-9]+)>$|^([0-9]+)$/g;
             const channelId = channelIdMatcher.exec(arg);
             if (channelId !== null) parsedArg = channelId[1] ?? channelId[2];
             break;
         }
         case "user": {
-            const userIdMatcher = /^<@!?([0-9]+)>|([0-9]+)$/g;
+            const userIdMatcher = /^<@!?([0-9]+)>$|^([0-9]+)$/g;
             const userId = userIdMatcher.exec(arg);
             if (userId !== null) parsedArg = userId[1] ?? userId[2];
             break;
         }
         case "role": {
-            const roleIdMatcher = /^<@&([0-9]+)>|([0-9]+)$/g;
+            const roleIdMatcher = /^<@&([0-9]+)>$|^([0-9]+)$/g;
             const roleId = roleIdMatcher.exec(arg);
             if (roleId !== null) parsedArg = roleId[1] ?? roleId[2];
             break;
