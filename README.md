@@ -7,6 +7,12 @@
 # Your Bot Token Goes Here
 TOKEN = "MyBotToken"
 
+# The Id of the Bot's Owner (Used for Logging)
+OWNER_ID = "YourUserIdHere"
+# Whether or not DM Logging to the Bot Owner is enabled
+# This will only log WARNs and ERRORs
+ENABLE_DM_LOGGING = false
+
 # Your Tenor API Key Here
 # Only required to enable GIF search functions, remove the field to disable them
 TENOR_API_KEY = "MyTenorAPIKey"

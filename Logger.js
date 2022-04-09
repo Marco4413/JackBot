@@ -18,7 +18,7 @@ const _Times = { };
  * @param {Boolean} [chalkAll]
  * @param {Boolean} [prefixColon]
  */
-const _ConsoleLog = (chalk, prefix, message = [ ], chalkAll = false, prefixColon = true) => {
+const _ConsoleLog = (chalk, prefix, message = [ ], chalkAll = false, prefixColon = true, logToDiscord = false) => {
     _LoggerWorker.postMessage({
         "type": "message",
         "chalk": chalk("{0}"),
@@ -26,7 +26,8 @@ const _ConsoleLog = (chalk, prefix, message = [ ], chalkAll = false, prefixColon
         "prefix": prefix,
         "prefixColon": prefixColon,
         // Joining Array Here to make sure that it's Cloneable
-        "message": Utils.JoinArray(message, " ")
+        "message": Utils.JoinArray(message, " "),
+        logToDiscord
     });
 };
 
@@ -68,9 +69,9 @@ const Debug    = (...message) => {
  */
 const Assert   = (condition, ...message) => { if (!condition) _ConsoleLog(_AssertChalk, "ASSERT", message); };
 /** Logs the specified Error Message */
-const LogError = (...message) => _ConsoleLog(_ErrorChalk, "ERROR", message);
+const LogError = (...message) => _ConsoleLog(_ErrorChalk, "ERROR", message, undefined, undefined, true);
 /** Logs the specified Warning Message */
-const Warn     = (...message) => _ConsoleLog(_WarnChalk , "WARN", message);
+const Warn     = (...message) => _ConsoleLog(_WarnChalk , "WARN", message, undefined, undefined, true);
 
 /** Logs a Traceback preceded by the specified Message */
 const Trace = (...data) => {
