@@ -180,11 +180,10 @@ const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
             [ adminKey ] : memberPerms.missing(requiredPerms);
 
     const permsLocale = locale.GetSubLocale("common.permissions", false);
-    if (permsLocale === null) Utils.JoinArray(missingPerms, locale.GetCommon("listSeparator"));
     return Utils.JoinArray(
         missingPerms,
         locale.GetCommon("listSeparator"),
-        el => permsLocale.Get(el, false) ?? el
+        el => permsLocale?.Get(el, false) ?? el
     );
 };
 
@@ -195,11 +194,10 @@ const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
  */
 const _ListPossibleTypes = (argDef, locale) => {
     const typesLocale = locale.GetSubLocale("common.argumentTypes", false);
-    if (typesLocale === null) Utils.JoinArray(argDef.types, locale.GetCommon("listSeparator"));
     return Utils.JoinArray(
         argDef.types,
         locale.GetCommon("listSeparator"),
-        el => typesLocale.Get(el, false) ?? el
+        el => typesLocale?.Get(el, false) ?? el
     );
 };
 
@@ -260,7 +258,7 @@ const IsValidCommand = (command) => {
 const SplitCommand = (msg) => {
     if (msg.length === 0) return [ ];
     const match = msg.match(/[^\s]+/g);
-    return match === null ? [ ] : match;
+    return match ?? [ ];
 };
 
 /**
