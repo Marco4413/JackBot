@@ -20,13 +20,13 @@ module.exports = CreateCommand({
         let currentDoc = locale.Get("docs", false);
         for (let i = 0; i < docsPath.length; i++) {
             if (currentDoc.subcommands === undefined) {
-                currentDoc = locale.Get("emptyDoc");
+                currentDoc = locale.Get("emptyDoc", false);
                 break;
             }
             
             const subDoc = currentDoc.subcommands[docsPath[i]];
             if (subDoc === undefined) {
-                currentDoc = locale.Get("emptyDoc");
+                currentDoc = locale.Get("emptyDoc", false);
                 break;
             }
 
