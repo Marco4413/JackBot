@@ -37,7 +37,7 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
     });
 
     let userChannel = member.guild.channels.resolve(user.privateVoiceChannelId);
-    if (userChannel === null || userChannel.deleted) {
+    if (userChannel === null) {
         const parent = member.guild.channels.resolve(guild.privateChannelCategoryId);
         const permissionOverwrites = [ ];
         if (guild.privateChannelEveryoneTemplateRoleId !== null) {
@@ -126,7 +126,7 @@ const DeleteVoiceChannel = async (member, scatterUsers = true, msg) => {
     }
 
     const userChannel = member.guild.channels.resolve(user.privateVoiceChannelId);
-    if (userChannel === null || userChannel.deleted) {
+    if (userChannel === null) {
         await msg?.reply(locale.Get("noChannel"));
         return;
     }
@@ -189,7 +189,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
     });
 
     let userChannel = member.guild.channels.resolve(user.privateTextChannelId);
-    if (userChannel === null || userChannel.deleted) {
+    if (userChannel === null) {
         const parent = member.guild.channels.resolve(guild.privateChannelCategoryId);
         const permissionOverwrites = [ ];
         if (guild.privateChannelEveryoneTemplateRoleId !== null) {
@@ -278,7 +278,7 @@ const DeleteTextChannel = async (member, msg) => {
     }
 
     const channel = member.guild.channels.resolve(user.privateTextChannelId);
-    if (channel === null || channel.deleted) {
+    if (channel === null) {
         await msg?.reply(locale.Get("noChannel"));
         return;
     }
@@ -293,7 +293,7 @@ const DeleteTextChannel = async (member, msg) => {
         "guildId": member.guild.id,
         "userId": member.id
     }, { "privateTextChannelId": null });
-    if (!(msg == null || msg.deleted)) await msg?.reply(locale.Get("deleted"));
+    if (msg != null) await msg?.reply(locale.Get("deleted"));
 };
 
 module.exports = {

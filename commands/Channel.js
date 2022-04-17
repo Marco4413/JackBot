@@ -44,7 +44,7 @@ CreateInterval(async id => {
 
         if (user.privateTextChannelId !== null) {
             const textChannel = guild.channels.resolve(user.privateTextChannelId);
-            if (textChannel === null || textChannel.deleted) {
+            if (textChannel === null) {
                 textChannelDeleted = true;
             } else if ((
                 // If the last message was sent before the max inactivity time
@@ -62,7 +62,7 @@ CreateInterval(async id => {
 
         if (user.privateVoiceChannelId !== null) {
             const voiceChannel = guild.channels.resolve(user.privateVoiceChannelId);
-            if (voiceChannel === null || voiceChannel.deleted) {
+            if (voiceChannel === null) {
                 voiceChannelDeleted = true;
             } else if (
                 voiceChannel.members.size === 0 &&

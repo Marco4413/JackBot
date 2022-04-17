@@ -8,7 +8,7 @@ const _MessageManagers = [
 
 module.exports = CreateEventListener(
     "messageCreate", async msg => {
-        if (msg.author.bot || msg.channel.type !== "GUILD_TEXT" || msg.deleted) return;
+        if (msg.author.bot || msg.channel.type !== "GUILD_TEXT") return;
 
         const guild = await Database.GetOrCreateRow("guild", { "id": msg.guildId });
         for (let i = 0; i < _MessageManagers.length; i++) {
