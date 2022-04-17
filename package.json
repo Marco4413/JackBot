@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
-    "dev": "cross-env-shell NODE_ENV=development node ."
+    "dev": "cross-env-shell NODE_ENV=development node .",
+    "eslint": "eslint *.js",
+    "eslint-dev": "eslint --debug *.js"
   },
   "repository": {
     "type": "git",
