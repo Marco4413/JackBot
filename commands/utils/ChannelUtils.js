@@ -293,7 +293,7 @@ const DeleteTextChannel = async (member, msg) => {
         "guildId": member.guild.id,
         "userId": member.id
     }, { "privateTextChannelId": null });
-    if (msg != null) await msg?.reply(locale.Get("deleted"));
+    if (msg != null) await Utils.SafeReply(msg, locale.Get("deleted"));
 };
 
 module.exports = {

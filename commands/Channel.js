@@ -52,8 +52,7 @@ CreateInterval(async id => {
                 textChannel.lastMessage === null ?
                     (dateNow - textChannel.createdTimestamp) >= _CHANNEL_JUST_CREATED_THRESHOLD :
                     (dateNow - textChannel.lastMessage.createdTimestamp) >= _CHANNEL_MAX_INACTIVITY
-            ) && textChannel.deletable
-            ) {
+            ) && textChannel.deletable) {
                 await textChannel.delete("Text Channel Inactivity.");
                 textChannelDeleted = true;
                 sweepedChannels++;
