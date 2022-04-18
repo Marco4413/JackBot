@@ -38,7 +38,7 @@ module.exports = async (msg, guild) => {
                     "lastMessageId": msg.id
                 });
                 
-                await msg.react(locale.GetCommon("checkmark"));
+                Utils.SafeReact(msg, locale.GetCommon("checkmark"));
             } else if (!counter.allowErrors) {
                 await msg.delete();
             } else if (counter.count !== counterStartValue) {
@@ -51,8 +51,8 @@ module.exports = async (msg, guild) => {
                     "lastMessageId": counterMessage.id
                 });
 
+                Utils.SafeReact(msg, locale.GetCommon("crossmark"));
                 await counterMessage.react(locale.GetCommon("checkmark"));
-                await msg.react(locale.GetCommon("crossmark"));
             }
         } else if (!counter.allowMessages) {
             await msg.delete();
