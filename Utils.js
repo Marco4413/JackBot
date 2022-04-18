@@ -1,7 +1,37 @@
 const fs = require("fs");
-const { parseFile } = require("music-metadata");
-const { Message, MessageEmbed } = require("discord.js");
+const {
+    Message, MessageEmbed, MessageReaction,
+    EmojiIdentifierResolvable, MessagePayload, ReplyMessageOptions
+} = require("discord.js");
 const path = require("path");
+
+/**
+ * Safely replies to the specified message (Catches errors and returns null if one was thrown)
+ * @param {Message} msg The message to reply to
+ * @param {String|MessagePayload|ReplyMessageOptions} options The reply to send
+ * @returns {Promise<Message<Boolean>|null>} The reply message or null if an error was thrown
+ */
+const SafeReply = async (msg, options) => {
+    try {
+        return await msg.reply(options);
+    } catch (error) {
+        return null;
+    }
+};
+
+/**
+ * Safely reacts to the specified message (Catches errors and returns null if one was thrown)
+ * @param {Message} msg The message to react to
+ * @param {EmojiIdentifierResolvable} emoji The emoji to react with
+ * @returns {Promise<MessageReaction|null>} The reaction or null if an error was thrown
+ */
+const SafeReact = async (msg, emoji) => {
+    try {
+        return await msg.react(emoji);
+    } catch (error) {
+        return null;
+    }
+};
 
 /**
  * Formats the specified String with the specified Formats
@@ -234,6 +264,7 @@ const GetAudioFilesInDirectory = (dirPath) => {
 };
 
 module.exports = {
+    SafeReply, SafeReact,
     FormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
