@@ -1,4 +1,4 @@
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, GuildMember } = require("discord.js");
 const { GetCommandLocale } = require("../../Localization");
 const Database = require("../../Database.js");
 const Utils = require("../../Utils.js");
