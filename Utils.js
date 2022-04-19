@@ -34,6 +34,19 @@ const SafeReact = async (msg, emoji) => {
 };
 
 /**
+ * Safely deletes the specified message (Catches errors and returns null if one was thrown)
+ * @param {Message} msg The message to delete
+ * @returns {Promise<Message<Boolean>|null>} The deleted message or null if an error was thrown
+ */
+const SafeDelete = async (msg) => {
+    try {
+        return await msg.delete();
+    } catch (error) {
+        return null;
+    }
+};
+
+/**
  * Formats the specified String with the specified Formats
  * @param {String} str The String to Format
  * @param {...Any} formats The Formats to format the String with
@@ -264,7 +277,7 @@ const GetAudioFilesInDirectory = (dirPath) => {
 };
 
 module.exports = {
-    SafeReply, SafeReact,
+    SafeReply, SafeReact, SafeDelete,
     FormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
