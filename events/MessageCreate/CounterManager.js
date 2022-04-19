@@ -23,7 +23,7 @@ module.exports = async (msg, guild) => {
         
         if (!Utils.IsNaN(result)) {
             if (counter.alternateMember && counter.lastMemberId === msg.member.id) {
-                await msg.delete();
+                await Utils.SafeDelete(msg);
                 return true;
             }
             
@@ -40,8 +40,10 @@ module.exports = async (msg, guild) => {
                 
                 Utils.SafeReact(msg, locale.GetCommon("checkmark"));
             } else if (!counter.allowErrors) {
-                await msg.delete();
-            } else if (counter.count !== counterStartValue) {
+                await Utils.SafeDelete(msg);
+            } else if (counter.count === counterStartValue) {
+                await Utils.SafeDelete(msg);
+            } else {
                 await msg.channel.send(locale.GetFormatted("countFailed", Utils.MentionUser(msg.member.id), counter.count));
                 const counterMessage = await msg.channel.send(counterStartValue.toString());
                 await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
@@ -55,7 +57,7 @@ module.exports = async (msg, guild) => {
                 await counterMessage.react(locale.GetCommon("checkmark"));
             }
         } else if (!counter.allowMessages) {
-            await msg.delete();
+            await Utils.SafeDelete(msg);
         }
 
         return true;
