@@ -462,6 +462,40 @@
                 "description": "Riproduce l'audio specificato.\nQuesto è un soprannome per `sound`, usa `sound play` se l'audio ha lo stesso nome di un sottocomando."
               }
             }
+          },
+          "suggestion": {
+            "title": "Suggestion",
+            "description": "Invia un nuovo suggerimento per il server.",
+            "subcommands": {
+              "channel": {
+                "title": "Channel",
+                "description": "Mostra il canale per i suggerimenti.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Imposta il canale per i suggerimenti."
+                  },
+                  "result": {
+                    "title": "Result",
+                    "description": "Mostra il canale per gli esiti dei suggerimenti.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Imposta il canale per gli esiti dei suggerimenti."
+                      }
+                    }
+                  }
+                }
+              },
+              "approve": {
+                "title": "Approve",
+                "description": "Approva il suggerimento specificato con la motivazione specificata."
+              },
+              "reject": {
+                "title": "Reject",
+                "description": "Rifiuta il suggerimento specificato con la motivazione specificata."
+              }
+            }
           }
         }
       },
@@ -575,7 +609,7 @@
       "alreadyPlaying": "Sto già riproducendo un audio, per favore aspetta.",
       "playing": "Riproducendo `{0}`..."
     }
-  },,
+  },
   "suggestion": {
     "subcommands": {
       "channel": {

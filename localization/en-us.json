@@ -462,6 +462,40 @@
                 "description": "Plays the specified sound.\nThis is an alias for `sound`, use this is a sound has the same name as a subcommand."
               }
             }
+          },
+          "suggestion": {
+            "title": "Suggestion",
+            "description": "Sends a new suggestion for the guild.",
+            "subcommands": {
+              "channel": {
+                "title": "Channel",
+                "description": "Shows the current channel for suggestions.",
+                "subcommands": {
+                  "set": {
+                    "title": "Set",
+                    "description": "Sets the current channel for suggestions."
+                  },
+                  "result": {
+                    "title": "Result",
+                    "description": "Shows the current channel for suggestion results.",
+                    "subcommands": {
+                      "set": {
+                        "title": "Set",
+                        "description": "Sets the current channel for suggestion results."
+                      }
+                    }
+                  }
+                }
+              },
+              "approve": {
+                "title": "Approve",
+                "description": "Approves the specified suggestion with the specified reason."
+              },
+              "reject": {
+                "title": "Reject",
+                "description": "Rejects the specified suggestion with the specified reason."
+              }
+            }
           }
         }
       },
@@ -597,7 +631,7 @@
       "noSuggestionMessage": "The specified suggestion's message was deleted.",
       "suggestionApprovedTitle": "Suggestion (`{0}`) Approved!",
       "suggestionApprovedDescription": "A suggestion sent by {0} was approved!",
-      "suggestionRejectedTitle": "Suggestion (`{0}`) Rejected!",
+      "suggestionRejectedTitle": "Suggestion (`{0}`) Rejected.",
       "suggestionRejectedDescription": "A suggestion sent by {0} was rejected.",
       "suggestionTextTitle": "Suggestion",
       "suggestionReasonTitle": "Reason",
