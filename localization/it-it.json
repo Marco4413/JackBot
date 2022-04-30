@@ -639,6 +639,7 @@
       "suggestionReasonTitle": "Motivazione",
       "suggestionNoReason": "Nessuna Motivazione Specificata.",
       "noSuggestionSpecified": "Impossibile inviare un suggerimento senza testo.",
+      "suggestionTooLong": "Il suggerimento è troppo lungo.",
       "suggestionSentTitle": "Suggerimento (`{0}`)",
       "suggestionSentDescription": "Un nuovo suggerimento è stato ricevuto da parte di {0}."
     }

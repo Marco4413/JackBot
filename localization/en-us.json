@@ -639,6 +639,7 @@
       "suggestionReasonTitle": "Reason",
       "suggestionNoReason": "No Reason Specified.",
       "noSuggestionSpecified": "Can't send a suggestion with no text.",
+      "suggestionTooLong": "The specified suggestion is too long.",
       "suggestionSentTitle": "Suggestion (`{0}`)",
       "suggestionSentDescription": "A new suggestion was received from {0}."
     }

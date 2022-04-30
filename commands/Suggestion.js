@@ -240,6 +240,9 @@ module.exports = CreateCommand({
         if (suggestion.length === 0) {
             await msg.reply(locale.Get("noSuggestionSpecified"));
             return;
+        } else if (!Utils.IsValidEmbedValue(suggestion)) {
+            await msg.reply(locale.Get("suggestionTooLong"));
+            return;
         }
 
         const suggestionRow = await Database.CreateRow("suggestion", {
