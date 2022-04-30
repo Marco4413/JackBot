@@ -78,6 +78,8 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords,
         reason.length === 0 ? locale.Get("suggestionNoReason") : reason
     );
 
+    embed.image = suggestionEmbed.image;
+
     await resultChannel.send({ "embeds": [ embed ] });
     await Database.RemoveRows("suggestion", { "id": suggestionId });
     await suggestionMessage.delete();
@@ -257,6 +259,16 @@ module.exports = CreateCommand({
             Utils.MentionUser(msg.member.id)
         ));
         embed.addField(locale.Get("suggestionTextTitle"), suggestion);
+
+        if (msg.attachments.size > 0) {
+            const image = msg.attachments.first();
+            if (image.contentType.startsWith("image"))
+                embed.setImage(image.url);
+        } else if (msg.embeds.length > 0) {
+            const imageUrl = msg.embeds[0].image?.url ?? msg.embeds[0].thumbnail?.url;
+            if (imageUrl != null)
+                embed.setImage(imageUrl);
+        }
 
         /** @type {Message} */
         const suggestionMessage = await suggestionChannel.send({ "embeds": [ embed ] });
