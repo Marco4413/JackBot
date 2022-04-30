@@ -608,40 +608,40 @@
       "cantJoinChannel": "Non posso entrare nel tuo canale vocale.",
       "alreadyPlaying": "Sto già riproducendo un audio, per favore aspetta.",
       "playing": "Riproducendo `{0}`..."
-    }
-  },
-  "suggestion": {
-    "subcommands": {
-      "channel": {
-        "noChannel": "Nessun canale per i suggerimenti è stato impostato.",
-        "currentChannel": "{0} è l'attuale canale per i suggerimenti.",
-        "noResultChannel": "Nessun canale per gli esiti dei suggetimenti è stato impostato.",
-        "currentResultChannel": "{0} è l'attuale canale per gli esiti dei suggerimenti.",
-        "channelRemoved": "Il canale per i suggerimenti è stato rimosso.",
-        "channelSet": "Il canale per i suggerimenti è stato impostato.",
-        "resultChannelRemoved": "Il canale per gli esiti dei suggerimenti è stato rimosso.",
-        "resultChannelSet": "Il canale per gli esiti dei suggerimenti è stato impostato.",
-        "invalidChannel": "Il canale specificato non è un canale testuale."
-      }
     },
-    "noChannelSet": "Questo server non ha impostato nessun canale per i suggerimenti.",
-    "noChannelFound": "Il canale per i suggerimento non è stato trovato ({0}).",
-    "noResultChannelSet": "Questo server non ha impostato nessun canale per gli esiti dei suggerimenti.",
-    "noResultChannelFound": "Il canale per gli esiti dei suggerimenti non è stato trovato ({0}).",
-    "noSuggestionFound": "Il suggerimento specificato non esiste.",
-    "noSuggestionMessage": "Il messaggio del suggerimento è stato eliminato.",
-    "suggestionApprovedColor": "#00CC00",
-    "suggestionApprovedTitle": "Suggerimento Approvato!",
-    "suggestionApprovedDescription": "Un suggerimento inviato da {0} è stato approvato!",
-    "suggestionRejectedColor": "#CC0000",
-    "suggestionRejectedTitle": "Suggerimento Rifiutato.",
-    "suggestionRejectedDescription": "Un suggerimento inviato da {0} è stato rifiutato.",
-    "suggestionTextTitle": "Suggerimento",
-    "suggestionReasonTitle": "Motivazione",
-    "suggestionNoReason": "Nessuna Motivazione Specificata.",
-    "noSuggestionSpecified": "Impossibile inviare un suggerimento senza testo.",
-    "suggestionSentTitle": "Suggerimento (`{0}`)",
-    "suggestionSentDescription": "Un nuovo suggerimento è stato ricevuto da parte di {0}."
+    "suggestion": {
+      "subcommands": {
+        "channel": {
+          "noChannel": "Nessun canale per i suggerimenti è stato impostato.",
+          "currentChannel": "{0} è l'attuale canale per i suggerimenti.",
+          "noResultChannel": "Nessun canale per gli esiti dei suggetimenti è stato impostato.",
+          "currentResultChannel": "{0} è l'attuale canale per gli esiti dei suggerimenti.",
+          "channelRemoved": "Il canale per i suggerimenti è stato rimosso.",
+          "channelSet": "Il canale per i suggerimenti è stato impostato.",
+          "resultChannelRemoved": "Il canale per gli esiti dei suggerimenti è stato rimosso.",
+          "resultChannelSet": "Il canale per gli esiti dei suggerimenti è stato impostato.",
+          "invalidChannel": "Il canale specificato non è un canale testuale."
+        }
+      },
+      "noChannelSet": "Questo server non ha impostato nessun canale per i suggerimenti.",
+      "noChannelFound": "Il canale per i suggerimento non è stato trovato ({0}).",
+      "noResultChannelSet": "Questo server non ha impostato nessun canale per gli esiti dei suggerimenti.",
+      "noResultChannelFound": "Il canale per gli esiti dei suggerimenti non è stato trovato ({0}).",
+      "noSuggestionFound": "Il suggerimento specificato non esiste.",
+      "noSuggestionMessage": "Il messaggio del suggerimento è stato eliminato.",
+      "suggestionApprovedColor": "#00CC00",
+      "suggestionApprovedTitle": "Suggerimento Approvato!",
+      "suggestionApprovedDescription": "Un suggerimento inviato da {0} è stato approvato!",
+      "suggestionRejectedColor": "#CC0000",
+      "suggestionRejectedTitle": "Suggerimento Rifiutato.",
+      "suggestionRejectedDescription": "Un suggerimento inviato da {0} è stato rifiutato.",
+      "suggestionTextTitle": "Suggerimento",
+      "suggestionReasonTitle": "Motivazione",
+      "suggestionNoReason": "Nessuna Motivazione Specificata.",
+      "noSuggestionSpecified": "Impossibile inviare un suggerimento senza testo.",
+      "suggestionSentTitle": "Suggerimento (`{0}`)",
+      "suggestionSentDescription": "Un nuovo suggerimento è stato ricevuto da parte di {0}."
+    }
   },
   "common": {
     "permissions": {
