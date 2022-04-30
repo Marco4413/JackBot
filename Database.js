@@ -31,7 +31,9 @@ const _Models = {
     /** @type {ModelStatic<Model>} */
     "user": null,
     /** @type {ModelStatic<Model>} */
-    "role": null
+    "role": null,
+    /** @type {ModelStatic<Model>} */
+    "suggestion": null
 };
 
 // #region Basic Methods
@@ -72,10 +74,11 @@ const Start = async (settings) => {
     const modelOptions = { "timestamps": true };
 
     // Defining and Syncing Models
-    _Models.guild   = _DBInstance.SafeDefine("Guild"  , Definitions.GuildModel  , modelOptions);
-    _Models.counter = _DBInstance.SafeDefine("Counter", Definitions.CounterModel, modelOptions);
-    _Models.user    = _DBInstance.SafeDefine("User"   , Definitions.UserModel   , modelOptions);
-    _Models.role    = _DBInstance.SafeDefine("Role"   , Definitions.RoleModel   , modelOptions);
+    _Models.guild      = _DBInstance.SafeDefine("Guild"     , Definitions.GuildModel     , modelOptions);
+    _Models.counter    = _DBInstance.SafeDefine("Counter"   , Definitions.CounterModel   , modelOptions);
+    _Models.user       = _DBInstance.SafeDefine("User"      , Definitions.UserModel      , modelOptions);
+    _Models.role       = _DBInstance.SafeDefine("Role"      , Definitions.RoleModel      , modelOptions);
+    _Models.suggestion = _DBInstance.SafeDefine("Suggestion", Definitions.SuggestionModel, modelOptions);
     
     for (const model of Object.values(_Models)) {
         if (settings.dropDatabase) {

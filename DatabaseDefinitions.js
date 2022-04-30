@@ -47,6 +47,16 @@ const GuildModel = {
         "defaultValue": null,
         "allowNull": true
     },
+    "suggestionChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
+    "suggestionResultChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
     "privateChannelEveryoneTemplateRoleId": {
         "type": _SNOWFLAKE_DATATYPE,
         "defaultValue": null,
@@ -202,6 +212,28 @@ const RoleModel = {
     }
 };
 
+const SuggestionModel = {
+    "id": {
+        "primaryKey": true,
+        "autoIncrement": true,
+        "type": DataTypes.INTEGER,
+        "allowNull": false
+    },
+    "guildId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "authorId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "messageId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    }
+};
+
 /**
  * @typedef {Object} DatabaseRow A Generic Database Row
  * @property {Date} createdAt The time this Row was created at
@@ -214,7 +246,9 @@ const RoleModel = {
  * @property {String} prefix The prefix used by the Guild
  * @property {Boolean} shortcuts Whether or not shortcuts are enabled in the Guild
  * @property {String} locale The Guild's Locale
- * @property {String} nitroBoostChannelId The Id of the Channel where Nitro Boost Announcements are sent
+ * @property {String?} nitroBoostChannelId The Id of the Channel where Nitro Boost Announcements are sent
+ * @property {String?} suggestionChannelId The Id of the Channel where Suggestions are stored
+ * @property {String?} suggestionResultChannelId The Id of the Channel where Suggestion Results are stored
  * @property {String?} privateChannelEveryoneTemplateRoleId The template role for everyone on private channels
  * @property {String?} privateChannelOwnerTemplateRoleId The template role for the channel owner on private channels
  * @property {String?} privateChannelCategoryId The Id of the category Private Channels should be created under
@@ -263,15 +297,25 @@ const RoleModel = {
  */
 
 /**
+ * @typedef {Object} _SuggestionRowType
+ * @property {String} id The Id of the Suggestion
+ * @property {String} guildId The Id of the Guild this Suggestion belongs to
+ * @property {String} authorId The Id of the User this Suggestion was submitted by
+ * @property {String} messageId The Id of the Suggestion's message (Sent by the bot)
+ * @typedef {DatabaseRow&_SuggestionRowType} SuggestionRow
+ */
+
+/**
  * @typedef {Object} DatabaseTables
  * @property {GuildRow} guild
  * @property {CounterRow} counter
  * @property {UserRow} user
  * @property {RoleRow} role
+ * @property {SuggestionRow} suggestion
  */
 
 module.exports = {
     MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
     MAX_MANAGEABLE_ROLES,
-    GuildModel, CounterModel, UserModel, RoleModel
+    GuildModel, CounterModel, UserModel, RoleModel, SuggestionModel
 };

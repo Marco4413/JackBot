@@ -574,6 +574,37 @@
       "cantJoinChannel": "Can't join your voice channel.",
       "alreadyPlaying": "I'm already playing a sound, please wait.",
       "playing": "Playing `{0}`..."
+    },
+    "suggestion": {
+      "subcommands": {
+        "channel": {
+          "noChannel": "There's no suggestion channel set.",
+          "currentChannel": "{0} is the current suggestion channel.",
+          "noResultChannel": "There's no suggestion result channel set.",
+          "currentResultChannel": "{0} is the current suggestion result channel.",
+          "channelRemoved": "Suggestion channel was removed.",
+          "channelSet": "Suggestion channel was set.",
+          "resultChannelRemoved": "Suggestion result channel was removed.",
+          "resultChannelSet": "Suggestion result channel was set.",
+          "invalidChannel": "The specified channel is not a text channel."
+        }
+      },
+      "noChannelSet": "This guild has no channel for suggestions set.",
+      "noChannelFound": "The channel for suggestions couldn't be found ({0}).",
+      "noResultChannelSet": "This guild has no channel for suggestion results set.",
+      "noResultChannelFound": "The channel for suggestion results couldn't be found ({0}).",
+      "noSuggestionFound": "The specified suggestion doesn't exist.",
+      "noSuggestionMessage": "The specified suggestion's message was deleted.",
+      "suggestionApprovedTitle": "Suggestion (`{0}`) Approved!",
+      "suggestionApprovedDescription": "A suggestion sent by {0} was approved!",
+      "suggestionRejectedTitle": "Suggestion (`{0}`) Rejected!",
+      "suggestionRejectedDescription": "A suggestion sent by {0} was rejected.",
+      "suggestionTextTitle": "Suggestion",
+      "suggestionReasonTitle": "Reason",
+      "suggestionNoReason": "No Reason Specified.",
+      "noSuggestionSpecified": "Can't send a suggestion with no text.",
+      "suggestionSentTitle": "Suggestion (`{0}`)",
+      "suggestionSentDescription": "A new suggestion was received from {0}."
     }
   },
   "common": {
@@ -633,6 +664,8 @@
     "negativeInfinity": "-∞",
     "checkmark": "✅",
     "crossmark": "❌",
+    "upvote": "⬆️",
+    "downvote": "⬇️",
     "listSeparator": ", ",
     "listDelimiter": "[ {0} ]",
     "listEntry": " - {0}",
