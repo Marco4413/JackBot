@@ -57,12 +57,14 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords,
     const embed = Utils.GetDefaultEmbedForMessage(msg, true);
     
     if (approve) {
+        embed.setColor(locale.Get("suggestionApprovedColor"));
         embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", suggestionId));
         embed.setDescription(locale.GetFormatted(
             "suggestionApprovedDescription",
             Utils.MentionUser(suggestionRow.authorId)
         ));
     } else {
+        embed.setColor(locale.Get("suggestionRejectedColor"));
         embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", suggestionId));
         embed.setDescription(locale.GetFormatted(
             "suggestionRejectedDescription",
