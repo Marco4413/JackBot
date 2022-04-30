@@ -1,7 +1,8 @@
 const fs = require("fs");
 const {
     Message, MessageEmbed, MessageReaction,
-    EmojiIdentifierResolvable, MessagePayload, ReplyMessageOptions
+    EmojiIdentifierResolvable, MessagePayload,
+    ReplyMessageOptions, DataManager, BaseFetchOptions
 } = require("discord.js");
 const path = require("path");
 
@@ -41,6 +42,27 @@ const SafeReact = async (msg, emoji) => {
 const SafeDelete = async (msg) => {
     try {
         return await msg.delete();
+    } catch (error) {
+        return null;
+    }
+};
+
+/**
+ * Fetches a value from the specified {@link DataManager} (Using fetch as a fallback to resolve)
+ * @template {Object} K
+ * @template {Object} Holds The type of the fetched value
+ * @template {Object} R The type of the key to fetch the value with
+ * @param {DataManager<K, Holds, R>} fetchable A fetchable {@link DataManager}
+ * @param {R} query The query to fetch the value with
+ * @param {BaseFetchOptions} [cacheOptions] Cache options (When fetch fallback is used)
+ * @returns {Promise<Holds?>} The value fetched from the {@link DataManager}
+ */
+const SafeFetch = async (fetchable, query, cacheOptions) => {
+    const result = fetchable.resolve(query);
+    if (result != null) return result;
+
+    try {
+        return await fetchable.fetch(query, cacheOptions);
     } catch (error) {
         return null;
     }
@@ -277,7 +299,7 @@ const GetAudioFilesInDirectory = (dirPath) => {
 };
 
 module.exports = {
-    SafeReply, SafeReact, SafeDelete,
+    SafeReply, SafeReact, SafeDelete, SafeFetch,
     FormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
