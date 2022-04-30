@@ -69,6 +69,13 @@ const SafeFetch = async (fetchable, query, cacheOptions) => {
 };
 
 /**
+ * Checks if the specified string is a valid value for an embed field
+ * @param {String} str The string to test
+ * @returns {Boolean} Whether or not the specified string is a valid value for an embed field
+ */
+const IsValidEmbedValue = (str) => str != null && str.length <= 1024; 
+
+/**
  * Formats the specified String with the specified Formats
  * @param {String} str The String to Format
  * @param {...Any} formats The Formats to format the String with
@@ -300,7 +307,7 @@ const GetAudioFilesInDirectory = (dirPath) => {
 
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
-    FormatString,
+    IsValidEmbedValue, FormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     TranslateNumber, IsNaN,
