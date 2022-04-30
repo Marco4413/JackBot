@@ -188,12 +188,15 @@ const SetRowsAttr = async (table, where = { }, attributes = { }) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to create the row in
  * @param {U} [values] The values to create the row with
+ * @param {Boolean} [forceCreate] If true an instance will be created even if the specified values already exist
  * @returns {Promise<U>|Promise<undefined>} The created Row or undefined if none was created
  */
-const CreateRow = async (table, values = { }) => {
+const CreateRow = async (table, values = { }, forceCreate = false) => {
     _EnsureStart();
-    const counter = await GetRow(table, values);
-    if (counter !== undefined) return undefined;
+    if (!forceCreate) {
+        const oldRow = await GetRow(table, values);
+        if (oldRow != null) return undefined;
+    }
 
     const instance = await _Models[table].create(values);
     return instance.get();
