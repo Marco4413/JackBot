@@ -92,7 +92,7 @@ module.exports = CreateCommand({
     "subcommands": [
         {
             "name": "channel",
-            "permissions": Permissions.FLAGS.MANAGE_GUILD,
+            "permissions": Permissions.FLAGS.ADMINISTRATOR,
             "subcommands": [
                 {
                     "name": "set",
@@ -126,7 +126,6 @@ module.exports = CreateCommand({
                 {
                     "name": "result",
                     "shortcut": "res",
-                    "permissions": Permissions.FLAGS.MANAGE_GUILD,
                     "subcommands": [{
                         "name": "set",
                         "shortcut": "s",
