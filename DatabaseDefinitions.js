@@ -91,6 +91,16 @@ const GuildModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": true
+    },
+    "isSuggestionAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": true,
+        "allowNull": true
+    },
+    "isSuggestionManagerAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": true
     }
 };
 
@@ -176,6 +186,16 @@ const UserModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
+    },
+    "inSuggestionAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inSuggestionManagerAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
     }
 };
 
@@ -206,6 +226,16 @@ const RoleModel = {
         "allowNull": false
     },
     "inRoleAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inSuggestionAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inSuggestionManagerAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -256,6 +286,8 @@ const SuggestionModel = {
  * @property {Boolean} isSoundAccessBlacklist Whether or not the Sound Access List is a Blacklist
  * @property {Boolean} isChannelAccessBlacklist Whether or not the Channel Access List is a Blacklist
  * @property {Boolean} isRoleAccessBlacklist Whether or not the Role Access List is a Blacklist
+ * @property {Boolean} isSuggestionAccessBlacklist Whether or not the Suggestion Access List is a Blacklist
+ * @property {Boolean} isSuggestionManagerAccessBlacklist Whether or not the Suggestion Manager Access List is a Blacklist
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
 
@@ -282,6 +314,8 @@ const SuggestionModel = {
  * @property {Boolean} inSoundAccessList Whether or not this User is in the Sound Access List
  * @property {Boolean} inChannelAccessList Whether or not this User is in the Channel Access List
  * @property {Boolean} inRoleAccessList Whether or not this User is in the Role Access List
+ * @property {Boolean} inSuggestionAccessList Whether or not this User is in the Suggestion Access List
+ * @property {Boolean} inSuggestionManagerAccessList Whether or not this User is in the Suggestion Manager Access List
  * @typedef {DatabaseRow&_UserRowType} UserRow
  */
 
@@ -293,6 +327,8 @@ const SuggestionModel = {
  * @property {Boolean} inSoundAccessList Whether or not this Role is in the Sound Access List
  * @property {Boolean} inChannelAccessList Whether or not this Role is in the Channel Access List
  * @property {Boolean} inRoleAccessList Whether or not this Role is in the Role Access List
+ * @property {Boolean} inSuggestionAccessList Whether or not this Role is in the Suggestion Access List
+ * @property {Boolean} inSuggestionManagerAccessList Whether or not this Role is in the Suggestion Manager Access List
  * @typedef {DatabaseRow&_RoleRowType} RoleRow
  */
 

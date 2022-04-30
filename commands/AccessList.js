@@ -338,6 +338,8 @@ module.exports = CreateCommand({
     "subcommands": [
         _CreateAccesslistCommand("sound", "s", "inSoundAccessList", "isSoundAccessBlacklist"),
         _CreateAccesslistCommand("channel", "ch", "inChannelAccessList", "isChannelAccessBlacklist"),
-        _CreateAccesslistCommand("role", "r", "inRoleAccessList", "isRoleAccessBlacklist")
+        _CreateAccesslistCommand("role", "r", "inRoleAccessList", "isRoleAccessBlacklist"),
+        _CreateAccesslistCommand("suggestion", "suggest", "inSuggestionAccessList", "isSuggestionAccessBlacklist"),
+        _CreateAccesslistCommand("suggestion-manager", "suggest-manager", "inSuggestionManagerAccessList", "isSuggestionManagerAccessBlacklist")
     ]
 });

@@ -2,6 +2,7 @@ const { Message, TextChannel } = require("discord.js");
 const { CreateCommand, Permissions, Database, DatabaseDefinitions, Utils } = require("../Command.js");
 const { Locale } = require("../Localization.js");
 const Logger = require("../Logger.js");
+const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 
 /**
  * @param {Message} msg
@@ -84,6 +85,8 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords,
 module.exports = CreateCommand({
     "name": "suggestion",
     "shortcut": "suggest",
+    "canExecute": async (msg, guild, locale) =>
+        !await ReplyIfBlacklisted(locale, "suggestion", msg, "inSuggestionAccessList", "isSuggestionAccessBlacklist"),
     "subcommands": [
         {
             "name": "channel",
@@ -186,7 +189,8 @@ module.exports = CreateCommand({
         },
         {
             "name": "approve",
-            "permissions": Permissions.FLAGS.MANAGE_GUILD,
+            "canExecute": async (msg, guild, locale) =>
+                !await ReplyIfBlacklisted(locale, "suggestion approve", msg, "inSuggestionManagerAccessList", "isSuggestionManagerAccessBlacklist"),
             "arguments": [{
                 "name": "[SUGGESTION ID]",
                 "types": [ "number" ]
@@ -200,7 +204,8 @@ module.exports = CreateCommand({
         },
         {
             "name": "reject",
-            "permissions": Permissions.FLAGS.MANAGE_GUILD,
+            "canExecute": async (msg, guild, locale) =>
+                !await ReplyIfBlacklisted(locale, "suggestion reject", msg, "inSuggestionManagerAccessList", "isSuggestionManagerAccessBlacklist"),
             "arguments": [{
                 "name": "[SUGGESTION ID]",
                 "types": [ "number" ]
