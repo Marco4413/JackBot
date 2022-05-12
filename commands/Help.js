@@ -16,7 +16,12 @@ const _GetCommandDocName = (commandDoc, titleOverride) => {
 module.exports = CreateCommand({
     "name": "help",
     "shortcut": "h",
-    "execute": async (msg, guild, locale, docsPath) => {
+    "arguments": [{
+        "name": "[PATH]",
+        "types": [ "string" ],
+        "isVariadic": true
+    }],
+    "execute": async (msg, guild, locale, [ docsPath ]) => {
         let currentDoc = locale.Get("docs", false);
         for (let i = 0; i < docsPath.length; i++) {
             if (currentDoc.subcommands === undefined) {
