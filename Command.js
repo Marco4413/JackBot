@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const Database = require("./Database.js");
 const DatabaseDefinitions = require("./DatabaseDefinitions.js");
 const Localization = require("./Localization.js");
+const Logger = require("./Logger.js");
 const Utils = require("./Utils.js");
 
 // #region typedefs
@@ -50,7 +51,7 @@ const Utils = require("./Utils.js");
  * @property {_ArgumentParseError} error
  * @property {Number} errorArgIndex
  * @property {CommandArgument} errorArgDef
- * @property {Any[]} arguments
+ * @property {ParsedCommandArgument[]} arguments
  */
 
 // #endregion
@@ -68,7 +69,7 @@ const Utils = require("./Utils.js");
 const _ParseArgument = (arg, argDef, isRequired = true) => {
     if (argDef.types.length === 0) return { "error": "invalid_type", "errorArgDef": argDef, "argument": undefined };
 
-    if (arg === undefined) {
+    if (arg === undefined || arg.length === 0) {
         return {
             "error": argDef.default === undefined && isRequired ? "not_provided" : "none",
             "errorArgDef": argDef,
@@ -160,7 +161,7 @@ const _ParseArguments = (rawArgs, argDefs) => {
         if (argDef.isVariadic) {
             const variadic = [ ];
             
-            while (true) {
+            while (currentArg[0].length > 0) {
                 const { argument } = _ParseArgument(currentArg[0], argDef, false);
                 if (argument === undefined) break;
                 currentArg = _NextArgument(currentArg[1]);
@@ -171,11 +172,10 @@ const _ParseArguments = (rawArgs, argDefs) => {
             parsedArgs.push(variadic);
         } else {
             const { argument, error, errorArgDef } = _ParseArgument(currentArg[0], argDef);
-            
-            if (argument === undefined) return { error, "errorArgIndex": argIndex, errorArgDef };
+            if (argument === undefined)
+                return { error, "errorArgIndex": argIndex, errorArgDef };
             currentArg = _NextArgument(currentArg[1]);
             argIndex++;
-
             parsedArgs.push(argument);
         }
     }
@@ -317,8 +317,7 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
         const command = commandList[i];
 
         // If the command name doesn't match go to the next command
-        if (
-            !( guildRow.shortcuts && command.shortcut === commandName ) &&
+        if (!( guildRow.shortcuts && command.shortcut === commandName ) &&
             command.name !== commandName
         ) continue;
 
@@ -349,6 +348,7 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
 
         // Parsing command arguments
         const { arguments: parsedArgs, error, errorArgIndex, errorArgDef } = _ParseArguments(commandArguments, command.arguments);
+        Logger.Debug(parsedArgs);
 
         // Check error given by the Argument Parsing
         switch (error) {
