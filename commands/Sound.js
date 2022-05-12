@@ -174,11 +174,11 @@ const _FormatAudioMetadata = (locale, metadata) => {
 // #endregion
 
 /** @type {import("../Command.js").CommandExecute} */
-const _ExecutePlaySound = async (msg, guild, locale, args) => {
+const _ExecutePlaySound = async (msg, guild, locale, [ soundName ]) => {
     if (_AUDIO_LOADING_PROMISE !== null) return;
 
     // No audio specified
-    if (args.length === 0) {
+    if (soundName.length === 0) {
         await msg.reply(locale.Get("noSoundSpecified"));
         return;
     }
@@ -207,7 +207,6 @@ const _ExecutePlaySound = async (msg, guild, locale, args) => {
     }
 
     // Getting sound and checking if it exists
-    const soundName = Utils.JoinArray(args, " ").toLowerCase();
     const soundPath = _GetSoundPath(soundName);
 
     if (soundPath === undefined) {

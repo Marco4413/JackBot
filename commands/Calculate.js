@@ -4,8 +4,7 @@ const SMath = require("../SandMath.js");
 module.exports = CreateCommand({
     "name": "calculate",
     "shortcut": "calc",
-    "execute": async (msg, guild, locale, args) => {
-        const mathExpr = Utils.JoinArray(args, " ");
+    "execute": async (msg, guild, locale, [ mathExpr ]) => {
         try {
             const result = SMath.evaluate(mathExpr);
             await msg.reply(locale.GetFormatted(
