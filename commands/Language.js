@@ -21,7 +21,7 @@ module.exports = CreateCommand({
             "permissions": Permissions.FLAGS.MANAGE_GUILD,
             "arguments": [
                 {
-                    "name": "[Name]",
+                    "name": "[NAME]",
                     "types": [ "string" ]
                 }
             ],

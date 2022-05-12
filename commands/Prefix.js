@@ -10,7 +10,7 @@ module.exports = CreateCommand({
             "permissions": Permissions.FLAGS.MANAGE_GUILD,
             "arguments": [
                 {
-                    "name": "[Prefix]",
+                    "name": "[PREFIX]",
                     "types": [ "string" ]
                 }
             ],
