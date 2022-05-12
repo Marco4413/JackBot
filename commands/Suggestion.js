@@ -1,7 +1,6 @@
 const { Message, TextChannel } = require("discord.js");
 const { CreateCommand, Permissions, Database, DatabaseDefinitions, Utils } = require("../Command.js");
 const { Locale } = require("../Localization.js");
-const Logger = require("../Logger.js");
 const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 
 /**
@@ -221,24 +220,19 @@ module.exports = CreateCommand({
                 await _ProcessSuggestion(msg, guild, locale, suggestionId, words, false)
         }
     ],
-    "arguments": [{
-        "name": "[SUGGESTION]",
-        "types": [ "string" ],
-        "isVariadic": true
-    }],
-    "execute": async (msg, guild, locale, [ words ]) => {
+    "execute": async (msg, guild, locale, [ suggestion ]) => {
         if (guild.suggestionChannelId == null) {
             await msg.reply(locale.Get("noChannelSet"));
             return;
         }
         
+        /** @type {TextChannel} */
         const suggestionChannel = msg.guild.channels.resolve(guild.suggestionChannelId);
         if (suggestionChannel == null) {
             await msg.reply(locale.GetFormatted("noChannelFound", guild.suggestionChannelId));
             return;
         }
 
-        const suggestion = Utils.JoinArray(words, " ").trim();
         if (suggestion.length === 0) {
             await msg.reply(locale.Get("noSuggestionSpecified"));
             return;
