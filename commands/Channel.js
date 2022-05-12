@@ -101,8 +101,8 @@ module.exports = CreateCommand({
                 {
                     "name": "create",
                     "shortcut": "c",
-                    "execute": async (msg, guild, locale, args) => {
-                        await CreateTextChannel(msg.member, args.length > 0 ? Utils.JoinArray(args, " ") : undefined, msg);
+                    "execute": async (msg, guild, locale, [ channelName ]) => {
+                        await CreateTextChannel(msg.member, channelName.length > 0 ? channelName : undefined, msg);
                     }
                 },
                 {
@@ -121,8 +121,8 @@ module.exports = CreateCommand({
                 {
                     "name": "create",
                     "shortcut": "c",
-                    "execute": async (msg, guild, locale, args) => {
-                        await CreateVoiceChannel(msg.member, args.length > 0 ? Utils.JoinArray(args, " ") : undefined, msg);
+                    "execute": async (msg, guild, locale, [ channelName ]) => {
+                        await CreateVoiceChannel(msg.member, channelName.length > 0 ? channelName : undefined, msg);
                     }
                 },
                 {
@@ -275,7 +275,7 @@ module.exports = CreateCommand({
                             await msg.reply(locale.Get("everyoneSet"));
                         }
                     }],
-                    "execute": async (msg, guild, locale, [ templateRoleId ]) => {
+                    "execute": async (msg, guild, locale) => {
                         if (guild.privateChannelEveryoneTemplateRoleId === null) {
                             await msg.reply(locale.Get("noEveryone"));
                             return;
