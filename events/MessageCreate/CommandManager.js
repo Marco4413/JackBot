@@ -1,4 +1,4 @@
-const { SplitCommand, ExecuteCommand } = require("../../Command.js");
+const { ExecuteCommand } = require("../../Command.js");
 const { GetCommands } = require("../../Commands.js");
 const { GetLocale } = require("../../Localization.js");
 const { Client } = require("../../Client.js");
@@ -25,16 +25,14 @@ module.exports = async (msg, guild) => {
     const executeCommand = botMentionEnd > 0 || msg.content.startsWith(guild.prefix);
 
     if (executeCommand) {
-        const splittedCommand = SplitCommand(
-            msg.content.substring(
-                botMentionEnd > 0 ? botMentionEnd : guild.prefix.length
-            ).trim()
-        );
+        const noPrefixContent = msg.content.substring(
+            botMentionEnd > 0 ? botMentionEnd : guild.prefix.length
+        ).trim();
 
-        if (splittedCommand.length === 0) return true;
+        if (noPrefixContent.length === 0) return true;
 
         const guildLocale = GetLocale(guild.locale);
-        if (!await ExecuteCommand(msg, guild, guildLocale, splittedCommand, GetCommands())) {
+        if (!await ExecuteCommand(msg, guild, guildLocale, noPrefixContent, GetCommands())) {
             await msg.reply(guildLocale.GetCommon("invalidCommand"));
         }
 

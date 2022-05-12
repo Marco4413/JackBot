@@ -17,7 +17,8 @@ const Utils = require("./Utils.js");
  */
 
 /**
- * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.Locale, args: Any[]) => Promise<Void>} CommandExecute The callback of a Command
+ * @typedef {String|String[]} ParsedCommandArgument
+ * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.Locale, args: ParsedCommandArgument[]) => Promise<Void>} CommandExecute The callback of a Command
  * @typedef {(msg: Discord.Message, guild: DatabaseDefinitions.GuildRow, locale: Localization.Locale) => Promise<Boolean>} CommandCanExecute
  */
 
@@ -126,19 +127,33 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
     };
 };
 
+const _WHITESPACE_MATCHER = /\s+/g;
+
+/**
+ * @param {String} rawContent 
+ * @returns {[ String, String ]}
+ */
+const _NextArgument = rawContent => {
+    const content = rawContent.trim();
+    const argIndex = content.search(_WHITESPACE_MATCHER);
+    if (argIndex < 0) return content.length > 0 ? [ content, "" ] : [ "", "" ];
+    return [ content.substring(0, argIndex), content.substring(argIndex).trimStart() ];
+}; 
+
 /**
  * @param {Discord.Message} msg
- * @param {String[]} args
+ * @param {String} rawArgs
  * @param {CommandArgument[]} [argDefs]
  * @returns {_ArgumentsParseResult}
  */
-const _ParseArguments = (args, argDefs) => {
-    if (argDefs === undefined) return { "error": "none", "errorArgIndex": -1, "arguments": args };
+const _ParseArguments = (rawArgs, argDefs) => {
+    if (argDefs === undefined) return { "error": "none", "errorArgIndex": -1, "arguments": [ rawArgs ] };
     if (argDefs.length === 0) return { "error": "none", "errorArgIndex": -1, "arguments": [ ] };
 
-    const parsedArgs = [ ];
-
+    let currentArg = _NextArgument(rawArgs);
     let argIndex = 0;
+
+    const parsedArgs = [ ];
     for (let i = 0; i < argDefs.length; i++) {
         const argDef = argDefs[i];
 
@@ -146,17 +161,19 @@ const _ParseArguments = (args, argDefs) => {
             const variadic = [ ];
             
             while (true) {
-                const { argument } = _ParseArgument(args[argIndex], argDef, false);
+                const { argument } = _ParseArgument(currentArg[0], argDef, false);
                 if (argument === undefined) break;
+                currentArg = _NextArgument(currentArg[1]);
                 argIndex++;
                 variadic.push(argument);
             }
             
             parsedArgs.push(variadic);
         } else {
-            const { argument, error, errorArgDef } = _ParseArgument(args[argIndex], argDef);
+            const { argument, error, errorArgDef } = _ParseArgument(currentArg[0], argDef);
             
             if (argument === undefined) return { error, "errorArgIndex": argIndex, errorArgDef };
+            currentArg = _NextArgument(currentArg[1]);
             argIndex++;
 
             parsedArgs.push(argument);
@@ -251,17 +268,6 @@ const IsValidCommand = (command) => {
 };
 
 /**
- * Splits the commands within the specified message
- * @param {String} msg The message to split
- * @returns {String[]} The commands splitted from the message
- */
-const SplitCommand = (msg) => {
-    if (msg.length === 0) return [ ];
-    const match = msg.match(/[^\s]+/g);
-    return match ?? [ ];
-};
-
-/**
  * Tests if the author of the specified Message has the specified Permissions
  * in the guild or the specified Channel and replies to the Message whether or
  * not the author has the Permissions with the specified CommandLocale
@@ -299,13 +305,13 @@ const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
  * @param {Discord.Message} msg The message to be given to Commands when executing and to reply with error feedback
  * @param {DatabaseDefinitions.GuildRow} guildRow The Guild Row from the Database
  * @param {Localization.Locale} locale The locale to use for messages
- * @param {String[]} splittedMessage The splitted message containing the "raw" commands
+ * @param {String} msgContent The message's content
  * @param {Command[]} commandList The list of Commands to check for
  * @returns {Promise<Boolean>} Whether or not a candidate Command was Found ( It may have failed Execution )
  */
-const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandList) => {
-    const [ commandName, ...commandArgs ] = splittedMessage;
-    if (commandName === undefined) return false;
+const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) => {
+    const [ commandName, commandArguments ] = _NextArgument(msgContent);
+    if (commandName.length === 0) return false;
 
     for (let i = 0; i < commandList.length; i++) {
         const command = commandList[i];
@@ -331,7 +337,7 @@ const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandLis
 
         // If this command has subcommands then try to execute those
         if (command.subcommands !== undefined) {
-            if (await ExecuteCommand(msg, guildRow, commandLocale, commandArgs, command.subcommands))
+            if (await ExecuteCommand(msg, guildRow, commandLocale, commandArguments, command.subcommands))
                 return true;
         }
 
@@ -342,7 +348,7 @@ const ExecuteCommand = async (msg, guildRow, locale, splittedMessage, commandLis
         }
 
         // Parsing command arguments
-        const { arguments: parsedArgs, error, errorArgIndex, errorArgDef } = _ParseArguments(commandArgs, command.arguments);
+        const { arguments: parsedArgs, error, errorArgIndex, errorArgDef } = _ParseArguments(commandArguments, command.arguments);
 
         // Check error given by the Argument Parsing
         switch (error) {
@@ -385,6 +391,6 @@ const CreateCommand = cmd => cmd;
 // #endregion
 
 module.exports = {
-    IsValidCommand, SplitCommand, ExecuteCommand, CreateCommand, IsMissingPermissions,
+    IsValidCommand, ExecuteCommand, CreateCommand, IsMissingPermissions,
     Utils, Database, DatabaseDefinitions, Permissions: Discord.Permissions
 };
