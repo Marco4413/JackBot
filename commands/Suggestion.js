@@ -254,15 +254,7 @@ module.exports = CreateCommand({
         ));
         embed.addField(locale.Get("suggestionTextTitle"), suggestion);
 
-        if (msg.attachments.size > 0) {
-            const image = msg.attachments.first();
-            if (image.contentType.startsWith("image"))
-                embed.setImage(image.url);
-        } else if (msg.embeds.length > 0) {
-            const imageUrl = msg.embeds[0].image?.url ?? msg.embeds[0].thumbnail?.url;
-            if (imageUrl != null)
-                embed.setImage(imageUrl);
-        }
+        embed.setImage(Utils.MatchImageUrl(suggestion));
 
         /** @type {Message} */
         const suggestionMessage = await suggestionChannel.send({ "embeds": [ embed ] });
