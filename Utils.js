@@ -305,6 +305,20 @@ const GetAudioFilesInDirectory = (dirPath) => {
     return validFiles;
 };
 
+const _IMAGE_URL_MATCHER = /((?:https?:\/\/)(?:www\.)?[^\s?]+\.(?:jpe?g|gifv?|png|webp|bmp|tiff?))/g;
+
+/**
+ * Matches a String for an image url
+ * @param {String} str The String to Match
+ * @returns {String?} The Url or null if no match
+ */
+const MatchImageUrl = (str) => {
+    const imageMatch = _IMAGE_URL_MATCHER.exec(str);
+    if (imageMatch != null)
+        return imageMatch[0];
+    else return null;
+};
+
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
     IsValidEmbedValue, FormatString,
@@ -313,5 +327,6 @@ module.exports = {
     TranslateNumber, IsNaN,
     MentionUser, MentionTextChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
-    IsFile, IsDirectory, GetAudioFilesInDirectory
+    IsFile, IsDirectory, GetAudioFilesInDirectory,
+    MatchImageUrl
 };
