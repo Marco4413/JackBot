@@ -6,7 +6,7 @@ module.exports = CreateCommand({
     "shortcut": "calc",
     "execute": async (msg, guild, locale, [ mathExpr ]) => {
         try {
-            const result = SMath.evaluate(mathExpr);
+            const result = SMath.EvaluateToNumber(mathExpr);
             await msg.reply(locale.GetFormatted(
                 "expressionResult", mathExpr, Utils.TranslateNumber(result, locale)
             ));

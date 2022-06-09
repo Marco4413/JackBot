@@ -63,8 +63,20 @@ _MathContext.import([
     MathJS.piDependencies,
 ]);
 
+const _eval = _MathContext.evaluate;
 module.exports = {
-    "evaluate": _MathContext.evaluate
+    "evaluate": _eval,
+    /**
+     * Evaluates the specified Math Expression to a Number, if a ResultSet is the result then the first entry will be returned
+     * @param {MathJS.MathExpression|MathJS.MathExpression[]} expr
+     * @param {Object?} [scope]
+     * @returns {Number}
+     */
+    "EvaluateToNumber": (expr, scope) => {
+        const evalExpr = _eval(expr, scope ?? { });
+        if (typeof evalExpr === "number") return evalExpr;
+        return evalExpr.entries == null ? Number.NaN : evalExpr.entries[0];
+    }
 };
 
 _MathContext.import({

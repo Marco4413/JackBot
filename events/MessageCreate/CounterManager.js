@@ -18,7 +18,7 @@ module.exports = async (msg, guild) => {
     if (counter !== undefined) {
         let result = undefined;
         try {
-            result = SMath.evaluate(msg.content);
+            result = SMath.EvaluateToNumber(msg.content);
         } catch (err) { /* Do nothing on error */ }
         
         if (!Utils.IsNaN(result)) {
