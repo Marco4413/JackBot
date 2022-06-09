@@ -12,17 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hds536jhmk/JackBot.git"
+    "url": "git+https://github.com/Marco4413/JackBot.git"
   },
   "author": {
-    "name": "hds536jhmk",
-    "url": "https://github.com/hds536jhmk"
+    "name": "Marco",
+    "url": "https://github.com/Marco4413"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hds536jhmk/JackBot/issues"
+    "url": "https://github.com/Marco4413/JackBot/issues"
   },
-  "homepage": "https://github.com/hds536jhmk/JackBot#readme",
+  "homepage": "https://github.com/Marco4413/JackBot#readme",
   "contributors": [
     {
       "name": "Elia Brexx",
