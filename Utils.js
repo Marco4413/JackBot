@@ -92,7 +92,7 @@ const FormatString = (str, ...formats) => {
 /**
  * Tested at https://jsben.ch/Vy7s5 and it's x2 the Speed of {@link Array.prototype.join}
  * and it gives the option to manipulate elements
- * @template {T} The type of the elements in the Array
+ * @template {Any} T The type of the elements in the Array
  * @param {T[]} array The Array to Join
  * @param {String} [separator] The separator used to separate Array elements
  * @param {(el: T, index: Number) => Any} [elFormatter] Called to format every element in the Array
@@ -319,6 +319,14 @@ const MatchImageUrl = (str) => {
     else return null;
 };
 
+/**
+ * Checks if a string ends with the specified one, if that's not the case it appends the end to it
+ * @param {String} str The string to check
+ * @param {String} end The end to check for and to add if not present
+ * @returns {String} The complete string
+ */
+const EndsWithOrAdd = (str, end) => str.endsWith(end) ? str : (str + end);
+
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
     IsValidEmbedValue, FormatString,
@@ -328,5 +336,5 @@ module.exports = {
     MentionUser, MentionTextChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, GetAudioFilesInDirectory,
-    MatchImageUrl
+    MatchImageUrl, EndsWithOrAdd
 };
