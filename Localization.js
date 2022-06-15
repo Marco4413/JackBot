@@ -137,6 +137,18 @@ class Locale {
     }
 
     /**
+     * Gets a value from the Locale and formats it using a map
+     * @param {String|String[]} path The path to the Locale value to get
+     * @param {Record<String, Any>} formats The map of formats to format the value with
+     * @returns {String} The formatted value at path
+     */
+    GetMapFormatted(path, formats) {
+        return Utils.MapFormatString(
+            this.Get(path, true), formats
+        );
+    }
+
+    /**
      * Gets a value from the Common Locale
      * @param {String|String[]} path The path to the Locale value to get
      * @param {Boolean} toString Whether or not to convert the value to a String ( Or path to the value if none was found )
