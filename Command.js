@@ -280,7 +280,7 @@ const IsValidCommand = (command) => {
 const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
     if (channel === undefined) {
         if (!msg.member.permissions.has(requiredPerms)) {
-            await msg.reply(locale.GetCommonFormatted(
+            await msg.reply(locale._GetCommonFormatted(
                 "noGuildPerms",
                 _ListMissingPerms(msg.member.permissions, requiredPerms, locale)
             ));
@@ -289,7 +289,7 @@ const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
     } else {
         const channelPerms = msg.member.permissionsIn(channel);
         if (!channelPerms.has(requiredPerms)) {
-            await msg.reply(locale.GetCommonFormatted(
+            await msg.reply(locale._GetCommonFormatted(
                 "noChannelPerms",
                 _ListMissingPerms(channelPerms, requiredPerms, locale),
                 channel.name
@@ -355,13 +355,13 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
         case "none":
             break;
         case "not_provided":
-            await msg.reply(locale.GetCommonFormatted(
+            await msg.reply(locale._GetCommonFormatted(
                 "missingArg",
                 errorArgDef.name, errorArgIndex + 1
             ));
             return true;
         case "invalid_type":
-            await msg.reply(locale.GetCommonFormatted(
+            await msg.reply(locale._GetCommonFormatted(
                 "wrongArgType",
                 errorArgDef.name, errorArgIndex + 1,
                 _ListPossibleTypes(errorArgDef, locale)

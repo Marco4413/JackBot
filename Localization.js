@@ -126,11 +126,12 @@ class Locale {
 
     /**
      * Gets a value from the Locale and formats it
+     * @deprecated Deprecated in favour of {@link Locale.GetFormatted} (Eventually this method will be removed)
      * @param {String|String[]} path The path to the Locale value to get
      * @param {...Any} formats The formats to format the value with
      * @returns {String} The formatted value at path
      */
-    GetFormatted(path, ...formats) {
+    _GetFormatted(path, ...formats) {
         return Utils.FormatString(
             this.Get(path, true), ...formats
         );
@@ -142,7 +143,7 @@ class Locale {
      * @param {Record<String, Any>} formats The map of formats to format the value with
      * @returns {String} The formatted value at path
      */
-    GetMapFormatted(path, formats) {
+    GetFormatted(path, formats) {
         return Utils.MapFormatString(
             this.Get(path, true), formats
         );
@@ -162,13 +163,26 @@ class Locale {
 
     /**
      * Gets a value from the Common Locale and formats it
+     * @deprecated Deprecated in favour of {@link Locale.GetCommonFormatted} (Eventually this method will be removed)
      * @param {String|String[]} path The path to the Locale value to get
      * @param {...Any} formats The formats to format the value with
      * @returns {String} The formatted value at path
      */
-    GetCommonFormatted(path, ...formats) {
+    _GetCommonFormatted(path, ...formats) {
         return Utils.FormatString(
             this.GetCommon(path, true), ...formats
+        );
+    }
+
+    /**
+     * Gets a value from the Common Locale and formats it using a map
+     * @param {String|String[]} path The path to the Locale value to get
+     * @param {Record<String, Any>} formats The map of formats to format the value with
+     * @returns {String} The formatted value at path
+     */
+    GetCommonFormatted(path, ...formats) {
+        return Utils.MapFormatString(
+            this.GetCommon(path, true), formats
         );
     }
 

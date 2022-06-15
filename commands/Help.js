@@ -56,9 +56,9 @@ module.exports = CreateCommand({
                 if (subDoc.subcommands === undefined) {
                     subSubCmdList = locale.Get("noSubcommands");
                 } else {
-                    subSubCmdList = locale.GetFormatted(
+                    subSubCmdList = locale._GetFormatted(
                         "subcommandsList",
-                        locale.GetCommonFormatted(
+                        locale._GetCommonFormatted(
                             "listDelimiter",
                             Utils.JoinArray(
                                 Object.keys(subDoc.subcommands),

@@ -107,7 +107,7 @@ module.exports = CreateCommand({
                                 continue;
 
                             manageableRoles.push(roleId);
-                            addedRoles.push(locale.GetCommonFormatted(
+                            addedRoles.push(locale._GetCommonFormatted(
                                 "roleListEntry", role.name, roleId
                             ));
                         }
@@ -183,7 +183,7 @@ module.exports = CreateCommand({
                                 continue;
 
                             manageableRoles = newRoles;
-                            removedRoles.push(locale.GetCommonFormatted(
+                            removedRoles.push(locale._GetCommonFormatted(
                                 "roleListEntry", role.name, roleId
                             ));
                         }
@@ -228,13 +228,13 @@ module.exports = CreateCommand({
                             let response = locale.Get("roleManagersList") + "\n";
                             for (const managerRow of managerRows) {
                                 const managerRole = msg.guild.roles.resolve(managerRow.roleId);
-                                response += locale.GetCommonFormatted(
+                                response += locale._GetCommonFormatted(
                                     "softMention", managerRole?.name ?? locale.GetCommon("unknownRole"), managerRow.roleId
                                 ) + "\n";
 
                                 for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
                                     const manageableRole = msg.guild.roles.resolve(manageableRoleId);
-                                    response += locale.GetCommonFormatted(
+                                    response += locale._GetCommonFormatted(
                                         "roleListEntry", manageableRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
                                     ) + "\n";
                                 }
@@ -254,14 +254,14 @@ module.exports = CreateCommand({
                         const managerRole = msg.guild.roles.resolve(managerRow.roleId);
                         let response = (
                             locale.Get("roleManageableList") + "\n" +
-                            locale.GetCommonFormatted(
+                            locale._GetCommonFormatted(
                                 "softMention", managerRole?.name ?? locale.GetCommon("unknownRole"), managerRow.roleId
                             ) + "\n"
                         );
 
                         for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
                             const managerRole = msg.guild.roles.resolve(manageableRoleId);
-                            response += locale.GetCommonFormatted(
+                            response += locale._GetCommonFormatted(
                                 "roleListEntry", managerRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
                             ) + "\n";
                         }
@@ -306,7 +306,7 @@ module.exports = CreateCommand({
                         unmanageableRoles, "\n",
                         roleId => {
                             const role = msg.guild.roles.resolve(roleId);
-                            return locale.GetCommonFormatted(
+                            return locale._GetCommonFormatted(
                                 "roleListEntry", role?.name ?? locale.GetCommon("unknownRole"), roleId
                             );
                         }
@@ -355,7 +355,7 @@ module.exports = CreateCommand({
                         unmanageableRoles, "\n",
                         roleId => {
                             const role = msg.guild.roles.resolve(roleId);
-                            return locale.GetCommonFormatted(
+                            return locale._GetCommonFormatted(
                                 "roleListEntry", role?.name ?? locale.GetCommon("unknownRole"), roleId
                             );
                         }

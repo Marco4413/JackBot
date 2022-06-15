@@ -52,7 +52,7 @@ const IsBlacklisted = async (member, dbInListColumn, dbIsBlacklistColumn) => {
  */
 const ReplyIfBlacklisted = async (locale, commandName, msg, dbInListColumn, dbIsBlacklistColumn) => {
     if (await IsBlacklisted(msg.member, dbInListColumn, dbIsBlacklistColumn)) {
-        await msg.reply(locale.GetCommonFormatted(
+        await msg.reply(locale._GetCommonFormatted(
             "blacklistedCommand", commandName
         ));
         return true;
