@@ -1,0 +1,374 @@
+{
+  "title": "All Commands",
+  "description": "A list of all the available commands.",
+  "subcommands": {
+    "help": {
+      "title": "Help",
+      "description": "Shows these help messages."
+    },
+    "info": {
+      "title": "Info",
+      "description": "Shows info about this bot."
+    },
+    "access-list": {
+      "title": "Access List",
+      "description": "Used to manage User and Role Blacklists/Whitelists.",
+      "subcommands": {
+        "<COMMAND-NAME>": {
+          "title": "<COMMAND-NAME>",
+          "description": "Used to manage the Access List for the specified command.\nWorks with: `channel`, `sound`.",
+          "subcommands": {
+            "type": {
+              "title": "Type",
+              "description": "Shows the current type of the Access List.",
+              "subcommands": {
+                "set": {
+                  "title": "Set",
+                  "description": "Sets the type of the Access List.\nValid types: `blacklist`, `whitelist`."
+                }
+              }
+            },
+            "user": {
+              "title": "User",
+              "description": "Used to manage the User Access List.",
+              "subcommands": {
+                "clear": {
+                  "title": "Clear",
+                  "description": "Clears the User Access List."
+                },
+                "list": {
+                  "title": "List",
+                  "description": "Lists all Users in the Access List."
+                },
+                "add": {
+                  "title": "Add",
+                  "description": "Adds all the specified Users to the Access List."
+                },
+                "remove": {
+                  "title": "Remove",
+                  "description": "Removes all the specified Users from the Access List."
+                }
+              }
+            },
+            "role": {
+              "title": "Role",
+              "description": "Used to manage the Role Access List.",
+              "subcommands": {
+                "clear": {
+                  "title": "Clear",
+                  "description": "Clears the Role Access List."
+                },
+                "list": {
+                  "title": "List",
+                  "description": "Lists all Roles in the Access List."
+                },
+                "add": {
+                  "title": "Add",
+                  "description": "Adds all the specified Roles to the Access List."
+                },
+                "remove": {
+                  "title": "Remove",
+                  "description": "Removes all the specified Roles from the Access List."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "banana": {
+      "title": "Banana",
+      "description": "Gets a random Banana GIF from Tenor."
+    },
+    "boost": {
+      "title": "Boost",
+      "description": "Used to manage Boost Announcements for this Guild from the Bot.",
+      "subcommands": {
+        "channel": {
+          "title": "Channel",
+          "description": "Shows the currently set Channel for Nitro Boost Announcements.",
+          "subcommands": {
+            "set": {
+              "title": "Set",
+              "description": "Sets the Channel for Nitro Boost Announcements to the one specified."
+            }
+          }
+        },
+        "test": {
+          "title": "Test",
+          "description": "Tests Nitro Boost Announcements by sending the Announcement either to the specified Channel or the default one."
+        }
+      }
+    },
+    "calculate": {
+      "title": "Calculate",
+      "description": "Calculates the specified Math Expression."
+    },
+    "channel": {
+      "title": "Channel",
+      "description": "Manages Private Voice and Text Channels.",
+      "subcommands": {
+        "text": {
+          "title": "Text",
+          "description": "Manages Private Text Channels.",
+          "subcommands": {
+            "create": {
+              "title": "Create",
+              "description": "Creates a new Private Text Channel."
+            },
+            "delete": {
+              "title": "Delete",
+              "description": "Deletes your Private Text Channel."
+            }
+          }
+        },
+        "voice": {
+          "title": "Voice",
+          "description": "Manages Private Voice Channels.",
+          "subcommands": {
+            "create": {
+              "title": "Create",
+              "description": "Creates a new Private Voice Channel."
+            },
+            "delete": {
+              "title": "Delete",
+              "description": "Deletes your Private Voice Channel."
+            }
+          }
+        },
+        "category": {
+          "title": "Category",
+          "description": "Shows the Category for new Private Channels.",
+          "subcommands": {
+            "set": {
+              "title": "Set",
+              "description": "Sets the Category for new Private Channels."
+            }
+          }
+        },
+        "voice-creation-channel": {
+          "title": "Voice Creation Channel",
+          "description": "Shows the Channel that an User should join to automatically create a new Voice Channel.",
+          "subcommands": {
+            "set": {
+              "title": "Set",
+              "description": "Sets the Voice Creation Channel."
+            }
+          }
+        },
+        "template-role": {
+          "title": "Template Role",
+          "description": "Manages Template Roles for new Channels' Permissions.",
+          "subcommands": {
+            "everyone": {
+              "title": "Everyone",
+              "description": "Shows the Template Role for Everyone.",
+              "subcommands": {
+                "set": {
+                  "title": "Set",
+                  "description": "Sets the Template Role for Everyone."
+                }
+              }
+            },
+            "owner": {
+              "title": "Owner",
+              "description": "Shows the Template Role for the Channel Owner.",
+              "subcommands": {
+                "set": {
+                  "title": "Set",
+                  "description": "Sets the Template Role for the Channel Owner."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "counter": {
+      "title": "Counter",
+      "description": "Shows the current count of this Channel.",
+      "subcommands": {
+        "start": {
+          "title": "Start",
+          "description": "Starts a new Counter in this Channel."
+        },
+        "terminate": {
+          "title": "Terminate",
+          "description": "Removes the Counter in this Channel or the one specified."
+        },
+        "config": {
+          "title": "Config",
+          "description": "Used to configure Counter Channel settings.",
+          "subcommands": {
+            "allow-messages": {
+              "title": "Allow Messages",
+              "description": "If false Messages that aren't numbers will be deleted."
+            },
+            "allow-errors": {
+              "title": "Allow Errors",
+              "description": "If false Messages that are the wrong number will be ignored and deleted."
+            },
+            "alternate-member": {
+              "title": "Alternate Member",
+              "description": "If true Messages that would change the count that are sent from the same person who changed it last time will be ignored and deleted."
+            }
+          }
+        },
+        "best": {
+          "title": "Best",
+          "description": "Replies with the best count this Channel has reached."
+        },
+        "list": {
+          "title": "List",
+          "description": "Shows all active Counters in this Guild."
+        }
+      }
+    },
+    "language": {
+      "title": "Language",
+      "description": "Shows this Guild's Language.",
+      "subcommands": {
+        "set": {
+          "title": "Set",
+          "description": "Sets this Guild's language to the one specified."
+        }
+      }
+    },
+    "ping": {
+      "title": "Ping",
+      "description": "Pong!",
+      "subcommands": {
+        "message": {
+          "hidden": true,
+          "hiddenNames": [ "6d", "6573", "73", "6167", "65", "b16" ],
+          "title": "Message",
+          "description": "Sends a message and calculates the time needed for that message to be sent."
+        }
+      }
+    },
+    "prefix": {
+      "title": "Prefix",
+      "description": "Shows this Guild's Prefix.",
+      "subcommands": {
+        "set": {
+          "title": "Set",
+          "description": "Sets this Guild's prefix to the one specified."
+        }
+      }
+    },
+    "role": {
+      "title": "Role",
+      "description": "Manages User Roles.",
+      "subcommands": {
+        "managers": {
+          "title": "Managers",
+          "description": "Manages role managers of this guild.",
+          "subcommands": {
+            "add": {
+              "title": "Add",
+              "description": "Adds all the specified roles to the specified manager (role)."
+            },
+            "remove": {
+              "title": "Remove",
+              "description": "Removes all the specified roles from the specified manager (role).",
+              "subcommands": {
+                "all": {
+                  "title": "All",
+                  "description": "Removes all roles from the specified manager (role)."
+                }
+              }
+            },
+            "list": {
+              "title": "List",
+              "description": "Lists all role manageable by the specified manager (role).",
+              "subcommands": {
+                "all": {
+                  "title": "All",
+                  "description": "Lists all manager roles and their manageable roles."
+                }
+              }
+            },
+            "clear": {
+              "title": "Clear",
+              "description": "Removes all managers from this guild."
+            }
+          }
+        },
+        "add": {
+          "title": "Add",
+          "description": "Adds all specified roles to the specified user."
+        },
+        "remove": {
+          "title": "Remove",
+          "description": "Removes all specified roles from the specified user."
+        }
+      }
+    },
+    "shortcuts": {
+      "title": "Shortcuts",
+      "description": "Shows if shortcuts are enabled in this Guild.",
+      "subcommands": {
+        "set": {
+          "title": "Set",
+          "description": "Enables or disables shortcuts for this Guild."
+        }
+      }
+    },
+    "sound": {
+      "title": "Sound",
+      "description": "Plays the specified sound.\nUse `sound play` if a sound has the same name as a subcommand.",
+      "subcommands": {
+        "list": {
+          "title": "List",
+          "description": "Lists all available Sounds."
+        },
+        "stop": {
+          "title": "Stop",
+          "description": "Stops playing the currently playing Sound if any."
+        },
+        "leave": {
+          "title": "Leave",
+          "description": "Leaves the current channel if connected."
+        },
+        "play": {
+          "title": "Play",
+          "description": "Plays the specified sound.\nThis is an alias for `sound`, use this is a sound has the same name as a subcommand."
+        }
+      }
+    },
+    "suggestion": {
+      "title": "Suggestion",
+      "description": "Sends a new suggestion for the guild.",
+      "subcommands": {
+        "channel": {
+          "title": "Channel",
+          "description": "Shows the current channel for suggestions.",
+          "subcommands": {
+            "set": {
+              "title": "Set",
+              "description": "Sets the current channel for suggestions."
+            },
+            "result": {
+              "title": "Result",
+              "description": "Shows the current channel for suggestion results.",
+              "subcommands": {
+                "set": {
+                  "title": "Set",
+                  "description": "Sets the current channel for suggestion results."
+                }
+              }
+            }
+          }
+        },
+        "approve": {
+          "title": "Approve",
+          "description": "Approves the specified suggestion with the specified reason."
+        },
+        "reject": {
+          "title": "Reject",
+          "description": "Rejects the specified suggestion with the specified reason."
+        }
+      }
+    }
+  }
+}
