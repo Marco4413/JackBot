@@ -88,6 +88,18 @@ const FormatString = (str, ...formats) => {
         return index < formats.length ? formats[index] : match;
     });
 };
+/**
+ * Formats the specified String with the specified Map of Formats
+ * @param {String} str The String to Format
+ * @param {Record<String, Any>} formats The Map of Formats to format the String with
+ * @returns {String} The formatted String
+ */
+const MapFormatString = (str, formats) => {
+    if (formats.length === 0) return str;
+    return str.replace(/{([^}]+)}/g, (match, key) => {
+        return formats[key] ?? key;
+    });
+};
 
 /**
  * Tested at https://jsben.ch/Vy7s5 and it's x2 the Speed of {@link Array.prototype.join}
@@ -329,7 +341,7 @@ const EndsWithOrAdd = (str, end) => str.endsWith(end) ? str : (str + end);
 
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
-    IsValidEmbedValue, FormatString,
+    IsValidEmbedValue, FormatString, MapFormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     TranslateNumber, IsNaN,
