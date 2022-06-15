@@ -16,7 +16,7 @@
       "subcommands": {
         "<COMMAND-NAME>": {
           "title": "<COMMAND-NAME>",
-          "description": "Gestisce la Access List per il comando specificato.\nFunziona con: `channel`, `sound`.",
+          "description": "Gestisce la Access List per il comando specificato.\nFunziona con: `channel`, `role`, `sound`, `suggestion`, `suggestion-manager`.",
           "subcommands": {
             "type": {
               "title": "Type",
