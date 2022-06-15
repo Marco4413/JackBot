@@ -8,16 +8,17 @@ const DEFAULT_LOCALE = GuildModel.locale.defaultValue;
 /** @type {Object<String, Locale>} */
 const _Locales = { };
 
+const _LOCALES_FOLDER = "./localization";
+
 /**
  * Registers all Locales found in the localization folder
  */
 const RegisterLocales = () => {
-    const localesFolder = "./localization";
-    fs.readdirSync(localesFolder).forEach(file => {
+    fs.readdirSync(_LOCALES_FOLDER).forEach(file => {
         if (file.endsWith(".json")) {
             const localeName = file.substring(0, file.length - ".json".length);
             if (localeName.length <= MAX_LOCALE_NAME_LENGTH) {
-                const jsonLocale = require(`${localesFolder}/${file}`);
+                const jsonLocale = require(`${_LOCALES_FOLDER}/${file}`);
                 _Locales[localeName] = new Locale(
                     jsonLocale, localeName, "", jsonLocale
                 );
@@ -46,6 +47,8 @@ const RegisterLocales = () => {
  * @property {Object<String, _CommandLocaleRoot>} commands Command-specific localization
  */
 
+const _EXTENDS_MATCHER = /^#extends\s*([^;]+)/g;
+
 /**
  * 
  * @param {Object} obj
@@ -55,35 +58,43 @@ const RegisterLocales = () => {
  * @returns {{ value: String|Object|undefined, path: String }}
  */
 const _TraverseObject = (obj, rootPath, pathToTraverse) => {
+    const traversal = {
+        "value": obj,
+        "path": rootPath
+    };
+
     /** @type {String[]} */
     const pathComponents = Array.isArray(pathToTraverse) ? pathToTraverse : pathToTraverse.split(".");
-    if (pathComponents.length === 0) {
-        return {
-            "value": obj,
-            "path": rootPath
-        };
-    }
-
-    let currentValue = obj;
-    let currentPath = rootPath;
-
     for (let i = 0; i < pathComponents.length; i++) {
-        if (typeof ( currentValue ?? undefined ) !== "object") {
-            return {
-                "value": null,
-                "path": currentPath
-            };
-        }
-        
         const pathComponent = pathComponents[i];
-        currentPath += (currentPath.length === 0 ? "" : ".") + pathComponent;
-        currentValue = currentValue[pathComponent];
+        traversal.path += (traversal.path.length === 0 ? "" : ".") + pathComponent;
+
+        const valueType = typeof ( traversal.value[pathComponent] ?? undefined );
+        if (valueType === "string") {
+            const extendsMatch = _EXTENDS_MATCHER.exec(traversal.value[pathComponent]);
+            if (extendsMatch == null) {
+                traversal.value = i === pathComponents.length - 1 ? traversal.value[pathComponent] : null;
+                return traversal;
+            } else {
+                try {
+                    const extendPath = `${_LOCALES_FOLDER}/${extendsMatch[1]}`;
+                    traversal.value[pathComponent] = require(Utils.EndsWithOrAdd(extendPath, ".json"));
+                    traversal.value = traversal.value[pathComponent];
+                } catch (error) {
+                    Logger.Error(error);
+                    traversal.value = null;
+                    return traversal;
+                }
+            }
+        } else if (valueType !== "object") {
+            traversal.value = null;
+            return traversal;
+        } else {
+            traversal.value = traversal.value[pathComponent];
+        }
     }
 
-    return {
-        "value": currentValue,
-        "path": currentPath
-    };
+    return traversal;
 };
 
 class Locale {
