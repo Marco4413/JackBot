@@ -237,7 +237,7 @@ module.exports = CreateCommand({
                                     const manageableRole = msg.guild.roles.resolve(manageableRoleId);
                                     response += locale._GetCommonFormatted(
                                         "roleListEntry", manageableRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
-                                    );
+                                    ) + "\n";
                                 }
 
                                 await msg.channel.send(response);
