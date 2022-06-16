@@ -225,8 +225,9 @@ module.exports = CreateCommand({
                                 return;
                             }
 
-                            let response = locale.Get("roleManagersList") + "\n";
+                            msg.reply(locale.Get("roleManagersList"));
                             for (const managerRow of managerRows) {
+                                let response = "";
                                 const managerRole = msg.guild.roles.resolve(managerRow.roleId);
                                 response += locale._GetCommonFormatted(
                                     "softMention", managerRole?.name ?? locale.GetCommon("unknownRole"), managerRow.roleId
@@ -236,11 +237,11 @@ module.exports = CreateCommand({
                                     const manageableRole = msg.guild.roles.resolve(manageableRoleId);
                                     response += locale._GetCommonFormatted(
                                         "roleListEntry", manageableRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
-                                    ) + "\n";
+                                    );
                                 }
-                            }
 
-                            await msg.reply(response);
+                                await msg.channel.send(response);
+                            }
                         }
                     }],
                     "execute": async (msg, guild, locale, [ managerId ]) => {
