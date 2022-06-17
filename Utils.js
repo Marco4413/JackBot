@@ -95,7 +95,6 @@ const FormatString = (str, ...formats) => {
  * @returns {String} The formatted String
  */
 const MapFormatString = (str, formats) => {
-    if (formats.length === 0) return str;
     return str.replace(/{([^}]+)}/g, (match, key) => {
         return formats[key] ?? key;
     });
