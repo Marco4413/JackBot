@@ -125,19 +125,6 @@ class Locale {
     }
 
     /**
-     * Gets a value from the Locale and formats it
-     * @deprecated Deprecated in favour of {@link Locale.GetFormatted} (Eventually this method will be removed)
-     * @param {String|String[]} path The path to the Locale value to get
-     * @param {...Any} formats The formats to format the value with
-     * @returns {String} The formatted value at path
-     */
-    _GetFormatted(path, ...formats) {
-        return Utils.FormatString(
-            this.Get(path, true), ...formats
-        );
-    }
-
-    /**
      * Gets a value from the Locale and formats it using a map
      * @param {String|String[]} path The path to the Locale value to get
      * @param {Record<String, Any>} formats The map of formats to format the value with
@@ -147,6 +134,82 @@ class Locale {
         return Utils.MapFormatString(
             this.Get(path, true), formats
         );
+    }
+
+    /**
+     * Creates a Formatted list from the specified Array
+     * @template {Any} T Entry type
+     * @param {T[]} entries The Entries to list
+     * @param {String?} [path] The path of the locale to use to format each entry
+     * @param {(entry: T) => Record<String, Any>} [formatter] A function which returns the formats to use with the locale string at path
+     * @param {String?} [titlePath] The path to the locale to use as the title of the list
+     * @returns {String} The Formatted List
+     */
+    GetFormattedList(entries, path = null, formatter = value => ({ value }), titlePath = null) {
+        const title = titlePath == null ?
+            "" :
+            (this.Get(titlePath) + "\n");
+        return title + Utils.JoinArray(
+            entries, "\n", entry =>
+                this.GetCommonFormatted(
+                    "listEntry", {
+                        "value": path == null ?
+                            formatter(entry).value :
+                            this.GetFormatted(
+                                path, formatter(entry)
+                            )
+                    }
+                )
+        );
+    }
+
+    /**
+     * Creates an Inline Formatted list from the specified Array
+     * @template {Any} T Entry type
+     * @param {T[]} entries The Entries to list
+     * @param {String?} [path] The path of the locale to use to format each entry
+     * @param {(entry: T) => Record<String, Any>} [formatter] A function which returns the formats to use with the locale string at path
+     * @param {String?} [titlePath] The path to the locale to use as the title of the list
+     * @returns {String} The Formatted List
+     */
+    GetFormattedInlineList(entries, path = null, formatter = value => ({ value }), titlePath = null) {
+        const title = titlePath == null ?
+            "" :
+            (this.Get(titlePath) + "\n");
+        return title + this.GetCommonFormatted(
+            "listDelimiter", {
+                "list": Utils.JoinArray(
+                    entries,
+                    this.GetCommon("listSeparator"),
+                    entry => path == null ?
+                        formatter(entry).value :
+                        this.GetFormatted(
+                            path, formatter(entry)
+                        )
+                )
+            }
+        );
+    }
+
+    /**
+     * Gets the specified User, Role or Channel's Soft Mention
+     * @param {"User"|"Role"|"Channel"} type The type to get the Soft Mention for
+     * @param {String?} name The name for the Soft Mention
+     * @param {String} id The id for the Soft Mention
+     * @param {Boolean} [isListEntry] Whether or not this should be a list entry
+     * @returns {String} The Soft Mention
+     */
+    GetSoftMention(type, name, id, isListEntry) {
+        const softMention = this.GetCommonFormatted(
+            "softMention", {
+                "name": name ?? this.GetCommon(`unknown${type}`),
+                id
+            }
+        );
+
+        return isListEntry ? this.GetCommonFormatted(
+            "listEntry", { "value": softMention }
+        ) : softMention;
     }
 
     /**
@@ -162,25 +225,12 @@ class Locale {
     }
 
     /**
-     * Gets a value from the Common Locale and formats it
-     * @deprecated Deprecated in favour of {@link Locale.GetCommonFormatted} (Eventually this method will be removed)
-     * @param {String|String[]} path The path to the Locale value to get
-     * @param {...Any} formats The formats to format the value with
-     * @returns {String} The formatted value at path
-     */
-    _GetCommonFormatted(path, ...formats) {
-        return Utils.FormatString(
-            this.GetCommon(path, true), ...formats
-        );
-    }
-
-    /**
      * Gets a value from the Common Locale and formats it using a map
      * @param {String|String[]} path The path to the Locale value to get
      * @param {Record<String, Any>} formats The map of formats to format the value with
      * @returns {String} The formatted value at path
      */
-    GetCommonFormatted(path, ...formats) {
+    GetCommonFormatted(path, formats) {
         return Utils.MapFormatString(
             this.GetCommon(path, true), formats
         );
