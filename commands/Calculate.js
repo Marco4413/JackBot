@@ -10,7 +10,7 @@ module.exports = CreateCommand({
             await msg.reply(locale.GetFormatted(
                 "expressionResult", {
                     "expression": mathExpr,
-                    "result": Utils.TranslateNumber(result, locale)
+                    "result": locale.TranslateNumber(result)
                 }
             ));
         } catch (err) {

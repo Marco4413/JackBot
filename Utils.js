@@ -173,23 +173,6 @@ const GetFormattedDateComponents = (date = new Date(), dateSep = "/", timeSep = 
 /** @typedef {import("./Localization.js").Locale} Locale */
 
 /**
- * Translates the specified Number using the specified Locale
- * @param {Any} n The Number to translate
- * @param {Locale} locale The locale to translate the Number with
- * @returns {String} The translated Number
- */
-const TranslateNumber = (n, locale) => {
-    if (IsNaN(n)) {
-        return locale.GetCommon("nan");
-    } else if (n === Number.POSITIVE_INFINITY) {
-        return locale.GetCommon("positiveInfinity");
-    } else if (n === Number.NEGATIVE_INFINITY) {
-        return locale.GetCommon("negativeInfinity");
-    }
-    return n.toString();
-};
-
-/**
  * Same as Number.isNaN but with type checking
  * @param {Any} n The Number to check if it's NaN
  * @returns {Boolean} Whether or not the Number is not NaN and of a Number type
@@ -343,7 +326,7 @@ module.exports = {
     IsValidEmbedValue, FormatString, MapFormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
-    TranslateNumber, IsNaN,
+    IsNaN,
     MentionUser, MentionTextChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, GetAudioFilesInDirectory,

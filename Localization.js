@@ -293,6 +293,22 @@ class Locale {
             commandLocale.value
         );
     }
+    
+    /**
+     * Translates the specified Number
+     * @param {Any} n The Number to translate
+     * @returns {String} The translated Number
+     */
+    TranslateNumber(n) {
+        if (Utils.IsNaN(n)) {
+            return this.GetCommon("nan");
+        } else if (n === Number.POSITIVE_INFINITY) {
+            return this.GetCommon("positiveInfinity");
+        } else if (n === Number.NEGATIVE_INFINITY) {
+            return this.GetCommon("negativeInfinity");
+        }
+        return n.toString();
+    }
 }
 
 /**
