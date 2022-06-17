@@ -7,7 +7,7 @@ module.exports = CreateCommand({
     "execute": async (msg, guild, locale, [ mathExpr ]) => {
         try {
             const result = SMath.EvaluateToNumber(mathExpr);
-            await msg.reply(locale.GetFormatted(
+            await msg.reply(locale._GetFormatted(
                 "expressionResult", mathExpr, Utils.TranslateNumber(result, locale)
             ));
         } catch (err) {

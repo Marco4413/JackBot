@@ -118,7 +118,7 @@ module.exports = CreateCommand({
                         }
 
                         if (manageableRoles.length > DatabaseDefinitions.MAX_MANAGEABLE_ROLES) {
-                            await msg.reply(locale.GetFormatted(
+                            await msg.reply(locale._GetFormatted(
                                 "maxManagersExceeded", DatabaseDefinitions.MAX_MANAGEABLE_ROLES, manageableRoles.length
                             ));
                             return;
@@ -325,9 +325,9 @@ module.exports = CreateCommand({
 
                 try {
                     await targetMember.roles.add(rolesToGive, `Roles added by ${msg.member.id}`);
-                    await msg.reply(locale.GetFormatted("rolesAdded", targetMember.displayName, targetId));
+                    await msg.reply(locale._GetFormatted("rolesAdded", targetMember.displayName, targetId));
                 } catch (error) {
-                    await msg.reply(locale.GetFormatted("notEnoughPermissionsToAdd", targetMember.displayName, targetId));
+                    await msg.reply(locale._GetFormatted("notEnoughPermissionsToAdd", targetMember.displayName, targetId));
                 }
             }
         },
@@ -374,9 +374,9 @@ module.exports = CreateCommand({
 
                 try {
                     await targetMember.roles.remove(rolesToRemove, `Roles removed by ${msg.member.id}`);
-                    await msg.reply(locale.GetFormatted("rolesRemoved", targetMember.displayName, targetId));
+                    await msg.reply(locale._GetFormatted("rolesRemoved", targetMember.displayName, targetId));
                 } catch (error) {
-                    await msg.reply(locale.GetFormatted("notEnoughPermissionsToRemove", targetMember.displayName, targetId));
+                    await msg.reply(locale._GetFormatted("notEnoughPermissionsToRemove", targetMember.displayName, targetId));
                 }
             }
         }

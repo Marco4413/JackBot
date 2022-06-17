@@ -249,7 +249,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
 
         await msg?.reply(locale.Get("created"));
         
-        await userChannel.send(locale.GetFormatted(
+        await userChannel.send(locale._GetFormatted(
             "welcome", Utils.MentionUser(member.id)
         ));
     } else {

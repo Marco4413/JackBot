@@ -16,7 +16,7 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
         guild[dbIsBlacklistColumn] ? locale.Get("blacklist") : locale.Get("whitelist");
 
     const _GetFormattedListLocale = (locale, commandLocaleKey, guild) => {
-        return locale.GetFormatted(
+        return locale._GetFormatted(
             commandLocaleKey,
             _GetListTypeLocale(locale, guild)
         );

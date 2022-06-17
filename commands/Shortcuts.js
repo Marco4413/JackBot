@@ -16,11 +16,11 @@ module.exports = CreateCommand({
             ],
             "execute": async (msg, guild, locale, [ enable ]) => {
                 await Database.SetRowAttr("guild", { "id": msg.guildId }, { "shortcuts": enable });
-                await msg.reply(locale.GetFormatted("changed", enable));
+                await msg.reply(locale._GetFormatted("changed", enable));
             }
         }
     ],
     "execute": async (msg, guild, locale) => {
-        await msg.reply(locale.GetFormatted("current", guild.shortcuts));
+        await msg.reply(locale._GetFormatted("current", guild.shortcuts));
     }
 });

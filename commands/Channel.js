@@ -174,8 +174,8 @@ module.exports = CreateCommand({
                 }
 
                 const category = msg.guild.channels.resolve(guild.privateChannelCategoryId);
-                await msg.reply(locale.GetFormatted(
-                    "currentCategory", locale.GetCommonFormatted(
+                await msg.reply(locale._GetFormatted(
+                    "currentCategory", locale._GetCommonFormatted(
                         "softMention",
                         category?.name ?? locale.GetCommon("unknownChannel"),
                         guild.privateChannelCategoryId
@@ -223,8 +223,8 @@ module.exports = CreateCommand({
                 }
 
                 const voiceChannel = msg.guild.channels.resolve(guild.privateVoiceCreateChannelId);
-                await msg.reply(locale.GetFormatted(
-                    "currentChannel", locale.GetCommonFormatted(
+                await msg.reply(locale._GetFormatted(
+                    "currentChannel", locale._GetCommonFormatted(
                         "softMention",
                         voiceChannel?.name ?? locale.GetCommon("unknownChannel"),
                         guild.privateVoiceCreateChannelId
@@ -282,8 +282,8 @@ module.exports = CreateCommand({
                         }
 
                         const templateRole = msg.guild.roles.resolve(guild.privateChannelEveryoneTemplateRoleId);
-                        await msg.reply(locale.GetFormatted(
-                            "currentEveryone", locale.GetCommonFormatted(
+                        await msg.reply(locale._GetFormatted(
+                            "currentEveryone", locale._GetCommonFormatted(
                                 "softMention",
                                 templateRole?.name ?? locale.GetCommon("unknownRole"),
                                 guild.privateChannelEveryoneTemplateRoleId
@@ -336,8 +336,8 @@ module.exports = CreateCommand({
                         }
 
                         const templateRole = msg.guild.roles.resolve(guild.privateChannelOwnerTemplateRoleId);
-                        await msg.reply(locale.GetFormatted(
-                            "currentOwner", locale.GetCommonFormatted(
+                        await msg.reply(locale._GetFormatted(
+                            "currentOwner", locale._GetCommonFormatted(
                                 "softMention",
                                 templateRole?.name ?? locale.GetCommon("unknownRole"),
                                 guild.privateChannelOwnerTemplateRoleId

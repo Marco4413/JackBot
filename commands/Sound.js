@@ -222,7 +222,7 @@ const _ExecutePlaySound = async (msg, guild, locale, [ soundName ]) => {
     // Playing the sound
     const resource = createAudioResource(soundPath);
     GetOrCreateVoiceConnection(userVoiceChannel, true).player.play(resource);
-    await msg.reply(locale.GetFormatted("playing", soundName));
+    await msg.reply(locale._GetFormatted("playing", soundName));
 };
 
 module.exports = CreateCommand({
@@ -245,7 +245,7 @@ module.exports = CreateCommand({
                     Logger.Debug(sound);
                     const formattedMetadata = _FormatAudioMetadata(locale, sound.metadata);
                     embed.addField(
-                        locale.GetFormatted("fieldTitle", soundName),
+                        locale._GetFormatted("fieldTitle", soundName),
                         formattedMetadata.text,
                         formattedMetadata.maxLineLength <= _INLINE_LINE_CHAR_LIMIT
                     );

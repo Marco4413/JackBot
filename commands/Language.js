@@ -10,9 +10,9 @@ module.exports = CreateCommand({
             "shortcut": "l",
             "execute": async (msg, guild, locale) => {
                 const localesList = GetAvailableLocales().map(
-                    localeName => locale.GetCommonFormatted("listEntry", localeName)
+                    localeName => locale._GetCommonFormatted("listEntry", localeName)
                 ).join("\n");
-                await msg.reply(locale.GetFormatted("available", localesList));
+                await msg.reply(locale._GetFormatted("available", localesList));
             }
         },
         {
@@ -32,11 +32,11 @@ module.exports = CreateCommand({
                 }
 
                 const { locale: newLocale } = await Database.SetRowAttr("guild", { "id": msg.guildId }, { "locale": localeName });
-                await msg.reply(locale.GetFormatted("changed", newLocale));
+                await msg.reply(locale._GetFormatted("changed", newLocale));
             }
         }
     ],
     "execute": async (msg, guild, locale) => {
-        await msg.reply(locale.GetFormatted("current", guild.locale));
+        await msg.reply(locale._GetFormatted("current", guild.locale));
     }
 });

@@ -37,7 +37,7 @@ module.exports = CreateCommand({
                                 "nitroBoostChannelId": channelId
                             });
 
-                            await msg.reply(locale.GetFormatted(
+                            await msg.reply(locale._GetFormatted(
                                 "setChannel", Utils.MentionTextChannel(newGuild.nitroBoostChannelId)
                             ));
                         } else {
@@ -50,7 +50,7 @@ module.exports = CreateCommand({
                 if (guild.nitroBoostChannelId === null) {
                     await msg.reply(locale.Get("noCurrent"));
                 } else {
-                    await msg.reply(locale.GetFormatted(
+                    await msg.reply(locale._GetFormatted(
                         "current", Utils.MentionTextChannel(guild.nitroBoostChannelId)
                     ));
                 }

@@ -24,7 +24,7 @@ const SendNitroBoostEmbed = async (member, textChannel = null) => {
             "iconURL": locale.Get("authorIconURL"),
             "name": locale.Get("authorName")
         },
-        "description": locale.GetFormatted(
+        "description": locale._GetFormatted(
             "description",
             Utils.MentionUser(member.id), member.guild.name, member.guild.premiumSubscriptionCount
         ),

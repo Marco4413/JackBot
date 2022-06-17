@@ -21,7 +21,7 @@ const _GetConfigCallback = (settingName) => {
         if (counter === undefined) {
             await msg.reply(locale.Get("noCountingHere"));
         } else {
-            await msg.reply(locale.GetFormatted(`${settingName}Value`, counter[settingName]));
+            await msg.reply(locale._GetFormatted(`${settingName}Value`, counter[settingName]));
         }
     };
 };
@@ -78,11 +78,11 @@ module.exports = CreateCommand({
                     await msg.reply(
                         isHere ?
                             locale.Get("noCountingHere") :
-                            locale.GetFormatted("noCountingThere", Utils.MentionTextChannel(channelId))
+                            locale._GetFormatted("noCountingThere", Utils.MentionTextChannel(channelId))
                     );
                 } else {
                     await Database.RemoveRows("counter", { "guildId": msg.guildId, channelId });
-                    await msg.reply(locale.GetFormatted(
+                    await msg.reply(locale._GetFormatted(
                         isHere ? "stoppedCountingHere" : "stoppedCountingThere",
                         counter.bestCount, Utils.MentionTextChannel(channelId)
                     ));
@@ -123,7 +123,7 @@ module.exports = CreateCommand({
                 if (counter === undefined) {
                     await msg.reply(locale.Get("noCountingHere"));
                 } else {
-                    await msg.reply(locale.GetFormatted("bestCount", counter.bestCount));
+                    await msg.reply(locale._GetFormatted("bestCount", counter.bestCount));
                 }
             }
         },
@@ -151,8 +151,8 @@ module.exports = CreateCommand({
                         }
 
                         embed.addField(
-                            locale.GetFormatted("counterTitle", channelName, counter.count, counter.bestCount),
-                            locale.GetFormatted("counterDescription", Utils.MentionTextChannel(counter.channelId), counter.count, counter.bestCount),
+                            locale._GetFormatted("counterTitle", channelName, counter.count, counter.bestCount),
+                            locale._GetFormatted("counterDescription", Utils.MentionTextChannel(counter.channelId), counter.count, counter.bestCount),
                             false
                         );
                     }
@@ -167,7 +167,7 @@ module.exports = CreateCommand({
         if (counter === undefined) {
             await msg.reply(locale.Get("noCountingHere"));
         } else {
-            await msg.reply(locale.GetFormatted("currentCount", counter.count));
+            await msg.reply(locale._GetFormatted("currentCount", counter.count));
         }
     }
 });

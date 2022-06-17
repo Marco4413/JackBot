@@ -23,7 +23,7 @@ module.exports = CreateCommand({
             package.description
         ).addField(
             locale.Get("package.author"),
-            locale.GetFormatted("package.authorValue",
+            locale._GetFormatted("package.authorValue",
                 package.author.name, package.author.url
             ), true
         ).addField(
@@ -36,9 +36,9 @@ module.exports = CreateCommand({
             locale.Get("package.contributors"),
             Utils.JoinArray(
                 package.contributors, "\n",
-                el => locale.GetCommonFormatted(
+                el => locale._GetCommonFormatted(
                     "listEntry",
-                    locale.GetFormatted(
+                    locale._GetFormatted(
                         "package.contributorsValue",
                         el.name, el.url, el.contribution
                     )
@@ -48,9 +48,9 @@ module.exports = CreateCommand({
             locale.Get("package.dependencies"),
             Utils.JoinArray(
                 Object.keys(package.dependencies), "\n", depName =>
-                    locale.GetCommonFormatted(
+                    locale._GetCommonFormatted(
                         "listEntry",
-                        locale.GetFormatted(
+                        locale._GetFormatted(
                             "package.dependenciesValue",
                             depName, package.dependencies[depName]
                         )

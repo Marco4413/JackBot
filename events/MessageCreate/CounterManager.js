@@ -44,7 +44,7 @@ module.exports = async (msg, guild) => {
             } else if (counter.count === counterStartValue) {
                 await Utils.SafeDelete(msg);
             } else {
-                await msg.channel.send(locale.GetFormatted("countFailed", Utils.MentionUser(msg.member.id), counter.count));
+                await msg.channel.send(locale._GetFormatted("countFailed", Utils.MentionUser(msg.member.id), counter.count));
                 const counterMessage = await msg.channel.send(counterStartValue.toString());
                 await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
                     "count": counterStartValue,
