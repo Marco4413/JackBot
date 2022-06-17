@@ -21,7 +21,9 @@ const _GetConfigCallback = (settingName) => {
         if (counter === undefined) {
             await msg.reply(locale.Get("noCountingHere"));
         } else {
-            await msg.reply(locale._GetFormatted(`${settingName}Value`, counter[settingName]));
+            await msg.reply(locale.GetFormatted(`${settingName}Value`, {
+                "value": counter[settingName]
+            }));
         }
     };
 };
@@ -78,13 +80,18 @@ module.exports = CreateCommand({
                     await msg.reply(
                         isHere ?
                             locale.Get("noCountingHere") :
-                            locale._GetFormatted("noCountingThere", Utils.MentionTextChannel(channelId))
+                            locale.GetFormatted(
+                                "noCountingThere",
+                                { "channel": Utils.MentionTextChannel(channelId) }
+                            )
                     );
                 } else {
                     await Database.RemoveRows("counter", { "guildId": msg.guildId, channelId });
-                    await msg.reply(locale._GetFormatted(
-                        isHere ? "stoppedCountingHere" : "stoppedCountingThere",
-                        counter.bestCount, Utils.MentionTextChannel(channelId)
+                    await msg.reply(locale.GetFormatted(
+                        isHere ? "stoppedCountingHere" : "stoppedCountingThere", {
+                            "best-count": counter.bestCount,
+                            "channel": Utils.MentionTextChannel(channelId)
+                        }
                     ));
                 }
             }
@@ -123,7 +130,9 @@ module.exports = CreateCommand({
                 if (counter === undefined) {
                     await msg.reply(locale.Get("noCountingHere"));
                 } else {
-                    await msg.reply(locale._GetFormatted("bestCount", counter.bestCount));
+                    await msg.reply(locale.GetFormatted(
+                        "bestCount", { "best-count": counter.bestCount }
+                    ));
                 }
             }
         },
@@ -151,8 +160,16 @@ module.exports = CreateCommand({
                         }
 
                         embed.addField(
-                            locale._GetFormatted("counterTitle", channelName, counter.count, counter.bestCount),
-                            locale._GetFormatted("counterDescription", Utils.MentionTextChannel(counter.channelId), counter.count, counter.bestCount),
+                            locale.GetFormatted("counterTitle", {
+                                "channel-name": channelName,
+                                "count": counter.count,
+                                "best-count": counter.bestCount
+                            }),
+                            locale.GetFormatted("counterDescription", {
+                                "channel": Utils.MentionTextChannel(counter.channelId),
+                                "count": counter.count,
+                                "best-count": counter.bestCount
+                            }),
                             false
                         );
                     }
@@ -167,7 +184,9 @@ module.exports = CreateCommand({
         if (counter === undefined) {
             await msg.reply(locale.Get("noCountingHere"));
         } else {
-            await msg.reply(locale._GetFormatted("currentCount", counter.count));
+            await msg.reply(locale.GetFormatted("currentCount", {
+                "count": counter.count
+            }));
         }
     }
 });

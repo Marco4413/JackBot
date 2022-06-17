@@ -20,7 +20,9 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords,
     /** @type {TextChannel} */
     const suggestionChannel = msg.guild.channels.resolve(guild.suggestionChannelId);
     if (suggestionChannel == null) {
-        await msg.reply(locale._GetFormatted("noChannelFound", guild.suggestionChannelId));
+        await msg.reply(locale.GetFormatted("noChannelFound", {
+            "id": guild.suggestionChannelId
+        }));
         return;
     }
 
@@ -32,7 +34,9 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords,
     /** @type {TextChannel} */
     const resultChannel = msg.guild.channels.resolve(guild.suggestionResultChannelId);
     if (resultChannel == null) {
-        await msg.reply(locale._GetFormatted("noResultChannelFound", guild.suggestionResultChannelId));
+        await msg.reply(locale.GetFormatted("noResultChannelFound", {
+            "id": guild.suggestionResultChannelId
+        }));
         return;
     }
 
@@ -57,17 +61,17 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords,
     
     if (approve) {
         embed.setColor(locale.Get("suggestionApprovedColor"));
-        embed.setTitle(locale._GetFormatted("suggestionApprovedTitle", suggestionId));
-        embed.setDescription(locale._GetFormatted(
+        embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
+        embed.setDescription(locale.GetFormatted(
             "suggestionApprovedDescription",
-            Utils.MentionUser(suggestionRow.authorId)
+            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
         ));
     } else {
         embed.setColor(locale.Get("suggestionRejectedColor"));
-        embed.setTitle(locale._GetFormatted("suggestionRejectedTitle", suggestionId));
-        embed.setDescription(locale._GetFormatted(
+        embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", { "id": suggestionId }));
+        embed.setDescription(locale.GetFormatted(
             "suggestionRejectedDescription",
-            Utils.MentionUser(suggestionRow.authorId)
+            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
         ));
     }
 
@@ -163,12 +167,14 @@ module.exports = CreateCommand({
                         }
         
                         const resultChannel = msg.guild.channels.resolve(guild.suggestionResultChannelId);
-                        await msg.reply(locale._GetFormatted(
-                            "currentResultChannel", locale._GetCommonFormatted(
-                                "softMention",
-                                resultChannel?.name ?? locale.GetCommon("unknownChannel"),
-                                guild.suggestionResultChannelId
-                            )
+                        await msg.reply(locale.GetFormatted(
+                            "currentResultChannel", {
+                                "channel": locale.GetSoftMention(
+                                    "Channel",
+                                    resultChannel?.name,
+                                    guild.suggestionResultChannelId
+                                )
+                            }
                         ));
                     }
                 }
@@ -180,12 +186,14 @@ module.exports = CreateCommand({
                 }
 
                 const channel = msg.guild.channels.resolve(guild.suggestionChannelId);
-                await msg.reply(locale._GetFormatted(
-                    "currentChannel", locale._GetCommonFormatted(
-                        "softMention",
-                        channel?.name ?? locale.GetCommon("unknownChannel"),
-                        guild.suggestionChannelId
-                    )
+                await msg.reply(locale.GetFormatted(
+                    "currentChannel", {
+                        "channel": locale.GetSoftMention(
+                            "Channel",
+                            channel?.name,
+                            guild.suggestionChannelId
+                        )
+                    }
                 ));
             }
         },
@@ -229,7 +237,9 @@ module.exports = CreateCommand({
         /** @type {TextChannel} */
         const suggestionChannel = msg.guild.channels.resolve(guild.suggestionChannelId);
         if (suggestionChannel == null) {
-            await msg.reply(locale._GetFormatted("noChannelFound", guild.suggestionChannelId));
+            await msg.reply(locale.GetFormatted("noChannelFound",
+                { "id": guild.suggestionChannelId }
+            ));
             return;
         }
 
@@ -247,10 +257,10 @@ module.exports = CreateCommand({
         }, true);
 
         const embed = Utils.GetDefaultEmbedForMessage(msg, true);
-        embed.setTitle(locale._GetFormatted("suggestionSentTitle", suggestionRow.id));
-        embed.setDescription(locale._GetFormatted(
+        embed.setTitle(locale.GetFormatted("suggestionSentTitle", { "id": suggestionRow.id }));
+        embed.setDescription(locale.GetFormatted(
             "suggestionSentDescription",
-            Utils.MentionUser(msg.member.id)
+            { "user-mention": Utils.MentionUser(msg.member.id) }
         ));
         embed.addField(locale.Get("suggestionTextTitle"), suggestion);
 

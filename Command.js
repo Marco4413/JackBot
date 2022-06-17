@@ -280,19 +280,21 @@ const IsValidCommand = (command) => {
 const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
     if (channel === undefined) {
         if (!msg.member.permissions.has(requiredPerms)) {
-            await msg.reply(locale._GetCommonFormatted(
-                "noGuildPerms",
-                _ListMissingPerms(msg.member.permissions, requiredPerms, locale)
+            await msg.reply(locale.GetCommonFormatted(
+                "noGuildPerms", {
+                    "permissions": _ListMissingPerms(msg.member.permissions, requiredPerms, locale)
+                }
             ));
             return true;
         }
     } else {
         const channelPerms = msg.member.permissionsIn(channel);
         if (!channelPerms.has(requiredPerms)) {
-            await msg.reply(locale._GetCommonFormatted(
-                "noChannelPerms",
-                _ListMissingPerms(channelPerms, requiredPerms, locale),
-                channel.name
+            await msg.reply(locale.GetCommonFormatted(
+                "noChannelPerms",{
+                    "permissions": _ListMissingPerms(channelPerms, requiredPerms, locale),
+                    "channel-name": channel.name
+                }
             ));
             return true;
         }
@@ -355,16 +357,20 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
         case "none":
             break;
         case "not_provided":
-            await msg.reply(locale._GetCommonFormatted(
-                "missingArg",
-                errorArgDef.name, errorArgIndex + 1
+            await msg.reply(locale.GetCommonFormatted(
+                "missingArg", {
+                    "name": errorArgDef.name,
+                    "position": errorArgIndex + 1
+                }
             ));
             return true;
         case "invalid_type":
-            await msg.reply(locale._GetCommonFormatted(
-                "wrongArgType",
-                errorArgDef.name, errorArgIndex + 1,
-                _ListPossibleTypes(errorArgDef, locale)
+            await msg.reply(locale.GetCommonFormatted(
+                "wrongArgType", {
+                    "name": errorArgDef.name,
+                    "position": errorArgIndex + 1,
+                    "types": _ListPossibleTypes(errorArgDef, locale)
+                }
             ));
             return true;
         default:

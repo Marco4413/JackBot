@@ -249,8 +249,8 @@ const CreateTextChannel = async (member, channelName, msg) => {
 
         await msg?.reply(locale.Get("created"));
         
-        await userChannel.send(locale._GetFormatted(
-            "welcome", Utils.MentionUser(member.id)
+        await userChannel.send(locale.GetFormatted(
+            "welcome", { "user-mention": Utils.MentionUser(member.id) }
         ));
     } else {
         await msg?.reply(locale.Get("alreadyCreated"));

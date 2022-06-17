@@ -16,9 +16,9 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
         guild[dbIsBlacklistColumn] ? locale.Get("blacklist") : locale.Get("whitelist");
 
     const _GetFormattedListLocale = (locale, commandLocaleKey, guild) => {
-        return locale._GetFormatted(
+        return locale.GetFormatted(
             commandLocaleKey,
-            _GetListTypeLocale(locale, guild)
+            { "list-type": _GetListTypeLocale(locale, guild) }
         );
     };
 
@@ -57,16 +57,12 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                 [dbIsBlacklistColumn]: isBlacklist
                             });
 
-                            await msg.reply(locale._GetFormatted(
-                                "setListType", _GetListTypeLocale(locale, newGuild)
-                            ));
+                            await msg.reply(_GetFormattedListLocale(locale, "setListType", newGuild));
                         }
                     }
                 ],
                 "execute": async (msg, guild, locale) => {
-                    await msg.reply(locale._GetFormatted(
-                        "currentListType", _GetListTypeLocale(locale, guild)
-                    ));
+                    await msg.reply(_GetFormattedListLocale(locale, "currentListType", guild));
                 }
             },
             {
@@ -83,8 +79,11 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                 [dbInListColumn]: false
                             });
 
-                            await msg.reply(locale._GetFormatted(
-                                "clearedUserList", _GetListTypeLocale(locale, guild), rows.length
+                            await msg.reply(locale.GetFormatted(
+                                "clearedUserList", {
+                                    "list-type": _GetListTypeLocale(locale, guild),
+                                    "removed-count": rows.length
+                                }
                             ));
                         }
                     },
@@ -99,8 +98,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                             for (let i = 0; i < usersInList.length; i++) {
                                 const userId = usersInList[i].userId;
                                 const user = msg.guild.members.resolve(userId);
-                                accessList.push(locale._GetCommonFormatted(
-                                    "userListEntry", user?.displayName ?? locale.GetCommon("unknownUser"), userId
+                                accessList.push(locale.GetSoftMention(
+                                    "User", user?.displayName, userId, true
                                 ));
                             }
                             
@@ -138,8 +137,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                         [dbInListColumn]: true
                                     });
 
-                                    addedToList.push(locale._GetCommonFormatted(
-                                        "userListEntry", user.displayName, user.id
+                                    addedToList.push(locale.GetSoftMention(
+                                        "User", user.displayName, user.id, true
                                     ));
                                 }
                             }
@@ -178,8 +177,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                 });
         
                                 const user = msg.guild.members.resolve(userId);
-                                removedFromList.push(locale._GetCommonFormatted(
-                                    "userListEntry", user?.displayName ?? locale.GetCommon("unknownUser"), userId
+                                removedFromList.push(locale.GetSoftMention(
+                                    "User", user?.displayName, userId, true
                                 ));
                             }
                             
@@ -212,8 +211,12 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                 [dbInListColumn]: false
                             });
 
-                            await msg.reply(locale._GetFormatted(
-                                "clearedRoleList", _GetListTypeLocale(locale, guild), rows.length
+
+                            await msg.reply(locale.GetFormatted(
+                                "clearedRoleList", {
+                                    "list-type": _GetListTypeLocale(locale, guild),
+                                    "removed-count": rows.length
+                                }
                             ));
                         }
                     },
@@ -228,8 +231,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                             for (let i = 0; i < rolesInList.length; i++) {
                                 const roleId = rolesInList[i].roleId;
                                 const role = msg.guild.roles.resolve(roleId);
-                                accessList.push(locale._GetCommonFormatted(
-                                    "roleListEntry", role?.name ?? locale.GetCommon("unknownRole"), roleId
+                                accessList.push(locale.GetSoftMention(
+                                    "Role", role?.name, roleId, true
                                 ));
                             }
                             
@@ -267,8 +270,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                         [dbInListColumn]: true
                                     });
 
-                                    addedToList.push(locale._GetCommonFormatted(
-                                        "roleListEntry", role.name, role.id
+                                    addedToList.push(locale.GetSoftMention(
+                                        "Role", role.name, role.id, true
                                     ));
                                 }
                             }
@@ -307,8 +310,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                 });
         
                                 const role = msg.guild.roles.resolve(roleId);
-                                removedFromList.push(locale._GetCommonFormatted(
-                                    "roleListEntry", role.name, roleId
+                                removedFromList.push(locale.GetSoftMention(
+                                    "Role", role?.name, roleId, true
                                 ));
                             }
                             

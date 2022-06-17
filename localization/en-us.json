@@ -4,22 +4,22 @@
       "blacklist": "blacklist",
       "whitelist": "whitelist",
       "invalidListType": "Invalid list type, expected either `blacklist` or `whitelist`.",
-      "setListType": "List type set to `{0}`.",
-      "currentListType": "Current list type is `{0}`.",
-      "clearedUserList": "{1} Users were removed from the {0}.",
-      "currentUserListEmpty": "No user is currently in the {0}.",
-      "currentUserList": "Users in {0}:",
-      "addedUserListEmpty": "No user was added to {0}.",
-      "addedUserList": "Users added to {0}:",
-      "removedUserListEmpty": "No user was removed from the {0}.",
-      "removedUserList": "Users removed from the {0}:",
-      "clearedRoleList": "{1} Roles were removed from the {0}.",
-      "currentRoleListEmpty": "No role is currently in the {0}.",
-      "currentRoleList": "Roles in {0}:",
-      "addedRoleListEmpty": "No role was added to {0}.",
-      "addedRoleList": "Roles added to {0}:",
-      "removedRoleListEmpty": "No role was removed from the {0}.",
-      "removedRoleList": "Roles removed from the {0}:"
+      "setListType": "List type set to `{list-type}`.",
+      "currentListType": "Current list type is `{list-type}`.",
+      "clearedUserList": "{removed-count} Users were removed from the {list-type}.",
+      "currentUserListEmpty": "No user is currently in the {list-type}.",
+      "currentUserList": "Users in {list-type}:",
+      "addedUserListEmpty": "No user was added to {list-type}.",
+      "addedUserList": "Users added to {list-type}:",
+      "removedUserListEmpty": "No user was removed from the {list-type}.",
+      "removedUserList": "Users removed from the {list-type}:",
+      "clearedRoleList": "{removed-count} Roles were removed from the {list-type}.",
+      "currentRoleListEmpty": "No role is currently in the {list-type}.",
+      "currentRoleList": "Roles in {list-type}:",
+      "addedRoleListEmpty": "No role was added to {list-type}.",
+      "addedRoleList": "Roles added to {list-type}:",
+      "removedRoleListEmpty": "No role was removed from the {list-type}.",
+      "removedRoleList": "Roles removed from the {list-type}:"
     },
     "banana": {
       "title": "Banana",
@@ -33,11 +33,11 @@
               "removedChannel": "Channel for Nitro Boost Announcement was removed.",
               "noChannel": "The specified text channel doesn't exist.",
               "noTextChannel": "The specified channel is not a text channel.",
-              "setChannel": "The channel for Nitro Boost Announcement was set to {0}"
+              "setChannel": "The channel for Nitro Boost Announcement was set to {channel-mention}"
             }
           },
           "noCurrent": "No channel is currently set for Nitro Boost Announcements.",
-          "current": "The current channel for Nitro Boost Announcement is {0}"
+          "current": "The current channel for Nitro Boost Announcement is {channel-mention}"
         },
         "test": {
           "invalidChannel": "The specified text channel is not valid.",
@@ -46,19 +46,19 @@
       },
       "authorIconURL": "https://emojis.slackmojis.com/emojis/images/1620408230/36572/boost.gif",
       "authorName": "🎉🎉 Nitro Booster 🎉🎉",
-      "description": "Thanks to {0} for boosting {1} thanks to his boost we're at **{2} Boosts**!",
+      "description": "Thanks to {user-mention} for boosting {guild-name} thanks to his boost we're at **{boost-count} Boosts**!",
       "imageURL": "https://media1.tenor.com/images/4ae117611a4dc9af4a241ab90a70738d/tenor.gif",
       "color": "#CD84A0",
       "footerText": "Server Boosted 🎉"
     },
     "calculate": {
       "expressionError": "There's an error in the Math Expression.",
-      "expressionResult": "= {1}"
+      "expressionResult": "= {result}"
     },
     "channel": {
       "subcommands": {
         "text": {
-          "welcome": "Welcome to your new Text Channel {0}!",
+          "welcome": "Welcome to your new Text Channel {user-mention}!",
           "cantDelete": "Can't delete your private text channel.",
           "noChannel": "You've got no private text channel.",
           "created": "Your private text channel was created!",
@@ -77,14 +77,14 @@
           "categoryRemoved": "Private channel category was removed.",
           "invalidCategory": "The specified channel is not a category.",
           "noCategory": "There's no private channel category set.",
-          "currentCategory": "{0} is the current private channel category."
+          "currentCategory": "{category} is the current private channel category."
         },
         "voice-creation-channel": {
           "channelSet": "Voice creation channel set.",
           "channelRemoved": "Voice creation channel was removed.",
           "invalidChannel": "The specified channel is not a voice channel.",
           "noChannel": "There's no voice channel set.",
-          "currentChannel": "{0} is the current voice creation channel."
+          "currentChannel": "{channel} is the current voice creation channel."
         },
         "template-role": {
           "invalidRole": "The specified role doesn't exist.",
@@ -92,11 +92,11 @@
           "lowerRolePerms": "You must have all the permissions from the specified role to be able to set it.",
           "ownerSet": "Owner's template role was set.",
           "ownerRemoved": "Owner's template role was removed.",
-          "currentOwner": "{0} is the current owner template role.",
+          "currentOwner": "{role} is the current owner template role.",
           "noOwner": "No owner role set.",
           "everyoneSet": "Everyone's template role was set.",
           "everyoneRemoved": "Everyone's template role was removed.",
-          "currentEveryone": "{0} is the current everyone template role.",
+          "currentEveryone": "{role} is the current everyone template role.",
           "noEveryone": "No everyone role set."
         }
       }
@@ -106,23 +106,23 @@
         "list": {
           "title": "Guild's Counters",
           "noCounters": "This guild has no Counters",
-          "counterTitle": "{0}",
-          "counterDescription": "Found in channel {0} with a current count of {1} and a best of {2}."
+          "counterTitle": "{channel-name}",
+          "counterDescription": "Found in channel {channel} with a current count of {count} and a best of {best-count}."
         }
       },
-      "messageDeleted": "{1}, {0}!",
-      "countFailed": "Count Failed at `{1}` thanks to {0}",
+      "messageDeleted": "{user-mention}, {count}!",
+      "countFailed": "Count Failed at `{count}` thanks to {user-mention}",
       "alreadyCounting": "A Counter is already ongoing in this channel.",
       "noCountingHere": "No Counter was found in this channel.",
-      "noCountingThere": "No Counter was found in the channel {0}.",
+      "noCountingThere": "No Counter was found in the channel {channel}.",
       "startedCounting": "A Counter was started in this channel.",
-      "stoppedCountingHere": "Counter stopped, best count: {0}",
-      "stoppedCountingThere": "Counter stopped for channel {1}, best count: {0}",
-      "bestCount": "Best Count: {0}",
-      "currentCount": "Current Count: {0}",
-      "allowMessagesValue": "Allow Messages for this channel is set to `{0}`",
-      "allowErrorsValue": "Allow Errors for this channel is set to `{0}`",
-      "alternateMemberValue": "Alternate Member for this channel is set to `{0}`"
+      "stoppedCountingHere": "Counter stopped, best count: {best-count}",
+      "stoppedCountingThere": "Counter stopped for channel {channel}, best count: {best-count}",
+      "bestCount": "Best Count: {best-count}",
+      "currentCount": "Current Count: {count}",
+      "allowMessagesValue": "Allow Messages for this channel is set to `{value}`",
+      "allowErrorsValue": "Allow Errors for this channel is set to `{value}`",
+      "alternateMemberValue": "Alternate Member for this channel is set to `{value}`"
     },
     "help": {
       "docs": "#extends en-us/help-docs; Extending from a separate file to better organize this one.",
@@ -131,7 +131,7 @@
         "title": "No Command Found",
         "description": "No command with the specified name was found in the documentation."
       },
-      "subcommandsList": "Subcommands: {0}",
+      "subcommandsList": "Subcommands: {commands}",
       "noSubcommands": "This command has no subcommands."
     },
     "info": {
@@ -142,33 +142,33 @@
         "version": "Version:",
         "description": "Description:",
         "author": "Author:",
-        "authorValue": "{0} ({1})",
+        "authorValue": "{name} ({url})",
         "license": "License:",
         "homepage": "Homepage:",
         "contributors": "Contributors:",
-        "contributorsValue": "{0}: {2} ({1})",
+        "contributorsValue": "{name}: {contribution} ({url})",
         "dependencies": "Dependencies:",
-        "dependenciesValue": "`{0}`{1}"
+        "dependenciesValue": "`{name}`{version}"
       }
     },
     "language": {
-      "available": "Available Languages:\n{0}",
+      "available": "Available Languages:",
       "invalid": "The specified language doesn't exist.",
-      "changed": "Language set to: `{0}`",
-      "current": "Current Language: `{0}`"
+      "changed": "Language set to: `{lang-name}`",
+      "current": "Current Language: `{lang-name}`"
     },
     "ping": {
       "subcommands": {
         "message": {
           "calculating": "Calculating Ping...",
-          "result": "Ping is {0}ms"
+          "result": "Ping is {ping}ms"
         }
       },
       "pong": "Pong!"
     },
     "prefix": {
-      "changed": "Prefix set to: `{0}`",
-      "current": "Current Prefix: `{0}`"
+      "changed": "Prefix set to: `{prefix}`",
+      "current": "Current Prefix: `{prefix}`"
     },
     "role": {
       "subcommands": {
@@ -176,7 +176,7 @@
           "noTargetRole": "Couldn't find the specified target role.",
           "noRoleAdded": "No role was added to the manager.",
           "noRoleRemoved": "No role was removed from the manager.",
-          "maxManagersExceeded": "The max amount of manageable roles ({0}) was exceeded ({1}).",
+          "maxManagersExceeded": "The max amount of manageable roles ({max-count}) was exceeded ({total-count}).",
           "rolesAdded": "Roles added to the manager:",
           "rolesRemoved": "Roles removed from the manager:",
           "allRolesRemoved": "Removed the specified manager.",
@@ -191,27 +191,27 @@
       "cantAddThese": "You can't add the following roles:",
       "cantRemoveThese": "You can't remove the following roles:",
       "userNotFound": "Couldn't find the specified member.",
-      "rolesAdded": "Roles added to {0} (`{1}`).",
-      "rolesRemoved": "Roles removed from {0} (`{1}`).",
-      "notEnoughPermissionsToAdd": "I don't have enough permissions to add all the specified roles to {0} (`{1}`).",
-      "notEnoughPermissionsToRemove": "I don't have enough permissions to remove all the specified roles from {0} (`{1}`)."
+      "rolesAdded": "Roles added to {user}.",
+      "rolesRemoved": "Roles removed from {user}.",
+      "notEnoughPermissionsToAdd": "I don't have enough permissions to add all the specified roles to {user}.",
+      "notEnoughPermissionsToRemove": "I don't have enough permissions to remove all the specified roles from {user}."
     },
     "shortcuts": {
-      "changed": "Shortcuts set to: `{0}`",
-      "current": "Shortcuts are set to: `{0}`"
+      "changed": "Shortcuts set to: `{value}`",
+      "current": "Shortcuts are set to: `{value}`"
     },
     "sound": {
       "subcommands": {
         "list": {
           "title": "Sound List",
           "description": "A list of all available sounds.",
-          "fieldTitle": "`{0}`",
+          "fieldTitle": "`{sound-name}`",
           "noMetadata": "No Metadata.",
           "decimalPrecision": 2,
           "metadata": {
-            "title": "**Title:** {0}",
-            "artist": "**Artist:** {0}",
-            "duration": "**Duration:** {0} Seconds."
+            "title": "**Title:** {value}",
+            "artist": "**Artist:** {value}",
+            "duration": "**Duration:** {value} Seconds."
           }
         },
         "stop": {
@@ -234,15 +234,15 @@
       "noSoundFound": "The specified sound was not found.",
       "cantJoinChannel": "Can't join your voice channel.",
       "alreadyPlaying": "I'm already playing a sound, please wait.",
-      "playing": "Playing `{0}`..."
+      "playing": "Playing `{sound-name}`..."
     },
     "suggestion": {
       "subcommands": {
         "channel": {
           "noChannel": "There's no suggestion channel set.",
-          "currentChannel": "{0} is the current suggestion channel.",
+          "currentChannel": "{channel} is the current suggestion channel.",
           "noResultChannel": "There's no suggestion result channel set.",
-          "currentResultChannel": "{0} is the current suggestion result channel.",
+          "currentResultChannel": "{channel} is the current suggestion result channel.",
           "channelRemoved": "Suggestion channel was removed.",
           "channelSet": "Suggestion channel was set.",
           "resultChannelRemoved": "Suggestion result channel was removed.",
@@ -251,24 +251,24 @@
         }
       },
       "noChannelSet": "This guild has no channel for suggestions set.",
-      "noChannelFound": "The channel for suggestions couldn't be found ({0}).",
+      "noChannelFound": "The channel for suggestions couldn't be found ({id}).",
       "noResultChannelSet": "This guild has no channel for suggestion results set.",
-      "noResultChannelFound": "The channel for suggestion results couldn't be found ({0}).",
+      "noResultChannelFound": "The channel for suggestion results couldn't be found ({id}).",
       "noSuggestionFound": "The specified suggestion doesn't exist.",
       "noSuggestionMessage": "The specified suggestion's message was deleted.",
       "suggestionApprovedColor": "#00CC00",
       "suggestionApprovedTitle": "Suggestion Approved!",
-      "suggestionApprovedDescription": "A suggestion sent by {0} was approved!",
+      "suggestionApprovedDescription": "A suggestion sent by {user-mention} was approved!",
       "suggestionRejectedColor": "#CC0000",
       "suggestionRejectedTitle": "Suggestion Rejected.",
-      "suggestionRejectedDescription": "A suggestion sent by {0} was rejected.",
+      "suggestionRejectedDescription": "A suggestion sent by {user-mention} was rejected.",
       "suggestionTextTitle": "Suggestion",
       "suggestionReasonTitle": "Reason",
       "suggestionNoReason": "No Reason Specified.",
       "noSuggestionSpecified": "Can't send a suggestion with no text.",
       "suggestionTooLong": "The specified suggestion is too long.",
-      "suggestionSentTitle": "Suggestion (`{0}`)",
-      "suggestionSentDescription": "A new suggestion was received from {0}."
+      "suggestionSentTitle": "Suggestion (`{id}`)",
+      "suggestionSentDescription": "A new suggestion was received from {user-mention}."
     }
   },
   "common": {
@@ -331,21 +331,19 @@
     "upvote": "⬆️",
     "downvote": "⬇️",
     "listSeparator": ", ",
-    "listDelimiter": "[ {0} ]",
-    "listEntry": " - {0}",
-    "userListEntry": " - {0} (`{1}`)",
+    "listDelimiter": "[ {list} ]",
+    "listEntry": " - {value}",
     "unknownUser": "Unknown User",
-    "roleListEntry": " - {0} (`{1}`)",
     "unknownRole": "Unknown Role",
     "unknownChannel": "Unknown Channel",
-    "softMention": "{0} (`{1}`)",
-    "noChannelPerms": "Not enough permissions in channel {1} to run this command ( Missing: `{0}` ).",
-    "noGuildPerms": "Not enough permissions to run this command ( Missing: `{0}` ).",
-    "blacklistedCommand": "You currently have no access to `{0}` commands on this guild.",
+    "softMention": "{name} (`{id}`)",
+    "noChannelPerms": "Not enough permissions in channel {channel-name} to run this command ( Missing: `{permissions}` ).",
+    "noGuildPerms": "Not enough permissions to run this command ( Missing: `{permissions}` ).",
+    "blacklistedCommand": "You currently have no access to `{command-name}` commands on this guild.",
     "noSubcommand": "A valid subcommand must be provided.",
-    "missingArg": "Argument `{0}` ( at {1} ) is missing.",
-    "wrongArgType": "Argument `{0}` ( at {1} ) is of wrong type ( Expected Types: {2} ).",
+    "missingArg": "Argument `{name}` ( at {position} ) is missing.",
+    "wrongArgType": "Argument `{name}` ( at {position} ) is of wrong type ( Expected Types: {types} ).",
     "invalidCommand": "The specified command isn't valid.",
-    "richPresence": "Watching {0}/{1} Users in {2} Guilds."
+    "richPresence": "Watching {online-users}/{total-users} Users in {total-guilds} Guilds."
   }
 }

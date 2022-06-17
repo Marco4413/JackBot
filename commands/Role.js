@@ -107,8 +107,8 @@ module.exports = CreateCommand({
                                 continue;
 
                             manageableRoles.push(roleId);
-                            addedRoles.push(locale._GetCommonFormatted(
-                                "roleListEntry", role.name, roleId
+                            addedRoles.push(locale.GetSoftMention(
+                                "Role", role.name, roleId, true
                             ));
                         }
 
@@ -118,8 +118,11 @@ module.exports = CreateCommand({
                         }
 
                         if (manageableRoles.length > DatabaseDefinitions.MAX_MANAGEABLE_ROLES) {
-                            await msg.reply(locale._GetFormatted(
-                                "maxManagersExceeded", DatabaseDefinitions.MAX_MANAGEABLE_ROLES, manageableRoles.length
+                            await msg.reply(locale.GetFormatted(
+                                "maxManagersExceeded", {
+                                    "max-count": DatabaseDefinitions.MAX_MANAGEABLE_ROLES,
+                                    "total-count": manageableRoles.length
+                                }
                             ));
                             return;
                         }
@@ -183,8 +186,8 @@ module.exports = CreateCommand({
                                 continue;
 
                             manageableRoles = newRoles;
-                            removedRoles.push(locale._GetCommonFormatted(
-                                "roleListEntry", role.name, roleId
+                            removedRoles.push(locale.GetSoftMention(
+                                "Role", role.name, roleId, true
                             ));
                         }
 
@@ -229,14 +232,14 @@ module.exports = CreateCommand({
                             for (const managerRow of managerRows) {
                                 let response = "";
                                 const managerRole = msg.guild.roles.resolve(managerRow.roleId);
-                                response += locale._GetCommonFormatted(
-                                    "softMention", managerRole?.name ?? locale.GetCommon("unknownRole"), managerRow.roleId
+                                response += locale.GetSoftMention(
+                                    "Role", managerRole?.name, managerRow.roleId, false
                                 ) + "\n";
 
                                 for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
                                     const manageableRole = msg.guild.roles.resolve(manageableRoleId);
-                                    response += locale._GetCommonFormatted(
-                                        "roleListEntry", manageableRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
+                                    response += locale.GetSoftMention(
+                                        "Role", manageableRole?.name, manageableRoleId, true
                                     ) + "\n";
                                 }
 
@@ -255,15 +258,15 @@ module.exports = CreateCommand({
                         const managerRole = msg.guild.roles.resolve(managerRow.roleId);
                         let response = (
                             locale.Get("roleManageableList") + "\n" +
-                            locale._GetCommonFormatted(
-                                "softMention", managerRole?.name ?? locale.GetCommon("unknownRole"), managerRow.roleId
+                            locale.GetSoftMention(
+                                "Role", managerRole?.name, managerRow.roleId, false
                             ) + "\n"
                         );
 
                         for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
                             const managerRole = msg.guild.roles.resolve(manageableRoleId);
-                            response += locale._GetCommonFormatted(
-                                "roleListEntry", managerRole?.name ?? locale.GetCommon("unknownRole"), manageableRoleId
+                            response += locale.GetSoftMention(
+                                "Role", managerRole?.name, manageableRoleId, true
                             ) + "\n";
                         }
 
@@ -307,8 +310,8 @@ module.exports = CreateCommand({
                         unmanageableRoles, "\n",
                         roleId => {
                             const role = msg.guild.roles.resolve(roleId);
-                            return locale._GetCommonFormatted(
-                                "roleListEntry", role?.name ?? locale.GetCommon("unknownRole"), roleId
+                            return locale.GetSoftMention(
+                                "Role", role?.name, roleId, true
                             );
                         }
                     );
@@ -325,9 +328,13 @@ module.exports = CreateCommand({
 
                 try {
                     await targetMember.roles.add(rolesToGive, `Roles added by ${msg.member.id}`);
-                    await msg.reply(locale._GetFormatted("rolesAdded", targetMember.displayName, targetId));
+                    await msg.reply(locale.GetFormatted("rolesAdded", {
+                        "user": locale.GetSoftMention("User", targetMember.displayName, targetId)
+                    }));
                 } catch (error) {
-                    await msg.reply(locale._GetFormatted("notEnoughPermissionsToAdd", targetMember.displayName, targetId));
+                    await msg.reply(locale.GetFormatted("notEnoughPermissionsToAdd", {
+                        "user": locale.GetSoftMention("User", targetMember.displayName, targetId)
+                    }));
                 }
             }
         },
@@ -356,8 +363,8 @@ module.exports = CreateCommand({
                         unmanageableRoles, "\n",
                         roleId => {
                             const role = msg.guild.roles.resolve(roleId);
-                            return locale._GetCommonFormatted(
-                                "roleListEntry", role?.name ?? locale.GetCommon("unknownRole"), roleId
+                            return locale.GetSoftMention(
+                                "Role", role?.name, roleId, true
                             );
                         }
                     );
@@ -374,9 +381,13 @@ module.exports = CreateCommand({
 
                 try {
                     await targetMember.roles.remove(rolesToRemove, `Roles removed by ${msg.member.id}`);
-                    await msg.reply(locale._GetFormatted("rolesRemoved", targetMember.displayName, targetId));
+                    await msg.reply(locale.GetFormatted("rolesRemoved", {
+                        "user": locale.GetSoftMention("User", targetMember.displayName, targetId)
+                    }));
                 } catch (error) {
-                    await msg.reply(locale._GetFormatted("notEnoughPermissionsToRemove", targetMember.displayName, targetId));
+                    await msg.reply(locale.GetFormatted("notEnoughPermissionsToRemove", {
+                        "user": locale.GetSoftMention("User", targetMember.displayName, targetId)
+                    }));
                 }
             }
         }

@@ -20,8 +20,11 @@ module.exports = CreateEventListener(
         if (counter.count === counterStartValue) {
             counterMessage = await msg.channel.send(counterStartValue.toString());
         } else {
-            counterMessage = await msg.channel.send(locale._GetFormatted(
-                "messageDeleted", counter.count, MentionUser(counter.lastMemberId)
+            counterMessage = await msg.channel.send(locale.GetFormatted(
+                "messageDeleted", {
+                    "count": counter.count,
+                    "user-mention": MentionUser(counter.lastMemberId)
+                }
             ));
         }
 

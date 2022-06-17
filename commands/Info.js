@@ -23,9 +23,10 @@ module.exports = CreateCommand({
             package.description
         ).addField(
             locale.Get("package.author"),
-            locale._GetFormatted("package.authorValue",
-                package.author.name, package.author.url
-            ), true
+            locale.GetFormatted("package.authorValue", {
+                "name": package.author.name,
+                "url": package.author.url
+            }), true
         ).addField(
             locale.Get("package.license"),
             package.license, true
@@ -34,27 +35,22 @@ module.exports = CreateCommand({
             package.homepage
         ).addField(
             locale.Get("package.contributors"),
-            Utils.JoinArray(
-                package.contributors, "\n",
-                el => locale._GetCommonFormatted(
-                    "listEntry",
-                    locale._GetFormatted(
-                        "package.contributorsValue",
-                        el.name, el.url, el.contribution
-                    )
-                )
+            locale.GetFormattedList(
+                package.contributors, "package.contributorsValue",
+                el => ({
+                    "name": el.name,
+                    "url": el.url,
+                    "contribution": el.contribution
+                })
             )
         ).addField(
             locale.Get("package.dependencies"),
-            Utils.JoinArray(
-                Object.keys(package.dependencies), "\n", depName =>
-                    locale._GetCommonFormatted(
-                        "listEntry",
-                        locale._GetFormatted(
-                            "package.dependenciesValue",
-                            depName, package.dependencies[depName]
-                        )
-                    )
+            locale.GetFormattedList(
+                Object.keys(package.dependencies), "package.dependenciesValue",
+                depName => ({
+                    "name": depName,
+                    "version": package.dependencies[depName]
+                })
             )
         );
 

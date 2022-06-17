@@ -50,7 +50,11 @@ const StartRichPresence = async () => {
                 }
         
                 Client.user.setActivity({
-                    "name": Utils.FormatString(activityName, onlineMembers, totalMembers, Client.guilds.cache.size),
+                    "name": Utils.MapFormatString(activityName, {
+                        "online-users": onlineMembers,
+                        "total-users": totalMembers,
+                        "total-guilds": Client.guilds.cache.size
+                    }),
                     "type": activityType
                 });
             }, updateInterval, undefined, "use-handler");

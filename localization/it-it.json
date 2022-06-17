@@ -4,22 +4,22 @@
       "blacklist": "blacklist",
       "whitelist": "whitelist",
       "invalidListType": "Tipo di lista non valido, i tipi validi sono `blacklist` o `whitelist`.",
-      "setListType": "Il tipo della lista è stato impostato a `{0}`.",
-      "currentListType": "Il tipo di lista corrente è `{0}`.",
-      "clearedUserList": "{1} Utenti sono stati rimossi dalla {0}.",
-      "currentUserListEmpty": "Nessun utente è nella {0}.",
-      "currentUserList": "Utenti nella {0}:",
-      "addedUserListEmpty": "Nessun utente aggiunto alla {0}.",
-      "addedUserList": "Utenti aggiunti alla {0}:",
-      "removedUserListEmpty": "Nessun utente è stato rimosso dalla {0}.",
-      "removedUserList": "Utenti rimossi dalla {0}:",
-      "clearedRoleList": "{1} Ruoli sono stati rimossi dalla {0}.",
-      "currentRoleListEmpty": "Nessun ruolo è nella {0}.",
-      "currentRoleList": "Ruoli nella {0}:",
-      "addedRoleListEmpty": "Nessun ruolo aggiunto alla {0}.",
-      "addedRoleList": "Ruoli aggiunti alla {0}:",
-      "removedRoleListEmpty": "Nessun ruolo è stato rimosso dalla {0}.",
-      "removedRoleList": "Ruoli rimossi dalla {0}:"
+      "setListType": "Il tipo della lista è stato impostato a `{list-type}`.",
+      "currentListType": "Il tipo di lista corrente è `{list-type}`.",
+      "clearedUserList": "{removed-count} Utenti sono stati rimossi dalla {list-type}.",
+      "currentUserListEmpty": "Nessun utente è nella {list-type}.",
+      "currentUserList": "Utenti nella {list-type}:",
+      "addedUserListEmpty": "Nessun utente aggiunto alla {list-type}.",
+      "addedUserList": "Utenti aggiunti alla {list-type}:",
+      "removedUserListEmpty": "Nessun utente è stato rimosso dalla {list-type}.",
+      "removedUserList": "Utenti rimossi dalla {list-type}:",
+      "clearedRoleList": "{removed-count} Ruoli sono stati rimossi dalla {list-type}.",
+      "currentRoleListEmpty": "Nessun ruolo è nella {list-type}.",
+      "currentRoleList": "Ruoli nella {list-type}:",
+      "addedRoleListEmpty": "Nessun ruolo aggiunto alla {list-type}.",
+      "addedRoleList": "Ruoli aggiunti alla {list-type}:",
+      "removedRoleListEmpty": "Nessun ruolo è stato rimosso dalla {list-type}.",
+      "removedRoleList": "Ruoli rimossi dalla {list-type}:"
     },
     "banana": {
       "title": "Banana",
@@ -33,11 +33,11 @@
               "removedChannel": "Il canale per gli annunci dei Boost Nitro è stato rimosso.",
               "noChannel": "Il canale testuale specificato non esiste.",
               "noTextChannel": "Il canale specificato non è un canale testuale.",
-              "setChannel": "Il canale per gli annunci dei Boost Nitro è stato impostato a {0}"
+              "setChannel": "Il canale per gli annunci dei Boost Nitro è stato impostato a {channel-mention}"
             }
           },
           "noCurrent": "Nessun canale è correntemente impostato per ricevere gli annunci dei Boost Nitro.",
-          "current": "Il canale corrente per ricevere gli annunci dei Boost Nitro è {0}"
+          "current": "Il canale corrente per ricevere gli annunci dei Boost Nitro è {channel-mention}"
         },
         "test": {
           "invalidChannel": "Il canale testuale specificato non è valido.",
@@ -46,19 +46,19 @@
       },
       "authorIconURL": "https://emojis.slackmojis.com/emojis/images/1620408230/36572/boost.gif",
       "authorName": "🎉🎉 Nitro Booster 🎉🎉",
-      "description": "Grazie a {0} per aver boostato {1} grazie al suo boost siamo a **{2} Boost**!",
+      "description": "Grazie a {user-mention} per aver boostato {guild-name} grazie al suo boost siamo a **{boost-count} Boost**!",
       "imageURL": "https://media1.tenor.com/images/4ae117611a4dc9af4a241ab90a70738d/tenor.gif",
       "color": "#CD84A0",
       "footerText": "Server Boostato 🎉"
     },
     "calculate": {
       "expressionError": "C'è un errore nell'Espressione Matematica.",
-      "expressionResult": "= {1}"
+      "expressionResult": "= {result}"
     },
     "channel": {
       "subcommands": {
         "text": {
-          "welcome": "{0}, Benvenuto/a nel tuo nuovo Canale Testuale!",
+          "welcome": "{user-mention}, Benvenuto/a nel tuo nuovo Canale Testuale!",
           "cantDelete": "Non è possibile cancellare il tuo canale testuale privato.",
           "noChannel": "Non hai nessun canale testuale privato.",
           "created": "Il tuo canale testuale privato è stato creato!",
@@ -77,14 +77,14 @@
           "categoryRemoved": "La categoria per i canali privati è stata rimossa.",
           "invalidCategory": "Il canale specificato non è una categoria.",
           "noCategory": "Non c'è nessuna categoria per i canali privati.",
-          "currentCategory": "{0} è la categoria per i canali privati."
+          "currentCategory": "{category} è la categoria per i canali privati."
         },
         "voice-creation-channel": {
           "channelSet": "Il canale per la creazione dei canali vocali è stato impostato.",
           "channelRemoved": "Il canale per la creazione dei canali vocali è stato rimosso.",
           "invalidChannel": "Il canale specificato non è un canale vocale.",
           "noChannel": "Nessun canale vocale è stato impostato.",
-          "currentChannel": "{0} è attualmente il canale vocale per la creazione di canali vocali."
+          "currentChannel": "{channel} è attualmente il canale vocale per la creazione di canali vocali."
         },
         "template-role": {
           "invalidRole": "Il ruolo specificato non esiste.",
@@ -92,11 +92,11 @@
           "lowerRolePerms": "Per poter impostare il ruolo specificato devi avere tutti i suoi permessi.",
           "ownerSet": "Il template per il ruolo dell'owner è stato impostato.",
           "ownerRemoved": "Il template per il ruolo dell'owner è stato rimosso.",
-          "currentOwner": "{0} è il ruolo template per l'owner.",
+          "currentOwner": "{role} è il ruolo template per l'owner.",
           "noOwner": "Nessun ruolo owner impostato.",
           "everyoneSet": "Il template per il ruolo everyone è stato impostato.",
           "everyoneRemoved": "Il template per il ruolo everyone è stato rimosso.",
-          "currentEveryone": "{0} è il ruolo template per everyone.",
+          "currentEveryone": "{role} è il ruolo template per everyone.",
           "noEveryone": "Nessun ruolo everyone impostato."
         }
       }
@@ -106,23 +106,23 @@
         "list": {
           "title": "Contatori Server",
           "noCounters": "Questo server non ha contatori",
-          "counterTitle": "{0}",
-          "counterDescription": "Nel canale {0} con un coteggio di {1} ed un migliore di {2}."
+          "counterTitle": "{channel-name}",
+          "counterDescription": "Nel canale {channel} con un coteggio di {count} ed un migliore di {best-count}."
         }
       },
-      "messageDeleted": "{1}, {0}!",
-      "countFailed": "Conteggio fallito a `{1}` grazie a {0}",
+      "messageDeleted": "{user-mention}, {count}!",
+      "countFailed": "Conteggio fallito a `{count}` grazie a {user-mention}",
       "alreadyCounting": "Un conteggio è già stato avviato in questo canale.",
       "noCountingHere": "Nessun conteggio è stato trovato in questo canale.",
-      "noCountingThere": "Nessun conteggio è stato trovato in questo canale {0}.",
+      "noCountingThere": "Nessun conteggio è stato trovato in questo canale {channel}.",
       "startedCounting": "Un conteggio è stato avviato in questo canale.",
-      "stoppedCountingHere": "Conteggio fermato, Miglior conteggio: {0}",
-      "stoppedCountingThere": "Conteggio fermato per il canale {1}, Miglior conteggio: {0}",
-      "bestCount": "Miglior conteggio: {0}",
-      "currentCount": "Conteggio attuale: {0}",
-      "allowMessagesValue": "Permetti Messaggi su questo canale è impostato a: `{0}`",
-      "allowErrorsValue": "Permetti Errori su questo canale è impostato a: `{0}`",
-      "alternateMemberValue": "Alternanza Membri su questo canale è impostato a: `{0}`"
+      "stoppedCountingHere": "Conteggio fermato, Miglior conteggio: {best-count}",
+      "stoppedCountingThere": "Conteggio fermato per il canale {channel}, Miglior conteggio: {best-count}",
+      "bestCount": "Miglior conteggio: {best-count}",
+      "currentCount": "Conteggio attuale: {count}",
+      "allowMessagesValue": "Permetti Messaggi su questo canale è impostato a: `{value}`",
+      "allowErrorsValue": "Permetti Errori su questo canale è impostato a: `{value}`",
+      "alternateMemberValue": "Alternanza Membri su questo canale è impostato a: `{value}`"
     },
     "help": {
       "docs": "#extends it-it/help-docs",
@@ -131,7 +131,7 @@
         "title": "Nessun Comando Trovato",
         "description": "Nessun comando con il nome specificato è stato trovato."
       },
-      "subcommandsList": "Sottocomandi: {0}",
+      "subcommandsList": "Sottocomandi: {commands}",
       "noSubcommands": "Questo comando non ha sottocomandi."
     },
     "info": {
@@ -142,33 +142,33 @@
         "version": "Versione:",
         "description": "Descrizione:",
         "author": "Autore:",
-        "authorValue": "{0} ({1})",
+        "authorValue": "{name} ({url})",
         "license": "Copyright:",
         "homepage": "Pagina Web:",
         "contributors": "Contributori:",
-        "contributorsValue": "{0}: {2} ({1})",
+        "contributorsValue": "{name}: {contribution} ({url})",
         "dependencies": "Dipendenze:",
-        "dependenciesValue": "`{0}`{1}"
+        "dependenciesValue": "`{name}`{version}"
       }
     },
     "language": {
-      "available": "Lingue disponibili:\n{0}",
+      "available": "Lingue disponibili:",
       "invalid": "La lingua specificata non esiste.",
-      "changed": "La lingua è stata cambiata a: `{0}`",
-      "current": "Lingua corrente: `{0}`"
+      "changed": "La lingua è stata cambiata a: `{lang-name}`",
+      "current": "Lingua corrente: `{lang-name}`"
     },
     "ping": {
       "subcommands": {
         "message": {
           "calculating": "Calcolo Ping...",
-          "result": "Il Ping è di {0}ms"
+          "result": "Il Ping è di {ping}ms"
         }
       },
       "pong": "Pong!"
     },
     "prefix": {
-      "changed": "Prefisso impostato a: `{0}`",
-      "current": "Prefisso corrente: `{0}`"
+      "changed": "Prefisso impostato a: `{prefix}`",
+      "current": "Prefisso corrente: `{prefix}`"
     },
     "role": {
       "subcommands": {
@@ -176,7 +176,7 @@
           "noTargetRole": "Non è stato possibile trovare il ruolo specificato.",
           "noRoleAdded": "Nessun ruolo aggiunto al manager.",
           "noRoleRemoved": "Nessun ruolo rimosso dal manager.",
-          "maxManagersExceeded": "Il numero massimo di ruoli che il manager può gestire ({0}) è stato superato ({1}).",
+          "maxManagersExceeded": "Il numero massimo di ruoli che il manager può gestire ({max-count}) è stato superato ({total-count}).",
           "rolesAdded": "Ruoli aggiunti al manager:",
           "rolesRemoved": "Ruoli rimossi dal manager:",
           "allRolesRemoved": "Il manager specificato è stato rimosso.",
@@ -191,27 +191,27 @@
       "cantAddThese": "Non puoi aggiungere questi ruoli:",
       "cantRemoveThese": "Non puoi rimuovere questi ruoli:",
       "userNotFound": "Non è stato possibile trovare il membro specificato.",
-      "rolesAdded": "Ruoli aggiunti a {0} (`{1}`).",
-      "rolesRemoved": "Ruoli rimossi da {0} (`{1}`).",
-      "notEnoughPermissionsToAdd": "Non ho abbastanza permessi per aggiungere tutti i ruoli specificati a {0} (`{1}`).",
-      "notEnoughPermissionsToRemove": "Non ho abbastanza permessi per rimuovere tutti i ruoli specificati da {0} (`{1}`)."
+      "rolesAdded": "Ruoli aggiunti a {user}.",
+      "rolesRemoved": "Ruoli rimossi da {user}.",
+      "notEnoughPermissionsToAdd": "Non ho abbastanza permessi per aggiungere tutti i ruoli specificati a {user}.",
+      "notEnoughPermissionsToRemove": "Non ho abbastanza permessi per rimuovere tutti i ruoli specificati da {user}."
     },
     "shortcuts": {
-      "changed": "Scorciatoie impostate a: `{0}`",
-      "current": "Le scorciatoie sono impostate a: `{0}`"
+      "changed": "Scorciatoie impostate a: `{value}`",
+      "current": "Le scorciatoie sono impostate a: `{value}`"
     },
     "sound": {
       "subcommands": {
         "list": {
           "title": "Lista Audio",
           "description": "Una lista di tutti gli audio disponibili.",
-          "fieldTitle": "`{0}`",
+          "fieldTitle": "`{sound-name}`",
           "noMetadata": "Nessun Metadato.",
           "decimalPrecision": 2,
           "metadata": {
-            "title": "**Titolo:** {0}",
-            "artist": "**Artista:** {0}",
-            "duration": "**Durata:** {0} Secondi."
+            "title": "**Titolo:** {value}",
+            "artist": "**Artista:** {value}",
+            "duration": "**Durata:** {value} Secondi."
           }
         },
         "stop": {
@@ -234,15 +234,15 @@
       "noSoundFound": "L'audio specificato non è stato trovato.",
       "cantJoinChannel": "Non posso entrare nel tuo canale vocale.",
       "alreadyPlaying": "Sto già riproducendo un audio, per favore aspetta.",
-      "playing": "Riproducendo `{0}`..."
+      "playing": "Riproducendo `{sound-name}`..."
     },
     "suggestion": {
       "subcommands": {
         "channel": {
           "noChannel": "Nessun canale per i suggerimenti è stato impostato.",
-          "currentChannel": "{0} è l'attuale canale per i suggerimenti.",
+          "currentChannel": "{channel} è l'attuale canale per i suggerimenti.",
           "noResultChannel": "Nessun canale per gli esiti dei suggetimenti è stato impostato.",
-          "currentResultChannel": "{0} è l'attuale canale per gli esiti dei suggerimenti.",
+          "currentResultChannel": "{channel} è l'attuale canale per gli esiti dei suggerimenti.",
           "channelRemoved": "Il canale per i suggerimenti è stato rimosso.",
           "channelSet": "Il canale per i suggerimenti è stato impostato.",
           "resultChannelRemoved": "Il canale per gli esiti dei suggerimenti è stato rimosso.",
@@ -251,24 +251,24 @@
         }
       },
       "noChannelSet": "Questo server non ha impostato nessun canale per i suggerimenti.",
-      "noChannelFound": "Il canale per i suggerimento non è stato trovato ({0}).",
+      "noChannelFound": "Il canale per i suggerimento non è stato trovato ({id}).",
       "noResultChannelSet": "Questo server non ha impostato nessun canale per gli esiti dei suggerimenti.",
-      "noResultChannelFound": "Il canale per gli esiti dei suggerimenti non è stato trovato ({0}).",
+      "noResultChannelFound": "Il canale per gli esiti dei suggerimenti non è stato trovato ({id}).",
       "noSuggestionFound": "Il suggerimento specificato non esiste.",
       "noSuggestionMessage": "Il messaggio del suggerimento è stato eliminato.",
       "suggestionApprovedColor": "#00CC00",
       "suggestionApprovedTitle": "Suggerimento Approvato!",
-      "suggestionApprovedDescription": "Un suggerimento inviato da {0} è stato approvato!",
+      "suggestionApprovedDescription": "Un suggerimento inviato da {user-mention} è stato approvato!",
       "suggestionRejectedColor": "#CC0000",
       "suggestionRejectedTitle": "Suggerimento Rifiutato.",
-      "suggestionRejectedDescription": "Un suggerimento inviato da {0} è stato rifiutato.",
+      "suggestionRejectedDescription": "Un suggerimento inviato da {user-mention} è stato rifiutato.",
       "suggestionTextTitle": "Suggerimento",
       "suggestionReasonTitle": "Motivazione",
       "suggestionNoReason": "Nessuna Motivazione Specificata.",
       "noSuggestionSpecified": "Impossibile inviare un suggerimento senza testo.",
       "suggestionTooLong": "Il suggerimento è troppo lungo.",
-      "suggestionSentTitle": "Suggerimento (`{0}`)",
-      "suggestionSentDescription": "Un nuovo suggerimento è stato ricevuto da parte di {0}."
+      "suggestionSentTitle": "Suggerimento (`{id}`)",
+      "suggestionSentDescription": "Un nuovo suggerimento è stato ricevuto da parte di {user-mention}."
     }
   },
   "common": {
@@ -331,21 +331,19 @@
     "upvote": "⬆️",
     "downvote": "⬇️",
     "listSeparator": ", ",
-    "listDelimiter": "[ {0} ]",
-    "listEntry": " - {0}",
-    "userListEntry": " - {0} (`{1}`)",
+    "listDelimiter": "[ {list} ]",
+    "listEntry": " - {value}",
     "unknownUser": "Utente Sconosciuto",
-    "roleListEntry": " - {0} (`{1}`)",
     "unknownRole": "Ruolo Sconosciuto",
     "unknownChannel": "Canale Sconosciuto",
-    "softMention": "{0} (`{1}`)",
-    "noChannelPerms": "Non possiedi abbastanza permessi nel canale {1} per eseguire questo comando ( Mancano: `{0}` ).",
-    "noGuildPerms": "Non possiedi abbastanza permessi per eseguire qeusto comando ( Mancano: `{0}` ).",
-    "blacklistedCommand": "Al momento non hai accesso ai comandi `{0}` in questo server.",
+    "softMention": "{name} (`{id}`)",
+    "noChannelPerms": "Non possiedi abbastanza permessi nel canale {channel-name} per eseguire questo comando ( Mancano: `{permissions}` ).",
+    "noGuildPerms": "Non possiedi abbastanza permessi per eseguire questo comando ( Mancano: `{permissions}` ).",
+    "blacklistedCommand": "Al momento non hai accesso ai comandi `{command-name}` in questo server.",
     "noSubcommand": "Un sottocomando valido deve essere utilizzato.",
-    "missingArg": "Argomento `{0}` ( alla posizione {1} ) mancante.",
-    "wrongArgType": "Argomento `{0}` ( alla posizione {1} ) è del tipo errato ( Tipi Possibili: {2} ).",
+    "missingArg": "Argomento `{name}` ( alla posizione {position} ) mancante.",
+    "wrongArgType": "Argomento `{name}` ( alla posizione {position} ) è del tipo errato ( Tipi Possibili: {types} ).",
     "invalidCommand": "Il comando specificato non esiste.",
-    "richPresence": "Watching {0}/{1} Utenti in {2} Server."
+    "richPresence": "Watching {online-users}/{total-users} Utenti in {total-guilds} Server."
   }
 }

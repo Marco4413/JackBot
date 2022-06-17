@@ -11,7 +11,7 @@ module.exports = CreateCommand({
                 const pingMessage = await msg.channel.send(locale.Get("calculating"));
                 const ping = Date.now() - startEpoch;
                 await pingMessage.delete();
-                await msg.reply(locale._GetFormatted("result", ping));
+                await msg.reply(locale.GetFormatted("result", { ping }));
             }
         }
     ],

@@ -140,10 +140,11 @@ const _PushAudioMetadatum = (metadataList, locale, metadatumKey, metadatum) => {
     if (metadatumLocale === undefined) return;
     if (metadatum === undefined || metadatum === null) return;
 
-    metadataList.push(Utils.FormatString(
-        metadatumLocale,
-        typeof metadatum === "number" ?
-            metadatum.toFixed(locale.Get("decimalPrecision", false) ?? 2) : "" + metadatum
+    metadataList.push(Utils.MapFormatString(
+        metadatumLocale, {
+            "value": typeof metadatum === "number" ?
+                metadatum.toFixed(locale.Get("decimalPrecision", false) ?? 2) : "" + metadatum
+        }
     ));
 };
 
@@ -222,7 +223,7 @@ const _ExecutePlaySound = async (msg, guild, locale, [ soundName ]) => {
     // Playing the sound
     const resource = createAudioResource(soundPath);
     GetOrCreateVoiceConnection(userVoiceChannel, true).player.play(resource);
-    await msg.reply(locale._GetFormatted("playing", soundName));
+    await msg.reply(locale.GetFormatted("playing", { "sound-name": soundName }));
 };
 
 module.exports = CreateCommand({
@@ -245,7 +246,7 @@ module.exports = CreateCommand({
                     Logger.Debug(sound);
                     const formattedMetadata = _FormatAudioMetadata(locale, sound.metadata);
                     embed.addField(
-                        locale._GetFormatted("fieldTitle", soundName),
+                        locale.GetFormatted("fieldTitle", { "sound-name": soundName }),
                         formattedMetadata.text,
                         formattedMetadata.maxLineLength <= _INLINE_LINE_CHAR_LIMIT
                     );
