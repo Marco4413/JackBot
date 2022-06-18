@@ -8,10 +8,10 @@ const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
  * @param {DatabaseDefinitions.GuildRow} guild
  * @param {Locale} locale
  * @param {Number} suggestionId
- * @param {String[]} reasonWords
+ * @param {String} reason
  * @param {Boolean} approve
  */
-const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords, approve) => {
+const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, approve) => {
     if (guild.suggestionChannelId == null) {
         await msg.reply(locale.Get("noChannelSet"));
         return;
@@ -55,8 +55,6 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reasonWords,
 
     const suggestionEmbed = suggestionMessage.embeds[suggestionMessage.embeds.length - 1];
     const suggestionField = suggestionEmbed.fields[suggestionEmbed.fields.length - 1];
-    const reason = Utils.JoinArray(reasonWords, " ").trim();
-
     const embed = Utils.GetDefaultEmbedForMessage(msg, true);
     
     if (approve) {
@@ -206,11 +204,10 @@ module.exports = CreateCommand({
                 "types": [ "number" ]
             }, {
                 "name": "[APPROVAL REASON]",
-                "types": [ "string" ],
-                "isVariadic": true
+                "types": [ "text" ]
             }],
-            "execute": async (msg, guild, locale, [ suggestionId, words ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, words, true)
+            "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, true)
         },
         {
             "name": "reject",
@@ -221,13 +218,16 @@ module.exports = CreateCommand({
                 "types": [ "number" ]
             }, {
                 "name": "[REJECTION REASON]",
-                "types": [ "string" ],
-                "isVariadic": true
+                "types": [ "text" ]
             }],
-            "execute": async (msg, guild, locale, [ suggestionId, words ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, words, false)
+            "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, false)
         }
     ],
+    "arguments": [{
+        "name": "[SUGGESTION]",
+        "types": [ "text" ]
+    }],
     "execute": async (msg, guild, locale, [ suggestion ]) => {
         if (guild.suggestionChannelId == null) {
             await msg.reply(locale.Get("noChannelSet"));
