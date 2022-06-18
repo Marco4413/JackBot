@@ -192,11 +192,11 @@ const MentionUser = (userId) => {
 };
 
 /**
- * Creates a mention to the specified Text Channel
- * @param {String} channelId The Id of the Text Channel to create the mention for
- * @returns {String} The mention for the specified Text Channel
+ * Creates a mention to the specified Channel
+ * @param {String} channelId The Id of the Channel to create the mention for
+ * @returns {String} The mention for the specified Channel
  */
-const MentionTextChannel = (channelId) => {
+const MentionChannel = (channelId) => {
     return `<#${channelId}>`;
 };
 
@@ -327,7 +327,7 @@ module.exports = {
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     IsNaN,
-    MentionUser, MentionTextChannel, MentionRole,
+    MentionUser, MentionChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, GetAudioFilesInDirectory,
     MatchImageUrl, EndsWithOrAdd

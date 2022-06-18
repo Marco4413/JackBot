@@ -82,7 +82,7 @@ module.exports = CreateCommand({
                             locale.Get("noCountingHere") :
                             locale.GetFormatted(
                                 "noCountingThere",
-                                { "channel": Utils.MentionTextChannel(channelId) }
+                                { "channel": Utils.MentionChannel(channelId) }
                             )
                     );
                 } else {
@@ -90,7 +90,7 @@ module.exports = CreateCommand({
                     await msg.reply(locale.GetFormatted(
                         isHere ? "stoppedCountingHere" : "stoppedCountingThere", {
                             "best-count": counter.bestCount,
-                            "channel": Utils.MentionTextChannel(channelId)
+                            "channel": Utils.MentionChannel(channelId)
                         }
                     ));
                 }
@@ -166,7 +166,7 @@ module.exports = CreateCommand({
                                 "best-count": counter.bestCount
                             }),
                             locale.GetFormatted("counterDescription", {
-                                "channel": Utils.MentionTextChannel(counter.channelId),
+                                "channel": Utils.MentionChannel(counter.channelId),
                                 "count": counter.count,
                                 "best-count": counter.bestCount
                             }),
