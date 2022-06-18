@@ -7,7 +7,7 @@ const Utils = require("./Utils.js");
 
 // #region typedefs
 
-/** @typedef {"string"|"number"|"boolean"|"channel"|"user"|"role"} CommandArgumentType */
+/** @typedef {"string"|"number"|"boolean"|"channel"|"user"|"role"|"text"} CommandArgumentType */
 
 /**
  * @typedef {Object} CommandArgument A Command's Argument Definition
@@ -132,13 +132,13 @@ const _WHITESPACE_MATCHER = /\s+/g;
 
 /**
  * @param {String} rawContent 
- * @returns {[ String, String ]}
+ * @returns {[ String, String, String ]}
  */
 const _NextArgument = rawContent => {
     const content = rawContent.trim();
     const argIndex = content.search(_WHITESPACE_MATCHER);
-    if (argIndex < 0) return content.length > 0 ? [ content, "" ] : [ "", "" ];
-    return [ content.substring(0, argIndex), content.substring(argIndex).trimStart() ];
+    if (argIndex < 0) return content.length > 0 ? [ content, "", content ] : [ "", "", content ];
+    return [ content.substring(0, argIndex), content.substring(argIndex).trimStart(), content ];
 }; 
 
 /**
@@ -158,7 +158,10 @@ const _ParseArguments = (rawArgs, argDefs) => {
     for (let i = 0; i < argDefs.length; i++) {
         const argDef = argDefs[i];
 
-        if (argDef.isVariadic) {
+        if (argDef.types.includes("text")) {
+            parsedArgs.push(currentArg[2]);
+            break;
+        } else if (argDef.isVariadic) {
             const variadic = [ ];
             
             while (currentArg[0].length > 0) {
