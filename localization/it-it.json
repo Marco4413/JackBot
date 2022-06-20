@@ -340,7 +340,7 @@
     "noChannelPerms": "Non possiedi abbastanza permessi nel canale {channel-name} per eseguire questo comando ( Mancano: `{permissions}` ).",
     "noGuildPerms": "Non possiedi abbastanza permessi per eseguire questo comando ( Mancano: `{permissions}` ).",
     "blacklistedCommand": "Al momento non hai accesso ai comandi `{command-name}` in questo server.",
-    "noSubcommand": "Un sottocomando valido deve essere utilizzato.",
+    "noSubcommand": "Un sottocomando valido deve essere utilizzato: `{subcommands}`.",
     "missingArg": "Argomento `{name}` ( alla posizione {position} ) mancante.",
     "wrongArgType": "Argomento `{name}` ( alla posizione {position} ) è del tipo errato ( Tipi Possibili: {types} ).",
     "invalidCommand": "Il comando specificato non esiste.",

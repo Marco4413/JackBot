@@ -347,7 +347,14 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
 
         // If this command can't be executed then it must have subcommands
         if (command.execute === undefined) {
-            await msg.reply(locale.GetCommon("noSubcommand"));
+            await msg.reply(locale.GetCommonFormatted(
+                "noSubcommand", {
+                    "subcommands": locale.GetFormattedInlineList(
+                        command.subcommands ?? [ ], null,
+                        c => ({ "value": c.name }), null
+                    )
+                }
+            ));
             return true;
         }
 

@@ -340,7 +340,7 @@
     "noChannelPerms": "Not enough permissions in channel {channel-name} to run this command ( Missing: `{permissions}` ).",
     "noGuildPerms": "Not enough permissions to run this command ( Missing: `{permissions}` ).",
     "blacklistedCommand": "You currently have no access to `{command-name}` commands on this guild.",
-    "noSubcommand": "A valid subcommand must be provided.",
+    "noSubcommand": "A valid subcommand must be provided: `{subcommands}`.",
     "missingArg": "Argument `{name}` ( at {position} ) is missing.",
     "wrongArgType": "Argument `{name}` ( at {position} ) is of wrong type ( Expected Types: {types} ).",
     "invalidCommand": "The specified command isn't valid.",
