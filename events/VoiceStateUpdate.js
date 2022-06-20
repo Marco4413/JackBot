@@ -3,12 +3,12 @@ const Database = require("../Database.js");
 const { CreateVoiceChannel } = require("../commands/utils/ChannelUtils.js");
 
 module.exports = CreateEventListener(
-    "voiceStateUpdate", async (_, state) => {
-        if (state.member.user.bot || state.channelId === null) return;
+    "voiceStateUpdate", async (oldState, state) => {
+        if (state.member.user.bot || state.channelId === null || oldState.channelId === state.channelId) return;
 
         const createChannel = await Database.GetRow("guild", {
             "id": state.guild.id, "privateVoiceCreateChannelId": state.channelId
-        }) !== undefined;
+        }) != null;
 
         if (createChannel)
             await CreateVoiceChannel(state.member);
