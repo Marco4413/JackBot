@@ -1,6 +1,6 @@
 {
   "name": "jackbot",
-  "version": "1.5.0",
+  "version": "2.0.0",
   "description": "An highly customizable and unstable Discord Bot",
   "main": "index.js",
   "scripts": {
