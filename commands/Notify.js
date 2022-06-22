@@ -6,10 +6,13 @@ module.exports = CreateCommand({
     "permissions": Permissions.FLAGS.ADMINISTRATOR,
     "subcommands": [{
         "name": "voice",
+        "shortcut": "v",
         "subcommands": [{
             "name": "join",
+            "shortcut": "j",
             "subcommands": [{
                 "name": "add",
+                "shortcut": "a",
                 "arguments": [{
                     "name": "[VOICE CHANNEL MENTION/ID]",
                     "types": [ "channel" ]
@@ -55,6 +58,7 @@ module.exports = CreateCommand({
                 }
             }, {
                 "name": "remove",
+                "shortcut": "r",
                 "arguments": [{
                     "name": "[VOICE CHANNEL MENTION/ID]",
                     "types": [ "channel" ]
@@ -95,8 +99,10 @@ module.exports = CreateCommand({
                 }
             }, {
                 "name": "list",
+                "shortcut": "l",
                 "subcommands": [{
                     "name": "all",
+                    "shortcut": "a",
                     "execute": async (msg, guild, locale) => {
                         const channelRows = await Database.GetRows("channel", {
                             "guildId": msg.guildId,
