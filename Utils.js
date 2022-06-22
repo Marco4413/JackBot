@@ -313,6 +313,15 @@ const MatchImageUrl = (str) => {
     else return null;
 };
 
+const _DISCORD_SPECIAL_CHARACTERS_MATCHER = /([\\*_<>@~`])/g;
+
+/**
+ * @param {String} str
+ * @returns {String}
+ */
+const EscapeDiscordSpecialCharacters = (str) =>
+    str.replace(_DISCORD_SPECIAL_CHARACTERS_MATCHER, "\\$1");
+
 /**
  * Checks if a string ends with the specified one, if that's not the case it appends the end to it
  * @param {String} str The string to check
@@ -330,5 +339,6 @@ module.exports = {
     MentionUser, MentionChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, GetAudioFilesInDirectory,
-    MatchImageUrl, EndsWithOrAdd
+    MatchImageUrl, EndsWithOrAdd,
+    EscapeDiscordSpecialCharacters
 };
