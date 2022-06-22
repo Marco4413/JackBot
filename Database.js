@@ -33,6 +33,8 @@ const _Models = {
     /** @type {ModelStatic<Model>} */
     "role": null,
     /** @type {ModelStatic<Model>} */
+    "channel": null,
+    /** @type {ModelStatic<Model>} */
     "suggestion": null
 };
 
@@ -78,6 +80,7 @@ const Start = async (settings) => {
     _Models.counter    = _DBInstance.SafeDefine("Counter"   , Definitions.CounterModel   , modelOptions);
     _Models.user       = _DBInstance.SafeDefine("User"      , Definitions.UserModel      , modelOptions);
     _Models.role       = _DBInstance.SafeDefine("Role"      , Definitions.RoleModel      , modelOptions);
+    _Models.channel    = _DBInstance.SafeDefine("Channel"   , Definitions.ChannelModel   , modelOptions);
     _Models.suggestion = _DBInstance.SafeDefine("Suggestion", Definitions.SuggestionModel, modelOptions);
     
     for (const model of Object.values(_Models)) {
@@ -262,6 +265,7 @@ const _CleanupTable = async (table, definition) => {
  */
 const Cleanup = async () => {
     return (
+        await _CleanupTable("channel", Definitions.ChannelModel) +
         await _CleanupTable("role", Definitions.RoleModel) +
         await _CleanupTable("user", Definitions.UserModel)
     );

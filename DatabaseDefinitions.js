@@ -242,6 +242,29 @@ const RoleModel = {
     }
 };
 
+const ChannelModel = {
+    "guildId": {
+        "primaryKey": true,
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "channelId": {
+        "primaryKey": true,
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "joinNotificationChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
+    "joinNotificationText": {
+        "type": DataTypes.TEXT,
+        "defaultValue": null,
+        "allowNull": true
+    }
+};
+
 const SuggestionModel = {
     "id": {
         "primaryKey": true,
@@ -333,6 +356,16 @@ const SuggestionModel = {
  */
 
 /**
+ * TODO: Merge CounterRow?
+ * @typedef {Object} _ChannelRowType
+ * @property {String} guildId The Id of the Guild this Channel belongs to
+ * @property {String} channelId The Id of the Channel
+ * @property {String} joinNotificationChannelId The Id of the Channel which will receive notifications of this one
+ * @property {String} joinNotificationText The text to send to the Notification Channel
+ * @typedef {DatabaseRow&_ChannelRowType} ChannelRow
+ */
+
+/**
  * @typedef {Object} _SuggestionRowType
  * @property {String} id The Id of the Suggestion
  * @property {String} guildId The Id of the Guild this Suggestion belongs to
@@ -347,11 +380,12 @@ const SuggestionModel = {
  * @property {CounterRow} counter
  * @property {UserRow} user
  * @property {RoleRow} role
+ * @property {ChannelRow} channel
  * @property {SuggestionRow} suggestion
  */
 
 module.exports = {
     MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
     MAX_MANAGEABLE_ROLES,
-    GuildModel, CounterModel, UserModel, RoleModel, SuggestionModel
+    GuildModel, CounterModel, UserModel, RoleModel, ChannelModel, SuggestionModel
 };

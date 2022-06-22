@@ -157,6 +157,23 @@
       "changed": "Language set to: `{lang-name}`",
       "current": "Current Language: `{lang-name}`"
     },
+    "notify": {
+      "subcommands": {
+        "voice": {
+          "noVoiceChannelFound": "The specified voice channel doesn't exist.",
+          "notVoiceChannel": "The specified voice channel isn't a voice channel.",
+          "noTextChannelFound": "The specified notification channel doesn't exist.",
+          "notTextChannel": "The specified notification channel isn't a text channel.",
+          "notificationAdded": "Notifications for voice channel {voice-channel} set on {text-channel}.",
+          "notificationRemoved": "Notification removed for channel {voice-channel}",
+          "noNotificationSet": "There was no notification set for channel {voice-channel}",
+          "notificationDetails": "Notification for voice channel {voice-channel} are sent to {text-channel}:",
+          "notificationListNone": "There are currently no notification channels.",
+          "notificationListAll": "Notifications are enabled for the following channels:",
+          "notificationListEntry": "{voice-channel} on {text-channel}"
+        }
+      }
+    },
     "ping": {
       "subcommands": {
         "message": {

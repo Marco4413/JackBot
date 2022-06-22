@@ -1,6 +1,8 @@
 const { CreateEventListener } = require("../EventListener.js");
 const Database = require("../Database.js");
 const { CreateVoiceChannel } = require("../commands/utils/ChannelUtils.js");
+const Sequelize = require("sequelize");
+const Utils = require("../Utils.js");
 
 module.exports = CreateEventListener(
     "voiceStateUpdate", async (oldState, state) => {
@@ -12,5 +14,32 @@ module.exports = CreateEventListener(
 
         if (createChannel)
             await CreateVoiceChannel(state.member);
+
+        const notifyChannelRow = await Database.GetRow("channel", {
+            "guildId": state.guild.id, "channelId": state.channelId,
+            "joinNotificationChannelId": {
+                [Sequelize.Op.ne]: null
+            },
+            "joinNotificationText": {
+                [Sequelize.Op.ne]: null
+            }
+        });
+
+        if (notifyChannelRow != null) {
+            const notificationChannel = state.guild.channels.resolve(notifyChannelRow.joinNotificationChannelId);
+            if (notificationChannel != null && notificationChannel.isText()) {
+                await notificationChannel.send(Utils.MapFormatString(
+                    notifyChannelRow.joinNotificationText, {
+                        "join-user-mention": Utils.MentionUser(state.member.id),
+                        "join-user-nickname": state.member.displayName,
+                        "join-user-name": state.member.user.username,
+                        "join-user-id": state.member.id,
+                        "joined-channel-mention": Utils.MentionChannel(state.channelId),
+                        "joined-channel-name": state.channel.name,
+                        "joined-channel-id": state.channelId
+                    }
+                ));
+            }
+        }
     }
 );

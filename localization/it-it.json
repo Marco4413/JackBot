@@ -157,6 +157,23 @@
       "changed": "La lingua è stata cambiata a: `{lang-name}`",
       "current": "Lingua corrente: `{lang-name}`"
     },
+    "notify": {
+      "subcommands": {
+        "voice": {
+          "noVoiceChannelFound": "Il canale vocale specificato non esiste.",
+          "notVoiceChannel": "Il canale vocale specificato non è un canale vocale.",
+          "noTextChannelFound": "Il canale per le notifiche specificato non esiste.",
+          "notTextChannel": "Il canale per le notifiche specificato non è un canale testuale.",
+          "notificationAdded": "Notificazioni per il canale vocale {voice-channel} impostate su {text-channel}.",
+          "notificationRemoved": "Notificazioni rimosse per il canale vocale {voice-channel}",
+          "noNotificationSet": "Nessuna notifica impostata per il canale vocale {voice-channel}",
+          "notificationDetails": "Notificazioni per il canale vocale {voice-channel} sono inviate nel canale testuale {text-channel}:",
+          "notificationListNone": "Al momento non ci sono canali con notificazioni.",
+          "notificationListAll": "Le nificazioni sono abilitate per i seguenti canali:",
+          "notificationListEntry": "{voice-channel} su {text-channel}"
+        }
+      }
+    },
     "ping": {
       "subcommands": {
         "message": {
