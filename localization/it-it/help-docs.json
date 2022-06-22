@@ -234,6 +234,42 @@
         }
       }
     },
+    "notify": {
+      "title": "Notify",
+      "description": "Gestisce le notifiche via canali testuali di determinati eventi.",
+      "subcommands": {
+        "voice": {
+          "title": "Voice",
+          "description": "Gestisce le notifiche via canali testuali di eventi relativi a canali vocali.",
+          "subcommands": {
+            "join": {
+              "title": "Join",
+              "description": "Gestisce le notifiche via canali testuali di eventi relativi all'entrata di utenti in canali vocali.",
+              "subcommands": {
+                "add": {
+                  "title": "Add",
+                  "description": "Aggiunge una nuova notifica per il canale vocale specificato nel canale testuale specificato che utilizzerà il testo specificato.\n**Le variabili valide per il messaggio sono le seguenti:**\n{join-user-mention}\n{join-user-nickname}\n{join-user-name}\n{join-user-id}\n{joined-channel-mention}\n{joined-channel-name}\n{joined-channel-id}"
+                },
+                "remove": {
+                  "title": "Remove",
+                  "description": "Rimuove la notifica per il canale vocale specificato (Se presente)."
+                },
+                "list": {
+                  "title": "List",
+                  "description": "Mostra dove le notifiche per un specifico canale vocale sono inviate e il messaggio della notifica.",
+                  "subcommands": {
+                    "all": {
+                      "title": "All",
+                      "description": "Mostra tutti i canali vocali con notifiche e il canale di destinazione."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "ping": {
       "title": "Ping",
       "description": "Pong!",

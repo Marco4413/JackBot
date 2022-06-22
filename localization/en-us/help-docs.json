@@ -234,6 +234,42 @@
         }
       }
     },
+    "notify": {
+      "title": "Notify",
+      "description": "Manages text channel notifications for specific events.",
+      "subcommands": {
+        "voice": {
+          "title": "Voice",
+          "description": "Manages text channel notifications for voice-specific events.",
+          "subcommands": {
+            "join": {
+              "title": "Join",
+              "description": "Manages text channel notifications for voice channel join events.",
+              "subcommands": {
+                "add": {
+                  "title": "Add",
+                  "description": "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.\n**Valid variables for the message are the following:**\n{join-user-mention}\n{join-user-nickname}\n{join-user-name}\n{join-user-id}\n{joined-channel-mention}\n{joined-channel-name}\n{joined-channel-id}"
+                },
+                "remove": {
+                  "title": "Remove",
+                  "description": "Removes the event listener from the specified voice channel (If present)."
+                },
+                "list": {
+                  "title": "List",
+                  "description": "Shows where notifications for a specific voice channel are sent to and the text that is sent to that text channel.",
+                  "subcommands": {
+                    "all": {
+                      "title": "All",
+                      "description": "Lists all voice channels with events and their target channel."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "ping": {
       "title": "Ping",
       "description": "Pong!",
