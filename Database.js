@@ -102,7 +102,7 @@ const Start = async (settings) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to get the row from
  * @param {U} [where] The attributes that the row should have
- * @returns {Promise<U>|Promise<undefined>} The Row or undefined if none was found
+ * @returns {Promise<U|undefined>} The Row or undefined if none was found
  */
 const GetRow = async (table, where = { }) => {
     _EnsureStart();
@@ -157,6 +157,25 @@ const SetRowAttr = async (table, where = { }, attributes = { }) => {
         instance.set(key, attributes[key]);
     await instance.save();
     return instance.get();
+};
+
+
+/**
+ * Sets or Creates a table with the specified Attributes to the specified Row and returns it
+ * @template {keyof Definitions.DatabaseTables} T
+ * @template {Definitions.DatabaseTables[T]} U
+ * @param {T} table The table where the row is in
+ * @param {U} [where] The attributes that the row to modify or create should have
+ * @param {U} [set] The new attributes for the row ( Undefined keys don't change attributes )
+ * @param {U} [defaults] The default values for the row ( If it gets created )
+ * @returns {Promise<U>} The row
+ */
+const SetOrCreateRow = async (table, where = { }, set = { }, defaults = { ...where, ...set }) => {
+    _EnsureStart();
+    return (
+        await SetRowAttr(table, where, set) ??
+        await CreateRow(table, defaults, false)
+    );
 };
 
 /**
@@ -251,7 +270,7 @@ const Cleanup = async () => {
 module.exports = {
     IsStarted, Start,
     GetRow, GetRows, GetOrCreateRow,
-    SetRowAttr, SetRowsAttr,
+    SetRowAttr, SetOrCreateRow, SetRowsAttr,
     CreateRow, RemoveRows,
     Cleanup
 };
