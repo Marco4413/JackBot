@@ -182,6 +182,20 @@ const IsNaN = (n) => {
     return Number.isNaN(n) || nType !== "number" && nType !== "bigint";
 };
 
+const _SIGN_TABLE = {
+    [-1]: "-",
+    [ 0]: "",
+    [ 1]: "+"
+};
+
+/**
+ * Converts a Number to a String and always shows its sign
+ * @param {Number} n The Number to convert
+ * @returns {String} The Signed Number as a String
+ */
+const NumberToSignedString = n =>
+    _SIGN_TABLE[Math.sign(n)] + Math.abs(n);
+
 /**
  * Creates a mention to the specified User
  * @param {String} userId The Id of the User to create the mention for
@@ -335,7 +349,7 @@ module.exports = {
     IsValidEmbedValue, FormatString, MapFormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
-    IsNaN,
+    IsNaN, NumberToSignedString,
     MentionUser, MentionChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, GetAudioFilesInDirectory,
