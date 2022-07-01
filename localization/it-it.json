@@ -124,6 +124,15 @@
       "allowErrorsValue": "Permetti Errori su questo canale è impostato a: `{value}`",
       "alternateMemberValue": "Alternanza Membri su questo canale è impostato a: `{value}`"
     },
+    "credits": {
+      "formulaError": "C'è un errore nella formula specificata.",
+      "invalidUser": "L'utente specificato non è stato trovato.",
+      "creditsGain": "[{upvote}] {gain} crediti a {user-mention} per un totale di {total} per: {reason}",
+      "creditsLoss": "[{downvote}] {loss} crediti a {user-mention} per un totale di {total} per: {reason}",
+      "otherCredits": "[**-**] {user-mention} ha un totale di {credits} crediti.",
+      "selfCredits": "Hai un totale di {credits} crediti.",
+      "noReasonSpecified": "Nessun motivo specificato."
+    },
     "help": {
       "docs": "#extends it-it/help-docs",
       "noTitle": "Quell'idiota di uno sviluppatore ha dimenticato la traduzione per questo comando.",

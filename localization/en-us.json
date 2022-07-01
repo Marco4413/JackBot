@@ -124,6 +124,15 @@
       "allowErrorsValue": "Allow Errors for this channel is set to `{value}`",
       "alternateMemberValue": "Alternate Member for this channel is set to `{value}`"
     },
+    "credits": {
+      "formulaError": "There was an error in your formula.",
+      "invalidUser": "The specified user couldn't be found.",
+      "creditsGain": "[{upvote}] {gain} credits to {user-mention} for a total of **{total}** for: {reason}",
+      "creditsLoss": "[{downvote}] {loss} credits to {user-mention} for a total of **{total}** for: {reason}",
+      "otherCredits": "[**-**] {user-mention} has a total of **{credits}** credits.",
+      "selfCredits": "You have a total of **{credits}** credits.",
+      "noReasonSpecified": "No reason specified."
+    },
     "help": {
       "docs": "#extends en-us/help-docs; Extending from a separate file to better organize this one.",
       "noTitle": "That idiot of a Developer forgot this command's Locale Entry.",

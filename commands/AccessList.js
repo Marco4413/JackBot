@@ -343,6 +343,7 @@ module.exports = CreateCommand({
         _CreateAccesslistCommand("channel", "ch", "inChannelAccessList", "isChannelAccessBlacklist"),
         _CreateAccesslistCommand("role", "r", "inRoleAccessList", "isRoleAccessBlacklist"),
         _CreateAccesslistCommand("suggestion", "suggest", "inSuggestionAccessList", "isSuggestionAccessBlacklist"),
-        _CreateAccesslistCommand("suggestion-manager", "suggest-manager", "inSuggestionManagerAccessList", "isSuggestionManagerAccessBlacklist")
+        _CreateAccesslistCommand("credits", "cr", "inCreditsAccessList", "isCreditsAccessBlacklist"),
+        _CreateAccesslistCommand("credits-manager", "cr-manager", "inCreditsManagerAccessList", "isCreditsManagerAccessBlacklist")
     ]
 });

@@ -101,6 +101,16 @@ const GuildModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": true
+    },
+    "isCreditsAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": true
+    },
+    "isCreditsManagerAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": true
     }
 };
 
@@ -162,6 +172,11 @@ const UserModel = {
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
+    "credits": {
+        "type": DataTypes.INTEGER,
+        "defaultValue": 0,
+        "allowNull": false
+    },
     "privateVoiceChannelId": {
         "type": _SNOWFLAKE_DATATYPE,
         "defaultValue": null,
@@ -193,6 +208,16 @@ const UserModel = {
         "allowNull": false
     },
     "inSuggestionManagerAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inCreditsAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inCreditsManagerAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -236,6 +261,16 @@ const RoleModel = {
         "allowNull": false
     },
     "inSuggestionManagerAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inCreditsAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inCreditsManagerAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -311,6 +346,8 @@ const SuggestionModel = {
  * @property {Boolean} isRoleAccessBlacklist Whether or not the Role Access List is a Blacklist
  * @property {Boolean} isSuggestionAccessBlacklist Whether or not the Suggestion Access List is a Blacklist
  * @property {Boolean} isSuggestionManagerAccessBlacklist Whether or not the Suggestion Manager Access List is a Blacklist
+ * @property {Boolean} isCreditsAccessBlacklist Whether or not the Credits Access List is a Blacklist
+ * @property {Boolean} isCreditsManagerAccessBlacklist Whether or not the Credits Manager Access List is a Blacklist
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
 
@@ -332,6 +369,7 @@ const SuggestionModel = {
  * @typedef {Object} _UserRowType
  * @property {String} guildId The Id of the Guild this User belongs to
  * @property {String} userId The Id of the User
+ * @property {Number} credits The credits this User has
  * @property {String?} privateVoiceChannelId The User's Private Voice Channel Id
  * @property {String?} privateTextChannelId The User's Private Text Channel Id
  * @property {Boolean} inSoundAccessList Whether or not this User is in the Sound Access List
@@ -339,6 +377,8 @@ const SuggestionModel = {
  * @property {Boolean} inRoleAccessList Whether or not this User is in the Role Access List
  * @property {Boolean} inSuggestionAccessList Whether or not this User is in the Suggestion Access List
  * @property {Boolean} inSuggestionManagerAccessList Whether or not this User is in the Suggestion Manager Access List
+ * @property {Boolean} inCreditsAccessList Whether or not this User is in the Credits Access List
+ * @property {Boolean} inCreditsManagerAccessList Whether or not this User is in the Credits Manager Access List
  * @typedef {DatabaseRow&_UserRowType} UserRow
  */
 
@@ -352,6 +392,8 @@ const SuggestionModel = {
  * @property {Boolean} inRoleAccessList Whether or not this Role is in the Role Access List
  * @property {Boolean} inSuggestionAccessList Whether or not this Role is in the Suggestion Access List
  * @property {Boolean} inSuggestionManagerAccessList Whether or not this Role is in the Suggestion Manager Access List
+ * @property {Boolean} inCreditsAccessList Whether or not this Role is in the Credits Access List
+ * @property {Boolean} inCreditsManagerAccessList Whether or not this Role is in the Credits Manager Access List
  * @typedef {DatabaseRow&_RoleRowType} RoleRow
  */
 
