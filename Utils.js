@@ -186,11 +186,9 @@ const IsNaN = (n) => {
     return Number.isNaN(n) || nType !== "number" && nType !== "bigint";
 };
 
-const _SIGN_TABLE = {
-    [-1]: "-",
-    [ 0]: "",
-    [ 1]: "+"
-};
+const _SIGNED_NUMBER_FORMAT = new Intl.NumberFormat("it-it", {
+    signDisplay: "exceptZero"
+});
 
 /**
  * Converts a Number to a String and always shows its sign
@@ -198,7 +196,7 @@ const _SIGN_TABLE = {
  * @returns {String} The Signed Number as a String
  */
 const NumberToSignedString = n =>
-    _SIGN_TABLE[Math.sign(n)] + Math.abs(n);
+    _SIGNED_NUMBER_FORMAT.format(n);
 
 /**
  * Creates a mention to the specified User
