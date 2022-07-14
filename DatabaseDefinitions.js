@@ -57,6 +57,11 @@ const GuildModel = {
         "defaultValue": null,
         "allowNull": true
     },
+    "creditsChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
     "privateChannelEveryoneTemplateRoleId": {
         "type": _SNOWFLAKE_DATATYPE,
         "defaultValue": null,
@@ -337,6 +342,7 @@ const SuggestionModel = {
  * @property {String?} nitroBoostChannelId The Id of the Channel where Nitro Boost Announcements are sent
  * @property {String?} suggestionChannelId The Id of the Channel where Suggestions are stored
  * @property {String?} suggestionResultChannelId The Id of the Channel where Suggestion Results are stored
+ * @property {String?} creditsChannelId The Id of the Channel where Credits Changes are Notified
  * @property {String?} privateChannelEveryoneTemplateRoleId The template role for everyone on private channels
  * @property {String?} privateChannelOwnerTemplateRoleId The template role for the channel owner on private channels
  * @property {String?} privateChannelCategoryId The Id of the category Private Channels should be created under

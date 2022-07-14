@@ -125,11 +125,21 @@
       "alternateMemberValue": "Alternanza Membri su questo canale è impostato a: `{value}`"
     },
     "credits": {
+      "subcommands": {
+        "channel": {
+          "channelRemoved": "Canale dei crediti rimosso.",
+          "invalidChannel": "Il canale specificato non esiste o non è un canale testuale.",
+          "channelSet": "Canale dei crediti impostato a {channel}.",
+          "noChannel": "Nessun canale dei crediti impostato.",
+          "currentChannel": "Il canale dei crediti è {channel}."
+        }
+      },
       "formulaError": "C'è un errore nella formula specificata.",
       "invalidUser": "L'utente specificato non è stato trovato.",
       "creditsGain": "[{upvote}] {gain} crediti a {user-mention} per un totale di {total} per: {reason}",
       "creditsLoss": "[{downvote}] {loss} crediti a {user-mention} per un totale di {total} per: {reason}",
       "otherCredits": "[**-**] {user-mention} ha un totale di {credits} crediti.",
+      "creditsUpdated": "Crediti aggiornati per l'utente specificato.",
       "selfCredits": "Hai un totale di {credits} crediti.",
       "noReasonSpecified": "Nessun motivo specificato."
     },

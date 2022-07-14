@@ -125,11 +125,21 @@
       "alternateMemberValue": "Alternate Member for this channel is set to `{value}`"
     },
     "credits": {
+      "subcommands": {
+        "channel": {
+          "channelRemoved": "Credits channel was removed.",
+          "invalidChannel": "The specified channel either doesn't exist or isn't a text channel.",
+          "channelSet": "Credits channel set to {channel}.",
+          "noChannel": "No credits channel set.",
+          "currentChannel": "The current credits channel is {channel}."
+        }
+      },
       "formulaError": "There was an error in your formula.",
       "invalidUser": "The specified user couldn't be found.",
       "creditsGain": "[{upvote}] {gain} credits to {user-mention} for a total of **{total}** for: {reason}",
       "creditsLoss": "[{downvote}] {loss} credits to {user-mention} for a total of **{total}** for: {reason}",
       "otherCredits": "[**-**] {user-mention} has a total of **{credits}** credits.",
+      "creditsUpdated": "Updated credits for the specified user.",
       "selfCredits": "You have a total of **{credits}** credits.",
       "noReasonSpecified": "No reason specified."
     },

@@ -1,5 +1,7 @@
-const { CreateCommand, Database, Utils, DatabaseDefinitions } = require("../Command.js");
+const { Message, Channel } = require("discord.js");
+const { CreateCommand, Database, Utils, DatabaseDefinitions, Permissions } = require("../Command.js");
 const { Locale } = require("../Localization.js");
+const Logger = require("../Logger.js");
 const SMath = require("../SandMath.js");
 const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 
@@ -26,12 +28,82 @@ const _GetFormattedCredits = (locale, userId, oldCredits, newCredits, reason) =>
     );
 };
 
+/**
+ * @param {Message} msg
+ * @param {import("../DatabaseDefinitions").GuildRow} guildRow
+ * @returns {Promise<Channel?>}
+ */
+const _GetCreditsChannel = async (msg, guildRow) => {
+    const channelId = guildRow.creditsChannelId;
+    const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
+    if (channel == null || !channel.isText())
+        return null;
+    return channel;
+};
+
 module.exports = CreateCommand({
     "name": "credits",
     "shortcut": "cr",
     "canExecute": async (msg, guild, locale) =>
         !await ReplyIfBlacklisted(locale, "credits", msg, "inCreditsAccessList", "isCreditsAccessBlacklist"),
     "subcommands": [{
+        "name": "channel",
+        "permissions": Permissions.FLAGS.ADMINISTRATOR,
+        "subcommands": [{
+            "name": "set",
+            "shortcut": "s",
+            "arguments": [{
+                "name": "[CHANNEL MENTION/ID]",
+                "types": [ "channel" ],
+                "default": null
+            }],
+            "execute": async (msg, guild, locale, [ channelId ]) => {
+                if (channelId == null) {
+                    await Database.SetRowAttr("guild", {
+                        "id": msg.guildId
+                    }, { "creditsChannelId": null });
+                    await msg.reply(locale.Get("channelRemoved"));
+                    return;
+                }
+
+                const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
+                if (channel == null || !channel.isText()) {
+                    await msg.reply(locale.Get("invalidChannel"));
+                    return;
+                }
+
+                await Database.SetRowAttr("guild", {
+                    "id": msg.guildId
+                }, { "creditsChannelId": channelId });
+                await msg.reply(locale.GetFormatted(
+                    "channelSet", {
+                        "channel": locale.GetSoftMention(
+                            "Channel",
+                            channel?.name,
+                            channelId
+                        )
+                    }
+                ));
+            }
+        }],
+        "execute": async (msg, guild, locale) => {
+            if (guild.creditsChannelId == null) {
+                await msg.reply(locale.Get("noChannel"));
+                return;
+            }
+
+            const channel = msg.guild.channels.resolve(guild.creditsChannelId);
+            await msg.reply(locale.GetFormatted(
+                "currentChannel", {
+                    "channel": locale.GetSoftMention(
+                        "Channel",
+                        channel?.name,
+                        guild.creditsChannelId
+                    )
+                }
+            ));
+        }
+    }, {
         "name": "apply",
         "canExecute": async (msg, guild, locale) =>
             !await ReplyIfBlacklisted(locale, "credits apply", msg, "inCreditsManagerAccessList", "isCreditsManagerAccessBlacklist"),
@@ -76,10 +148,14 @@ module.exports = CreateCommand({
                 "guildId": msg.guildId, "userId": userId
             }, { "credits": Math.floor(newCredits) });
 
-            await msg.channel.send(_GetFormattedCredits(
+            const creditsChannel = await _GetCreditsChannel(msg, guild);
+            await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
                 locale, userId, oldUserRow.credits, newUserRow.credits, trimmedReason
             ));
-            await msg.delete();
+
+            if (creditsChannel == null)
+                await msg.delete();
+            else await msg.reply(locale.Get("creditsUpdated"));
         }
     }, {
         "name": "award",
@@ -116,10 +192,15 @@ module.exports = CreateCommand({
                 "guildId": msg.guildId, "userId": userId
             }, { "credits": Math.floor(oldUserRow.credits + creditsToAward) });
 
-            await msg.channel.send(_GetFormattedCredits(
+
+            const creditsChannel = await _GetCreditsChannel(msg, guild);
+            await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
                 locale, userId, oldUserRow.credits, newUserRow.credits, reason
             ));
-            await msg.delete();
+
+            if (creditsChannel == null)
+                await msg.delete();
+            else await msg.reply(locale.Get("creditsUpdated"));
         }
     }, {
         "name": "set",
@@ -156,10 +237,14 @@ module.exports = CreateCommand({
                 "guildId": msg.guildId, "userId": userId
             }, { "credits": creditsToSet });
 
-            await msg.channel.send(_GetFormattedCredits(
+            const creditsChannel = await _GetCreditsChannel(msg, guild);
+            await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
                 locale, userId, oldUserRow.credits, newUserRow.credits, reason
             ));
-            await msg.delete();
+
+            if (creditsChannel == null)
+                await msg.delete();
+            else await msg.reply(locale.Get("creditsUpdated"));
         }
     }, {
         "name": "reset",
@@ -192,10 +277,14 @@ module.exports = CreateCommand({
                 "guildId": msg.guildId, "userId": userId
             }, { "credits": DatabaseDefinitions.UserModel.credits.defaultValue });
 
-            await msg.channel.send(_GetFormattedCredits(
+            const creditsChannel = await _GetCreditsChannel(msg, guild);
+            await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
                 locale, userId, oldUserRow.credits, newUserRow.credits, reason
             ));
-            await msg.delete();
+
+            if (creditsChannel == null)
+                await msg.delete();
+            else await msg.reply(locale.Get("creditsUpdated"));
         }
     }],
     "arguments": [{
