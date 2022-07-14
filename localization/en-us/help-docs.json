@@ -224,6 +224,38 @@
         }
       }
     },
+    "credits": {
+      "title": "Credits",
+      "description": "Shows your credits on this Guild.",
+      "subcommands": {
+        "channel": {
+          "title": "Channel",
+          "description": "Shows the current Credits Channel.",
+          "subcommands": {
+            "set": {
+              "title": "Set",
+              "description": "Sets the Credits Channel."
+            }
+          }
+        },
+        "apply": {
+          "title": "Apply",
+          "description": "Applies a formula to Someone's credits.\nTo **separate the formula from the reason** use `;;`:\n*e.g.* `x + 10 ;; He's a good boy.`\nYou can **reference the user's old credits** using the variables:\n`x`, `c`, `credits`\n**Decimal values are truncated**."
+        },
+        "award": {
+          "title": "Award",
+          "description": "Awards to the specified User the specified Credits with the specified Reason."
+        },
+        "set": {
+          "title": "Set",
+          "description": "Sets Someone's Credits to the specified value with the specified Reason."
+        },
+        "reset": {
+          "title": "Reset",
+          "description": "Resets Someone's credits with the specified Reason."
+        }
+      }
+    },
     "language": {
       "title": "Language",
       "description": "Shows this Guild's Language.",

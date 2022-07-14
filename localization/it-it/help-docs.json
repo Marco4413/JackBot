@@ -224,6 +224,38 @@
         }
       }
     },
+    "credits": {
+      "title": "Credits",
+      "description": "Mostra i tuoi crediti nel Server.",
+      "subcommands": {
+        "channel": {
+          "title": "Channel",
+          "description": "Mostra il Canale dei Crediti.",
+          "subcommands": {
+            "set": {
+              "title": "Set",
+              "description": "Imposta il Canale dei Crediti."
+            }
+          }
+        },
+        "apply": {
+          "title": "Apply",
+          "description": "Applica una formula ai crediti di un'Utente.\nPer **separare la formula dal motivo** usa `;;`:\n*e.g.* `x + 10 ;; E' un bravo giovanotto.`\nPuoi far **riferimento ai crediti precedenti dell'utente** usando le variabili:\n`x`, `c`, `credits`\n**I valori decimali sono troncati**."
+        },
+        "award": {
+          "title": "Award",
+          "description": "Premia l'Utente specificato con i Crediti specificati con la Motivazione specificata."
+        },
+        "set": {
+          "title": "Set",
+          "description": "Imposta all'Utente specificato i Crediti specificati con la Motivazione specificata."
+        },
+        "reset": {
+          "title": "Reset",
+          "description": "Resetta i crediti dell'Utente specificato con la Motivazione specificata."
+        }
+      }
+    },
     "language": {
       "title": "Language",
       "description": "Mostra la lingua del server.",
