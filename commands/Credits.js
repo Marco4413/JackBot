@@ -94,7 +94,7 @@ module.exports = CreateCommand({
                 return;
             }
 
-            const channel = msg.guild.channels.resolve(guild.creditsChannelId);
+            const channel = await Utils.SafeFetch(msg.guild.channels, guild.creditsChannelId);
             await msg.reply(locale.GetFormatted(
                 "currentChannel", {
                     "channel": locale.GetSoftMention(
@@ -117,16 +117,16 @@ module.exports = CreateCommand({
             "types": [ "text" ]
         }],
         "execute": async (msg, guild, locale, [ userId, formulaAndReason ]) => {
-            const user = msg.guild.members.resolve(userId);
+            const user = await Utils.SafeFetch(msg.guild.members, userId);
             if (user == null) {
                 await msg.reply(locale.Get("invalidUser"));
                 return;
             }
 
             const [ formula, reason ] = formulaAndReason.split(";;");
-            const trimmedReason = reason.trimStart();
+            const trimmedReason = reason?.trimStart();
 
-            if (trimmedReason.length === 0) {
+            if (trimmedReason == null || trimmedReason.length === 0) {
                 await msg.reply(locale.Get("noReasonSpecified"));
                 return;
             }
@@ -176,7 +176,7 @@ module.exports = CreateCommand({
             "types": [ "text" ]
         }],
         "execute": async (msg, guild, locale, [ userId, creditsToAward, reason ]) => {
-            const user = msg.guild.members.resolve(userId);
+            const user = await Utils.SafeFetch(msg.guild.members, userId);
             if (user == null) {
                 await msg.reply(locale.Get("invalidUser"));
                 return;
@@ -221,7 +221,7 @@ module.exports = CreateCommand({
             "types": [ "text" ]
         }],
         "execute": async (msg, guild, locale, [ userId, creditsToSet, reason ]) => {
-            const user = msg.guild.members.resolve(userId);
+            const user = await Utils.SafeFetch(msg.guild.members, userId);
             if (user == null) {
                 await msg.reply(locale.Get("invalidUser"));
                 return;
@@ -261,7 +261,7 @@ module.exports = CreateCommand({
             "types": [ "text" ]
         }],
         "execute": async (msg, guild, locale, [ userId, reason ]) => {
-            const user = msg.guild.members.resolve(userId);
+            const user = await Utils.SafeFetch(msg.guild.members, userId);
             if (user == null) {
                 await msg.reply(locale.Get("invalidUser"));
                 return;
@@ -302,7 +302,7 @@ module.exports = CreateCommand({
                 "inCreditsManagerAccessList", "isCreditsManagerAccessBlacklist"
             )) return;
 
-            const targetUser = msg.guild.members.resolve(userId);
+            const targetUser = await Utils.SafeFetch(msg.guild.members, userId);
             if (targetUser == null) {
                 await msg.reply(locale.Get("invalidUser"));
                 return;
