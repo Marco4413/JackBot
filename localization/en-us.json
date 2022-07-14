@@ -139,7 +139,7 @@
       "invalidUser": "The specified user couldn't be found.",
       "creditsGain": "**[{upvote}]** {author-mention} **awarded** {delta} credits to {user-mention} for a total of **{total}** for: {reason}",
       "creditsLoss": "**[{downvote}]** {author-mention} **removed** {delta} credits from {user-mention} for a total of **{total}** for: {reason}",
-      "otherCredits": "[**-**] {user-mention} has a total of **{credits}** credits.",
+      "otherCredits": "{user} has a total of **{credits}** credits.",
       "creditsUpdated": "Updated credits for the specified user.",
       "selfCredits": "You have a total of **{credits}** credits.",
       "noReasonSpecified": "No reason specified."

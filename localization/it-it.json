@@ -139,9 +139,9 @@
       "invalidUser": "L'utente specificato non è stato trovato.",
       "creditsGain": "**[{upvote}]** {author-mention} ha **premiato** {user-mention} con {delta} crediti per un totale di **{total}** per: {reason}",
       "creditsLoss": "**[{downvote}]** {author-mention} ha **rimosso** da {user-mention} {delta} crediti per un totale di **{total}** per: {reason}",
-      "otherCredits": "[**-**] {user-mention} ha un totale di {credits} crediti.",
+      "otherCredits": "{user} ha un totale di **{credits}** crediti.",
       "creditsUpdated": "Crediti aggiornati per l'utente specificato.",
-      "selfCredits": "Hai un totale di {credits} crediti.",
+      "selfCredits": "Hai un totale di **{credits}** crediti.",
       "noReasonSpecified": "Nessun motivo specificato."
     },
     "help": {

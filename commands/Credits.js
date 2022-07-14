@@ -312,14 +312,13 @@ module.exports = CreateCommand({
                 "guildId": msg.guildId, userId
             }))?.credits ?? DatabaseDefinitions.UserModel.credits.defaultValue;
 
-            await msg.channel.send(locale.GetFormatted(
+            await msg.reply(locale.GetFormatted(
                 "otherCredits", {
                     "user": locale.GetSoftMention("User", targetUser?.displayName, userId),
                     "user-mention": Utils.MentionUser(userId),
                     "credits": Utils.NumberToSignedString(userCredits)
                 }
             ));
-            await msg.delete();
             return;
         }
 
