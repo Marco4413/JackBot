@@ -1,0 +1,8 @@
+# Editor configs
+.idea/
+.vscode/
+
+# Modules don't need to be checked
+node_modules/
+# The Data folder should definitely be ignored
+data/

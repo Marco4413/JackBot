@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
     "dev": "cross-env-shell NODE_ENV=development node .",
-    "eslint": "eslint *.js",
-    "eslint-dev": "eslint --debug *.js"
+    "eslint": "eslint **/*.js",
+    "eslint-dev": "eslint --debug **/*.js"
   },
   "repository": {
     "type": "git",
@@ -46,7 +46,9 @@
     "sqlite3": "^5.0.2"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "^5.30.6",
     "cross-env": "^7.0.3",
-    "eslint": "^8.4.1"
+    "eslint": "^8.4.1",
+    "eslint-plugin-deprecation": "^1.3.2"
   }
 }

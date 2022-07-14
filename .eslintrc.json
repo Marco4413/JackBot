@@ -6,10 +6,15 @@
     "node": true
   },
   "extends": "eslint:recommended",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2021
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "project": "./.tsconfig.json"
   },
+  "plugins": [ "deprecation" ],
   "rules": {
+    "deprecation/deprecation": "warn",
     "no-tabs": "error",
     "no-constant-condition": [
       "error",
