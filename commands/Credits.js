@@ -1,7 +1,6 @@
 const { Message, Channel } = require("discord.js");
 const { CreateCommand, Database, Utils, DatabaseDefinitions, Permissions } = require("../Command.js");
 const { Locale } = require("../Localization.js");
-const Logger = require("../Logger.js");
 const SMath = require("../SandMath.js");
 const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 
@@ -137,7 +136,8 @@ module.exports = CreateCommand({
             try {
                 newCredits = SMath.EvaluateToNumber(formula, {
                     "credits": oldUserRow.credits,
-                    "c": oldUserRow.credits
+                    "c": oldUserRow.credits,
+                    "x": oldUserRow.credits
                 });
             } catch (err) {
                 await msg.reply(locale.Get("formulaError"));
