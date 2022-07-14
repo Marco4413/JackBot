@@ -19,6 +19,7 @@ const _GetFormattedCredits = (locale, userId, authorId, oldCredits, newCredits, 
     return locale.GetFormatted(
         isCreditGain ? "creditsGain" : "creditsLoss", {
             [isCreditGain ? "gain" : "loss"]: Utils.NumberToSignedString(creditsDelta),
+            "delta": Math.abs(creditsDelta),
             "user-mention": Utils.MentionUser(userId),
             "author-mention": Utils.MentionUser(authorId),
             "total": Utils.NumberToSignedString(newCredits),
