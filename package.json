@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
     "dev": "cross-env-shell NODE_ENV=development node .",
-    "eslint": "eslint **/*.js",
-    "eslint-dev": "eslint --debug **/*.js"
+    "eslint": "eslint .",
+    "eslint-dev": "eslint --debug ."
   },
   "repository": {
     "type": "git",
