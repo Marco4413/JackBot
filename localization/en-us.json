@@ -63,7 +63,8 @@
           "noChannel": "You've got no private text channel.",
           "created": "Your private text channel was created!",
           "alreadyCreated": "You've already got a private text channel.",
-          "deleted": "Your private text channel was deleted."
+          "deleted": "Your private text channel was deleted.",
+          "featureDisabled": "This command was disabled due to voice channel chats being introduced."
         },
         "voice": {
           "cantDelete": "Can't delete your private voice channel.",

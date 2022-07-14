@@ -36,14 +36,14 @@ CreateInterval(async id => {
 
     const dateNow = Date.now();
     for (const user of usersWithChannels) {
-        const guild = Client.guilds.resolve(user.guildId);
+        const guild = await Utils.SafeFetch(Client.guilds, user.guildId);
         if (guild === null) continue;
 
         let textChannelDeleted  = false;
         let voiceChannelDeleted = false;
 
         if (user.privateTextChannelId !== null) {
-            const textChannel = guild.channels.resolve(user.privateTextChannelId);
+            const textChannel = await Utils.SafeFetch(guild.channels, user.privateTextChannelId);
             if (textChannel === null) {
                 textChannelDeleted = true;
             } else if ((
@@ -60,7 +60,7 @@ CreateInterval(async id => {
         }
 
         if (user.privateVoiceChannelId !== null) {
-            const voiceChannel = guild.channels.resolve(user.privateVoiceChannelId);
+            const voiceChannel = await Utils.SafeFetch(guild.channels, user.privateVoiceChannelId);
             if (voiceChannel === null) {
                 voiceChannelDeleted = true;
             } else if (
@@ -97,7 +97,7 @@ module.exports = CreateCommand({
         {
             "name": "text",
             "shortcut": "t",
-            "subcommands": [
+            /* "subcommands": [
                 {
                     "name": "create",
                     "shortcut": "c",
@@ -112,7 +112,10 @@ module.exports = CreateCommand({
                         await DeleteTextChannel(msg.member, msg);
                     }
                 }
-            ]
+            ] */
+            "execute": async (msg, guild, locale) => {
+                await msg.reply(locale.Get("featureDisabled"));
+            }
         },
         {
             "name": "voice",
@@ -155,7 +158,7 @@ module.exports = CreateCommand({
                         return;
                     }
 
-                    const category = msg.guild.channels.resolve(categoryId);
+                    const category = await Utils.SafeFetch(msg.guild.channels, categoryId);
                     if (category === null || category.type !== "GUILD_CATEGORY") {
                         await msg.reply(locale.Get("invalidCategory"));
                         return;
@@ -173,7 +176,7 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                const category = msg.guild.channels.resolve(guild.privateChannelCategoryId);
+                const category = await Utils.SafeFetch(msg.guild.channels, guild.privateChannelCategoryId);
                 await msg.reply(locale.GetFormatted(
                     "currentCategory", {
                         "category": locale.GetSoftMention(
@@ -204,7 +207,7 @@ module.exports = CreateCommand({
                         return;
                     }
 
-                    const voiceChannel = msg.guild.channels.resolve(channelId);
+                    const voiceChannel = await Utils.SafeFetch(msg.guild.channels, channelId);
                     if (voiceChannel === null || voiceChannel.type !== "GUILD_VOICE") {
                         await msg.reply(locale.Get("invalidChannel"));
                         return;
@@ -222,7 +225,7 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                const voiceChannel = msg.guild.channels.resolve(guild.privateVoiceCreateChannelId);
+                const voiceChannel = await Utils.SafeFetch(msg.guild.channels, guild.privateVoiceCreateChannelId);
                 await msg.reply(locale.GetFormatted(
                     "currentChannel", {
                         "channel": locale.GetSoftMention(
@@ -257,7 +260,7 @@ module.exports = CreateCommand({
                                 return;
                             }
 
-                            const templateRole = msg.guild.roles.resolve(templateRoleId);
+                            const templateRole = await Utils.SafeFetch(msg.guild.roles, templateRoleId);
                             if (templateRole === null) {
                                 await msg.reply(locale.Get("invalidRole"));
                                 return;
@@ -281,7 +284,7 @@ module.exports = CreateCommand({
                             return;
                         }
 
-                        const templateRole = msg.guild.roles.resolve(guild.privateChannelEveryoneTemplateRoleId);
+                        const templateRole = await Utils.SafeFetch(msg.guild.roles, guild.privateChannelEveryoneTemplateRoleId);
                         await msg.reply(locale.GetFormatted(
                             "currentEveryone", {
                                 "role": locale.GetSoftMention(
@@ -311,7 +314,7 @@ module.exports = CreateCommand({
                                 return;
                             }
 
-                            const templateRole = msg.guild.roles.resolve(templateRoleId);
+                            const templateRole = await Utils.SafeFetch(msg.guild.roles, templateRoleId);
                             if (templateRole === null) {
                                 await msg.reply(locale.Get("invalidRole"));
                                 return;
@@ -335,7 +338,7 @@ module.exports = CreateCommand({
                             return;
                         }
 
-                        const templateRole = msg.guild.roles.resolve(guild.privateChannelOwnerTemplateRoleId);
+                        const templateRole = await Utils.SafeFetch(msg.guild.roles, guild.privateChannelOwnerTemplateRoleId);
                         await msg.reply(locale.GetFormatted(
                             "currentOwner", {
                                 "role": locale.GetSoftMention(

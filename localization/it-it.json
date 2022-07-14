@@ -63,7 +63,8 @@
           "noChannel": "Non hai nessun canale testuale privato.",
           "created": "Il tuo canale testuale privato è stato creato!",
           "alreadyCreated": "Hai già un canale testuale privato.",
-          "deleted": "Il tuo canale testuale privato è stato rimosso."
+          "deleted": "Il tuo canale testuale privato è stato rimosso.",
+          "featureDisabled": "Questo comando è stato disabilitato a causa dell'introduzione delle chat dei canali vocali."
         },
         "voice": {
           "cantDelete": "Non è possibile cancellare il tuo canale vocale privato.",

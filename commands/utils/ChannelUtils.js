@@ -36,12 +36,13 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
         "userId": member.id
     });
 
-    let userChannel = member.guild.channels.resolve(user.privateVoiceChannelId);
+    let userChannel = await Utils.SafeFetch(member.guild.channels, user.privateVoiceChannelId);
     if (userChannel === null) {
-        const parent = member.guild.channels.resolve(guild.privateChannelCategoryId);
+        const parent = await Utils.SafeFetch(member.guild.channels, guild.privateChannelCategoryId);
         const permissionOverwrites = [ ];
         if (guild.privateChannelEveryoneTemplateRoleId !== null) {
-            const everyoneTemplateRole = member.guild.roles.resolve(
+            const everyoneTemplateRole = await Utils.SafeFetch(
+                member.guild.roles,
                 guild.privateChannelEveryoneTemplateRoleId
             );
             
@@ -55,7 +56,8 @@ const CreateVoiceChannel = async (member, channelName, msg) => {
         }
     
         if (guild.privateChannelOwnerTemplateRoleId !== null) {
-            const ownerTemplateRole = member.guild.roles.resolve(
+            const ownerTemplateRole = await Utils.SafeFetch(
+                member.guild.roles,
                 guild.privateChannelOwnerTemplateRoleId
             );
     
@@ -125,7 +127,7 @@ const DeleteVoiceChannel = async (member, scatterUsers = true, msg) => {
         return;
     }
 
-    const userChannel = member.guild.channels.resolve(user.privateVoiceChannelId);
+    const userChannel = await Utils.SafeFetch(member.guild.channels, user.privateVoiceChannelId);
     if (userChannel === null) {
         await msg?.reply(locale.Get("noChannel"));
         return;
@@ -173,6 +175,7 @@ const DeleteVoiceChannel = async (member, scatterUsers = true, msg) => {
 
 /**
  * Creates a new Text Channel for the specified Member
+ * @deprecated
  * @param {GuildMember} member The Member to create the new Text Channel for
  * @param {String} [channelName] The name of the new Channel
  * @param {Message?} [msg] The Message to reply to for verbose ( None if null or undefined )
@@ -190,12 +193,13 @@ const CreateTextChannel = async (member, channelName, msg) => {
         "userId": member.id
     });
 
-    let userChannel = member.guild.channels.resolve(user.privateTextChannelId);
+    let userChannel = await Utils.SafeFetch(member.guild.channels, user.privateTextChannelId);
     if (userChannel === null) {
-        const parent = member.guild.channels.resolve(guild.privateChannelCategoryId);
+        const parent = await Utils.SafeFetch(member.guild.channels, guild.privateChannelCategoryId);
         const permissionOverwrites = [ ];
         if (guild.privateChannelEveryoneTemplateRoleId !== null) {
-            const everyoneTemplateRole = member.guild.roles.resolve(
+            const everyoneTemplateRole = await Utils.SafeFetch(
+                member.guild.roles,
                 guild.privateChannelEveryoneTemplateRoleId
             );
             
@@ -209,7 +213,8 @@ const CreateTextChannel = async (member, channelName, msg) => {
         }
     
         if (guild.privateChannelOwnerTemplateRoleId !== null) {
-            const ownerTemplateRole = member.guild.roles.resolve(
+            const ownerTemplateRole = await Utils.SafeFetch(
+                member.guild.roles,
                 guild.privateChannelOwnerTemplateRoleId
             );
     
@@ -259,6 +264,7 @@ const CreateTextChannel = async (member, channelName, msg) => {
 
 /**
  * Deletes the Private Text Channel for the specified Member
+ * @deprecated
  * @param {GuildMember} member The Member to delete the Text Channel for
  * @param {Message?} [msg] The Message to reply to for verbose ( None if null or undefined )
  */
@@ -279,7 +285,7 @@ const DeleteTextChannel = async (member, msg) => {
         return;
     }
 
-    const channel = member.guild.channels.resolve(user.privateTextChannelId);
+    const channel = await Utils.SafeFetch(member.guild.channels, user.privateTextChannelId);
     if (channel === null) {
         await msg?.reply(locale.Get("noChannel"));
         return;
