@@ -2,7 +2,8 @@ const fs = require("fs");
 const {
     Message, MessageEmbed, MessageReaction,
     EmojiIdentifierResolvable, MessagePayload,
-    ReplyMessageOptions, DataManager, BaseFetchOptions
+    ReplyMessageOptions, DataManager, BaseFetchOptions,
+    Collection
 } = require("discord.js");
 const path = require("path");
 
@@ -57,12 +58,15 @@ const SafeDelete = async (msg) => {
  * @param {BaseFetchOptions} [cacheOptions] Cache options (When fetch fallback is used)
  * @returns {Promise<Holds?>} The value fetched from the {@link DataManager}
  */
-const SafeFetch = async (fetchable, query, cacheOptions) => {
+const SafeFetch = async (fetchable, query, cacheOptions = { "cache": true }) => {
     const result = fetchable.resolve(query);
     if (result != null) return result;
 
     try {
-        return await fetchable.fetch(query, cacheOptions);
+        const fetched = await fetchable.fetch(query, cacheOptions);
+        if (fetched instanceof Collection)
+            return fetched.get(query) ?? null;
+        return fetched;
     } catch (error) {
         return null;
     }
