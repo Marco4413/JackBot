@@ -7,18 +7,20 @@ const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 /**
  * @param {Locale} locale
  * @param {String} userId
+ * @param {String} authorId
  * @param {Number} oldCredits
  * @param {Number} newCredits
  * @param {String} reason
  * @returns {String}
  */
-const _GetFormattedCredits = (locale, userId, oldCredits, newCredits, reason) => {
+const _GetFormattedCredits = (locale, userId, authorId, oldCredits, newCredits, reason) => {
     const creditsDelta = newCredits - oldCredits;
     const isCreditGain = creditsDelta >= 0;
     return locale.GetFormatted(
         isCreditGain ? "creditsGain" : "creditsLoss", {
             [isCreditGain ? "gain" : "loss"]: Utils.NumberToSignedString(creditsDelta),
             "user-mention": Utils.MentionUser(userId),
+            "author-mention": Utils.MentionUser(authorId),
             "total": Utils.NumberToSignedString(newCredits),
             "reason": reason,
             "upvote": locale.GetCommon("upvote"),
@@ -150,7 +152,7 @@ module.exports = CreateCommand({
 
             const creditsChannel = await _GetCreditsChannel(msg, guild);
             await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
-                locale, userId, oldUserRow.credits, newUserRow.credits, trimmedReason
+                locale, userId, msg.author.id, oldUserRow.credits, newUserRow.credits, trimmedReason
             ));
 
             if (creditsChannel == null)
@@ -195,7 +197,7 @@ module.exports = CreateCommand({
 
             const creditsChannel = await _GetCreditsChannel(msg, guild);
             await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
-                locale, userId, oldUserRow.credits, newUserRow.credits, reason
+                locale, userId, msg.author.id, oldUserRow.credits, newUserRow.credits, reason
             ));
 
             if (creditsChannel == null)
@@ -239,7 +241,7 @@ module.exports = CreateCommand({
 
             const creditsChannel = await _GetCreditsChannel(msg, guild);
             await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
-                locale, userId, oldUserRow.credits, newUserRow.credits, reason
+                locale, userId, msg.author.id, oldUserRow.credits, newUserRow.credits, reason
             ));
 
             if (creditsChannel == null)
@@ -279,7 +281,7 @@ module.exports = CreateCommand({
 
             const creditsChannel = await _GetCreditsChannel(msg, guild);
             await (creditsChannel ?? msg.channel).send(_GetFormattedCredits(
-                locale, userId, oldUserRow.credits, newUserRow.credits, reason
+                locale, userId, msg.author.id, oldUserRow.credits, newUserRow.credits, reason
             ));
 
             if (creditsChannel == null)
