@@ -17,6 +17,11 @@ ENABLE_DM_LOGGING = false
 # Only required to enable GIF search functions, remove the field to disable them
 TENOR_API_KEY = "MyTenorAPIKey"
 
+# Generic Settings
+# Whether or not to delete User Data when a User leaves a Guild
+# Put it on false if you want persistent settings for Users even if they leave an re-join the Guild
+DELETE_USERS_ON_LEAVE = true
+
 # Private Channels Settings
 # The interval for checking inactive Private Text/Voice Channels
 CHANNEL_SWEEP_INTERVAL = 900e3
