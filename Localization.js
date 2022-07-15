@@ -30,7 +30,7 @@ const RegisterLocales = () => {
         }
     });
 
-    if (_Locales[DEFAULT_LOCALE] === undefined)
+    if (_Locales[DEFAULT_LOCALE] == null)
         throw new Error(`Default Locale "${DEFAULT_LOCALE}" couldn't be loaded.`);
 };
 
@@ -95,6 +95,20 @@ const _TraverseObject = (obj, rootPath, pathToTraverse) => {
     }
 
     return traversal;
+};
+
+const _SIGNED_NUMBER_FORMAT = new Intl.NumberFormat("it-it", {
+    signDisplay: "exceptZero"
+});
+
+const _UNSIGNED_NUMBER_FORMAT = new Intl.NumberFormat("it-it", {
+    signDisplay: "auto"
+});
+
+const _SIGN_MAP = {
+    [ 1 ]: "+",
+    [ 0 ]:  "",
+    [-1 ]: "-",
 };
 
 class Locale {
@@ -266,7 +280,7 @@ class Locale {
         const subKey = relativePath && this._root !== this._locale ? "subcommands" : "commands";
         if (commandPathComponents.length === 0 ||
             // We don't even bother to search for a Command if there can't be any
-            ( this._locale[subKey] ?? undefined ) === undefined) return null;
+            ( this._locale[subKey] ) == null) return null;
 
         const fullPath = [
             subKey, commandPathComponents[0]
@@ -299,7 +313,7 @@ class Locale {
      * @param {Any} n The Number to translate
      * @returns {String} The translated Number
      */
-    TranslateNumber(n) {
+    TranslateNumber(n, digitsSeparator = false, keepSign = false) {
         if (Utils.IsNaN(n)) {
             return this.GetCommon("nan");
         } else if (n === Number.POSITIVE_INFINITY) {
@@ -307,7 +321,10 @@ class Locale {
         } else if (n === Number.NEGATIVE_INFINITY) {
             return this.GetCommon("negativeInfinity");
         }
-        return n.toString();
+
+        if (digitsSeparator)
+            return keepSign ? _SIGNED_NUMBER_FORMAT.format(n) : _UNSIGNED_NUMBER_FORMAT.format(n);
+        return keepSign ? (_SIGN_MAP[Math.sign(n)] + Math.abs(n)) : n.toString();
     }
 }
 
