@@ -156,7 +156,7 @@ const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
 };
 
 /** @param {Number} number */
-const _NumberFormatter = (number, digits, fillerDigit = "0") => fillerDigit.repeat(Math.max(digits - ("" + number).length, 0)) + number;
+const _DateNumberFormatter = (number, digits, fillerDigit = "0") => fillerDigit.repeat(Math.max(digits - ("" + number).length, 0)) + number;
 
 /**
  * Gets the formatted components of the specified Date
@@ -168,9 +168,9 @@ const _NumberFormatter = (number, digits, fillerDigit = "0") => fillerDigit.repe
  */
 const GetFormattedDateComponents = (date = new Date(), dateSep = "/", timeSep = ":", millisSep = ".") => {
     return {
-        "date": JoinArray([ date.getFullYear(), date.getMonth() + 1, date.getDate() ], dateSep, n => _NumberFormatter(n, 2)),
-        "time": JoinArray([ date.getHours(), date.getMinutes(), date.getSeconds() ], timeSep, n => _NumberFormatter(n, 2))
-            + millisSep + _NumberFormatter(date.getMilliseconds(), 3)
+        "date": JoinArray([ date.getFullYear(), date.getMonth() + 1, date.getDate() ], dateSep, n => _DateNumberFormatter(n, 2)),
+        "time": JoinArray([ date.getHours(), date.getMinutes(), date.getSeconds() ], timeSep, n => _DateNumberFormatter(n, 2))
+            + millisSep + _DateNumberFormatter(date.getMilliseconds(), 3)
     };
 };
 
@@ -185,18 +185,6 @@ const IsNaN = (n) => {
     const nType = typeof n;
     return Number.isNaN(n) || nType !== "number" && nType !== "bigint";
 };
-
-const _SIGNED_NUMBER_FORMAT = new Intl.NumberFormat("it-it", {
-    signDisplay: "exceptZero"
-});
-
-/**
- * Converts a Number to a String and always shows its sign
- * @param {Number} n The Number to convert
- * @returns {String} The Signed Number as a String
- */
-const NumberToSignedString = n =>
-    _SIGNED_NUMBER_FORMAT.format(n);
 
 /**
  * Creates a mention to the specified User
@@ -257,7 +245,7 @@ const AnyToNumber = (value) => {
 };
 
 
-// TODO: Maybe make a generic method to fitler files by an array of extensions
+// TODO: Maybe make a generic method to filter files by an array of extensions
 const _AUDIO_EXTENSIONS = [ "mp3", "wav" ];
 const _AUDIO_REGEXP = new RegExp(`^(.+)\\.(${JoinArray(_AUDIO_EXTENSIONS, "|")})$`);
 
@@ -351,7 +339,7 @@ module.exports = {
     IsValidEmbedValue, FormatString, MapFormatString,
     JoinArray, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
-    IsNaN, NumberToSignedString,
+    IsNaN,
     MentionUser, MentionChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, GetAudioFilesInDirectory,

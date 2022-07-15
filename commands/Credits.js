@@ -18,11 +18,11 @@ const _GetFormattedCredits = (locale, userId, authorId, oldCredits, newCredits, 
     const isCreditGain = creditsDelta >= 0;
     return locale.GetFormatted(
         isCreditGain ? "creditsGain" : "creditsLoss", {
-            [isCreditGain ? "gain" : "loss"]: Utils.NumberToSignedString(creditsDelta),
-            "delta": Math.abs(creditsDelta),
+            [isCreditGain ? "gain" : "loss"]: locale.TranslateNumber(creditsDelta, true, true),
+            "delta": locale.TranslateNumber(Math.abs(creditsDelta), true, false),
             "user-mention": Utils.MentionUser(userId),
             "author-mention": Utils.MentionUser(authorId),
-            "total": Utils.NumberToSignedString(newCredits),
+            "total": locale.TranslateNumber(newCredits, true, true),
             "reason": reason,
             "upvote": locale.GetCommon("upvote"),
             "downvote": locale.GetCommon("downvote")
@@ -316,7 +316,7 @@ module.exports = CreateCommand({
                 "otherCredits", {
                     "user": locale.GetSoftMention("User", targetUser?.displayName, userId),
                     "user-mention": Utils.MentionUser(userId),
-                    "credits": Utils.NumberToSignedString(userCredits)
+                    "credits": locale.TranslateNumber(userCredits, true, true)
                 }
             ));
             return;
@@ -328,7 +328,7 @@ module.exports = CreateCommand({
 
         await msg.reply(locale.GetFormatted(
             "selfCredits", {
-                "credits": Utils.NumberToSignedString(userCredits)
+                "credits": locale.TranslateNumber(userCredits, true, true)
             }
         ));
     }
