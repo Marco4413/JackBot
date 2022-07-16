@@ -3,71 +3,71 @@
   "description": "Lista di tutti i comandi disponibili.",
   "subcommands": {
     "help": {
-      "title": "Help",
+      "title": "help [COMANDO...]",
       "description": "Mostra questi messaggi di aiuto."
     },
     "info": {
-      "title": "Info",
+      "title": "info",
       "description": "Mostra informazioni sul bot."
     },
     "access-list": {
-      "title": "Access List",
+      "title": "access-list <SUB>",
       "description": "Gestisce le Blacklist/Whitelist degli Utenti e Ruoli.",
       "subcommands": {
-        "<COMMAND-NAME>": {
-          "title": "<COMMAND-NAME>",
+        "<COMMAND>": {
+          "title": "<COMMAND>",
           "description": "Gestisce la Access List per il comando specificato.\nFunziona con: `channel`, `role`, `sound`, `suggestion`, `suggestion-manager`, `credits`, `credits-manager`.",
           "subcommands": {
             "type": {
-              "title": "Type",
+              "title": "type [SUB]",
               "description": "Mostra il tipo della Access List.",
               "subcommands": {
                 "set": {
-                  "title": "Set",
+                  "title": "set <'blacklist'|'whitelist'>",
                   "description": "Imposta il tipo della Access List.\nTipi validi: `blacklist`, `whitelist`."
                 }
               }
             },
             "user": {
-              "title": "User",
+              "title": "user <SUB>",
               "description": "Gestisce la Access List degli Utenti.",
               "subcommands": {
                 "clear": {
-                  "title": "Clear",
+                  "title": "clear",
                   "description": "Svuota la Access List degli Utenti."
                 },
                 "list": {
-                  "title": "List",
+                  "title": "list",
                   "description": "Mostra tutti gli Utenti nella Access List."
                 },
                 "add": {
-                  "title": "Add",
+                  "title": "add <UTENTE...>",
                   "description": "Aggiunge tutti gli Utenti specificati alla Access List."
                 },
                 "remove": {
-                  "title": "Remove",
+                  "title": "remove <UTENTE...>",
                   "description": "Rimuove tutti gli Utenti specificati dalla Access List."
                 }
               }
             },
             "role": {
-              "title": "Role",
+              "title": "role <SUB>",
               "description": "Gestisce la Access List dei Ruoli.",
               "subcommands": {
                 "clear": {
-                  "title": "Clear",
+                  "title": "clear",
                   "description": "Svuota la Access List dei Ruoli."
                 },
                 "list": {
-                  "title": "List",
+                  "title": "list",
                   "description": "Mostra tutti i Ruoli nella Access List."
                 },
                 "add": {
-                  "title": "Add",
+                  "title": "add <RUOLO...>",
                   "description": "Aggiunge tutti i Ruoli specificati alla Access List."
                 },
                 "remove": {
-                  "title": "Remove",
+                  "title": "remove <RUOLO...>",
                   "description": "Rimuove tutti i Ruoli specificati dalla Access List."
                 }
               }
@@ -77,105 +77,91 @@
       }
     },
     "banana": {
-      "title": "Banana",
+      "title": "banana",
       "description": "Prende una GIF casuale di Banane da Tenor."
     },
     "boost": {
-      "title": "Boost",
+      "title": "boost <SUB>",
       "description": "Gestisce gli annunci per i Boost Nitro in questo server da parte del Bot.",
       "subcommands": {
         "channel": {
-          "title": "Channel",
+          "title": "channel [SUB]",
           "description": "Mostra il Canale corrente per gli annunci Boost Nitro.",
           "subcommands": {
             "set": {
-              "title": "Set",
-              "description": "Imposta il Canale per gli annunci Boost Nitro a quello specificato."
+              "title": "set [CANALE]",
+              "description": "Imposta il Canale per gli annunci Boost Nitro."
             }
           }
         },
         "test": {
-          "title": "Test",
+          "title": "test",
           "description": "Testa gli annunci Boost Nitro inviando l'Annuncio o nel Canale specificato o quello impostato."
         }
       }
     },
     "calculate": {
-      "title": "Calculate",
-      "description": "Calcola l'Espressione Matematica specificata."
+      "title": "calculate <FORMULA>",
+      "description": "Calcola l'Espressione Matematica."
     },
     "channel": {
-      "title": "Channel",
+      "title": "channel <SUB>",
       "description": "Gestisce i Canali Vocali e Testuali Privati.",
       "subcommands": {
-        "text": {
-          "title": "Text",
-          "description": "Gestisce i Canali Testuali Privati.",
-          "subcommands": {
-            "create": {
-              "title": "Create",
-              "description": "Crea un nuovo Canale Testuale Privato."
-            },
-            "delete": {
-              "title": "Delete",
-              "description": "Cancella il tuo Canale Testuale Privato."
-            }
-          }
-        },
         "voice": {
-          "title": "Voice",
+          "title": "voice <SUB>",
           "description": "Gestisce i Canali Vocali Privati.",
           "subcommands": {
             "create": {
-              "title": "Create",
+              "title": "create [NOME...]",
               "description": "Crea un nuovo Canale Vocale Privato."
             },
             "delete": {
-              "title": "Delete",
+              "title": "delete",
               "description": "Cancella il tuo Canale Vocale Privato"
             }
           }
         },
         "category": {
-          "title": "Category",
+          "title": "category [SUB]",
           "description": "Mostra la Categoria per i nuovi Canali Privati.",
           "subcommands": {
             "set": {
-              "title": "Set",
+              "title": "set <CANALE>",
               "description": "Imposta la Categoria per i nuovi Canali Privati."
             }
           }
         },
         "voice-creation-channel": {
-          "title": "Voice Creation Channel",
+          "title": "voice-creation-channel [SUB]",
           "description": "Mostra il Canale in cui un Utente dovrebbe entrare per creare in automatico un nuovo Canale Vocale.",
           "subcommands": {
             "set": {
-              "title": "Set",
+              "title": "set [CANALE]",
               "description": "Imposta il Canale per Creare nuovi Canali Vocali."
             }
           }
         },
         "template-role": {
-          "title": "Template Role",
+          "title": "template-role <SUB>",
           "description": "Gestisce i Ruoli Template per i Permessi dei nuovi Canali.",
           "subcommands": {
             "everyone": {
-              "title": "Everyone",
+              "title": "everyone [SUB]",
               "description": "Mostra il Ruolo Template per Everyone.",
               "subcommands": {
                 "set": {
-                  "title": "Set",
+                  "title": "set [RUOLO]",
                   "description": "Imposta il Ruolo Template per Everyone."
                 }
               }
             },
             "owner": {
-              "title": "Owner",
+              "title": "owner [SUB]",
               "description": "Mostra il Ruolo Template per il Creatore del Canale.",
               "subcommands": {
                 "set": {
-                  "title": "Set",
+                  "title": "set [RUOLO]",
                   "description": "Imposta il Ruolo Template per il Creatore del Canale."
                 }
               }
@@ -185,113 +171,117 @@
       }
     },
     "counter": {
-      "title": "Counter",
+      "title": "counter [SUB]",
       "description": "Mostra l'attuale conteggio di questo canale.",
       "subcommands": {
         "start": {
-          "title": "Start",
+          "title": "start",
           "description": "Inizia un nuovo conteggio in questo canale."
         },
         "terminate": {
-          "title": "Terminate",
-          "description": "Rimuove il conteggio in questo canale o uno specificato."
+          "title": "terminate [CANALE]",
+          "description": "Rimuove il conteggio in questo o un altro canale."
         },
         "config": {
-          "title": "Config",
+          "title": "config <SUB>",
           "description": "Usato per configurare il conteggio di questo canale.",
           "subcommands": {
             "allow-messages": {
-              "title": "Allow Messages",
+              "title": "allow-messages <'true'|'false'>",
               "description": "Se impostato su Falso i messaggi inviati nel canale che non sono numeri verranno eliminati."
             },
             "allow-errors": {
-              "title": "Allow Errors",
+              "title": "allow-errors <'true'|'false'>",
               "description": "Se impostato su Falso i numeri errati inviati nel canale verranno ignorati ed eliminati."
             },
             "alternate-member": {
-              "title": "Alternate Member",
+              "title": "alternate-member <'true'|'false'>",
               "description": "Se impostato su Vero un utente non potrà inviare più di due numeri di seguito ed i suoi messaggi saranno ignorati ed eliminati."
             }
           }
         },
         "best": {
-          "title": "Best",
+          "title": "best",
           "description": "Mostra il conteggio più alto raggiunto in questo canale."
         },
         "list": {
-          "title": "List",
+          "title": "list",
           "description": "Mostra tutti i conteggi attivi nel server."
         }
       }
     },
     "credits": {
-      "title": "Credits",
+      "title": "credits [SUB|UTENTE]",
       "description": "Mostra i tuoi crediti nel Server.",
       "subcommands": {
         "channel": {
-          "title": "Channel",
+          "title": "channel [SUB]",
           "description": "Mostra il Canale dei Crediti.",
           "subcommands": {
             "set": {
-              "title": "Set",
+              "title": "set [CANALE]",
               "description": "Imposta il Canale dei Crediti."
             }
           }
         },
         "apply": {
-          "title": "Apply",
-          "description": "Applica una formula ai crediti di un'Utente.\nPer **separare la formula dal motivo** usa `;;`:\n*e.g.* `x + 10 ;; E' un bravo giovanotto.`\nPuoi far **riferimento ai crediti precedenti dell'utente** usando le variabili:\n`x`, `c`, `credits`\n**I valori decimali sono troncati**."
+          "title": "apply <UTENTE> <FORMULA ;; MOTIVO...>",
+          "description": "Applica una formula ai crediti di un'utente.\nPer **separare la formula dal motivo** usa `;;`:\n*e.g.* `x + 10 ;; E' un bravo giovanotto.`\nPuoi far **riferimento ai crediti precedenti dell'utente** usando le variabili:\n`x`, `c`, `credits`\n**I valori decimali sono troncati**."
         },
         "award": {
-          "title": "Award",
-          "description": "Premia l'Utente specificato con i Crediti specificati con la Motivazione specificata."
+          "title": "award <UTENTE> <CREDITI> <MOTIVO...>",
+          "description": "Premia l'utente con dei crediti per uno specifico motivo."
         },
         "set": {
-          "title": "Set",
-          "description": "Imposta all'Utente specificato i Crediti specificati con la Motivazione specificata."
+          "title": "set <Utente> <Crediti> <Motivo...>",
+          "description": "Imposta i crediti specificati all'utente per un motivo."
         },
         "reset": {
-          "title": "Reset",
-          "description": "Resetta i crediti dell'Utente specificato con la Motivazione specificata."
+          "title": "reset <Utente> <Motivo...>",
+          "description": "Resetta i crediti dell'utente per un motivo."
         }
       }
     },
     "language": {
-      "title": "Language",
+      "title": "language [SUB]",
       "description": "Mostra la lingua del server.",
       "subcommands": {
+        "list": {
+          "title": "list",
+          "description": "Mostra tutte le lingue disponibili."
+        },
         "set": {
-          "title": "Set",
+          "title": "set <LINGUA>",
           "description": "Imposta la lingua del server a quella specificata."
         }
       }
     },
     "notify": {
-      "title": "Notify",
+      "title": "notify <SUB>",
       "description": "Gestisce le notifiche via canali testuali di determinati eventi.",
       "subcommands": {
         "voice": {
-          "title": "Voice",
+          "title": "voice <SUB>",
           "description": "Gestisce le notifiche via canali testuali di eventi relativi a canali vocali.",
           "subcommands": {
             "join": {
-              "title": "Join",
+              "title": "join <SUB>",
               "description": "Gestisce le notifiche via canali testuali di eventi relativi all'entrata di utenti in canali vocali.",
               "subcommands": {
                 "add": {
-                  "title": "Add",
-                  "description": "Aggiunge una nuova notifica per il canale vocale specificato nel canale testuale specificato che utilizzerà il testo specificato.\n**Le variabili valide per il messaggio sono le seguenti:**\n{join-user-mention}\n{join-user-nickname}\n{join-user-name}\n{join-user-id}\n{joined-channel-mention}\n{joined-channel-name}\n{joined-channel-id}"
+                  "title": "add <CANALE VOCALE> <CANALE TESTUALE> <MESSAGGIO...>",
+                  "description": "Aggiunge una nuova notifica per il canale vocale nel canale testuale utilizzando il testo specificato.\n**Le variabili valide per il messaggio sono le seguenti:**\n{join-user-mention}\n{join-user-nickname}\n{join-user-name}\n{join-user-id}\n{joined-channel-mention}\n{joined-channel-name}\n{joined-channel-id}"
                 },
                 "remove": {
-                  "title": "Remove",
+                  "title": "remove <CANALE>",
                   "description": "Rimuove la notifica per il canale vocale specificato (Se presente)."
                 },
                 "list": {
-                  "title": "List",
+                  "title": "list <SUB|CANALE>",
                   "description": "Mostra dove le notifiche per un specifico canale vocale sono inviate e il messaggio della notifica.",
                   "subcommands": {
                     "all": {
-                      "title": "All",
+                      "title": "all",
                       "description": "Mostra tutti i canali vocali con notifiche e il canale di destinazione."
                     }
                   }
@@ -303,125 +293,125 @@
       }
     },
     "ping": {
-      "title": "Ping",
+      "title": "ping",
       "description": "Pong!",
       "subcommands": {
         "message": {
           "hidden": true,
           "hiddenNames": [ "6d", "6573", "73", "6167", "65", "b16" ],
-          "title": "Message",
+          "title": "message",
           "description": "Invia un messaggio e calcola il tempo necessario per inviare quel messaggio."
         }
       }
     },
     "prefix": {
-      "title": "Prefix",
+      "title": "prefix [SUB]",
       "description": "Mostra il prefisso del bot nel server.",
       "subcommands": {
         "set": {
-          "title": "Set",
+          "title": "set <PREFISSO>",
           "description": "Imposta il prefisso del bot nel server a quello specificato."
         }
       }
     },
     "role": {
-      "title": "Role",
+      "title": "role <SUB>",
       "description": "Gestisce i Ruoli degli Utenti.",
       "subcommands": {
         "managers": {
-          "title": "Managers",
+          "title": "managers <SUB>",
           "description": "Gestisce i manager di questo server.",
           "subcommands": {
             "add": {
-              "title": "Add",
-              "description": "Aggiunge tutti i ruoli specificati al manager (ruolo) specificato."
+              "title": "add <RUOLO MANAGER> <RUOLO...>",
+              "description": "Aggiunge tutti i ruoli specificati al manager."
             },
             "remove": {
-              "title": "Remove",
-              "description": "Rimuove tutti i ruoli specificati dal manager (ruolo) specificato.",
+              "title": "remove <SUB|<RUOLO MANAGER> <RUOLO...>>",
+              "description": "Rimuove tutti i ruoli specificati dal manager.",
               "subcommands": {
                 "all": {
-                  "title": "All",
-                  "description": "Rimuove tutti i ruoli dal manager (ruolo) specificato."
+                  "title": "all",
+                  "description": "Rimuove tutti i ruoli dal manager specificato."
                 }
               }
             },
             "list": {
-              "title": "List",
-              "description": "Mostra tutti i ruoli gestibili dal manager (ruolo) specificato.",
+              "title": "list <SUB|RUOLO>",
+              "description": "Mostra tutti i ruoli gestibili dal manager specificato.",
               "subcommands": {
                 "all": {
-                  "title": "All",
+                  "title": "all",
                   "description": "Mostra tutti i gestori di ruoli e i ruoli gestibili da loro."
                 }
               }
             },
             "clear": {
-              "title": "Clear",
+              "title": "clear",
               "description": "Rimuove tutti i manager da questo server."
             }
           }
         },
         "add": {
-          "title": "Add",
-          "description": "Aggiunge tutti i ruoli specificati all'utente specificato."
+          "title": "add <UTENTE> <RUOLO...>",
+          "description": "Aggiunge tutti i ruoli specificati all'utente."
         },
         "remove": {
-          "title": "Remove",
-          "description": "Rimuove tutti i ruoli specificati dall'utente specificato."
+          "title": "remove <UTENTE> <RUOLO...>",
+          "description": "Rimuove tutti i ruoli specificati dall'utente."
         }
       }
     },
     "shortcuts": {
-      "title": "Shortcuts",
+      "title": "shortcuts [SUB]",
       "description": "Mostra se le scorciatoie sono attivate su questo server.",
       "subcommands": {
         "set": {
-          "title": "Set",
+          "title": "set <'true'|'false'>",
           "description": "Abilita o Disabilita le scorciatoie su questo server."
         }
       }
     },
     "sound": {
-      "title": "Sound",
+      "title": "sound <SUB|AUDIO>",
       "description": "Riproduce l'audio specificato.\nUsa `sound play` se l'audio ha lo stesso nome di un sottocomando.",
       "subcommands": {
         "list": {
-          "title": "List",
+          "title": "list",
           "description": "Mostra tutti gli audio disponibili."
         },
         "stop": {
-          "title": "Stop",
+          "title": "stop",
           "description": "Termina la riproduzione dell'audio corrente."
         },
         "leave": {
-          "title": "Leave",
+          "title": "leave",
           "description": "Esce dal canale corrente se connesso."
         },
         "play": {
-          "title": "Play",
+          "title": "play <AUDIO>",
           "description": "Riproduce l'audio specificato.\nQuesto è un soprannome per `sound`, usa `sound play` se l'audio ha lo stesso nome di un sottocomando."
         }
       }
     },
     "suggestion": {
-      "title": "Suggestion",
+      "title": "suggestion <SUB|SUGGERIMENTO...>",
       "description": "Invia un nuovo suggerimento per il server.",
       "subcommands": {
         "channel": {
-          "title": "Channel",
+          "title": "channel [SUB]",
           "description": "Mostra il canale per i suggerimenti.",
           "subcommands": {
             "set": {
-              "title": "Set",
+              "title": "set [CANALE]",
               "description": "Imposta il canale per i suggerimenti."
             },
             "result": {
-              "title": "Result",
+              "title": "result [SUB]",
               "description": "Mostra il canale per gli esiti dei suggerimenti.",
               "subcommands": {
                 "set": {
-                  "title": "Set",
+                  "title": "set [CANALE]",
                   "description": "Imposta il canale per gli esiti dei suggerimenti."
                 }
               }
@@ -429,12 +419,12 @@
           }
         },
         "approve": {
-          "title": "Approve",
-          "description": "Approva il suggerimento specificato con la motivazione specificata."
+          "title": "approve <ID> <MOTIVO...>",
+          "description": "Approva il suggerimento con la motivazione specificata."
         },
         "reject": {
-          "title": "Reject",
-          "description": "Rifiuta il suggerimento specificato con la motivazione specificata."
+          "title": "reject <ID> <MOTIVO...>",
+          "description": "Rifiuta il suggerimento con la motivazione specificata."
         }
       }
     }
