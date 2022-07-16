@@ -42,7 +42,11 @@ module.exports = CreateCommand({
         const hasSubcommands = currentDoc.subcommands;
         const embed = Utils.GetDefaultEmbedForMessage(msg, true)
             .setTitle(currentDoc.title ?? noTitle)
-            .setDescription(currentDoc.description ?? "");
+            .setDescription(
+                Array.isArray(currentDoc.longDescription) ?
+                    Utils.JoinArray(currentDoc.longDescription, "\n") :
+                    (currentDoc.longDescription ?? currentDoc.description ?? "")
+            );
 
         if (hasSubcommands) {
             for (const subKey of Object.keys(currentDoc.subcommands)) {
