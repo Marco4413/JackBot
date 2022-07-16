@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { parentPort } = require("worker_threads");
 const { JoinArray, GetFormattedDateComponents, FormatString } = require("./Utils.js");
-const { Client: DiscordClient, Intents, TextChannel } = require("discord.js");
+const { Client: DiscordClient, Intents, DMChannel, User } = require("discord.js");
 
 let _LogClient = new DiscordClient({
     "intents": Intents.FLAGS.GUILD_MEMBERS,
@@ -10,14 +10,23 @@ let _LogClient = new DiscordClient({
     }
 });
 
-/** @type {TextChannel} */
-let _LogChannel = null;
+/** @type {DMChannel[]} */
+const _LogChannels = [ ];
 
 const _DiscordLog = async (message) => {
-    if (!_LogClient.isReady() || _LogChannel == null) return;
-    try {
-        await _LogChannel.send("```" + message + "```");
-    } catch (error) { /* Ignored */ }
+    if (!_LogClient.isReady() || _LogChannels.length === 0) return;
+
+    for (let i = 0; i < _LogChannels.length; i++) {
+        const channel = _LogChannels[i];
+        try {
+            await channel.send("```cs\n" + message + "```");
+        } catch (error) {
+            // https://en.wikipedia.org/wiki/HTTP_403
+            // If Access is Forbidden then we can remove the Channel
+            if (error.httpStatus === 403)
+                _LogChannels.splice(i--, 1);
+        }
+    }
 };
 
 const _INDENT_TEXT = " ";
@@ -86,16 +95,21 @@ parentPort.on("message", /** @param {LoggerWorkerMessage} msg */ msg => {
 });
 
 (async () => {
-    if (process.env["ENABLE_DM_LOGGING"] === "true") {
-        _LogClient.once("ready", async client => {
+    const logUsers = (process.env["DM_LOGGING"] ?? "").split(";");
+    _LogClient.once("ready", async client => {
+        for (const logUserId of logUsers) {
+            if (logUserId.length === 0) continue;
             try {
-                const logUser = await client.users.fetch(process.env["OWNER_ID"]);
-                _LogChannel = logUser.dmChannel ?? (await logUser.createDM());
-            } catch (error) {
-                _LogClient.destroy();
-            }
-        });
+                const logUser = await client.users.fetch(logUserId);
+                // Idk whose idea was to make Fetch return either the requested source or a collection
+                if (logUser instanceof User)
+                    _LogChannels.push(logUser.dmChannel ?? (await logUser.createDM()));
+            } catch (error) { /* Ignored */ }
+        }
+
+        if (_LogChannels.length === 0)
+            _LogClient.destroy();
+    });
     
-        await _LogClient.login(process.env["TOKEN"]);
-    }
+    await _LogClient.login(process.env["TOKEN"]);
 })();
