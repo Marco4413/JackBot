@@ -119,11 +119,13 @@ const GetRow = async (table, where = { }) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to get the rows from
  * @param {U} [where] The attributes that the rows should have
+ * @param {[ keyof U, "ASC"|"DESC" ][]} [order] The order of the rows based on their attributes
+ * @param {Number} [limit] The max rows that should be retrieved
  * @returns {Promise<U[]>} The Rows
  */
-const GetRows = async (table, where = { }) => {
+const GetRows = async (table, where = { }, order, limit) => {
     _EnsureStart();
-    const instances = await _Models[table].findAll({ where });
+    const instances = await _Models[table].findAll({ where, order, limit });
     return instances.map(m => m.get());
 };
 
