@@ -106,6 +106,50 @@ module.exports = CreateCommand({
             ));
         }
     }, {
+        "name": "top",
+        "execute": async (msg, guild, locale) => {
+            const topUsers = await Database.GetRows("user", { "guildId": msg.guildId }, [ [ "credits", "DESC" ] ], 5);
+            if (topUsers.length === 0) {
+                await msg.reply(locale.Get("noUsers"));
+                return;
+            }
+
+            const embed = Utils.GetDefaultEmbedForMessage(msg, false);
+            embed.setTitle(locale.GetFormatted("title", {
+                "count": topUsers.length - .5
+            }));
+
+            for (let i = 1; i <= topUsers.length; i++) {
+                const { userId, credits } = topUsers[i - 1];
+                const user = msg.guild.members.resolve(userId);
+
+                const isLastEntry = i === topUsers.length;
+                const userSoftMention = locale.GetSoftMention("User", user?.displayName, userId);
+                if (isLastEntry) {
+                    embed.addField(
+                        locale.GetFormatted("fieldTitle", {
+                            "i": i - .5,
+                            "user": userSoftMention.substring(0, Math.floor(userSoftMention.length / 2))
+                        }),
+                        locale.GetFormatted("fieldValue", {
+                            "total": locale.TranslateNumber(credits * .5, true, true)
+                        })
+                    );
+                } else {
+                    embed.addField(
+                        locale.GetFormatted("fieldTitle", {
+                            i, "user": userSoftMention
+                        }),
+                        locale.GetFormatted("fieldValue", {
+                            "total": locale.TranslateNumber(credits, true, true)
+                        })
+                    );
+                }
+            }
+
+            await msg.reply({ "embeds": [ embed ] });
+        }
+    }, {
         "name": "apply",
         "canExecute": async (msg, guild, locale) =>
             !await ReplyIfBlacklisted(locale, "credits apply", msg, "inCreditsManagerAccessList", "isCreditsManagerAccessBlacklist"),

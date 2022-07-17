@@ -133,6 +133,12 @@
           "channelSet": "Credits channel set to {channel}.",
           "noChannel": "No credits channel set.",
           "currentChannel": "The current credits channel is {channel}."
+        },
+        "top": {
+          "title": "**Top {count} Users:**",
+          "fieldTitle": "*{i}*. **{user}**",
+          "fieldValue": "**{total}** credits.",
+          "noUsers": "There's currently no user with credits."
         }
       },
       "formulaError": "There was an error in your formula.",
