@@ -224,6 +224,10 @@
             }
           }
         },
+        "top": {
+          "title": "top",
+          "description": "Mostra la leaderboard dei crediti."
+        },
         "apply": {
           "title": "apply <UTENTE> <FORMULA ;; MOTIVO...>",
           "description": "Applica una formula ai crediti di un'utente.\nPer **separare la formula dal motivo** usa `;;`:\n*e.g.* `x + 10 ;; E' un bravo giovanotto.`\nPuoi far **riferimento ai crediti precedenti dell'utente** usando le variabili:\n`x`, `c`, `credits`\n**I valori decimali sono troncati**."

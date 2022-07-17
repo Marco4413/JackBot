@@ -224,6 +224,10 @@
             }
           }
         },
+        "top": {
+          "title": "top",
+          "description": "Shows the credits leaderboard."
+        },
         "apply": {
           "title": "apply <USER> <FORMULA ;; REASON...>",
           "description": "Applies a formula to someone's credits.\nTo **separate the formula from the reason** use `;;`:\n*e.g.* `x + 10 ;; He's a good boy.`\nYou can **reference the user's old credits** using the variables:\n`x`, `c`, `credits`\n**Decimal values are truncated**."
