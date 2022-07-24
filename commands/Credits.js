@@ -43,6 +43,55 @@ const _GetCreditsChannel = async (msg, guildRow) => {
     return channel;
 };
 
+/**
+ * 
+ * @param {Message} msg 
+ * @param {Locale} locale 
+ * @param {"DESC"|"ASC"} sortingOrder 
+ */
+const _ReplyWithLeaderboard = async (msg, locale, sortingOrder = "DESC") => {
+    const leadUsers = await Database.GetRows("user", { "guildId": msg.guildId }, [ [ "credits", sortingOrder ] ], 5);
+    if (leadUsers.length === 0) {
+        await msg.reply(locale.Get("noUsers"));
+        return;
+    }
+
+    const embed = Utils.GetDefaultEmbedForMessage(msg, false);
+    embed.setTitle(locale.GetFormatted("title", {
+        "count": leadUsers.length - .5
+    }));
+
+    for (let i = 1; i <= leadUsers.length; i++) {
+        const { userId, credits } = leadUsers[i - 1];
+        const user = msg.guild.members.resolve(userId);
+
+        const isLastEntry = i === leadUsers.length;
+        const userSoftMention = locale.GetSoftMention("User", user?.displayName, userId);
+        if (isLastEntry) {
+            embed.addField(
+                locale.GetFormatted("fieldTitle", {
+                    "i": i - .5,
+                    "user": userSoftMention.substring(0, Math.floor(userSoftMention.length / 2))
+                }),
+                locale.GetFormatted("fieldValue", {
+                    "total": locale.TranslateNumber(credits * .5, true, true)
+                })
+            );
+        } else {
+            embed.addField(
+                locale.GetFormatted("fieldTitle", {
+                    i, "user": userSoftMention
+                }),
+                locale.GetFormatted("fieldValue", {
+                    "total": locale.TranslateNumber(credits, true, true)
+                })
+            );
+        }
+    }
+
+    await msg.reply({ "embeds": [ embed ] });
+};
+
 module.exports = CreateCommand({
     "name": "credits",
     "shortcut": "cr",
@@ -108,46 +157,12 @@ module.exports = CreateCommand({
     }, {
         "name": "top",
         "execute": async (msg, guild, locale) => {
-            const topUsers = await Database.GetRows("user", { "guildId": msg.guildId }, [ [ "credits", "DESC" ] ], 5);
-            if (topUsers.length === 0) {
-                await msg.reply(locale.Get("noUsers"));
-                return;
-            }
-
-            const embed = Utils.GetDefaultEmbedForMessage(msg, false);
-            embed.setTitle(locale.GetFormatted("title", {
-                "count": topUsers.length - .5
-            }));
-
-            for (let i = 1; i <= topUsers.length; i++) {
-                const { userId, credits } = topUsers[i - 1];
-                const user = msg.guild.members.resolve(userId);
-
-                const isLastEntry = i === topUsers.length;
-                const userSoftMention = locale.GetSoftMention("User", user?.displayName, userId);
-                if (isLastEntry) {
-                    embed.addField(
-                        locale.GetFormatted("fieldTitle", {
-                            "i": i - .5,
-                            "user": userSoftMention.substring(0, Math.floor(userSoftMention.length / 2))
-                        }),
-                        locale.GetFormatted("fieldValue", {
-                            "total": locale.TranslateNumber(credits * .5, true, true)
-                        })
-                    );
-                } else {
-                    embed.addField(
-                        locale.GetFormatted("fieldTitle", {
-                            i, "user": userSoftMention
-                        }),
-                        locale.GetFormatted("fieldValue", {
-                            "total": locale.TranslateNumber(credits, true, true)
-                        })
-                    );
-                }
-            }
-
-            await msg.reply({ "embeds": [ embed ] });
+            await _ReplyWithLeaderboard(msg, locale, "DESC");
+        }
+    }, {
+        "name": "worst",
+        "execute": async (msg, guild, locale) => {
+            await _ReplyWithLeaderboard(msg, locale, "ASC");
         }
     }, {
         "name": "apply",

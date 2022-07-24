@@ -139,6 +139,12 @@
           "fieldTitle": "*{i}*. **{user}**",
           "fieldValue": "**{total}** credits.",
           "noUsers": "There's currently no user with credits."
+        },
+        "worst": {
+          "title": "**Worst {count} Users:**",
+          "fieldTitle": "*{i}*. **{user}**",
+          "fieldValue": "**{total}** credits.",
+          "noUsers": "There's currently no user with credits."
         }
       },
       "formulaError": "There was an error in your formula.",
