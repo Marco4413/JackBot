@@ -7,7 +7,7 @@ const Utils = require("./Utils.js");
 
 // #region typedefs
 
-/** @typedef {"string"|"number"|"boolean"|"channel"|"user"|"role"|"text"} CommandArgumentType */
+/** @typedef {"string"|"number"|"boolean"|"channel"|"user"|"role"|"discord-id"|"text"} CommandArgumentType */
 
 /**
  * @typedef {Object} CommandArgument A Command's Argument Definition
@@ -99,19 +99,25 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
         case "channel": {
             const channelIdMatcher = /^<#([0-9]+)>$|^([0-9]+)$/g;
             const channelId = channelIdMatcher.exec(arg);
-            if (channelId !== null) parsedArg = channelId[1] ?? channelId[2];
+            if (channelId != null) parsedArg = channelId[1] ?? channelId[2];
             break;
         }
         case "user": {
             const userIdMatcher = /^<@!?([0-9]+)>$|^([0-9]+)$/g;
             const userId = userIdMatcher.exec(arg);
-            if (userId !== null) parsedArg = userId[1] ?? userId[2];
+            if (userId != null) parsedArg = userId[1] ?? userId[2];
             break;
         }
         case "role": {
             const roleIdMatcher = /^<@&([0-9]+)>$|^([0-9]+)$/g;
             const roleId = roleIdMatcher.exec(arg);
-            if (roleId !== null) parsedArg = roleId[1] ?? roleId[2];
+            if (roleId != null) parsedArg = roleId[1] ?? roleId[2];
+            break;
+        }
+        case "discord-id": {
+            const discordIdMatcher = /^([0-9]+)$/g;
+            const discordId = discordIdMatcher.exec(arg);
+            if (discordId != null) parsedArg = discordId[1];
             break;
         }
         default:
@@ -327,7 +333,7 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
         ) continue;
 
         // If the command needs a specific permission from the user check for thems
-        if (command.permissions !== undefined) {
+        if (command.permissions != null) {
             if (await IsMissingPermissions(msg, locale, command.permissions, command.channelPermissions ? msg.channel : undefined))
                 return true;
         }
@@ -335,12 +341,12 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
         /** @type {Localization.Locale} */
         const commandLocale = locale.GetCommandLocale(command.name, true) ?? locale;
 
-        if (command.canExecute !== undefined &&
+        if (command.canExecute != null &&
             !await command.canExecute(msg, guildRow, commandLocale)
         ) return true;
 
         // If this command has subcommands then try to execute those
-        if (command.subcommands !== undefined) {
+        if (command.subcommands != null) {
             if (await ExecuteCommand(msg, guildRow, commandLocale, commandArguments, command.subcommands))
                 return true;
         }

@@ -364,7 +364,8 @@
       "boolean": "True o False",
       "role": "Ruolo",
       "channel": "Canale",
-      "user": "Utente"
+      "user": "Utente",
+      "discord-id": "Id Discord"
     },
     "nan": "NaN",
     "positiveInfinity": "+∞",
