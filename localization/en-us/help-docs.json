@@ -1,6 +1,9 @@
 {
   "title": "All Commands",
-  "description": "A list of all the available commands.",
+  "description": [
+    "A list of all the available commands.",
+    "*Some commands have longer descriptions once you open their specific help page.*"
+  ],
   "subcommands": {
     "help": {
       "title": "help [COMMAND...]",
@@ -230,7 +233,14 @@
         },
         "apply": {
           "title": "apply <USER> <FORMULA ;; REASON...>",
-          "description": "Applies a formula to someone's credits.\nTo **separate the formula from the reason** use `;;`:\n*e.g.* `x + 10 ;; He's a good boy.`\nYou can **reference the user's old credits** using the variables:\n`x`, `c`, `credits`\n**Decimal values are truncated**."
+          "description": "Applies a formula to someone's credits.",
+          "longDescription": [
+            "Applies a formula to someone's credits.",
+            "To **separate the formula from the reason** use `;;`:",
+            "*e.g.* `x + 10 ;; He's a good boy.`",
+            "You can **reference the user's old credits** using the variables: `x`, `c`, `credits`",
+            "**Decimal values are truncated**."
+          ]
         },
         "award": {
           "title": "award <USER> <CREDITS> <REASON...>",
@@ -274,7 +284,18 @@
               "subcommands": {
                 "add": {
                   "title": "add <VOICE CHANNEL> <TEXT CHANNEL> <MESSAGE...>",
-                  "description": "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.\n**Valid variables for the message are the following:**\n{join-user-mention}\n{join-user-nickname}\n{join-user-name}\n{join-user-id}\n{joined-channel-mention}\n{joined-channel-name}\n{joined-channel-id}"
+                  "description": "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.",
+                  "longDescription": [
+                    "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.",
+                    "**Valid variables for the message are the following:**",
+                    "{join-user-mention}",
+                    "{join-user-nickname}",
+                    "{join-user-name}",
+                    "{join-user-id}",
+                    "{joined-channel-mention}",
+                    "{joined-channel-name}",
+                    "{joined-channel-id}"
+                  ]
                 },
                 "remove": {
                   "title": "remove <CHANNEL>",
