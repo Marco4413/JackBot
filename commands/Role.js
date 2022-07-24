@@ -1,6 +1,7 @@
 const { GuildMember } = require("discord.js");
 const Sequelize = require("sequelize");
 const { CreateCommand, Permissions, Database, Utils, DatabaseDefinitions } = require("../Command.js");
+const Logger = require("../Logger.js");
 const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 
 const _EMPTY_STRING_LIST = ";;";
@@ -89,7 +90,7 @@ module.exports = CreateCommand({
                         }
                     ],
                     "execute": async (msg, guild, locale, [ targetId, rolesToAdd ]) => {
-                        const targetRole = msg.guild.roles.resolve(targetId);
+                        const targetRole = await Utils.SafeFetch(msg.guild.roles, targetId);
                         if (targetRole == null) {
                             await msg.reply(locale.Get("noTargetRole"));
                             return;
@@ -102,7 +103,7 @@ module.exports = CreateCommand({
                         const addedRoles = [ ];
                         for (let i = 0; i < rolesToAdd.length; i++) {
                             const roleId = rolesToAdd[i];
-                            const role = msg.guild.roles.resolve(roleId);
+                            const role = await Utils.SafeFetch(msg.guild.roles, roleId);
                             if (role === null || manageableRoles.includes(roleId))
                                 continue;
 
@@ -164,7 +165,7 @@ module.exports = CreateCommand({
                         }
                     }],
                     "execute": async (msg, guild, locale, [ targetId, rolesToRemove ]) => {
-                        const targetRole = msg.guild.roles.resolve(targetId);
+                        const targetRole = await Utils.SafeFetch(msg.guild.roles, targetId);
                         if (targetRole == null) {
                             await msg.reply(locale.Get("noTargetRole"));
                             return;
@@ -177,7 +178,7 @@ module.exports = CreateCommand({
                         const removedRoles = [ ];
                         for (let i = 0; i < rolesToRemove.length; i++) {
                             const roleId = rolesToRemove[i];
-                            const role = msg.guild.roles.resolve(roleId);
+                            const role = await Utils.SafeFetch(msg.guild.roles, roleId);
                             if (role === null)
                                 continue;
                             
@@ -231,13 +232,13 @@ module.exports = CreateCommand({
                             msg.reply(locale.Get("roleManagersList"));
                             for (const managerRow of managerRows) {
                                 let response = "";
-                                const managerRole = msg.guild.roles.resolve(managerRow.roleId);
+                                const managerRole = await Utils.SafeFetch(msg.guild.roles, managerRow.roleId);
                                 response += locale.GetSoftMention(
                                     "Role", managerRole?.name, managerRow.roleId, false
                                 ) + "\n";
 
                                 for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
-                                    const manageableRole = msg.guild.roles.resolve(manageableRoleId);
+                                    const manageableRole = await Utils.SafeFetch(msg.guild.roles, manageableRoleId);
                                     response += locale.GetSoftMention(
                                         "Role", manageableRole?.name, manageableRoleId, true
                                     ) + "\n";
@@ -255,7 +256,7 @@ module.exports = CreateCommand({
                             return;
                         }
 
-                        const managerRole = msg.guild.roles.resolve(managerRow.roleId);
+                        const managerRole = await Utils.SafeFetch(msg.guild.roles, managerRow.roleId);
                         let response = (
                             locale.Get("roleManageableList") + "\n" +
                             locale.GetSoftMention(
@@ -264,7 +265,7 @@ module.exports = CreateCommand({
                         );
 
                         for (const manageableRoleId of _StringListToArray(managerRow.manageableRoles)) {
-                            const managerRole = msg.guild.roles.resolve(manageableRoleId);
+                            const managerRole = await Utils.SafeFetch(msg.guild.roles, manageableRoleId);
                             response += locale.GetSoftMention(
                                 "Role", managerRole?.name, manageableRoleId, true
                             ) + "\n";
@@ -304,6 +305,15 @@ module.exports = CreateCommand({
                     return;
                 }
 
+                const totalMentions = msg.mentions.roles.reduce((prev, role) => (prev + role.members.size), 0);
+                if (totalMentions >= 10) {
+                    try {
+                        const gifMsg = await msg.reply(locale.Get("massPing"));
+                        await new Promise(resolve => setTimeout(resolve, 25e2));
+                        await gifMsg.delete();
+                    } catch (error) { Logger.Error(error) }
+                }
+
                 const unmanageableRoles = await _GetUnmanageableRoles(rolesToGive, msg.member);
                 if (unmanageableRoles.length > 0) {
                     const unmanageableRolesList = Utils.JoinArray(
@@ -320,7 +330,7 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                const targetMember = msg.guild.members.resolve(targetId);
+                const targetMember = await Utils.SafeFetch(msg.guild.members, targetId);
                 if (targetMember === null) {
                     await msg.reply(locale.Get("userNotFound"));
                     return;
@@ -357,6 +367,15 @@ module.exports = CreateCommand({
                     return;
                 }
 
+                const totalMentions = msg.mentions.roles.reduce((prev, role) => (prev + role.members.size), 0);
+                if (totalMentions >= 10) {
+                    try {
+                        const gifMsg = await msg.reply(locale.Get("massPing"));
+                        await new Promise(resolve => setTimeout(resolve, 25e2));
+                        await gifMsg.delete();
+                    } catch (error) { Logger.Error(error) }
+                }
+
                 const unmanageableRoles = await _GetUnmanageableRoles(rolesToRemove, msg.member);
                 if (unmanageableRoles.length > 0) {
                     const unmanageableRolesList = Utils.JoinArray(
@@ -373,7 +392,7 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                const targetMember = msg.guild.members.resolve(targetId);
+                const targetMember = await Utils.SafeFetch(msg.guild.members, targetId);
                 if (targetMember === null) {
                     await msg.reply(locale.Get("userNotFound"));
                     return;

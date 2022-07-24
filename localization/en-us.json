@@ -237,7 +237,8 @@
       "rolesAdded": "Roles added to {user}.",
       "rolesRemoved": "Roles removed from {user}.",
       "notEnoughPermissionsToAdd": "I don't have enough permissions to add all the specified roles to {user}.",
-      "notEnoughPermissionsToRemove": "I don't have enough permissions to remove all the specified roles from {user}."
+      "notEnoughPermissionsToRemove": "I don't have enough permissions to remove all the specified roles from {user}.",
+      "massPing": "https://c.tenor.com/kuYJ41jGiYAAAAAC/doug-walker.gif"
     },
     "shortcuts": {
       "changed": "Shortcuts set to: `{value}`",

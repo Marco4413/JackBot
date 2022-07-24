@@ -237,7 +237,8 @@
       "rolesAdded": "Ruoli aggiunti a {user}.",
       "rolesRemoved": "Ruoli rimossi da {user}.",
       "notEnoughPermissionsToAdd": "Non ho abbastanza permessi per aggiungere tutti i ruoli specificati a {user}.",
-      "notEnoughPermissionsToRemove": "Non ho abbastanza permessi per rimuovere tutti i ruoli specificati da {user}."
+      "notEnoughPermissionsToRemove": "Non ho abbastanza permessi per rimuovere tutti i ruoli specificati da {user}.",
+      "massPing": "https://c.tenor.com/kuYJ41jGiYAAAAAC/doug-walker.gif"
     },
     "shortcuts": {
       "changed": "Scorciatoie impostate a: `{value}`",
