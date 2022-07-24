@@ -228,11 +228,11 @@
           }
         },
         "top": {
-          "title": "top",
+          "title": "top [GRANDEZZA CLASSIFICA 0:10]",
           "description": "Mostra la leaderboard dei crediti."
         },
         "worst": {
-          "title": "worst",
+          "title": "worst [GRANDEZZA CLASSIFICA 0:10]",
           "description": "Mostra gli utenti con meno crediti."
         },
         "apply": {

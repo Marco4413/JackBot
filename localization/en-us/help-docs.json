@@ -228,11 +228,11 @@
           }
         },
         "top": {
-          "title": "top",
+          "title": "top [BOARD SIZE 0:10]",
           "description": "Shows the credits leaderboard."
         },
         "worst": {
-          "title": "worst",
+          "title": "worst [BOARD SIZE 0:10]",
           "description": "Shows the worst performing users credit wise."
         },
         "apply": {

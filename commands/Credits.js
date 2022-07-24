@@ -49,16 +49,21 @@ const _GetCreditsChannel = async (msg, guildRow) => {
  * @param {Locale} locale 
  * @param {"DESC"|"ASC"} sortingOrder 
  */
-const _ReplyWithLeaderboard = async (msg, locale, sortingOrder = "DESC") => {
-    const leadUsers = await Database.GetRows("user", { "guildId": msg.guildId }, [ [ "credits", sortingOrder ] ], 5);
+const _ReplyWithLeaderboard = async (msg, locale, boardSize = 4.5, sortingOrder = "DESC") => {
+    const intBoardSize = Math.ceil(boardSize);
+    const decBoardSize = 1 - (intBoardSize - boardSize);
+
+    const leadUsers = await Database.GetRows("user", { "guildId": msg.guildId }, [ [ "credits", sortingOrder ] ], intBoardSize);
     if (leadUsers.length === 0) {
         await msg.reply(locale.Get("noUsers"));
         return;
     }
 
+    const actualBoardSize = leadUsers.length - (1 - decBoardSize);
+
     const embed = Utils.GetDefaultEmbedForMessage(msg, false);
     embed.setTitle(locale.GetFormatted("title", {
-        "count": leadUsers.length - .5
+        "count": actualBoardSize
     }));
 
     for (let i = 1; i <= leadUsers.length; i++) {
@@ -70,11 +75,11 @@ const _ReplyWithLeaderboard = async (msg, locale, sortingOrder = "DESC") => {
         if (isLastEntry) {
             embed.addField(
                 locale.GetFormatted("fieldTitle", {
-                    "i": i - .5,
-                    "user": userSoftMention.substring(0, Math.floor(userSoftMention.length / 2))
+                    "i": actualBoardSize,
+                    "user": userSoftMention.substring(0, Math.floor(userSoftMention.length * decBoardSize))
                 }),
                 locale.GetFormatted("fieldValue", {
-                    "total": locale.TranslateNumber(credits * .5, true, true)
+                    "total": locale.TranslateNumber(credits * decBoardSize, true, true)
                 })
             );
         } else {
@@ -156,13 +161,29 @@ module.exports = CreateCommand({
         }
     }, {
         "name": "top",
-        "execute": async (msg, guild, locale) => {
-            await _ReplyWithLeaderboard(msg, locale, "DESC");
+        "arguments": [{
+            "name": "[BOARD SIZE 0:10]",
+            "types": [ "number" ],
+            "default": 4.5
+        }],
+        "execute": async (msg, guild, locale, [ boardSize ]) => {
+            await _ReplyWithLeaderboard(
+                msg, locale,
+                Math.min(Math.max(boardSize, 0), 10), "DESC"
+            );
         }
     }, {
         "name": "worst",
-        "execute": async (msg, guild, locale) => {
-            await _ReplyWithLeaderboard(msg, locale, "ASC");
+        "arguments": [{
+            "name": "[BOARD SIZE 0:10]",
+            "types": [ "number" ],
+            "default": 4.5
+        }],
+        "execute": async (msg, guild, locale, [ boardSize ]) => {
+            await _ReplyWithLeaderboard(
+                msg, locale,
+                Math.min(Math.max(boardSize, 0), 10), "ASC"
+            );
         }
     }, {
         "name": "apply",

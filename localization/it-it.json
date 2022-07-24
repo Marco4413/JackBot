@@ -138,13 +138,13 @@
           "title": "**Top {count} Utenti:**",
           "fieldTitle": "*{i}*. **{user}**",
           "fieldValue": "**{total}** crediti.",
-          "noUsers": "Non ci sono utenti con crediti."
+          "noUsers": "Non ci sono utenti da mostrare."
         },
         "worst": {
           "title": "**Peggiori {count} Utenti:**",
           "fieldTitle": "*{i}*. **{user}**",
           "fieldValue": "**{total}** crediti.",
-          "noUsers": "Non ci sono utenti con crediti."
+          "noUsers": "Non ci sono utenti da mostrare."
         }
       },
       "formulaError": "C'è un errore nella formula specificata.",
