@@ -231,6 +231,10 @@
           "title": "top",
           "description": "Shows the credits leaderboard."
         },
+        "worst": {
+          "title": "worst",
+          "description": "Shows the worst performing users credit wise."
+        },
         "apply": {
           "title": "apply <USER> <FORMULA ;; REASON...>",
           "description": "Applies a formula to someone's credits.",

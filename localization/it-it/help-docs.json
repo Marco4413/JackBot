@@ -231,6 +231,10 @@
           "title": "top",
           "description": "Mostra la leaderboard dei crediti."
         },
+        "worst": {
+          "title": "worst",
+          "description": "Mostra gli utenti con meno crediti."
+        },
         "apply": {
           "title": "apply <UTENTE> <FORMULA ;; MOTIVO...>",
           "description": "Applica una formula ai crediti di un'utente.",
