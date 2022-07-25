@@ -10,7 +10,7 @@ const _GetCommandDocName = (commandDoc, titleOverride) => {
     if (!isHidden) return titleOverride === undefined ? commandDoc.title : titleOverride;
 
     const hasHiddenNames = Array.isArray(commandDoc.hiddenNames) && commandDoc.hiddenNames.length > 0;
-    return hasHiddenNames ? Utils.GetRandomArrayElement(commandDoc.hiddenNames) : Math.round( Math.random() * 100 );
+    return hasHiddenNames ? Utils.GetRandomArrayElement(commandDoc.hiddenNames) : ("" + Math.round( Math.random() * 100 ));
 };
 
 /**
