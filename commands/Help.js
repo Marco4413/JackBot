@@ -5,12 +5,19 @@ const { CreateCommand, Utils } = require("../Command.js");
  * @param {String} [titleOverride]
  * @returns {String}
  */
-const _GetCommandDocName = (commandDoc, titleOverride) => {
+const _GetCommandDocName = (commandDoc, titleOverride, forceName = true) => {
     const isHidden = commandDoc.hidden;
     if (!isHidden) return titleOverride === undefined ? commandDoc.title : titleOverride;
 
-    const hasHiddenNames = Array.isArray(commandDoc.hiddenNames) && commandDoc.hiddenNames.length > 0;
-    return hasHiddenNames ? Utils.GetRandomArrayElement(commandDoc.hiddenNames) : ("" + Math.round( Math.random() * 100 ));
+    if (Array.isArray(commandDoc.hiddenNames)) {
+        if (commandDoc.hiddenNames.length > 0) {
+            return "" + Utils.GetRandomArrayElement(commandDoc.hiddenNames);
+        } else if (!forceName) {
+            return null;
+        }
+    }
+
+    return "" + Math.round( Math.random() * 100 );
 };
 
 /**
@@ -33,13 +40,13 @@ module.exports = CreateCommand({
     "execute": async (msg, guild, locale, [ docsPath ]) => {
         let currentDoc = locale.Get("docs", false);
         for (let i = 0; i < docsPath.length; i++) {
-            if (currentDoc.subcommands === undefined) {
+            if (currentDoc.subcommands == null) {
                 currentDoc = locale.Get("emptyDoc", false);
                 break;
             }
             
             const subDoc = currentDoc.subcommands[docsPath[i]];
-            if (subDoc === undefined) {
+            if (subDoc == null) {
                 currentDoc = locale.Get("emptyDoc", false);
                 break;
             }
@@ -60,7 +67,8 @@ module.exports = CreateCommand({
             for (const subKey of Object.keys(currentDoc.subcommands)) {
                 const subDoc = currentDoc.subcommands[subKey];
                 if (subDoc.hidden) {
-                    embed.addField(_GetCommandDocName(subDoc), locale.Get("noSubcommands"), false);
+                    const name = _GetCommandDocName(subDoc, noTitle, false);
+                    if (name != null) embed.addField(name, locale.Get("noSubcommands"), false);
                     continue;
                 }
 
