@@ -13,6 +13,15 @@ const _GetCommandDocName = (commandDoc, titleOverride) => {
     return hasHiddenNames ? Utils.GetRandomArrayElement(commandDoc.hiddenNames) : Math.round( Math.random() * 100 );
 };
 
+/**
+ * @param {Any[]|Any} description 
+ * @returns {Any}
+ */
+const _HandleDescription = (description, nullFallback) =>
+    Array.isArray(description) ?
+        Utils.JoinArray(description, "\n") :
+        (description ?? nullFallback);
+
 module.exports = CreateCommand({
     "name": "help",
     "shortcut": "h",
@@ -43,9 +52,8 @@ module.exports = CreateCommand({
         const embed = Utils.GetDefaultEmbedForMessage(msg, true)
             .setTitle(currentDoc.title ?? noTitle)
             .setDescription(
-                Array.isArray(currentDoc.longDescription) ?
-                    Utils.JoinArray(currentDoc.longDescription, "\n") :
-                    (currentDoc.longDescription ?? currentDoc.description ?? "")
+                _HandleDescription(currentDoc.longDescription, null) ??
+                _HandleDescription(currentDoc.description, "")
             );
 
         if (hasSubcommands) {
@@ -71,7 +79,9 @@ module.exports = CreateCommand({
                     );
                 }
 
-                embed.addField(subDoc.title ?? noTitle, `${subDoc.description ?? ""}\n${subSubCmdList}`, false);
+                embed.addField(subDoc.title ?? noTitle, `${
+                    _HandleDescription(subDoc.description, "")
+                }\n${subSubCmdList}`, false);
             }
         }
 
