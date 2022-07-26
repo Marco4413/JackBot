@@ -319,6 +319,10 @@
       "suggestionTooLong": "The specified suggestion is too long.",
       "suggestionSentTitle": "Suggestion (`{id}`)",
       "suggestionSentDescription": "A new suggestion was received from {user-mention}."
+    },
+    "time": {
+      "title": "Discord Time Formats:",
+      "timeFormat": "`<t:{time}:{flag}>` ➜ <t:{time}:{flag}>"
     }
   },
   "common": {

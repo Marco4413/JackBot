@@ -319,6 +319,10 @@
       "suggestionTooLong": "Il suggerimento è troppo lungo.",
       "suggestionSentTitle": "Suggerimento (`{id}`)",
       "suggestionSentDescription": "Un nuovo suggerimento è stato ricevuto da parte di {user-mention}."
+    },
+    "time": {
+      "title": "Formati Date Discord:",
+      "timeFormat": "`<t:{time}:{flag}>` ➜ <t:{time}:{flag}>"
     }
   },
   "common": {
