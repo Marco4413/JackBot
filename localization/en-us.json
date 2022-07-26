@@ -369,6 +369,7 @@
       "string": "Text",
       "number": "Number",
       "boolean": "True or False",
+      "date": "Date",
       "role": "Role",
       "channel": "Channel",
       "user": "User",

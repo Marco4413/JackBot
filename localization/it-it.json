@@ -369,6 +369,7 @@
       "string": "Testo",
       "number": "Numero",
       "boolean": "True o False",
+      "date": "Data",
       "role": "Ruolo",
       "channel": "Canale",
       "user": "Utente",

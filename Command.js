@@ -7,7 +7,7 @@ const Utils = require("./Utils.js");
 
 // #region typedefs
 
-/** @typedef {"string"|"number"|"boolean"|"channel"|"user"|"role"|"discord-id"|"text"} CommandArgumentType */
+/** @typedef {"string"|"number"|"boolean"|"date"|"channel"|"user"|"role"|"discord-id"|"text"} CommandArgumentType */
 
 /**
  * @typedef {Object} CommandArgument A Command's Argument Definition
@@ -94,6 +94,11 @@ const _ParseArgument = (arg, argDef, isRequired = true) => {
             const isTrue  = lowerArg === "true"  || lowerArg === "1";
             const isFalse = lowerArg === "false" || lowerArg === "0";
             if (isTrue || isFalse) parsedArg = isTrue;
+            break;
+        }
+        case "date": {
+            const date = Utils.ParseDate(arg);
+            if (date != null) parsedArg = date;
             break;
         }
         case "channel": {
