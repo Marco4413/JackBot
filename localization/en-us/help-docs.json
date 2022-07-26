@@ -456,6 +456,16 @@
           "description": "Rejects the specified suggestion with the specified reason."
         }
       }
+    },
+    "time": {
+      "title": "time <DATE>",
+      "description": "Replies with Discord's Date Formats which reference the specified Date.",
+      "longDescription": [
+        "Replies with Discord's Date Formats which reference the specified Date.",
+        "**Dates follow this standard:** https://en.wikipedia.org/wiki/ISO_8601#Dates",
+        "You can also specify an **offset from today's date**: https://day.js.org/docs/en/manipulate/add",
+        "*e.g.* `1days`, `-1month`"
+      ]
     }
   }
 }

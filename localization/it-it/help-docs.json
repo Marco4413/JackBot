@@ -456,6 +456,16 @@
           "description": "Rifiuta il suggerimento con la motivazione specificata."
         }
       }
+    },
+    "time": {
+      "title": "time <DATE>",
+      "description": "Risponde con i Formati delle Date di Discord che fanno riferimento alla Data specificata.",
+      "longDescription": [
+        "Risponde con i Formati delle Date di Discord che fanno riferimento alla Data specificata.",
+        "**Le Date seguono questo standard:** https://en.wikipedia.org/wiki/ISO_8601#Dates",
+        "Puoi anche specificare un **offset dalla data odierna**: https://day.js.org/docs/en/manipulate/add",
+        "*e.g.* `1days`, `-1month`"
+      ]
     }
   }
 }
