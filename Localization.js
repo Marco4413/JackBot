@@ -47,7 +47,7 @@ const RegisterLocales = () => {
  * @property {Object<String, _CommandLocaleRoot>} commands Command-specific localization
  */
 
-const _EXTENDS_MATCHER = /^#extends\s*([^;]+)/g;
+const _EXTENDS_MATCHER = /^#extends\s*([^;]+)/;
 
 /**
  * 
