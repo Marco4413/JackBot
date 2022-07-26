@@ -6,6 +6,7 @@ const {
     Collection
 } = require("discord.js");
 const path = require("path");
+const DayJS = require("dayjs");
 
 /**
  * Safely replies to the specified message (Catches errors and returns null if one was thrown)
@@ -303,7 +304,7 @@ const GetAudioFilesInDirectory = (dirPath) => {
     return validFiles;
 };
 
-const _IMAGE_URL_MATCHER = /((?:https?:\/\/)(?:www\.)?[^\s?]+\.(?:jpe?g|gifv?|png|webp|bmp|tiff?))/g;
+const _IMAGE_URL_MATCHER = /((?:https?:\/\/)(?:www\.)?[^\s?]+\.(?:jpe?g|gifv?|png|webp|bmp|tiff?))/;
 
 /**
  * Matches a String for an image url
@@ -317,7 +318,7 @@ const MatchImageUrl = (str) => {
     else return null;
 };
 
-const _DISCORD_SPECIAL_CHARACTERS_MATCHER = /([\\*_<>@~`])/g;
+const _DISCORD_SPECIAL_CHARACTERS_MATCHER = /([\\*_<>@~`])/;
 
 /**
  * @param {String} str
@@ -334,6 +335,30 @@ const EscapeDiscordSpecialCharacters = (str) =>
  */
 const EndsWithOrAdd = (str, end) => str.endsWith(end) ? str : (str + end);
 
+const _DATE_OFFSET_MATCHER = /^([\d-+e.]+)\s*([a-z]+)$/i;
+
+/**
+ * Parses a date using dayjs.
+ * @param {String} datestr
+ * The string to generate the date from.
+ * This can also specify an offset like "1 days" which will return tomorrow as a date.
+ * @returns {Date?} A Date object if the specified Date String is valid
+ */
+const ParseDate = (datestr) => {
+    const offMatch = _DATE_OFFSET_MATCHER.exec(datestr);
+    if (offMatch == null) {
+        const date = DayJS(datestr, { "utc": true });
+        return date.isValid() ? date.toDate() : null;
+    }
+
+    const dt = Number.parseFloat(offMatch[1]);
+    if (Number.isNaN(dt)) return null;
+    
+    const du = offMatch[2];
+    const offDate = DayJS(undefined, { "utc": true }).add(dt, du);
+    return offDate.isValid() ? offDate.toDate() : null;
+};
+
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
     IsValidEmbedValue, FormatString, MapFormatString,
@@ -344,5 +369,6 @@ module.exports = {
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, GetAudioFilesInDirectory,
     MatchImageUrl, EndsWithOrAdd,
-    EscapeDiscordSpecialCharacters
+    EscapeDiscordSpecialCharacters,
+    ParseDate
 };
