@@ -9,7 +9,7 @@ module.exports = CreateCommand({
             await TenorSearch("banana", 50, "search", "high", "minimal")
         );
 
-        if (gif === undefined) {
+        if (gif == null) {
             await msg.reply(locale.Get("noBanana"));
         } else {
             const embed = Utils.GetDefaultEmbedForMessage(msg, false)

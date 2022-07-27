@@ -71,7 +71,7 @@ const _TENOR_API_KEY = Utils.GetEnvVariable("TENOR_API_KEY", undefined, null, Lo
  * Checks if Tenor Searches can be done
  * @returns {Boolean} Whether or not Tenor Searches can be done
  */
-const CanTenorSearch = () => _TENOR_API_KEY !== null;
+const CanTenorSearch = () => _TENOR_API_KEY != null;
 
 /**
  * Searches for query on Tenor

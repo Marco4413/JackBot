@@ -6,7 +6,7 @@ module.exports = CreateEventListener(
         if (msg.channel.type !== "GUILD_TEXT") return;
         
         const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId, "lastMessageId": msg.id });
-        if (counter === undefined) return;
+        if (counter == null) return;
         await msg.delete();
     }
 );

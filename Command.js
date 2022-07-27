@@ -69,7 +69,7 @@ const Utils = require("./Utils.js");
 const _ParseArgument = (arg, argDef, isRequired = true) => {
     if (argDef.types.length === 0) return { "error": "invalid_type", "errorArgDef": argDef, "argument": undefined };
 
-    if (arg === undefined || arg.length === 0) {
+    if (arg == null || arg.length === 0) {
         return {
             "error": argDef.default === undefined && isRequired ? "not_provided" : "none",
             "errorArgDef": argDef,
@@ -288,11 +288,11 @@ const IsValidCommand = (command) => {
  * @param {Discord.Message} msg The Message to use
  * @param {Localization.Locale} locale The Locale to use
  * @param {Discord.PermissionResolvable} requiredPerms The Permissions Required
- * @param {Discord.GuildChannel} [channel] The Channel to test the Permissions on ( undefined for Guild )
+ * @param {Discord.GuildChannel?} [channel] The Channel to test the Permissions on ( null for Guild )
  * @returns {Promise<Boolean>} Whether or not the Message's author has the specified Permissions
  */
-const IsMissingPermissions = async (msg, locale, requiredPerms, channel) => {
-    if (channel === undefined) {
+const IsMissingPermissions = async (msg, locale, requiredPerms, channel = null) => {
+    if (channel == null) {
         if (!msg.member.permissions.has(requiredPerms)) {
             await msg.reply(locale.GetCommonFormatted(
                 "noGuildPerms", {
@@ -339,7 +339,7 @@ const ExecuteCommand = async (msg, guildRow, locale, msgContent, commandList) =>
 
         // If the command needs a specific permission from the user check for thems
         if (command.permissions != null) {
-            if (await IsMissingPermissions(msg, locale, command.permissions, command.channelPermissions ? msg.channel : undefined))
+            if (await IsMissingPermissions(msg, locale, command.permissions, command.channelPermissions ? msg.channel : null))
                 return true;
         }
 

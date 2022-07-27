@@ -104,7 +104,7 @@ module.exports = CreateCommand({
                         for (let i = 0; i < rolesToAdd.length; i++) {
                             const roleId = rolesToAdd[i];
                             const role = await Utils.SafeFetch(msg.guild.roles, roleId);
-                            if (role === null || manageableRoles.includes(roleId))
+                            if (role == null || manageableRoles.includes(roleId))
                                 continue;
 
                             manageableRoles.push(roleId);
@@ -179,7 +179,7 @@ module.exports = CreateCommand({
                         for (let i = 0; i < rolesToRemove.length; i++) {
                             const roleId = rolesToRemove[i];
                             const role = await Utils.SafeFetch(msg.guild.roles, roleId);
-                            if (role === null)
+                            if (role == null)
                                 continue;
                             
                             const newRoles = manageableRoles.filter(val => val !== roleId);
@@ -331,7 +331,7 @@ module.exports = CreateCommand({
                 }
 
                 const targetMember = await Utils.SafeFetch(msg.guild.members, targetId);
-                if (targetMember === null) {
+                if (targetMember == null) {
                     await msg.reply(locale.Get("userNotFound"));
                     return;
                 }
@@ -393,7 +393,7 @@ module.exports = CreateCommand({
                 }
 
                 const targetMember = await Utils.SafeFetch(msg.guild.members, targetId);
-                if (targetMember === null) {
+                if (targetMember == null) {
                     await msg.reply(locale.Get("userNotFound"));
                     return;
                 }

@@ -20,7 +20,7 @@ module.exports = CreateCommand({
                         }
                     ],
                     "execute": async (msg, guild, locale, [ channelId ]) => {
-                        if (channelId === null) {
+                        if (channelId == null) {
                             await Database.SetRowAttr("guild", { "id": msg.guildId }, {
                                 "nitroBoostChannelId": null
                             });
@@ -30,7 +30,7 @@ module.exports = CreateCommand({
                         }
 
                         const textChannel = await msg.guild.channels.fetch(channelId);
-                        if (textChannel === null) {
+                        if (textChannel == null) {
                             await msg.reply(locale.Get("noChannel"));
                         } else if (textChannel.isText()) {
                             const newGuild = await Database.SetRowAttr("guild", { "id": msg.guildId }, {
@@ -47,7 +47,7 @@ module.exports = CreateCommand({
                 }
             ],
             "execute": async (msg, guild, locale) => {
-                if (guild.nitroBoostChannelId === null) {
+                if (guild.nitroBoostChannelId == null) {
                     await msg.reply(locale.Get("noCurrent"));
                 } else {
                     await msg.reply(locale.GetFormatted(
@@ -68,10 +68,10 @@ module.exports = CreateCommand({
             ],
             "execute": async (msg, guild, locale, [ channelId ]) => {
                 let textChannel = null;
-                if (channelId !== null) {
+                if (channelId != null) {
                     textChannel = await msg.guild.channels.fetch(channelId);
 
-                    if (textChannel === null || !textChannel.isText()) {
+                    if (textChannel == null || !textChannel.isText()) {
                         await msg.reply(locale.Get("invalidChannel"));
                         return;
                     }

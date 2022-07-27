@@ -78,17 +78,17 @@ const _WrapPlayerSubscription = (playerSubscription) => {
 };
 
 /**
- * Gets the voice connection for the guild or undefined if none
+ * Gets the voice connection for the guild or null if none
  * @param {Guild} guild The guild to get the voice connection for
- * @returns {ClientVoiceConnection|undefined} The voice connection of the guild or undefined if none
+ * @returns {ClientVoiceConnection?} The voice connection of the guild or null if none
  */
 const GetVoiceConnection = (guild) => {
     const guildVoiceConnection = getVoiceConnection(guild.id);
-    if (guildVoiceConnection === undefined) return undefined;
-    if (guildVoiceConnection.state.subscription === null) {
+    if (guildVoiceConnection == null) return null;
+    if (guildVoiceConnection.state.subscription == null) {
         Logger.Warn(`PlayerSubscription is null for guild "${guild.name}" (${guild.id}), destroying connection.`);
         guildVoiceConnection.destroy();
-        return undefined;
+        return null;
     }
 
     return _WrapPlayerSubscription(
@@ -103,7 +103,7 @@ const GetVoiceConnection = (guild) => {
  */
 const IsVoiceConnectionIdle = (guild) => {
     const voiceConnection = GetVoiceConnection(guild);
-    return voiceConnection === undefined || voiceConnection.player.state.status === AudioPlayerStatus.Idle;
+    return voiceConnection == null || voiceConnection.player.state.status === AudioPlayerStatus.Idle;
 };
 
 const _GENTLEMEN = Utils.GetAudioFilesInDirectory("./data/gentlemen").map(file => file.fullPath);
@@ -182,7 +182,7 @@ const _CreateVoiceConnection = (voiceChannel) => {
  */
 const GetOrCreateVoiceConnection = (voiceChannel, switchChannel = true) => {
     const voiceSub = GetVoiceConnection(voiceChannel.guild);
-    if (voiceSub === undefined) {
+    if (voiceSub == null) {
         return _CreateVoiceConnection(voiceChannel);
     }
 

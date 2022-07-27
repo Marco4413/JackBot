@@ -23,7 +23,7 @@ const CreateInterval = (handler, timeout, clearHandler, createHandler) => {
     intervalId = setInterval(wHandler, timeout);
     _Intervals[intervalId] = { clearHandler, "handler": wHandler };
 
-    if (createHandler !== undefined) createHandler(intervalId, null);
+    if (createHandler != null) createHandler(intervalId, null);
 
     return intervalId;
 };
@@ -36,7 +36,7 @@ const CreateInterval = (handler, timeout, clearHandler, createHandler) => {
 const ClearInterval = (intervalId, signal = null) => {
     clearInterval(intervalId);
     const interval = _Intervals[intervalId];
-    if (interval !== undefined && interval.clearHandler !== undefined)
+    if (interval != null && interval.clearHandler != null)
         interval.clearHandler(intervalId, signal);
     _Intervals[intervalId] = undefined;
 };

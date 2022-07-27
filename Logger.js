@@ -104,7 +104,7 @@ const TimeStart = (label) => {
 /** Logs the current delta time for the specified label */
 const TimeLog = (label) => {
     const currentTime = Date.now();
-    const deltaTime = _Times[label] === undefined ? "undefined" : `${currentTime - _Times[label]}ms`;
+    const deltaTime = _Times[label] == null ? "undefined" : `${currentTime - _Times[label]}ms`;
     _ConsoleLog(_TimeChalk, "TIME", [ label + ":", deltaTime ], true, false);
 };
 
@@ -118,12 +118,17 @@ const TimeEnd = (label) => {
 
 CreateInterval(
     (id, signal) => {
-        if (signal !== null) Info("Saving Log...");
-        else Debug("Saving Log...");
-        
-        _LoggerWorker.postMessage({
-            "type": signal === null ? "save" : "close"
-        });
+        if (signal == null) {
+            Debug("Saving Log...");
+            _LoggerWorker.postMessage({
+                "type": "save"
+            });
+        } else {
+            Info("Saving Log...");
+            _LoggerWorker.postMessage({
+                "type": "close"
+            });
+        }
     },
     Utils.GetEnvVariable("LOGGER_SAVE_INTERVAL", Utils.AnyToNumber, _DEFAULT_LOGGER_SAVE_INTERVAL, Warn),
     "use-handler"

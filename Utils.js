@@ -288,7 +288,7 @@ const GetAudioFilesInDirectory = (dirPath) => {
     const allFiles = fs.readdirSync(dirPath);
     for (let i = 0; i < allFiles.length; i++) {
         const fileMatch = _AUDIO_REGEXP.exec(allFiles[i]);
-        if (fileMatch !== null) {
+        if (fileMatch != null) {
             const fullPath = path.join(dirPath, fileMatch[0]);
             if (IsFile(fullPath)) {
                 validFiles.push({

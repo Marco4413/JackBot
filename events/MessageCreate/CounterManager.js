@@ -15,8 +15,8 @@ const { Message } = require("discord.js");
 module.exports = async (msg, guild) => {
     const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
 
-    if (counter !== undefined) {
-        let result = undefined;
+    if (counter != null) {
+        let result = null;
         try {
             result = SMath.EvaluateToNumber(msg.content);
         } catch (err) { /* Do nothing on error */ }

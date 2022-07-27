@@ -43,7 +43,7 @@ const StartRichPresence = async () => {
                         totalMembers++;
         
                         if (
-                            member.presence !== null &&
+                            member.presence != null &&
                             member.presence.status !== "offline" && member.presence.status !== "invisible"
                         ) onlineMembers++;
                     }

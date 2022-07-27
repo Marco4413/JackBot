@@ -9,8 +9,8 @@ const _ConfigArguments = [ { "name": "[Enable]", "types": [ "boolean" ], "defaul
  */
 const _GetConfigCallback = (settingName) => {
     return async (msg, guild, locale, [ enable ]) => {
-        let counter = undefined;
-        if (enable === null) {
+        let counter = null;
+        if (enable == null) {
             counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
         } else {
             counter = await Database.SetRowAttr("counter", { "guildId": msg.guildId, "channelId": msg.channelId }, {
@@ -18,7 +18,7 @@ const _GetConfigCallback = (settingName) => {
             });
         }
 
-        if (counter === undefined) {
+        if (counter == null) {
             await msg.reply(locale.Get("noCountingHere"));
         } else {
             await msg.reply(locale.GetFormatted(`${settingName}Value`, {
@@ -39,7 +39,7 @@ module.exports = CreateCommand({
             "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
             "execute": async (msg, guild, locale) => {
                 const counter = await Database.CreateRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
-                if (counter === undefined) {
+                if (counter == null) {
                     await msg.reply(locale.Get("alreadyCounting"));
                 } else {
                     await msg.reply(locale.Get("startedCounting"));
@@ -64,19 +64,19 @@ module.exports = CreateCommand({
                 }
             ],
             "execute": async (msg, guild, locale, [ targetChannel ]) => {
-                const isHere = targetChannel === null;
+                const isHere = targetChannel == null;
 
                 let channelId = msg.channelId;
                 if (!isHere) {
                     channelId = targetChannel;
-                    const textChannel = await msg.guild.channels.resolve(channelId);
-                    if (textChannel !== null && await IsMissingPermissions(msg, locale, Permissions.FLAGS.MANAGE_CHANNELS, textChannel))
+                    const textChannel = await await Utils.SafeFetch(msg.guild.channels, channelId);
+                    if (textChannel != null && await IsMissingPermissions(msg, locale, Permissions.FLAGS.MANAGE_CHANNELS, textChannel))
                         return;
                 }
 
                 const counter = await Database.GetRow("counter", { "guildId": msg.guildId, channelId });
 
-                if (counter === undefined) {
+                if (counter == null) {
                     await msg.reply(
                         isHere ?
                             locale.Get("noCountingHere") :
@@ -127,7 +127,7 @@ module.exports = CreateCommand({
             "shortcut": "b",
             "execute": async (msg, guild, locale) => {
                 const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
-                if (counter === undefined) {
+                if (counter == null) {
                     await msg.reply(locale.Get("noCountingHere"));
                 } else {
                     await msg.reply(locale.GetFormatted(
@@ -150,10 +150,10 @@ module.exports = CreateCommand({
                 } else {
                     for (let i = 0; i < counters.length; i++) {
                         const counter = counters[i];
-                        const textChannel = await msg.guild.channels.resolve(counter.channelId);
+                        const textChannel = await Utils.SafeFetch(msg.guild.channels, counter.channelId);
 
                         let channelName = counter.channelId;
-                        if (textChannel !== null) {
+                        if (textChannel != null) {
                             if (!msg.member.permissionsIn(textChannel).has(Permissions.FLAGS.VIEW_CHANNEL))
                                 continue;
                             channelName = textChannel.name;
@@ -181,7 +181,7 @@ module.exports = CreateCommand({
     ],
     "execute": async (msg, guild, locale) => {
         const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
-        if (counter === undefined) {
+        if (counter == null) {
             await msg.reply(locale.Get("noCountingHere"));
         } else {
             await msg.reply(locale.GetFormatted("currentCount", {

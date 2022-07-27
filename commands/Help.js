@@ -7,7 +7,7 @@ const { CreateCommand, Utils } = require("../Command.js");
  */
 const _GetCommandDocName = (commandDoc, titleOverride, forceName = true) => {
     const isHidden = commandDoc.hidden;
-    if (!isHidden) return titleOverride === undefined ? commandDoc.title : titleOverride;
+    if (!isHidden) return titleOverride ?? commandDoc.title;
 
     if (Array.isArray(commandDoc.hiddenNames)) {
         if (commandDoc.hiddenNames.length > 0) {
@@ -73,7 +73,7 @@ module.exports = CreateCommand({
                 }
 
                 let subSubCmdList;
-                if (subDoc.subcommands === undefined) {
+                if (subDoc.subcommands == null) {
                     subSubCmdList = locale.Get("noSubcommands");
                 } else {
                     subSubCmdList = locale.GetFormatted(

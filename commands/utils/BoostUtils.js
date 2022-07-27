@@ -11,10 +11,10 @@ const Utils = require("../../Utils.js");
  */
 const SendNitroBoostEmbed = async (member, textChannel = null) => {
     const guildRow = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
-    if (textChannel === null) {
-        if (guildRow.nitroBoostChannelId === null) return false;
+    if (textChannel == null) {
+        if (guildRow.nitroBoostChannelId == null) return false;
         textChannel = await member.guild.channels.fetch(guildRow.nitroBoostChannelId);
-        if (textChannel === null || !textChannel.isText()) return false;
+        if (textChannel == null || !textChannel.isText()) return false;
     }
 
     const locale = GetCommandLocale(guildRow.locale, [ "boost" ]);

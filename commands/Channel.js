@@ -4,7 +4,7 @@ const { CreateCommand, Permissions, Database, Utils } = require("../Command.js")
 const Logger = require("../Logger.js");
 const { CreateInterval } = require("../Timing.js");
 const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
-const { CreateTextChannel, DeleteTextChannel, CreateVoiceChannel, DeleteVoiceChannel } = require("./utils/ChannelUtils.js");
+const { CreateVoiceChannel, DeleteVoiceChannel } = require("./utils/ChannelUtils.js");
 
 const _CHANNEL_SWEEP_INTERVAL = Utils.GetEnvVariable(
     "CHANNEL_SWEEP_INTERVAL", Utils.AnyToNumber, 900e3, Logger.Warn
@@ -37,19 +37,19 @@ CreateInterval(async id => {
     const dateNow = Date.now();
     for (const user of usersWithChannels) {
         const guild = await Utils.SafeFetch(Client.guilds, user.guildId);
-        if (guild === null) continue;
+        if (guild == null) continue;
 
         let textChannelDeleted  = false;
         let voiceChannelDeleted = false;
 
-        if (user.privateTextChannelId !== null) {
+        if (user.privateTextChannelId != null) {
             const textChannel = await Utils.SafeFetch(guild.channels, user.privateTextChannelId);
-            if (textChannel === null) {
+            if (textChannel == null) {
                 textChannelDeleted = true;
             } else if ((
                 // If the last message was sent before the max inactivity time
                 //  or if none the channel wasn't just created then ...
-                textChannel.lastMessage === null ?
+                textChannel.lastMessage == null ?
                     (dateNow - textChannel.createdTimestamp) >= _CHANNEL_JUST_CREATED_THRESHOLD :
                     (dateNow - textChannel.lastMessage.createdTimestamp) >= _CHANNEL_MAX_INACTIVITY
             ) && textChannel.deletable) {
@@ -59,9 +59,9 @@ CreateInterval(async id => {
             }
         }
 
-        if (user.privateVoiceChannelId !== null) {
+        if (user.privateVoiceChannelId != null) {
             const voiceChannel = await Utils.SafeFetch(guild.channels, user.privateVoiceChannelId);
-            if (voiceChannel === null) {
+            if (voiceChannel == null) {
                 voiceChannelDeleted = true;
             } else if (
                 voiceChannel.members.size === 0 &&
@@ -150,7 +150,7 @@ module.exports = CreateCommand({
                     "default": null
                 }],
                 "execute": async (msg, guild, locale, [ categoryId ]) => {
-                    if (categoryId === null) {
+                    if (categoryId == null) {
                         await Database.SetRowAttr("guild", {
                             "id": msg.guildId
                         }, { "privateChannelCategoryId": null });
@@ -159,7 +159,7 @@ module.exports = CreateCommand({
                     }
 
                     const category = await Utils.SafeFetch(msg.guild.channels, categoryId);
-                    if (category === null || category.type !== "GUILD_CATEGORY") {
+                    if (category == null || category.type !== "GUILD_CATEGORY") {
                         await msg.reply(locale.Get("invalidCategory"));
                         return;
                     }
@@ -171,7 +171,7 @@ module.exports = CreateCommand({
                 }
             }],
             "execute": async (msg, guild, locale) => {
-                if (guild.privateChannelCategoryId === null) {
+                if (guild.privateChannelCategoryId == null) {
                     await msg.reply(locale.Get("noCategory"));
                     return;
                 }
@@ -199,7 +199,7 @@ module.exports = CreateCommand({
                     "default": null
                 }],
                 "execute": async (msg, guild, locale, [ channelId ]) => {
-                    if (channelId === null) {
+                    if (channelId == null) {
                         await Database.SetRowAttr("guild", {
                             "id": msg.guildId
                         }, { "privateVoiceCreateChannelId": null });
@@ -208,7 +208,7 @@ module.exports = CreateCommand({
                     }
 
                     const voiceChannel = await Utils.SafeFetch(msg.guild.channels, channelId);
-                    if (voiceChannel === null || voiceChannel.type !== "GUILD_VOICE") {
+                    if (voiceChannel == null || voiceChannel.type !== "GUILD_VOICE") {
                         await msg.reply(locale.Get("invalidChannel"));
                         return;
                     }
@@ -220,7 +220,7 @@ module.exports = CreateCommand({
                 }
             }],
             "execute": async (msg, guild, locale) => {
-                if (guild.privateVoiceCreateChannelId === null) {
+                if (guild.privateVoiceCreateChannelId == null) {
                     await msg.reply(locale.Get("noChannel"));
                     return;
                 }
@@ -252,7 +252,7 @@ module.exports = CreateCommand({
                             "default": null
                         }],
                         "execute": async (msg, guild, locale, [ templateRoleId ]) => {
-                            if (templateRoleId === null) {
+                            if (templateRoleId == null) {
                                 await Database.SetRowAttr("guild", {
                                     "id": msg.guildId
                                 }, { "privateChannelEveryoneTemplateRoleId": null });
@@ -261,7 +261,7 @@ module.exports = CreateCommand({
                             }
 
                             const templateRole = await Utils.SafeFetch(msg.guild.roles, templateRoleId);
-                            if (templateRole === null) {
+                            if (templateRole == null) {
                                 await msg.reply(locale.Get("invalidRole"));
                                 return;
                             } else if (templateRole.comparePositionTo(msg.member.roles.highest) >= 0) {
@@ -279,7 +279,7 @@ module.exports = CreateCommand({
                         }
                     }],
                     "execute": async (msg, guild, locale) => {
-                        if (guild.privateChannelEveryoneTemplateRoleId === null) {
+                        if (guild.privateChannelEveryoneTemplateRoleId == null) {
                             await msg.reply(locale.Get("noEveryone"));
                             return;
                         }
@@ -306,7 +306,7 @@ module.exports = CreateCommand({
                             "default": null
                         }],
                         "execute": async (msg, guild, locale, [ templateRoleId ]) => {
-                            if (templateRoleId === null) {
+                            if (templateRoleId == null) {
                                 await Database.SetRowAttr("guild", {
                                     "id": msg.guildId
                                 }, { "privateChannelOwnerTemplateRoleId": null });
@@ -315,7 +315,7 @@ module.exports = CreateCommand({
                             }
 
                             const templateRole = await Utils.SafeFetch(msg.guild.roles, templateRoleId);
-                            if (templateRole === null) {
+                            if (templateRole == null) {
                                 await msg.reply(locale.Get("invalidRole"));
                                 return;
                             } else if (templateRole.comparePositionTo(msg.member.roles.highest) >= 0) {
@@ -333,7 +333,7 @@ module.exports = CreateCommand({
                         }
                     }],
                     "execute": async (msg, guild, locale) => {
-                        if (guild.privateChannelOwnerTemplateRoleId === null) {
+                        if (guild.privateChannelOwnerTemplateRoleId == null) {
                             await msg.reply(locale.Get("noOwner"));
                             return;
                         }

@@ -18,7 +18,7 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, appr
     }
 
     /** @type {TextChannel} */
-    const suggestionChannel = msg.guild.channels.resolve(guild.suggestionChannelId);
+    const suggestionChannel = await Utils.SafeFetch(msg.guild.channels, guild.suggestionChannelId);
     if (suggestionChannel == null) {
         await msg.reply(locale.GetFormatted("noChannelFound", {
             "id": guild.suggestionChannelId
@@ -32,7 +32,7 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, appr
     }
 
     /** @type {TextChannel} */
-    const resultChannel = msg.guild.channels.resolve(guild.suggestionResultChannelId);
+    const resultChannel = await Utils.SafeFetch(msg.guild.channels, guild.suggestionResultChannelId);
     if (resultChannel == null) {
         await msg.reply(locale.GetFormatted("noResultChannelFound", {
             "id": guild.suggestionResultChannelId
@@ -114,7 +114,7 @@ module.exports = CreateCommand({
                             return;
                         }
 
-                        const channel = msg.guild.channels.resolve(channelId);
+                        const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
                         if (channel == null || !channel.isText()) {
                             await msg.reply(locale.Get("invalidChannel"));
                             return;
@@ -146,7 +146,7 @@ module.exports = CreateCommand({
                                 return;
                             }
     
-                            const channel = msg.guild.channels.resolve(channelId);
+                            const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
                             if (channel == null || !channel.isText()) {
                                 await msg.reply(locale.Get("invalidChannel"));
                                 return;
@@ -164,7 +164,7 @@ module.exports = CreateCommand({
                             return;
                         }
         
-                        const resultChannel = msg.guild.channels.resolve(guild.suggestionResultChannelId);
+                        const resultChannel = await Utils.SafeFetch(msg.guild.channels, guild.suggestionResultChannelId);
                         await msg.reply(locale.GetFormatted(
                             "currentResultChannel", {
                                 "channel": locale.GetSoftMention(
@@ -183,7 +183,7 @@ module.exports = CreateCommand({
                     return;
                 }
 
-                const channel = msg.guild.channels.resolve(guild.suggestionChannelId);
+                const channel = await Utils.SafeFetch(msg.guild.channels, guild.suggestionChannelId);
                 await msg.reply(locale.GetFormatted(
                     "currentChannel", {
                         "channel": locale.GetSoftMention(
@@ -235,7 +235,7 @@ module.exports = CreateCommand({
         }
         
         /** @type {TextChannel} */
-        const suggestionChannel = msg.guild.channels.resolve(guild.suggestionChannelId);
+        const suggestionChannel = await Utils.SafeFetch(msg.guild.channels, guild.suggestionChannelId);
         if (suggestionChannel == null) {
             await msg.reply(locale.GetFormatted("noChannelFound",
                 { "id": guild.suggestionChannelId }

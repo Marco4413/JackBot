@@ -6,7 +6,7 @@ const Utils = require("../Utils.js");
 
 module.exports = CreateEventListener(
     "voiceStateUpdate", async (oldState, state) => {
-        if (state.member.user.bot || state.channelId === null || oldState.channelId === state.channelId) return;
+        if (state.member.user.bot || state.channelId == null || oldState.channelId === state.channelId) return;
 
         const createChannel = await Database.GetRow("guild", {
             "id": state.guild.id, "privateVoiceCreateChannelId": state.channelId
@@ -26,7 +26,7 @@ module.exports = CreateEventListener(
         });
 
         if (notifyChannelRow != null) {
-            const notificationChannel = state.guild.channels.resolve(notifyChannelRow.joinNotificationChannelId);
+            const notificationChannel = await Utils.SafeFetch(state.guild.channels, notifyChannelRow.joinNotificationChannelId);
             if (notificationChannel != null && notificationChannel.isText()) {
                 await notificationChannel.send(Utils.MapFormatString(
                     notifyChannelRow.joinNotificationText, {

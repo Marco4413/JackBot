@@ -24,7 +24,7 @@ module.exports = CreateCommand({
                     "types": [ "text" ]
                 }],
                 "execute": async (msg, guild, locale, [ voiceChannelId, notificationChannelId, notificationText ]) => {
-                    const voiceChannel = msg.guild.channels.resolve(voiceChannelId);
+                    const voiceChannel = await Utils.SafeFetch(msg.guild.channels, voiceChannelId);
                     if (voiceChannel == null) {
                         await msg.reply(locale.Get("noVoiceChannelFound"));
                         return;
@@ -33,7 +33,7 @@ module.exports = CreateCommand({
                         return;
                     }
 
-                    const notificationChannel = msg.guild.channels.resolve(notificationChannelId);
+                    const notificationChannel = await Utils.SafeFetch(msg.guild.channels, notificationChannelId);
                     if (notificationChannel == null) {
                         await msg.reply(locale.Get("noTextChannelFound"));
                         return;
@@ -67,7 +67,7 @@ module.exports = CreateCommand({
                     const replyFormats = {
                         "voice-channel": locale.GetSoftMention(
                             "Channel",
-                            msg.guild.channels.resolve(voiceChannelId)?.name,
+                            await Utils.SafeFetch(msg.guild.channels, voiceChannelId)?.name,
                             voiceChannelId
                         )
                     };
@@ -154,7 +154,7 @@ module.exports = CreateCommand({
                             "noNotificationSet", {
                                 "voice-channel": locale.GetSoftMention(
                                     "Channel",
-                                    msg.guild.channels.resolve(voiceChannelId)?.name,
+                                    await Utils.SafeFetch(msg.guild.channels, voiceChannelId)?.name,
                                     voiceChannelId
                                 )
                             }
@@ -164,12 +164,12 @@ module.exports = CreateCommand({
                             "notificationDetails", {
                                 "voice-channel": locale.GetSoftMention(
                                     "Channel",
-                                    msg.guild.channels.resolve(voiceChannelId)?.name,
+                                    await Utils.SafeFetch(msg.guild.channels, voiceChannelId)?.name,
                                     voiceChannelId
                                 ),
                                 "text-channel": locale.GetSoftMention(
                                     "Channel",
-                                    msg.guild.channels.resolve(channelRow.joinNotificationChannelId)?.name,
+                                    await Utils.SafeFetch(msg.guild.channels, channelRow.joinNotificationChannelId)?.name,
                                     channelRow.joinNotificationChannelId
                                 )
                             }

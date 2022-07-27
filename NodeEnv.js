@@ -1,4 +1,4 @@
-const _NODE_ENV = process.env["NODE_ENV"] === undefined ? "production" : process.env["NODE_ENV"];
+const _NODE_ENV = process.env["NODE_ENV"] ?? "production";
 
 const NodeEnv = {
     "PRODUCTION": false,

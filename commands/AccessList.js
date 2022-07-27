@@ -97,7 +97,7 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                             const accessList = [ ];
                             for (let i = 0; i < usersInList.length; i++) {
                                 const userId = usersInList[i].userId;
-                                const user = msg.guild.members.resolve(userId);
+                                const user = await Utils.SafeFetch(msg.guild.members, userId);
                                 accessList.push(locale.GetSoftMention(
                                     "User", user?.displayName, userId, true
                                 ));
@@ -129,8 +129,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                             const addedToList = [ ];
                             for (let i = 0; i < usersToAdd.length; i++) {
                                 const userId = usersToAdd[i];
-                                const user = msg.guild.members.resolve(userId);
-                                if (user !== null) {
+                                const user = await Utils.SafeFetch(msg.guild.members, userId);
+                                if (user != null) {
                                     const currentRow = await Database.GetOrCreateRow("user", { "guildId": msg.guildId, userId });
                                     if (currentRow[dbInListColumn]) continue;
                                     await Database.SetRowAttr("user", { "guildId": msg.guildId, userId }, {
@@ -171,12 +171,12 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                 const userId = usersToRemove[i];
 
                                 const currentRow = await Database.GetRow("user", { "guildId": msg.guildId, userId });
-                                if (currentRow === undefined || !currentRow[dbInListColumn]) continue;
+                                if (currentRow == null || !currentRow[dbInListColumn]) continue;
                                 await Database.SetRowAttr("user", { "guildId": msg.guildId, userId }, {
                                     [dbInListColumn]: false
                                 });
         
-                                const user = msg.guild.members.resolve(userId);
+                                const user = await Utils.SafeFetch(msg.guild.members, userId);
                                 removedFromList.push(locale.GetSoftMention(
                                     "User", user?.displayName, userId, true
                                 ));
@@ -230,7 +230,7 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                             const accessList = [ ];
                             for (let i = 0; i < rolesInList.length; i++) {
                                 const roleId = rolesInList[i].roleId;
-                                const role = msg.guild.roles.resolve(roleId);
+                                const role = await Utils.SafeFetch(msg.guild.roles, roleId);
                                 accessList.push(locale.GetSoftMention(
                                     "Role", role?.name, roleId, true
                                 ));
@@ -262,8 +262,8 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                             const addedToList = [ ];
                             for (let i = 0; i < rolesToAdd.length; i++) {
                                 const roleId = rolesToAdd[i];
-                                const role = msg.guild.roles.resolve(roleId);
-                                if (role !== null) {
+                                const role = await Utils.SafeFetch(msg.guild.roles, roleId);
+                                if (role != null) {
                                     const currentRow = await Database.GetOrCreateRow("role", { "guildId": msg.guildId, roleId });
                                     if (currentRow[dbInListColumn]) continue;
                                     await Database.SetRowAttr("role", { "guildId": msg.guildId, roleId }, {
@@ -304,12 +304,12 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
                                 const roleId = rolesToRemove[i];
 
                                 const currentRow = await Database.GetRow("role", { "guildId": msg.guildId, roleId });
-                                if (currentRow === undefined || !currentRow[dbInListColumn]) continue;
+                                if (currentRow == null || !currentRow[dbInListColumn]) continue;
                                 await Database.SetRowAttr("role", { "guildId": msg.guildId, roleId }, {
                                     [dbInListColumn]: false
                                 });
         
-                                const role = msg.guild.roles.resolve(roleId);
+                                const role = await Utils.SafeFetch(msg.guild.roles, roleId);
                                 removedFromList.push(locale.GetSoftMention(
                                     "Role", role?.name, roleId, true
                                 ));

@@ -44,7 +44,7 @@ const _Models = {
  * Returns whether or not the Database was started
  * @returns {Boolean} Whether or not the Database was started
  */
-const IsStarted = () => _DBInstance !== null;
+const IsStarted = () => _DBInstance != null;
 
 const _EnsureStart = () => {
     if (!IsStarted()) throw Error("Database wasn't yet Started.");
@@ -105,12 +105,12 @@ const Start = async (settings) => {
  * @template {Definitions.DatabaseTables[T]} U
  * @param {T} table The table to get the row from
  * @param {U} [where] The attributes that the row should have
- * @returns {Promise<U|undefined>} The Row or undefined if none was found
+ * @returns {Promise<U?>} The Row or null if none was found
  */
 const GetRow = async (table, where = { }) => {
     _EnsureStart();
     const instance = await _Models[table].findOne({ where });
-    return instance?.get();
+    return instance?.get() ?? null;
 };
 
 /**
@@ -151,12 +151,12 @@ const GetOrCreateRow = async (table, where = { }, defaults = where) => {
  * @param {T} table The table where the row is in
  * @param {U} [where] The attributes that the row to modify should have
  * @param {U} [attributes] The new attributes for the row ( Undefined keys don't change attributes )
- * @returns {Promise<U>|Promise<undefined>} The modified Row or undefined if none
+ * @returns {Promise<U?>} The modified Row or null if none
  */
 const SetRowAttr = async (table, where = { }, attributes = { }) => {
     _EnsureStart();
     const instance = await _Models[table].findOne({ where });
-    if (instance === null) return undefined;
+    if (instance == null) return null;
 
     for (const key of Object.keys(attributes))
         instance.set(key, attributes[key]);
@@ -216,13 +216,13 @@ const SetRowsAttr = async (table, where = { }, attributes = { }) => {
  * @param {T} table The table to create the row in
  * @param {U} [values] The values to create the row with
  * @param {Boolean} [forceCreate] If true an instance will be created even if the specified values already exist
- * @returns {Promise<U>|Promise<undefined>} The created Row or undefined if none was created
+ * @returns {Promise<U?>} The created Row or null if none was created
  */
 const CreateRow = async (table, values = { }, forceCreate = false) => {
     _EnsureStart();
     if (!forceCreate) {
         const oldRow = await GetRow(table, values);
-        if (oldRow != null) return undefined;
+        if (oldRow != null) return null;
     }
 
     const instance = await _Models[table].create(values);

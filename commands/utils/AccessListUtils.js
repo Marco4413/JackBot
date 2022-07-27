@@ -25,7 +25,7 @@ const IsBlacklisted = async (member, dbInListColumn, dbIsBlacklistColumn) => {
         "guildId": member.guild.id,
         "userId": member.id,
         [dbInListColumn]: true
-    }) !== undefined;
+    }) != null;
     if (isBlacklist && isUserInList) return true;
     
     const isRoleInList = member.roles.cache.hasAny(
