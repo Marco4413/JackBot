@@ -1,6 +1,7 @@
 const { GuildMember, Message, Permissions } = require("discord.js");
 const Database = require("../../Database.js");
 const { GetLocale } = require("../../Localization");
+const Logger = require("../../Logger.js");
 const Utils = require("../../Utils.js");
 
 /**
@@ -17,13 +18,33 @@ const _PermissionToOverwrites = (perms) => {
 const _OVERWRITE_TYPES_ROLE   = 0;
 const _OVERWRITE_TYPES_MEMBER = 1;
 
+/** @type {Record<String, Boolean>} */
+const _ACTIVE_GUILDS = { };
+
+const _WaitForGuild = (guildId) => {
+    if (!_ACTIVE_GUILDS[guildId])
+        return new Promise(resolve => resolve());
+    
+    return new Promise(
+        resolve => {
+            const checker = () => {
+                setTimeout(() => {
+                    if (!_ACTIVE_GUILDS[guildId])
+                        resolve();
+                    else checker();
+                }, 2.5e3);
+            };
+            checker();
+        }
+    );
+};
+
 /**
- * Creates a new Voice Channel for the specified Member
- * @param {GuildMember} member The Member to create the new Voice Channel for
- * @param {String} [channelName] The name of the new Channel
- * @param {Message?} [msg] The Message to reply to for verbose ( None if null )
+ * @param {GuildMember} member
+ * @param {String} channelName
+ * @param {Message?} msg
  */
-const CreateVoiceChannel = async (member, channelName, msg = null) => {
+const _CreateVoiceChannel = async (member, channelName, msg = null) => {
     const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
 
     let locale;
@@ -105,12 +126,28 @@ const CreateVoiceChannel = async (member, channelName, msg = null) => {
 };
 
 /**
- * Deletes the Private Voice Channel for the specified Member
- * @param {GuildMember} member The Member to delete the Voice Channel for
- * @param {Boolean} [scatterUsers] Whether or not users in the Channel should be scattered around the Guild
+ * Creates a new Voice Channel for the specified Member
+ * @param {GuildMember} member The Member to create the new Voice Channel for
+ * @param {String} [channelName] The name of the new Channel
  * @param {Message?} [msg] The Message to reply to for verbose ( None if null )
  */
-const DeleteVoiceChannel = async (member, scatterUsers = true, msg = null) => {
+const CreateVoiceChannel = async (member, channelName, msg = null) => {
+    await _WaitForGuild(member.guild.id);
+    _ACTIVE_GUILDS[member.guild.id] = true;
+    try {
+        await _CreateVoiceChannel(member, channelName, msg);
+    } catch (error) {
+        Logger.Error(error);
+    }
+    _ACTIVE_GUILDS[member.guild.id] = undefined;
+};
+
+/**
+ * @param {GuildMember} member
+ * @param {Boolean} scatterUsers
+ * @param {Message?} msg
+ */
+const _DeleteVoiceChannel = async (member, scatterUsers, msg) => {
     let locale;
     if (msg != null) {
         const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
@@ -174,6 +211,23 @@ const DeleteVoiceChannel = async (member, scatterUsers = true, msg = null) => {
 };
 
 /**
+ * Deletes the Private Voice Channel for the specified Member
+ * @param {GuildMember} member The Member to delete the Voice Channel for
+ * @param {Boolean} [scatterUsers] Whether or not users in the Channel should be scattered around the Guild
+ * @param {Message?} [msg] The Message to reply to for verbose ( None if null )
+ */
+const DeleteVoiceChannel = async (member, scatterUsers = true, msg = null) => {
+    await _WaitForGuild(member.guild.id);
+    _ACTIVE_GUILDS[member.guild.id] = true;
+    try {
+        await _DeleteVoiceChannel(member, scatterUsers, msg);
+    } catch (error) {
+        Logger.Error(error);
+    }
+    _ACTIVE_GUILDS[member.guild.id] = undefined;
+};
+
+/**
  * Creates a new Text Channel for the specified Member
  * @deprecated
  * @param {GuildMember} member The Member to create the new Text Channel for
@@ -181,85 +235,7 @@ const DeleteVoiceChannel = async (member, scatterUsers = true, msg = null) => {
  * @param {Message?} [msg] The Message to reply to for verbose ( None if null )
  */
 const CreateTextChannel = async (member, channelName, msg = null) => {
-    const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
-
-    let locale;
-    if (msg != null) {
-        locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "text" ]);
-    }
-
-    const user = await Database.GetOrCreateRow("user", {
-        "guildId": member.guild.id,
-        "userId": member.id
-    });
-
-    let userChannel = await Utils.SafeFetch(member.guild.channels, user.privateTextChannelId);
-    if (userChannel == null) {
-        const parent = await Utils.SafeFetch(member.guild.channels, guild.privateChannelCategoryId);
-        const permissionOverwrites = [ ];
-        if (guild.privateChannelEveryoneTemplateRoleId != null) {
-            const everyoneTemplateRole = await Utils.SafeFetch(
-                member.guild.roles,
-                guild.privateChannelEveryoneTemplateRoleId
-            );
-            
-            if (everyoneTemplateRole != null) {
-                permissionOverwrites.push({
-                    "id": member.guild.roles.everyone.id,
-                    "type": _OVERWRITE_TYPES_ROLE,
-                    "allow": parent?.permissionsFor(everyoneTemplateRole) ?? everyoneTemplateRole.permissions
-                });
-            }
-        }
-    
-        if (guild.privateChannelOwnerTemplateRoleId != null) {
-            const ownerTemplateRole = await Utils.SafeFetch(
-                member.guild.roles,
-                guild.privateChannelOwnerTemplateRoleId
-            );
-    
-            if (ownerTemplateRole != null) {
-                permissionOverwrites.push({
-                    "id": member.id,
-                    "type": _OVERWRITE_TYPES_MEMBER,
-                    "allow": parent?.permissionsFor(ownerTemplateRole) ?? ownerTemplateRole.permissions
-                });
-            }
-        }
-
-        userChannel = await member.guild.channels.create(
-            channelName ?? `${member.displayName}'s Text Channel`, {
-                "type": "GUILD_TEXT",
-                "parent": parent?.type === "GUILD_CATEGORY" ? parent : null
-            }
-        );
-
-        if (permissionOverwrites.length > 0) {
-            for (let i = 0; i < permissionOverwrites.length; i++) {
-                const overwrites = permissionOverwrites[i];
-                await userChannel.permissionOverwrites.edit(
-                    overwrites.id,
-                    _PermissionToOverwrites(overwrites.allow), {
-                        "type": overwrites.type,
-                        "reason": "Setting Text Channel Permissions to Templates."
-                    }
-                );
-            }
-        }
-
-        await Database.SetRowAttr("user", {
-            "guildId": member.guild.id,
-            "userId": member.id
-        }, { "privateTextChannelId": userChannel.id });
-
-        await msg?.reply(locale.Get("created"));
-        
-        await userChannel.send(locale.GetFormatted(
-            "welcome", { "user-mention": Utils.MentionUser(member.id) }
-        ));
-    } else {
-        await msg?.reply(locale.Get("alreadyCreated"));
-    }
+    throw new Error("Usage of Deprecated Method.");
 };
 
 /**
@@ -269,39 +245,7 @@ const CreateTextChannel = async (member, channelName, msg = null) => {
  * @param {Message?} [msg] The Message to reply to for verbose ( None if null )
  */
 const DeleteTextChannel = async (member, msg = null) => {
-    let locale;
-    if (msg != null) {
-        const guild = await Database.GetOrCreateRow("guild", { "id": member.guild.id });
-        locale = GetLocale(guild.locale).GetCommandLocale([ "channel", "text" ]);
-    }
-
-    const user = await Database.GetOrCreateRow("user", {
-        "guildId": member.guild.id,
-        "userId": member.id
-    });
-
-    if (user.privateTextChannelId == null) {
-        await msg?.reply(locale.Get("noChannel"));
-        return;
-    }
-
-    const channel = await Utils.SafeFetch(member.guild.channels, user.privateTextChannelId);
-    if (channel == null) {
-        await msg?.reply(locale.Get("noChannel"));
-        return;
-    }
-
-    if (!channel.deletable) {
-        await msg?.reply(locale.Get("cantDelete"));
-        return;
-    }
-
-    await channel.delete(`${member.id} asked to delete its Private Text Channel.`);
-    await Database.SetRowAttr("user", {
-        "guildId": member.guild.id,
-        "userId": member.id
-    }, { "privateTextChannelId": null });
-    if (msg != null) await Utils.SafeReply(msg, locale.Get("deleted"));
+    throw new Error("Usage of Deprecated Method.");
 };
 
 module.exports = {
