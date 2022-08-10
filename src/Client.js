@@ -35,9 +35,9 @@ process.once("SIGINT", () => {
  */
 const RegisterEventListeners = () => {
     const eventsFolder = "./events";
-    fs.readdirSync(eventsFolder).forEach(file => {
+    fs.readdirSync(Utils.JoinPath(__dirname, eventsFolder)).forEach(file => {
         if (file.endsWith(".js")) {
-            const script = require(`${eventsFolder}/${file}`);
+            const script = require(Utils.JoinPath(eventsFolder, file));
             if (
                 typeof script === "object" &&
                 typeof script.event === "string" &&

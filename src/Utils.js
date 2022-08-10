@@ -5,7 +5,6 @@ const {
     ReplyMessageOptions, DataManager, BaseFetchOptions,
     Collection
 } = require("discord.js");
-const path = require("path");
 const DayJS = require("dayjs");
 
 /**
@@ -277,6 +276,24 @@ const IsDirectory = (dirPath) => {
  */
 
 /**
+ * @param {String} str
+ * @param {String} seq
+ */
+const _TrimEnd = (str, seq) => {
+    while (str.endsWith(seq))
+        str = str.substring(0, str.length - seq.length);
+    return str;
+};
+
+/**
+ * Joins paths into one keeping the "./" sequence at the start of the path if present
+ * @param {String[]} paths The paths to join
+ * @returns {String} The joined paths
+ */
+const JoinPath = (...paths) =>
+    JoinArray(paths, "/", el => _TrimEnd(el, "/"));
+
+/**
  * Returns all audio files from the specified directory ( Valid Audio Extensions are Specified in {@link _AUDIO_EXTENSIONS} )
  * @param {String} dirPath The path to the directory to query
  * @returns {FileInfo[]} A list of all audio files in the specified dir or 0 if either there's none or the dir doesn't exist
@@ -289,7 +306,7 @@ const GetAudioFilesInDirectory = (dirPath) => {
     for (let i = 0; i < allFiles.length; i++) {
         const fileMatch = _AUDIO_REGEXP.exec(allFiles[i]);
         if (fileMatch != null) {
-            const fullPath = path.join(dirPath, fileMatch[0]);
+            const fullPath = JoinPath(dirPath, fileMatch[0]);
             if (IsFile(fullPath)) {
                 validFiles.push({
                     "name": fileMatch[1],
@@ -367,7 +384,7 @@ module.exports = {
     IsNaN,
     MentionUser, MentionChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
-    IsFile, IsDirectory, GetAudioFilesInDirectory,
+    IsFile, IsDirectory, JoinPath, GetAudioFilesInDirectory,
     MatchImageUrl, EndsWithOrAdd,
     EscapeDiscordSpecialCharacters,
     ParseDate

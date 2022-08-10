@@ -5,7 +5,7 @@ const { DEVELOPMENT } = require("./NodeEnv.js");
 
 const { Worker } = require("worker_threads");
 const { inspect } = require("util");
-const _LoggerWorker = new Worker("./LoggerWorker.js");
+const _LoggerWorker = new Worker("./src/LoggerWorker.js");
 
 const _DEFAULT_LOGGER_SAVE_INTERVAL = 3600e3;
 const _GROUP_INDENT_SIZE = 2;

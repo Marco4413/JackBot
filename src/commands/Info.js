@@ -1,6 +1,6 @@
 const { CreateCommand, Utils } = require("../Command.js");
 
-const package = require("../package.json");
+const package = require("../../package.json");
 
 module.exports = CreateCommand({
     "name": "info",

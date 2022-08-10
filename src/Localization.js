@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Utils } = require("./Command.js");
+const Utils = require("./Utils.js");
 const { MAX_LOCALE_NAME_LENGTH, GuildModel } = require("./DatabaseDefinitions.js");
 const Logger = require("./Logger.js");
 
@@ -14,11 +14,11 @@ const _LOCALES_FOLDER = "./localization";
  * Registers all Locales found in the localization folder
  */
 const RegisterLocales = () => {
-    fs.readdirSync(_LOCALES_FOLDER).forEach(file => {
+    fs.readdirSync(Utils.JoinPath(__dirname, _LOCALES_FOLDER)).forEach(file => {
         if (file.endsWith(".json")) {
             const localeName = file.substring(0, file.length - ".json".length);
             if (localeName.length <= MAX_LOCALE_NAME_LENGTH) {
-                const jsonLocale = require(`${_LOCALES_FOLDER}/${file}`);
+                const jsonLocale = require(Utils.JoinPath(_LOCALES_FOLDER, file));
                 _Locales[localeName] = new Locale(
                     jsonLocale, localeName, "", jsonLocale
                 );
@@ -77,7 +77,7 @@ const _TraverseObject = (obj, rootPath, pathToTraverse) => {
                 return traversal;
             } else {
                 try {
-                    const extendPath = `${_LOCALES_FOLDER}/${extendsMatch[1]}`;
+                    const extendPath = Utils.JoinPath(_LOCALES_FOLDER, extendsMatch[1]);
                     traversal.value[pathComponent] = require(Utils.EndsWithOrAdd(extendPath, ".json"));
                     traversal.value = traversal.value[pathComponent];
                 } catch (error) {

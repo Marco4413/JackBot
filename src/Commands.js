@@ -1,5 +1,5 @@
 const fs = require("fs");
-const command = require("./Command.js");
+const Command = require("./Command.js");
 const Logger = require("./Logger.js");
 
 /** @type {command.Command[]} */
@@ -10,10 +10,10 @@ const _Commands = [ ];
  */
 const RegisterCommands = () => {
     const commandsFolder = "./commands";
-    fs.readdirSync(commandsFolder).forEach(file => {
+    fs.readdirSync(Command.Utils.JoinPath(__dirname, commandsFolder)).forEach(file => {
         if (file.endsWith(".js")) {
-            const script = require(`${commandsFolder}/${file}`);
-            if (command.IsValidCommand(script)) {
+            const script = require(Command.Utils.JoinPath(commandsFolder, file));
+            if (Command.IsValidCommand(script)) {
                 _Commands.push(script);
                 Logger.Info(`Command "${script.name}" registered!`);
             } else {
