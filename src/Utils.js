@@ -376,6 +376,74 @@ const ParseDate = (datestr) => {
     return offDate.isValid() ? offDate.toDate() : null;
 };
 
+/** @type {Record<String, Boolean>} */
+const _LOCKED_TASKS = { };
+
+/**
+ * Checks if the task with the specified id is locked
+ * @param {...Any} taskId The id of the task
+ * @returns {Boolean} Whether or not the task is locked
+ */
+const IsTaskLocked = (...taskId) => {
+    const _taskId = JoinArray(taskId, ":");
+    return _LOCKED_TASKS[_taskId] === true;
+};
+
+/**
+ * Returns a promise which is resolved once the task is unlocked and locks it again
+ * NOTE: This doesn't support multi-threading this is supposed to be used with async tasks
+ * @param {Number} [checkInterval] The interval (ms) at which to check if the task was unlocked
+ * @param {...Any} taskId The id of the task
+ * @returns {Promise<Void>} The promise which is resolved one the task is reserved
+ */
+const TimedLockTask = (checkInterval = 2.5e3, ...taskId) => {
+    const _taskId = JoinArray(taskId, ":");
+
+    if (!IsTaskLocked(_taskId)) {
+        _LOCKED_TASKS[_taskId] = true;
+        return;
+    }
+    
+    return new Promise(
+        resolve => {
+            const checker = () => {
+                setTimeout(() => {
+                    if (!IsTaskLocked(_taskId)) {
+                        _LOCKED_TASKS[_taskId] = true;
+                        resolve();
+                    } else checker();
+                }, checkInterval);
+            };
+            checker();
+        }
+    );
+};
+
+/**
+ * Returns a promise which is resolved once the task is unlocked and locks it again
+ * NOTE: This doesn't support multi-threading this is supposed to be used with async tasks
+ * @param {...Any} taskId The id of the task
+ * @returns {Promise<Void>} The promise which is resolved one the task is reserved
+ */
+const LockTask = (...taskId) =>
+    TimedLockTask(undefined, ...taskId);
+
+/**
+ * Unlocks the specified task
+ * @param {...Any} taskId The task to unlock
+ */
+const UnlockTask = (...taskId) => {
+    const _taskId = JoinArray(taskId, ":");
+    _LOCKED_TASKS[_taskId] = undefined;
+};
+
+/**
+ * Returns a list of all currently locked tasks
+ * @returns {String[]} All locked tasks
+ */
+const GetLockedTasks = () =>
+    Object.keys(_LOCKED_TASKS);
+
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
     IsValidEmbedValue, FormatString, MapFormatString,
@@ -387,5 +455,6 @@ module.exports = {
     IsFile, IsDirectory, JoinPath, GetAudioFilesInDirectory,
     MatchImageUrl, EndsWithOrAdd,
     EscapeDiscordSpecialCharacters,
-    ParseDate
+    ParseDate,
+    IsTaskLocked, TimedLockTask, LockTask, UnlockTask, GetLockedTasks
 };

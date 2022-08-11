@@ -18,27 +18,6 @@ const _PermissionToOverwrites = (perms) => {
 const _OVERWRITE_TYPES_ROLE   = 0;
 const _OVERWRITE_TYPES_MEMBER = 1;
 
-/** @type {Record<String, Boolean>} */
-const _ACTIVE_GUILDS = { };
-
-const _WaitForGuild = (guildId) => {
-    if (!_ACTIVE_GUILDS[guildId])
-        return new Promise(resolve => resolve());
-    
-    return new Promise(
-        resolve => {
-            const checker = () => {
-                setTimeout(() => {
-                    if (!_ACTIVE_GUILDS[guildId])
-                        resolve();
-                    else checker();
-                }, 2.5e3);
-            };
-            checker();
-        }
-    );
-};
-
 /**
  * @param {GuildMember} member
  * @param {String} channelName
@@ -132,14 +111,13 @@ const _CreateVoiceChannel = async (member, channelName, msg = null) => {
  * @param {Message?} [msg] The Message to reply to for verbose ( None if null )
  */
 const CreateVoiceChannel = async (member, channelName, msg = null) => {
-    await _WaitForGuild(member.guild.id);
-    _ACTIVE_GUILDS[member.guild.id] = true;
+    await Utils.LockTask(member.guild.id, "PrivateVoiceChannel");
     try {
         await _CreateVoiceChannel(member, channelName, msg);
     } catch (error) {
         Logger.Error(error);
     }
-    _ACTIVE_GUILDS[member.guild.id] = undefined;
+    Utils.UnlockTask(member.guild.id, "PrivateVoiceChannel");
 };
 
 /**
@@ -217,14 +195,13 @@ const _DeleteVoiceChannel = async (member, scatterUsers, msg) => {
  * @param {Message?} [msg] The Message to reply to for verbose ( None if null )
  */
 const DeleteVoiceChannel = async (member, scatterUsers = true, msg = null) => {
-    await _WaitForGuild(member.guild.id);
-    _ACTIVE_GUILDS[member.guild.id] = true;
+    await Utils.LockTask(member.guild.id, "PrivateVoiceChannel");
     try {
         await _DeleteVoiceChannel(member, scatterUsers, msg);
     } catch (error) {
         Logger.Error(error);
     }
-    _ACTIVE_GUILDS[member.guild.id] = undefined;
+    Utils.UnlockTask(member.guild.id, "PrivateVoiceChannel");
 };
 
 /**
