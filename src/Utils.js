@@ -352,6 +352,13 @@ const EscapeDiscordSpecialCharacters = (str) =>
  */
 const EndsWithOrAdd = (str, end) => str.endsWith(end) ? str : (str + end);
 
+/**
+ * Makes the first character of a string upper-cased
+ * @param {String} str The string to capitalize
+ * @returns {String} The capitalized string
+ */
+const Capitalize = str => str.substring(0, 1).toUpperCase() + str.substring(1);
+
 const _DATE_OFFSET_MATCHER = /^([\d-+e.]+)\s*([a-z]+)$/i;
 
 /**
@@ -453,7 +460,7 @@ module.exports = {
     MentionUser, MentionChannel, MentionRole,
     GetEnvVariable, AnyToNumber,
     IsFile, IsDirectory, JoinPath, GetAudioFilesInDirectory,
-    MatchImageUrl, EndsWithOrAdd,
+    MatchImageUrl, EndsWithOrAdd, Capitalize,
     EscapeDiscordSpecialCharacters,
     ParseDate,
     IsTaskLocked, TimedLockTask, LockTask, UnlockTask, GetLockedTasks
