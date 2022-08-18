@@ -201,8 +201,25 @@
           "noNotificationSet": "Nessuna notifica impostata per il canale vocale {voice-channel}",
           "notificationDetails": "Notificazioni per il canale vocale {voice-channel} sono inviate nel canale testuale {text-channel}:",
           "notificationListNone": "Al momento non ci sono canali con notificazioni.",
-          "notificationListAll": "Le nificazioni sono abilitate per i seguenti canali:",
+          "notificationListAll": "Le notificazioni sono abilitate per i seguenti canali:",
           "notificationListEntry": "{voice-channel} su {text-channel}"
+        },
+        "social": {
+          "subcommands": {
+            "youtube": {
+              "noMessage": "Devi specificare un messaggio di notificazione valido.",
+              "noTextChannelFound": "Il canale per le notifiche specificato non esiste.",
+              "notTextChannel": "Il canale per le notifiche specificato non è un canale testuale.",
+              "ytChannelNotFound": "Non è stato possibile trovare il canale YouTube specificato.",
+              "notificationAdded": "Le notifiche per il canale YouTube specificato verranno inviate in {text-channel}.",
+              "notificationRemoved": "Notifiche rimosse per il canale <{youtube-url}>",
+              "noNotificationSet": "Non c'è alcuna notifica impostata per il canale <{youtube-url}>",
+              "notificationDetails": "Le notificazioni per <{youtube-url}> sono inviate in {text-channel}:",
+              "notificationListNone": "Attualmente non ci sono canali con notifiche attive.",
+              "notificationListAll": "Le notificazioni sono abilitate per i seguenti canali:",
+              "notificationListEntry": "<{youtube-url}> su {text-channel}"
+            }
+          }
         }
       }
     },

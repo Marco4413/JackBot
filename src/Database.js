@@ -23,19 +23,15 @@ const Logger = require("./Logger.js");
 /** @type {DatabaseWrapper} */
 let _DBInstance = null;
 
+/** @type {Record<keyof Definitions.DatabaseTables, ModelStatic<Model>?>} */
 const _Models = {
-    /** @type {ModelStatic<Model>} */
     "guild": null,
-    /** @type {ModelStatic<Model>} */
     "counter": null,
-    /** @type {ModelStatic<Model>} */
     "user": null,
-    /** @type {ModelStatic<Model>} */
     "role": null,
-    /** @type {ModelStatic<Model>} */
     "channel": null,
-    /** @type {ModelStatic<Model>} */
-    "suggestion": null
+    "suggestion": null,
+    "youtubeNotification": null
 };
 
 // #region Basic Methods
@@ -82,6 +78,7 @@ const Start = async (settings) => {
     _Models.role       = _DBInstance.SafeDefine("Role"      , Definitions.RoleModel      , modelOptions);
     _Models.channel    = _DBInstance.SafeDefine("Channel"   , Definitions.ChannelModel   , modelOptions);
     _Models.suggestion = _DBInstance.SafeDefine("Suggestion", Definitions.SuggestionModel, modelOptions);
+    _Models.youtubeNotification = _DBInstance.SafeDefine("YouTubeNotification", Definitions.YouTubeNotificationModel, modelOptions);
     
     for (const model of Object.values(_Models)) {
         if (settings.dropDatabase) {

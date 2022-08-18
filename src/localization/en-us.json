@@ -203,6 +203,23 @@
           "notificationListNone": "There are currently no notification channels.",
           "notificationListAll": "Notifications are enabled for the following channels:",
           "notificationListEntry": "{voice-channel} on {text-channel}"
+        },
+        "social": {
+          "subcommands": {
+            "youtube": {
+              "noMessage": "You must specify a valid notification message.",
+              "noTextChannelFound": "The specified notification channel doesn't exist.",
+              "notTextChannel": "The specified notification channel isn't a text channel.",
+              "ytChannelNotFound": "The specified YouTube Channel couldn't be found.",
+              "notificationAdded": "Notifications for the specified YouTube Channel will be sent to {text-channel}.",
+              "notificationRemoved": "Notification removed for channel <{youtube-url}>",
+              "noNotificationSet": "There was no notification set for channel <{youtube-url}>",
+              "notificationDetails": "Notification for <{youtube-url}> are sent to {text-channel}:",
+              "notificationListNone": "There are currently no notification channels.",
+              "notificationListAll": "Notifications are enabled for the following channels:",
+              "notificationListEntry": "<{youtube-url}> on {text-channel}"
+            }
+          }
         }
       }
     },

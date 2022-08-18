@@ -6,11 +6,13 @@ const Utils = require("./Utils.js");
 // This should be safe, IDs are 64bit Numbers and the biggest 64bit Number shouldn't
 //  have more then 20 digits so we also have room to spare
 const MAX_SNOWFLAKE_LENGTH = 24;
+const MAX_YOUTUBE_ID_LENGTH = 32;
 const MAX_PREFIX_LENGTH = 6;
 const MAX_LOCALE_NAME_LENGTH = 8;
 const MAX_MANAGEABLE_ROLES = 16;
 
 const _SNOWFLAKE_DATATYPE = DataTypes.STRING(MAX_SNOWFLAKE_LENGTH);
+const _YOUTUBE_ID_DATATYPE = DataTypes.STRING(MAX_YOUTUBE_ID_LENGTH);
 const _MANAGEABLE_ROLES_DATATYPE = DataTypes.STRING(
     MAX_MANAGEABLE_ROLES * MAX_SNOWFLAKE_LENGTH + MAX_MANAGEABLE_ROLES + 1
     // All role Ids + All semicolons + Semicolon at the end
@@ -327,6 +329,32 @@ const SuggestionModel = {
     }
 };
 
+const YouTubeNotificationModel = {
+    "guildId": {
+        "primaryKey": true,
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "youtubeId": {
+        "primaryKey": true,
+        "type": _YOUTUBE_ID_DATATYPE,
+        "allowNull": false
+    },
+    "lastVideoTimestamp": {
+        "type": DataTypes.BIGINT({ "unsigned": true }),
+        "allowNull": false
+    },
+    "newVideoNotificationChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "newVideoNotificationText": {
+        "type": DataTypes.TEXT,
+        "defaultValue": null,
+        "allowNull": true
+    }
+};
+
 /**
  * @typedef {Object} DatabaseRow A Generic Database Row
  * @property {Date} createdAt The time this Row was created at
@@ -423,6 +451,16 @@ const SuggestionModel = {
  */
 
 /**
+ * @typedef {Object} _YoutubeNotificationRowType
+ * @property {String} guildId The Id of the Guild which added this Notification
+ * @property {String} youtubeId The Id of the YouTube Channel
+ * @property {Number} lastVideoTimestamp The last video's timestamp
+ * @property {String} newVideoNotificationChannelId The Id of the Channel notifications are sent to
+ * @property {String} newVideoNotificationText The Message to be sent when a new Video is published
+ * @typedef {DatabaseRow&_YoutubeNotificationRowType} YoutubeNotificationRow
+ */
+
+/**
  * @typedef {Object} DatabaseTables
  * @property {GuildRow} guild
  * @property {CounterRow} counter
@@ -430,10 +468,12 @@ const SuggestionModel = {
  * @property {RoleRow} role
  * @property {ChannelRow} channel
  * @property {SuggestionRow} suggestion
+ * @property {YoutubeNotificationRow} youtubeNotification
  */
 
 module.exports = {
-    MAX_SNOWFLAKE_LENGTH, MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
+    MAX_SNOWFLAKE_LENGTH, MAX_YOUTUBE_ID_LENGTH,
+    MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
     MAX_MANAGEABLE_ROLES,
-    GuildModel, CounterModel, UserModel, RoleModel, ChannelModel, SuggestionModel
+    GuildModel, CounterModel, UserModel, RoleModel, ChannelModel, SuggestionModel, YouTubeNotificationModel
 };
