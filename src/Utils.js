@@ -335,7 +335,7 @@ const MatchImageUrl = (str) => {
     else return null;
 };
 
-const _DISCORD_SPECIAL_CHARACTERS_MATCHER = /([\\*_<>@~`])/;
+const _DISCORD_SPECIAL_CHARACTERS_MATCHER = /([\\*_<>@~`])/g;
 
 /**
  * @param {String} str
