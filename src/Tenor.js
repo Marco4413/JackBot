@@ -1,4 +1,4 @@
-const Fetch = require("node-fetch");
+const { fetch } = require("cross-fetch");
 const Logger = require("./Logger.js");
 const Utils = require("./Utils.js");
 
@@ -87,7 +87,7 @@ const CanTenorSearch = () => _TENOR_API_KEY != null;
 const TenorSearch = async (query, limit = 50, searchType = "search", contentFilter = "medium", mediaFilter = "default", pos = 0) => {
     if (!CanTenorSearch()) return [ ];
     const queryURL = `https://g.tenor.com/v1/${searchType}?q=${encodeURI(query)}&key=${encodeURI(_TENOR_API_KEY)}&limit=${limit}&contentfilter=${contentFilter}&media_filter=${mediaFilter}&pos=${pos}`;
-    const response = await Fetch(queryURL, { "method": "GET" });
+    const response = await fetch(queryURL, { "method": "GET" });
     return response.ok ? (await response.json()).results : [ ];
 };
 
