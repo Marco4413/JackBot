@@ -18,7 +18,7 @@ const _StartsWithBotMention = (str) => {
  * This module Manages Commands
  * @param {Message} msg
  * @param {DatabaseDefinitions.GuildRow} guild
- * @returns {Boolean}
+ * @returns {Promise<Boolean>}
  */
 module.exports = async (msg, guild) => {
     const botMentionEnd = _StartsWithBotMention(msg.content);

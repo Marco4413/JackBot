@@ -10,7 +10,7 @@ const { Message } = require("discord.js");
  * This Module Manages Counters
  * @param {Message} msg
  * @param {DatabaseDefinitions.GuildRow} guild
- * @returns {Boolean}
+ * @returns {Promise<Boolean>}
  */
 module.exports = async (msg, guild) => {
     const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });

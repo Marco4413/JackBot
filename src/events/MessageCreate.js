@@ -2,6 +2,7 @@ const { CreateEventListener } = require("../EventListener.js");
 const Database = require("../Database.js");
 
 const _MessageManagers = [
+    require("./MessageCreate/BoostManager.js"),
     require("./MessageCreate/CommandManager.js"),
     require("./MessageCreate/CounterManager.js")
 ];
