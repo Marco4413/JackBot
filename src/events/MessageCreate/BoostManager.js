@@ -1,4 +1,4 @@
-const { SendNitroBoostEmbed } = require("../commands/utils/BoostUtils.js");
+const { SendNitroBoostEmbed } = require("../../commands/utils/BoostUtils.js");
 const { Message } = require("discord.js");
 
 /**
