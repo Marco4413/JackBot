@@ -115,10 +115,28 @@ const MapFormatString = (str, formats) => {
  */
 const JoinArray = (array, separator = ",", elFormatter = el => el) => {
     const output = array.reduce((prev, next, index) => {
-        if (prev === undefined) return "" + elFormatter(next, index);
+        if (prev == null) return "" + elFormatter(next, index);
         return prev + separator + elFormatter(next, index);
-    }, undefined);
-    return output === undefined ? "" : output;
+    }, null);
+    return output ?? "";
+};
+
+/**
+ * Same as {@link JoinArray} but supports async formatters
+ * @template {Any} T The type of the elements in the Array
+ * @param {T[]} array The Array to Join
+ * @param {String} [separator] The separator used to separate Array elements
+ * @param {(el: T, index: Number) => Promise<Any>} [elFormatter] Called to format every element in the Array
+ * @returns {Promise<String>} The Joint Array Elements
+ */
+const JoinArrayAsync = async (array, separator = ",", elFormatter = el => el) => {
+    let output = null;
+    for (let i = 0; i < array.length; i++) {
+        if (output == null) {
+            output = "" + await elFormatter(array[i], i);
+        } else output += separator + await elFormatter(array[i], i);
+    }
+    return output ?? "";
 };
 
 /**
@@ -454,7 +472,7 @@ const GetLockedTasks = () =>
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
     IsValidEmbedValue, FormatString, MapFormatString,
-    JoinArray, GetRandomArrayElement,
+    JoinArray, JoinArrayAsync, GetRandomArrayElement,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     IsNaN,
     MentionUser, MentionChannel, MentionRole,
