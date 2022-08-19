@@ -47,6 +47,11 @@ DEFAULT_LOCALE = "en-us"
 # RP Update Interval in Milliseconds
 RP_UPDATE_INTERVAL = 3600e3
 
+# Notifications Settings
+# Notifications' Update Interval in Milliseconds,
+#  a number too low may result in temp bans from some APIs
+NOTIFICATIONS_UPDATE_INTERVAL = 1800e3
+
 # Database Settings
 DB_MODE = "sqlite"
 
