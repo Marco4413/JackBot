@@ -161,8 +161,7 @@ class Locale {
      */
     GetFormattedList(entries, path = null, formatter = value => ({ value }), titlePath = null) {
         const title = titlePath == null ?
-            "" :
-            (this.Get(titlePath) + "\n");
+            "" : (this.Get(titlePath) + "\n");
         return title + Utils.JoinArray(
             entries, "\n", entry =>
                 this.GetCommonFormatted(
@@ -171,6 +170,32 @@ class Locale {
                             formatter(entry).value :
                             this.GetFormatted(
                                 path, formatter(entry)
+                            )
+                    }
+                )
+        );
+    }
+
+    /**
+     * Creates a Formatted list from the specified Array
+     * @template {Any} T Entry type
+     * @param {T[]} entries The Entries to list
+     * @param {String?} [path] The path of the locale to use to format each entry
+     * @param {(entry: T) => Promise<Record<String, Any>>} [formatter] A function which returns the formats to use with the locale string at path
+     * @param {String?} [titlePath] The path to the locale to use as the title of the list
+     * @returns {Promise<String>} The Formatted List
+     */
+    async GetFormattedListAsync(entries, path = null, formatter = value => ({ value }), titlePath = null) {
+        const title = titlePath == null ?
+            "" : (this.Get(titlePath) + "\n");
+        return title + await Utils.JoinArrayAsync(
+            entries, "\n", async entry =>
+                this.GetCommonFormatted(
+                    "listEntry", {
+                        "value": path == null ?
+                            (await formatter(entry)).value :
+                            this.GetFormatted(
+                                path, await formatter(entry)
                             )
                     }
                 )
@@ -188,8 +213,7 @@ class Locale {
      */
     GetFormattedInlineList(entries, path = null, formatter = value => ({ value }), titlePath = null) {
         const title = titlePath == null ?
-            "" :
-            (this.Get(titlePath) + "\n");
+            "" : (this.Get(titlePath) + "\n");
         return title + this.GetCommonFormatted(
             "listDelimiter", {
                 "list": Utils.JoinArray(
