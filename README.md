@@ -17,6 +17,11 @@ DM_LOGGING = "ID1;ID2"
 # Only required to enable GIF search functions, remove the field to disable them
 TENOR_API_KEY = "MyTenorAPIKey"
 
+# Twitch API ID and Secret Here
+# Only required to enable Twitch Streams Notifications
+TWITCH_CLIENT_ID = "MyTwitchClientId"
+TWITCH_CLIENT_SECRET = "MyTwitchClientSecret"
+
 # Generic Settings
 # Whether or not to delete User Data when a User leaves a Guild
 # Put it on false if you want persistent settings for Users even if they leave an re-join the Guild
