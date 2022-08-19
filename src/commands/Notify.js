@@ -238,8 +238,8 @@ module.exports = CreateCommand({
                         "youtubeId": ytChannelId
                     }, {
                         "lastVideoTimestamp": lastVideoTimestamp,
-                        "newVideoNotificationChannelId": notificationChannelId,
-                        "newVideoNotificationText": notificationText
+                        "notificationChannelId": notificationChannelId,
+                        "notificationText": notificationText
                     });
 
                     await msg.reply(locale.GetFormatted(
@@ -264,7 +264,7 @@ module.exports = CreateCommand({
                         await msg.reply(locale.GetFormatted(
                             "notificationRemoved", {
                                 "youtube-id": ytChannelId,
-                                "youtube-url": YouTubeNotification.GetChannelUrl(ytChannelId)
+                                "youtube-url": YouTubeNotification.GetSocialUrl(ytChannelId)
                             }
                         ));
                     } else {
@@ -288,11 +288,11 @@ module.exports = CreateCommand({
                             await msg.reply(locale.GetFormattedList(
                                 notificationRows, "notificationListEntry", row => ({
                                     "youtube-id": row.youtubeId,
-                                    "youtube-url": YouTubeNotification.GetChannelUrl(row.youtubeId),
+                                    "youtube-url": YouTubeNotification.GetSocialUrl(row.youtubeId),
                                     "text-channel": locale.GetSoftMention(
                                         "Channel",
-                                        msg.guild.channels.resolve(row.newVideoNotificationChannelId)?.name,
-                                        row.newVideoNotificationChannelId
+                                        msg.guild.channels.resolve(row.notificationChannelId)?.name,
+                                        row.notificationChannelId
                                     )
                                 }), "notificationListAll"
                             ));
@@ -314,17 +314,17 @@ module.exports = CreateCommand({
                         await msg.reply(locale.GetFormatted(
                             "notificationDetails", {
                                 "youtube-id": notificationRow.youtubeId,
-                                "youtube-url": YouTubeNotification.GetChannelUrl(notificationRow.youtubeId),
+                                "youtube-url": YouTubeNotification.GetSocialUrl(notificationRow.youtubeId),
                                 "text-channel": locale.GetSoftMention(
                                     "Channel",
-                                    (await Utils.SafeFetch(msg.guild.channels, notificationRow.newVideoNotificationChannelId))?.name,
-                                    notificationRow.newVideoNotificationChannelId
+                                    (await Utils.SafeFetch(msg.guild.channels, notificationRow.notificationChannelId))?.name,
+                                    notificationRow.notificationChannelId
                                 )
                             }
                         ));
                         
                         await msg.channel.send(Utils.EscapeDiscordSpecialCharacters(
-                            notificationRow.newVideoNotificationText
+                            notificationRow.notificationText
                         ));
                     }
                 }

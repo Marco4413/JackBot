@@ -116,9 +116,9 @@ const Notify = async () => {
     }
 };
 
-const GetChannelUrl = ytChannelId =>
+const GetSocialUrl = ytChannelId =>
     `https://www.youtube.com/channel/${encodeURIComponent(ytChannelId)}`;
 
 module.exports = {
-    SyncToDatabase, Subscribe, Unsubscribe, Notify, GetChannelUrl
+    SyncToDatabase, Subscribe, Unsubscribe, Notify, GetSocialUrl
 };

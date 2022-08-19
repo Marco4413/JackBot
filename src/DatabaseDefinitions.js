@@ -344,11 +344,11 @@ const YouTubeNotificationModel = {
         "type": DataTypes.BIGINT({ "unsigned": true }),
         "allowNull": false
     },
-    "newVideoNotificationChannelId": {
+    "notificationChannelId": {
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
-    "newVideoNotificationText": {
+    "notificationText": {
         "type": DataTypes.TEXT,
         "defaultValue": null,
         "allowNull": true
@@ -455,8 +455,8 @@ const YouTubeNotificationModel = {
  * @property {String} guildId The Id of the Guild which added this Notification
  * @property {String} youtubeId The Id of the YouTube Channel
  * @property {Number} lastVideoTimestamp The last video's timestamp
- * @property {String} newVideoNotificationChannelId The Id of the Channel notifications are sent to
- * @property {String} newVideoNotificationText The Message to be sent when a new Video is published
+ * @property {String} notificationChannelId The Id of the Channel notifications are sent to
+ * @property {String} notificationText The Message to be sent when a new Video is published
  * @typedef {DatabaseRow&_YoutubeNotificationRowType} YoutubeNotificationRow
  */
 
@@ -475,5 +475,6 @@ module.exports = {
     MAX_SNOWFLAKE_LENGTH, MAX_YOUTUBE_ID_LENGTH,
     MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
     MAX_MANAGEABLE_ROLES,
-    GuildModel, CounterModel, UserModel, RoleModel, ChannelModel, SuggestionModel, YouTubeNotificationModel
+    GuildModel, CounterModel, UserModel, RoleModel, ChannelModel, SuggestionModel,
+    YouTubeNotificationModel
 };
