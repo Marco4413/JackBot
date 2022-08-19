@@ -3,7 +3,15 @@ const Database = require("../../Database.js");
 const Utils = require("../../Utils.js");
 const { Client } = require("../../Client.js");
 const { fetch } = require("cross-fetch");
-const Logger = require("../../Logger");
+const Logger = require("../../Logger.js");
+
+const {
+    NotificationSyncToDatabase,
+    NotificationSubscribe, NotificationUnsubscribe,
+    NotificationNotify,
+    NotificationGetSocialUrl,
+    NotificationExports
+} = require("./AbstractNotification.js");
 
 /** @type {Record<String, Boolean>} */
 let _Subscriptions = { };
@@ -28,6 +36,7 @@ const _FetchVideoFeed = async (channelId) => {
     }
 };
 
+/** @type {NotificationSyncToDatabase} */
 const SyncToDatabase = async () => {
     await Utils.LockTask("YouTubeNotification");
     _Subscriptions = { };
@@ -38,6 +47,7 @@ const SyncToDatabase = async () => {
     Utils.UnlockTask("YouTubeNotification");
 };
 
+/** @type {NotificationSubscribe<Number>} */
 const Subscribe = async (channelId) => {
     const videoFeed = await _FetchVideoFeed(channelId);
     console.log(videoFeed);
@@ -60,12 +70,14 @@ const _Unsubscribe = async (channelId) => {
         _Subscriptions[channelId] = undefined;
 };
 
+/** @type {NotificationUnsubscribe} */
 const Unsubscribe = async (channelId) => {
     await Utils.LockTask("YouTubeNotification");
     await _Unsubscribe(channelId);
     Utils.UnlockTask("YouTubeNotification");
 };
 
+/** @type {NotificationNotify} */
 const Notify = async () => {
     const ytChannelIds = Object.keys(_Subscriptions);
     for (let i = 0; i < ytChannelIds.length; i++) {
@@ -116,9 +128,11 @@ const Notify = async () => {
     }
 };
 
+/** @type {NotificationGetSocialUrl} */
 const GetSocialUrl = ytChannelId =>
     `https://www.youtube.com/channel/${encodeURIComponent(ytChannelId)}`;
 
+/** @type {NotificationExports} */
 module.exports = {
     SyncToDatabase, Subscribe, Unsubscribe, Notify, GetSocialUrl
 };
