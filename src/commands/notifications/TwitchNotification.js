@@ -1,14 +1,21 @@
-const XML2JS = require("xml2js");
 const Database = require("../../Database.js");
 const Utils = require("../../Utils.js");
 const { Client } = require("../../Client.js");
-const { fetch } = require("cross-fetch");
 const Logger = require("../../Logger.js");
 const Twitch = require("../../Twitch.js");
+
+const {
+    NotificationSyncToDatabase,
+    NotificationSubscribe, NotificationUnsubscribe,
+    NotificationNotify,
+    NotificationGetSocialUrl,
+    NotificationExports
+} = require("./AbstractNotification.js");
 
 /** @type {Record<String, Boolean>} */
 let _Subscriptions = { };
 
+/** @type {NotificationSyncToDatabase} */
 const SyncToDatabase = async () => {
     await Utils.LockTask("TwitchNotification");
     _Subscriptions = { };
@@ -19,6 +26,7 @@ const SyncToDatabase = async () => {
     Utils.UnlockTask("TwitchNotification");
 };
 
+/** @type {NotificationSubscribe<Boolean>} */
 const Subscribe = async (channelId) => {
     const user = await Twitch.GetUserById(channelId);
     if (user == null) return null;
@@ -36,12 +44,14 @@ const _Unsubscribe = async (channelId) => {
         _Subscriptions[channelId] = undefined;
 };
 
+/** @type {NotificationUnsubscribe} */
 const Unsubscribe = async (channelId) => {
     await Utils.LockTask("TwitchNotification");
     await _Unsubscribe(channelId);
     Utils.UnlockTask("TwitchNotification");
 };
 
+/** @type {NotificationNotify} */
 const Notify = async () => {
     const twitchChannelIds = Object.keys(_Subscriptions);
     for (let i = 0; i < twitchChannelIds.length; i++) {
@@ -92,6 +102,7 @@ const Notify = async () => {
     }
 };
 
+/** @type {NotificationGetSocialUrl} */
 const GetSocialUrl = async (twitchId) =>
     await Twitch.GetUserUrlById(twitchId) ?? twitchId;
 
