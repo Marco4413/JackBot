@@ -344,6 +344,7 @@ module.exports = CreateCommand({
         _CreateAccesslistCommand("role", "r", "inRoleAccessList", "isRoleAccessBlacklist"),
         _CreateAccesslistCommand("suggestion", "suggest", "inSuggestionAccessList", "isSuggestionAccessBlacklist"),
         _CreateAccesslistCommand("credits", "cr", "inCreditsAccessList", "isCreditsAccessBlacklist"),
-        _CreateAccesslistCommand("credits-manager", "cr-manager", "inCreditsManagerAccessList", "isCreditsManagerAccessBlacklist")
+        _CreateAccesslistCommand("credits-manager", "cr-manager", "inCreditsManagerAccessList", "isCreditsManagerAccessBlacklist"),
+        _CreateAccesslistCommand("social-manager", undefined, "inSocialManagerAccessList", "isSocialManagerAccessBlacklist")
     ]
 });

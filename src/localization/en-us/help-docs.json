@@ -19,7 +19,7 @@
       "subcommands": {
         "<COMMAND>": {
           "title": "<COMMAND>",
-          "description": "Used to manage the Access List for the specified command.\nWorks with: `channel`, `role`, `sound`, `suggestion`, `suggestion-manager`, `credits`, `credits-manager`.",
+          "description": "Used to manage the Access List for the specified command.\nWorks with: `channel`, `role`, `sound`, `suggestion`, `suggestion-manager`, `credits`, `credits-manager`, `social-manager`.",
           "subcommands": {
             "type": {
               "title": "type [SUB]",

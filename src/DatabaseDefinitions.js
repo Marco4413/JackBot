@@ -118,6 +118,11 @@ const GuildModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": true
+    },
+    "isSocialManagerAccessBlacklist": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": true
     }
 };
 
@@ -228,6 +233,11 @@ const UserModel = {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
+    },
+    "inSocialManagerAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
     }
 };
 
@@ -278,6 +288,11 @@ const RoleModel = {
         "allowNull": false
     },
     "inCreditsManagerAccessList": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "inSocialManagerAccessList": {
         "type": DataTypes.BOOLEAN,
         "defaultValue": false,
         "allowNull": false
@@ -409,6 +424,7 @@ const TwitchNotificationModel = {
  * @property {Boolean} isSuggestionManagerAccessBlacklist Whether or not the Suggestion Manager Access List is a Blacklist
  * @property {Boolean} isCreditsAccessBlacklist Whether or not the Credits Access List is a Blacklist
  * @property {Boolean} isCreditsManagerAccessBlacklist Whether or not the Credits Manager Access List is a Blacklist
+ * @property {Boolean} isSocialManagerAccessBlacklist Whether or not the Social Manager Access List is a Blacklist
  * @typedef {DatabaseRow&_GuildRowType} GuildRow A Database Row for a specific Guild
  */
 
@@ -440,6 +456,7 @@ const TwitchNotificationModel = {
  * @property {Boolean} inSuggestionManagerAccessList Whether or not this User is in the Suggestion Manager Access List
  * @property {Boolean} inCreditsAccessList Whether or not this User is in the Credits Access List
  * @property {Boolean} inCreditsManagerAccessList Whether or not this User is in the Credits Manager Access List
+ * @property {Boolean} inSocialManagerAccessList Whether or not this User is in the Social Manager Access List
  * @typedef {DatabaseRow&_UserRowType} UserRow
  */
 
@@ -455,6 +472,7 @@ const TwitchNotificationModel = {
  * @property {Boolean} inSuggestionManagerAccessList Whether or not this Role is in the Suggestion Manager Access List
  * @property {Boolean} inCreditsAccessList Whether or not this Role is in the Credits Access List
  * @property {Boolean} inCreditsManagerAccessList Whether or not this Role is in the Credits Manager Access List
+ * @property {Boolean} inSocialManagerAccessList Whether or not this Role is in the Social Manager Access List
  * @typedef {DatabaseRow&_RoleRowType} RoleRow
  */
 

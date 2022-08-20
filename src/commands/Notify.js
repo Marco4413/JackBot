@@ -5,6 +5,7 @@ const TwitchNotification = require("./notifications/TwitchNotification.js");
 const Timing = require("../Timing.js");
 const Logger = require("../Logger.js");
 const Twitch = require("../Twitch.js");
+const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
 
 const _NOTIFICATIONS_UPDATE_INTERVAL = Utils.GetEnvVariable("NOTIFICATIONS_UPDATE_INTERVAL", Utils.AnyToNumber, 1800e3, Logger.Warn);
 
@@ -19,10 +20,10 @@ const _NOTIFICATIONS_UPDATE_INTERVAL = Utils.GetEnvVariable("NOTIFICATIONS_UPDAT
 
 module.exports = CreateCommand({
     "name": "notify",
-    "permissions": Permissions.FLAGS.ADMINISTRATOR,
     "subcommands": [{
         "name": "voice",
         "shortcut": "v",
+        "permissions": Permissions.FLAGS.ADMINISTRATOR,
         "subcommands": [{
             "name": "join",
             "shortcut": "j",
@@ -199,7 +200,8 @@ module.exports = CreateCommand({
         }]
     }, {
         "name": "social",
-        "shortcut": "s",
+        "canExecute": async (msg, guild, locale) =>
+            !await ReplyIfBlacklisted(locale, "notify social", msg, "inSocialManagerAccessList", "isSocialManagerAccessBlacklist"),
         "subcommands": [{
             "name": "twitch",
             "subcommands": [{
