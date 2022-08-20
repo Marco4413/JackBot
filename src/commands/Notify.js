@@ -1,15 +1,19 @@
 const Sequelize = require("sequelize");
 const { CreateCommand, Permissions, Database, Utils } = require("../Command.js");
 const YouTubeNotification = require("./notifications/YouTubeNotification.js");
+const TwitchNotification = require("./notifications/TwitchNotification.js");
 const Timing = require("../Timing.js");
 const Logger = require("../Logger.js");
+const Twitch = require("../Twitch.js");
 
 const _NOTIFICATIONS_UPDATE_INTERVAL = Utils.GetEnvVariable("NOTIFICATIONS_UPDATE_INTERVAL", Utils.AnyToNumber, 1800e3, Logger.Warn);
 
 (async () => {
     await YouTubeNotification.SyncToDatabase();
+    await TwitchNotification.SyncToDatabase();
     Timing.CreateInterval(async () => {
         await YouTubeNotification.Notify();
+        await TwitchNotification.Notify();
     }, _NOTIFICATIONS_UPDATE_INTERVAL);
 })();
 
@@ -197,13 +201,147 @@ module.exports = CreateCommand({
         "name": "social",
         "shortcut": "s",
         "subcommands": [{
+            "name": "twitch",
+            "subcommands": [{
+                "name": "add",
+                "shortcut": "a",
+                "arguments": [{
+                    "name": "[TWITCH CHANNEL USERNAME]",
+                    "types": [ "string" ]
+                }, {
+                    "name": "[TEXT CHANNEL MENTION/ID]",
+                    "types": [ "channel" ]
+                }, {
+                    "name": "[MESSAGE]",
+                    "types": [ "text" ]
+                }],
+                "execute": async (msg, guild, locale, [ twitchUsername, notificationChannelId, notificationText ]) => {
+                    if (notificationText.length === 0) {
+                        await msg.reply(locale.Get("noMessage"));
+                        return;
+                    }
+
+                    const notificationChannel = await Utils.SafeFetch(msg.guild.channels, notificationChannelId);
+                    if (notificationChannel == null) {
+                        await msg.reply(locale.Get("noTextChannelFound"));
+                        return;
+                    } else if (!notificationChannel.isText()) {
+                        await msg.reply(locale.Get("notTextChannel"));
+                        return;
+                    }
+
+                    const twitchUser = await Twitch.GetUserByUsername(twitchUsername);
+                    if (twitchUser == null) {
+                        await msg.reply(locale.Get("twitchChannelNotFound"));
+                        return;
+                    }
+
+                    await TwitchNotification.Subscribe(twitchUser.id);
+
+                    await Database.SetOrCreateRow("twitchNotification", {
+                        "guildId": msg.guildId,
+                        "twitchId": twitchUser.id
+                    }, {
+                        "isStreaming": false,
+                        "notificationChannelId": notificationChannelId,
+                        "notificationText": notificationText
+                    });
+
+                    await msg.reply(locale.GetFormatted(
+                        "notificationAdded", {
+                            "text-channel": locale.GetSoftMention("Channel", notificationChannel?.name, notificationChannelId),
+                        }
+                    ));
+                }
+            }, {
+                "name": "remove",
+                "shortcut": "r",
+                "arguments": [{
+                    "name": "[TWITCH CHANNEL ID]",
+                    "types": [ "string" ]
+                }],
+                "execute": async (msg, guild, locale, [ twitchId ]) => {
+                    const removedRows = await Database.RemoveRows("twitchNotification", {
+                        "guildId": msg.guildId, "twitchId": twitchId
+                    });
+
+                    if (removedRows > 0) {
+                        await msg.reply(locale.GetFormatted(
+                            "notificationRemoved", {
+                                "twitch-id": twitchId,
+                                "twitch-url": await TwitchNotification.GetSocialUrl(twitchId)
+                            }
+                        ));
+                    } else {
+                        await msg.reply(locale.Get("noNotificationSet"));
+                    }
+                }
+            }, {
+                "name": "list",
+                "shortcut": "l",
+                "subcommands": [{
+                    "name": "all",
+                    "shortcut": "a",
+                    "execute": async (msg, guild, locale) => {
+                        const notificationRows = await Database.GetRows("twitchNotification", {
+                            "guildId": msg.guildId
+                        });
+
+                        if (notificationRows.length === 0) {
+                            await msg.reply(locale.Get("notificationListNone"));
+                        } else {
+                            await msg.reply(await locale.GetFormattedListAsync(
+                                notificationRows, "notificationListEntry", async row => ({
+                                    "twitch-id": row.twitchId,
+                                    "twitch-url": await TwitchNotification.GetSocialUrl(row.twitchId),
+                                    "text-channel": locale.GetSoftMention(
+                                        "Channel",
+                                        msg.guild.channels.resolve(row.notificationChannelId)?.name,
+                                        row.notificationChannelId
+                                    )
+                                }), "notificationListAll"
+                            ));
+                        }
+                    }
+                }],
+                "arguments": [{
+                    "name": "[TWITCH CHANNEL ID]",
+                    "types": [ "string" ]
+                }],
+                "execute": async (msg, guild, locale, [ twitchId ]) => {
+                    const notificationRow = await Database.GetRow("twitchNotification", {
+                        "guildId": msg.guildId, "twitchId": twitchId
+                    });
+
+                    if (notificationRow == null) {
+                        await msg.reply(locale.Get("noNotificationSet"));
+                    } else {
+                        await msg.reply(locale.GetFormatted(
+                            "notificationDetails", {
+                                "twitch-id": twitchId,
+                                "twitch-url": YouTubeNotification.GetSocialUrl(twitchId),
+                                "text-channel": locale.GetSoftMention(
+                                    "Channel",
+                                    (await Utils.SafeFetch(msg.guild.channels, notificationRow.notificationChannelId))?.name,
+                                    notificationRow.notificationChannelId
+                                )
+                            }
+                        ));
+                        
+                        await msg.channel.send(Utils.EscapeDiscordSpecialCharacters(
+                            notificationRow.notificationText
+                        ));
+                    }
+                }
+            }]
+        }, {
             "name": "youtube",
             "shortcut": "yt",
             "subcommands": [{
                 "name": "add",
                 "shortcut": "a",
                 "arguments": [{
-                    "name": "[YT CHANNEL ID]",
+                    "name": "[YOUTUBE CHANNEL ID]",
                     "types": [ "string" ]
                 }, {
                     "name": "[TEXT CHANNEL MENTION/ID]",
@@ -252,11 +390,11 @@ module.exports = CreateCommand({
                 "name": "remove",
                 "shortcut": "r",
                 "arguments": [{
-                    "name": "[YT CHANNEL ID]",
+                    "name": "[YOUTUBE CHANNEL ID]",
                     "types": [ "string" ]
                 }],
                 "execute": async (msg, guild, locale, [ ytChannelId ]) => {
-                    const removedRows = await Database.RemoveRows("channel", {
+                    const removedRows = await Database.RemoveRows("youtubeNotification", {
                         "guildId": msg.guildId, "youtubeId": ytChannelId
                     });
 
@@ -300,7 +438,7 @@ module.exports = CreateCommand({
                     }
                 }],
                 "arguments": [{
-                    "name": "[YT CHANNEL ID]",
+                    "name": "[YOUTUBE CHANNEL ID]",
                     "types": [ "string" ]
                 }],
                 "execute": async (msg, guild, locale, [ ytChannelId ]) => {

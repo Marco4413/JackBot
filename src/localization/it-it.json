@@ -217,7 +217,20 @@
               "notificationDetails": "Le notificazioni per <{youtube-url}> sono inviate in {text-channel}:",
               "notificationListNone": "Attualmente non ci sono canali con notifiche attive.",
               "notificationListAll": "Le notificazioni sono abilitate per i seguenti canali:",
-              "notificationListEntry": "<{youtube-url}> su {text-channel}"
+              "notificationListEntry": "{youtube-id} (<{youtube-url}>) su {text-channel}"
+            },
+            "twitch": {
+              "noMessage": "Devi specificare un messaggio di notificazione valido.",
+              "noTextChannelFound": "Il canale per le notifiche specificato non esiste.",
+              "notTextChannel": "Il canale per le notifiche specificato non è un canale testuale.",
+              "twitchChannelNotFound": "Non è stato possibile trovare il canale Twitch specificato.",
+              "notificationAdded": "Le notifiche per il canale Twitch specificato verranno inviate in {text-channel}.",
+              "notificationRemoved": "Notifiche rimosse per il canale <{twitch-url}>",
+              "noNotificationSet": "Non c'è alcuna notifica impostata per il canale <{twitch-url}>",
+              "notificationDetails": "Le notificazioni per <{twitch-url}> sono inviate in {text-channel}:",
+              "notificationListNone": "Attualmente non ci sono canali con notifiche attive.",
+              "notificationListAll": "Le notificazioni sono abilitate per i seguenti canali:",
+              "notificationListEntry": "{twitch-id} (<{twitch-url}>) su {text-channel}"
             }
           }
         }

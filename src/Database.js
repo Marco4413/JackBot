@@ -79,6 +79,7 @@ const Start = async (settings) => {
     _Models.channel    = _DBInstance.SafeDefine("Channel"   , Definitions.ChannelModel   , modelOptions);
     _Models.suggestion = _DBInstance.SafeDefine("Suggestion", Definitions.SuggestionModel, modelOptions);
     _Models.youtubeNotification = _DBInstance.SafeDefine("YouTubeNotification", Definitions.YouTubeNotificationModel, modelOptions);
+    _Models.twitchNotification  = _DBInstance.SafeDefine("TwitchNotification" , Definitions.TwitchNotificationModel , modelOptions);
     
     for (const model of Object.values(_Models)) {
         if (settings.dropDatabase) {

@@ -355,6 +355,33 @@ const YouTubeNotificationModel = {
     }
 };
 
+const TwitchNotificationModel = {
+    "guildId": {
+        "primaryKey": true,
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "twitchId": {
+        "primaryKey": true,
+        "type": _YOUTUBE_ID_DATATYPE,
+        "allowNull": false
+    },
+    "isStreaming": {
+        "type": DataTypes.BOOLEAN,
+        "defaultValue": false,
+        "allowNull": false
+    },
+    "notificationChannelId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "allowNull": false
+    },
+    "notificationText": {
+        "type": DataTypes.TEXT,
+        "defaultValue": null,
+        "allowNull": true
+    }
+};
+
 /**
  * @typedef {Object} DatabaseRow A Generic Database Row
  * @property {Date} createdAt The time this Row was created at
@@ -461,6 +488,16 @@ const YouTubeNotificationModel = {
  */
 
 /**
+ * @typedef {Object} _TwitchNotificationRowType
+ * @property {String} guildId The Id of the Guild which added this Notification
+ * @property {String} twitchId The Id of the Twitch Channel
+ * @property {Boolean} isStreaming Whether or not the User is Streaming
+ * @property {String} notificationChannelId The Id of the Channel notifications are sent to
+ * @property {String} notificationText The Message to be sent when a new Stream is started
+ * @typedef {DatabaseRow&_TwitchNotificationRowType} TwitchNotificationRow
+ */
+
+/**
  * @typedef {Object} DatabaseTables
  * @property {GuildRow} guild
  * @property {CounterRow} counter
@@ -469,6 +506,7 @@ const YouTubeNotificationModel = {
  * @property {ChannelRow} channel
  * @property {SuggestionRow} suggestion
  * @property {YoutubeNotificationRow} youtubeNotification
+ * @property {TwitchNotificationRow} twitchNotification
  */
 
 module.exports = {
@@ -476,5 +514,5 @@ module.exports = {
     MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
     MAX_MANAGEABLE_ROLES,
     GuildModel, CounterModel, UserModel, RoleModel, ChannelModel, SuggestionModel,
-    YouTubeNotificationModel
+    YouTubeNotificationModel, TwitchNotificationModel
 };
