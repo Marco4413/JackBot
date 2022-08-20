@@ -13,8 +13,17 @@ const _NOTIFICATIONS_UPDATE_INTERVAL = Utils.GetEnvVariable("NOTIFICATIONS_UPDAT
     await YouTubeNotification.SyncToDatabase();
     await TwitchNotification.SyncToDatabase();
     Timing.CreateInterval(async () => {
-        await YouTubeNotification.Notify();
-        await TwitchNotification.Notify();
+        try {
+            await YouTubeNotification.Notify();
+        } catch (error) {
+            Logger.Error(error);
+        }
+
+        try {
+            await TwitchNotification.Notify();
+        } catch (error) {
+            Logger.Error(error);
+        }
     }, _NOTIFICATIONS_UPDATE_INTERVAL);
 })();
 
