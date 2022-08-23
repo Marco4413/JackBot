@@ -7,12 +7,14 @@ const Utils = require("./Utils.js");
 //  have more then 20 digits so we also have room to spare
 const MAX_SNOWFLAKE_LENGTH = 24;
 const MAX_YOUTUBE_ID_LENGTH = 32;
+const MAX_TWITCH_ID_LENGTH = 24;
 const MAX_PREFIX_LENGTH = 6;
 const MAX_LOCALE_NAME_LENGTH = 8;
 const MAX_MANAGEABLE_ROLES = 16;
 
 const _SNOWFLAKE_DATATYPE = DataTypes.STRING(MAX_SNOWFLAKE_LENGTH);
 const _YOUTUBE_ID_DATATYPE = DataTypes.STRING(MAX_YOUTUBE_ID_LENGTH);
+const _TWITCH_ID_DATATYPE = DataTypes.STRING(MAX_TWITCH_ID_LENGTH);
 const _MANAGEABLE_ROLES_DATATYPE = DataTypes.STRING(
     MAX_MANAGEABLE_ROLES * MAX_SNOWFLAKE_LENGTH + MAX_MANAGEABLE_ROLES + 1
     // All role Ids + All semicolons + Semicolon at the end
@@ -378,7 +380,7 @@ const TwitchNotificationModel = {
     },
     "twitchId": {
         "primaryKey": true,
-        "type": _YOUTUBE_ID_DATATYPE,
+        "type": _TWITCH_ID_DATATYPE,
         "allowNull": false
     },
     "isStreaming": {
@@ -528,7 +530,7 @@ const TwitchNotificationModel = {
  */
 
 module.exports = {
-    MAX_SNOWFLAKE_LENGTH, MAX_YOUTUBE_ID_LENGTH,
+    MAX_SNOWFLAKE_LENGTH, MAX_YOUTUBE_ID_LENGTH, MAX_TWITCH_ID_LENGTH,
     MAX_PREFIX_LENGTH, MAX_LOCALE_NAME_LENGTH,
     MAX_MANAGEABLE_ROLES,
     GuildModel, CounterModel, UserModel, RoleModel, ChannelModel, SuggestionModel,
