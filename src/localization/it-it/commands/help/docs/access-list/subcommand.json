@@ -1,0 +1,60 @@
+{
+  "title": null,
+  "description": "Gestisce la Access List per questa categoria di comandi.",
+  "subcommands": {
+    "type": {
+      "title": "type [SUB]",
+      "description": "Mostra il tipo della Access List.",
+      "subcommands": {
+        "set": {
+          "title": "set <'blacklist'|'whitelist'>",
+          "description": "Imposta il tipo della Access List.\nTipi validi: `blacklist`, `whitelist`."
+        }
+      }
+    },
+    "user": {
+      "title": "user <SUB>",
+      "description": "Gestisce la Access List degli Utenti.",
+      "subcommands": {
+        "clear": {
+          "title": "clear",
+          "description": "Svuota la Access List degli Utenti."
+        },
+        "list": {
+          "title": "list",
+          "description": "Mostra tutti gli Utenti nella Access List."
+        },
+        "add": {
+          "title": "add <UTENTE...>",
+          "description": "Aggiunge tutti gli Utenti specificati alla Access List."
+        },
+        "remove": {
+          "title": "remove <UTENTE...>",
+          "description": "Rimuove tutti gli Utenti specificati dalla Access List."
+        }
+      }
+    },
+    "role": {
+      "title": "role <SUB>",
+      "description": "Gestisce la Access List dei Ruoli.",
+      "subcommands": {
+        "clear": {
+          "title": "clear",
+          "description": "Svuota la Access List dei Ruoli."
+        },
+        "list": {
+          "title": "list",
+          "description": "Mostra tutti i Ruoli nella Access List."
+        },
+        "add": {
+          "title": "add <RUOLO...>",
+          "description": "Aggiunge tutti i Ruoli specificati alla Access List."
+        },
+        "remove": {
+          "title": "remove <RUOLO...>",
+          "description": "Rimuove tutti i Ruoli specificati dalla Access List."
+        }
+      }
+    }
+  }
+}

@@ -17,66 +17,14 @@
       "title": "access-list <SUB>",
       "description": "Used to manage User and Role Blacklists/Whitelists.",
       "subcommands": {
-        "<COMMAND>": {
-          "title": "<COMMAND>",
-          "description": "Used to manage the Access List for the specified command.\nWorks with: `channel`, `role`, `sound`, `suggestion`, `suggestion-manager`, `credits`, `credits-manager`, `social-manager`.",
-          "subcommands": {
-            "type": {
-              "title": "type [SUB]",
-              "description": "Shows the current type of the Access List.",
-              "subcommands": {
-                "set": {
-                  "title": "set <'blacklist'|'whitelist'>",
-                  "description": "Sets the type of the Access List.\nValid types: `blacklist`, `whitelist`."
-                }
-              }
-            },
-            "user": {
-              "title": "user <SUB>",
-              "description": "Used to manage the User Access List.",
-              "subcommands": {
-                "clear": {
-                  "title": "clear",
-                  "description": "Clears the User Access List."
-                },
-                "list": {
-                  "title": "list",
-                  "description": "Lists all Users in the Access List."
-                },
-                "add": {
-                  "title": "add <USER...>",
-                  "description": "Adds all the specified Users to the Access List."
-                },
-                "remove": {
-                  "title": "remove <USER...>",
-                  "description": "Removes all the specified Users from the Access List."
-                }
-              }
-            },
-            "role": {
-              "title": "role <SUB>",
-              "description": "Used to manage the Role Access List.",
-              "subcommands": {
-                "clear": {
-                  "title": "clear",
-                  "description": "Clears the Role Access List."
-                },
-                "list": {
-                  "title": "list",
-                  "description": "Lists all Roles in the Access List."
-                },
-                "add": {
-                  "title": "add <ROLE...>",
-                  "description": "Adds all the specified Roles to the Access List."
-                },
-                "remove": {
-                  "title": "remove <ROLE...>",
-                  "description": "Removes all the specified Roles from the Access List."
-                }
-              }
-            }
-          }
-        }
+        "channel": "#extends docs/access-list/subcommand",
+        "role": "#extends docs/access-list/subcommand",
+        "sound": "#extends docs/access-list/subcommand",
+        "suggestion": "#extends docs/access-list/subcommand",
+        "suggestion-manager": "#extends docs/access-list/subcommand",
+        "credits": "#extends docs/access-list/subcommand",
+        "credits-manager": "#extends docs/access-list/subcommand",
+        "social-manager": "#extends docs/access-list/subcommand"
       }
     },
     "banana": {

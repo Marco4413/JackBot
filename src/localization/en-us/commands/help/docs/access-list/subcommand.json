@@ -1,0 +1,60 @@
+{
+  "title": null,
+  "description": "Manages the Access List for this category of commands.",
+  "subcommands": {
+    "type": {
+      "title": "type [SUB]",
+      "description": "Shows the current type of the Access List.",
+      "subcommands": {
+        "set": {
+          "title": "set <'blacklist'|'whitelist'>",
+          "description": "Sets the type of the Access List.\nValid types: `blacklist`, `whitelist`."
+        }
+      }
+    },
+    "user": {
+      "title": "user <SUB>",
+      "description": "Manages the User Access List.",
+      "subcommands": {
+        "clear": {
+          "title": "clear",
+          "description": "Clears the User Access List."
+        },
+        "list": {
+          "title": "list",
+          "description": "Lists all Users in the Access List."
+        },
+        "add": {
+          "title": "add <USER...>",
+          "description": "Adds all the specified Users to the Access List."
+        },
+        "remove": {
+          "title": "remove <USER...>",
+          "description": "Removes all the specified Users from the Access List."
+        }
+      }
+    },
+    "role": {
+      "title": "role <SUB>",
+      "description": "Manages the Role Access List.",
+      "subcommands": {
+        "clear": {
+          "title": "clear",
+          "description": "Clears the Role Access List."
+        },
+        "list": {
+          "title": "list",
+          "description": "Lists all Roles in the Access List."
+        },
+        "add": {
+          "title": "add <ROLE...>",
+          "description": "Adds all the specified Roles to the Access List."
+        },
+        "remove": {
+          "title": "remove <ROLE...>",
+          "description": "Removes all the specified Roles from the Access List."
+        }
+      }
+    }
+  }
+}
