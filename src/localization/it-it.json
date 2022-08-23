@@ -157,7 +157,7 @@
       "noReasonSpecified": "Nessun motivo specificato."
     },
     "help": {
-      "docs": "#extends it-it/help-docs",
+      "docs": "#extends help-docs",
       "noTitle": "Quell'idiota di uno sviluppatore ha dimenticato la traduzione per questo comando.",
       "emptyDoc": {
         "title": "Nessun Comando Trovato",

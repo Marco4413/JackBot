@@ -18,9 +18,16 @@ const RegisterLocales = () => {
         if (file.endsWith(".json")) {
             const localeName = file.substring(0, file.length - ".json".length);
             if (localeName.length <= MAX_LOCALE_NAME_LENGTH) {
+                let localeFolder = Utils.JoinPath(_LOCALES_FOLDER, localeName);
+                if (!Utils.IsDirectory(
+                    Utils.JoinPath(__dirname, localeFolder)
+                )) localeFolder = _LOCALES_FOLDER;
+
                 const jsonLocale = require(Utils.JoinPath(_LOCALES_FOLDER, file));
                 _Locales[localeName] = new Locale(
-                    jsonLocale, localeName, "", jsonLocale
+                    jsonLocale, localeName, "", jsonLocale, {
+                        "": localeFolder
+                    }
                 );
 
                 Logger.Info(`Locale "${localeName}" registered!`);
@@ -47,55 +54,7 @@ const RegisterLocales = () => {
  * @property {Object<String, _CommandLocaleRoot>} commands Command-specific localization
  */
 
-const _EXTENDS_MATCHER = /^#extends\s*([^;]+)/;
-
-/**
- * 
- * @param {Object} obj
- * @param {String} rootPath
- * @param {String|String[]} pathToTraverse
- * @param {Boolean} toString
- * @returns {{ value: String|Object|undefined, path: String }}
- */
-const _TraverseObject = (obj, rootPath, pathToTraverse) => {
-    const traversal = {
-        "value": obj,
-        "path": rootPath
-    };
-
-    /** @type {String[]} */
-    const pathComponents = Array.isArray(pathToTraverse) ? pathToTraverse : pathToTraverse.split(".");
-    for (let i = 0; i < pathComponents.length; i++) {
-        const pathComponent = pathComponents[i];
-        traversal.path += (traversal.path.length === 0 ? "" : ".") + pathComponent;
-
-        const valueType = typeof ( traversal.value[pathComponent] ?? undefined );
-        if (valueType === "string") {
-            const extendsMatch = _EXTENDS_MATCHER.exec(traversal.value[pathComponent]);
-            if (extendsMatch == null) {
-                traversal.value = i === pathComponents.length - 1 ? traversal.value[pathComponent] : null;
-                return traversal;
-            } else {
-                try {
-                    const extendPath = Utils.JoinPath(_LOCALES_FOLDER, extendsMatch[1]);
-                    traversal.value[pathComponent] = require(Utils.EndsWithOrAdd(extendPath, ".json"));
-                    traversal.value = traversal.value[pathComponent];
-                } catch (error) {
-                    Logger.Error(error);
-                    traversal.value = null;
-                    return traversal;
-                }
-            }
-        } else if (valueType !== "object") {
-            traversal.value = null;
-            return traversal;
-        } else {
-            traversal.value = traversal.value[pathComponent];
-        }
-    }
-
-    return traversal;
-};
+const _EXTENDS_MATCHER = /^#extends\s*(~[/\\])?([^;]+[/\\])?([^;]+)/;
 
 const _SIGNED_NUMBER_FORMAT = new Intl.NumberFormat("it-it", {
     signDisplay: "exceptZero"
@@ -118,12 +77,70 @@ class Locale {
      * @param {String} localeName The name of the Locale
      * @param {String} localePath The path to the current Locale relative to root
      * @param {Object} locale The actual Locale
+     * @param {String} fileFolder
      */
-    constructor(root, localeName, localePath, locale) {
+    constructor(root, localeName, localePath, locale, extendsCache = { }) {
         this._root = root;
         this._localeName = localeName;
         this._localePath = localePath;
         this._locale = locale;
+
+        this._extendsCache = extendsCache;
+        this._Traverse(this._root, "", [ "common" ], _LOCALES_FOLDER, this._fileFolder);
+    }
+
+    _Traverse(obj, rootPath, pathToTraverse) {
+        const t = {
+            "value": obj,
+            "path": rootPath,
+            "extendsFolder": this._extendsCache[rootPath] ?? this._extendsCache[""]
+        };
+    
+        /** @type {String[]} */
+        const pathComponents = Array.isArray(pathToTraverse) ? pathToTraverse : pathToTraverse.split(".");
+        for (let i = 0; i < pathComponents.length; i++) {
+            const pathComponent = pathComponents[i];
+            t.path += (t.path.length > 0 ? "." : "") + pathComponent;
+            if (this._extendsCache[t.path] != null)
+                t.extendsFolder = this._extendsCache[t.path];
+    
+            const valueType = typeof ( t.value[pathComponent] ?? undefined );
+            if (valueType === "string") {
+                const extendsMatch = _EXTENDS_MATCHER.exec(t.value[pathComponent]);
+                if (extendsMatch == null) {
+                    t.value = i === pathComponents.length - 1 ? t.value[pathComponent] : null;
+                    return t;
+                } else {
+                    const [ _, absolutePath, extendingFileFolder, extendingFileName ] = extendsMatch;
+                    Logger.Debug(extendsMatch);
+
+                    try {
+                        Logger.Debug(t.extendsFolder);
+                        if (absolutePath == null) {
+                            t.extendsFolder = Utils.JoinPath(t.extendsFolder, extendingFileFolder ?? "");
+                        } else t.extendsFolder = Utils.JoinPath(_LOCALES_FOLDER, extendingFileFolder ?? "");
+                        Logger.Debug(t.extendsFolder);
+
+                        t.value[pathComponent] = require(Utils.JoinPath(
+                            t.extendsFolder, Utils.EndsWithOrAdd(extendingFileName, ".json")
+                        ));
+                        t.value = t.value[pathComponent];
+                        this._extendsCache[t.path] = t.extendsFolder;
+                    } catch (error) {
+                        Logger.Error(error);
+                        t.value = null;
+                        return t;
+                    }
+                }
+            } else if (valueType !== "object") {
+                t.value = null;
+                return t;
+            } else {
+                t.value = t.value[pathComponent];
+            }
+        }
+    
+        return t;
     }
 
     /**
@@ -133,9 +150,8 @@ class Locale {
      * @returns {String} The value at path
      */
     Get(path, toString = true) {
-        const tResults = _TraverseObject(this._locale, this._localePath, path);
-        const value = tResults.value ?? tResults.path;
-        return toString ? ("" + value) : value;
+        const tResults = this._Traverse(this._locale, this._localePath, path);
+        return toString ? ("" + (tResults.value ?? tResults.path)) : tResults.value;
     }
 
     /**
@@ -257,9 +273,8 @@ class Locale {
      * @returns {String} The value at path
      */
     GetCommon(path, toString = true) {
-        const tResults = _TraverseObject(this._root.common, "common", path);
-        const value = tResults.value ?? tResults.path;
-        return toString ? ("" + value) : value;
+        const tResults = this._Traverse(this._root.common, "common", path);
+        return toString ? ("" + (tResults.value ?? tResults.path)) : tResults.value;
     }
 
     /**
@@ -281,14 +296,14 @@ class Locale {
      * @returns {Locale?} The found Locale or null if none
      */
     GetSubLocale(path, relativePath = true) {
-        const subLocale = _TraverseObject(
+        const subLocale = this._Traverse(
             relativePath ? this._locale : this._root,
-            relativePath ? this._localePath : "",
-            path, false
-        );
+            relativePath ? this._localePath : "", path);
 
-        if (typeof ( subLocale.value ?? undefined ) === "object")
-            return new Locale(this._root, this._localeName, subLocale.path, subLocale.value);
+        if (typeof ( subLocale.value ?? undefined ) === "object") {
+            this._extendsCache[subLocale.path] = subLocale.extendsFolder;
+            return new Locale(this._root, this._localeName, subLocale.path, subLocale.value, this._extendsCache);
+        }
         return null;
     }
 
@@ -317,18 +332,18 @@ class Locale {
             );
         }
 
-        const commandLocale = _TraverseObject(
+        const commandLocale = this._Traverse(
             relativePath ? this._locale : this._root,
-            relativePath ? this._localePath : "",
-            fullPath, false
-        );
+            relativePath ? this._localePath : "", fullPath);
 
         if (typeof ( commandLocale.value ?? undefined ) !== "object") return null;
 
+        this._extendsCache[commandLocale.path] = commandLocale.extendsFolder;
         return new Locale(
             this._root, this._localeName,
             commandLocale.path,
-            commandLocale.value
+            commandLocale.value,
+            this._extendsCache
         );
     }
     

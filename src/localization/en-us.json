@@ -157,7 +157,7 @@
       "noReasonSpecified": "No reason specified."
     },
     "help": {
-      "docs": "#extends en-us/help-docs; Extending from a separate file to better organize this one.",
+      "docs": "#extends help-docs; Extending from a separate file to better organize this one.",
       "noTitle": "That idiot of a Developer forgot this command's Locale Entry.",
       "emptyDoc": {
         "title": "No Command Found",
