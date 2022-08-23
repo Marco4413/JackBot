@@ -87,9 +87,9 @@ const Notify = async () => {
                     await channel.send(Utils.MapFormatString(
                         notification.notificationText, {
                             "streamer-name": Utils.EscapeDiscordSpecialCharacters(stream.streamerDisplayName),
-                            "streamer-url": Utils.EscapeDiscordSpecialCharacters(stream.streamerUrl),
+                            "streamer-url": stream.streamerUrl,
                             "stream-title": Utils.EscapeDiscordSpecialCharacters(stream.title),
-                            "stream-thumbnail-url": Utils.EscapeDiscordSpecialCharacters(stream.thumbnailUrl),
+                            "stream-thumbnail-url": stream.thumbnailUrl,
                             "stream-activity": Utils.EscapeDiscordSpecialCharacters(stream.gameName)
                         }
                     ));
