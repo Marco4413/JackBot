@@ -108,14 +108,18 @@ const Notify = async () => {
                     const channel = await Utils.SafeFetch(guild.channels, notification.newVideoNotificationChannelId);
                     if (channel == null) continue;
                     
-                    await channel.send(Utils.MapFormatString(
-                        notification.newVideoNotificationText, {
-                            "author-name": video.author[0].name[0],
-                            "author-url": video.author[0].uri[0],
-                            "video-title": video.title[0],
-                            "video-url": video.link[0].$.href
-                        }
-                    ));
+                    try {
+                        await channel.send(Utils.MapFormatString(
+                            notification.newVideoNotificationText, {
+                                "author-name": Utils.EscapeDiscordSpecialCharacters(video.author[0].name[0]),
+                                "author-url": Utils.EscapeDiscordSpecialCharacters(video.author[0].uri[0]),
+                                "video-title": Utils.EscapeDiscordSpecialCharacters(video.title[0]),
+                                "video-url": Utils.EscapeDiscordSpecialCharacters(video.link[0].$.href)
+                            }
+                        ));
+                    } catch (error) {
+                        Logger.Error(error);
+                    }
                 }
             }
         }

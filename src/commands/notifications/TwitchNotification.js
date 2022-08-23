@@ -83,15 +83,19 @@ const Notify = async () => {
                 const channel = await Utils.SafeFetch(guild.channels, notification.notificationChannelId);
                 if (channel == null) continue;
                 
-                await channel.send(Utils.MapFormatString(
-                    notification.notificationText, {
-                        "streamer-name": stream.streamerDisplayName,
-                        "streamer-url": stream.streamerUrl,
-                        "stream-title": stream.title,
-                        "stream-thumbnail-url": stream.thumbnailUrl,
-                        "stream-activity": stream.gameName
-                    }
-                ));
+                try {
+                    await channel.send(Utils.MapFormatString(
+                        notification.notificationText, {
+                            "streamer-name": Utils.EscapeDiscordSpecialCharacters(stream.streamerDisplayName),
+                            "streamer-url": Utils.EscapeDiscordSpecialCharacters(stream.streamerUrl),
+                            "stream-title": Utils.EscapeDiscordSpecialCharacters(stream.title),
+                            "stream-thumbnail-url": Utils.EscapeDiscordSpecialCharacters(stream.thumbnailUrl),
+                            "stream-activity": Utils.EscapeDiscordSpecialCharacters(stream.gameName)
+                        }
+                    ));
+                } catch (error) {
+                    Logger.Error(error);
+                }
             }
 
         }
@@ -106,6 +110,7 @@ const Notify = async () => {
 const GetSocialUrl = async (twitchId) =>
     await Twitch.GetUserUrlById(twitchId) ?? twitchId;
 
+/** @type {NotificationExports} */
 module.exports = {
     SyncToDatabase, Subscribe, Unsubscribe, Notify, GetSocialUrl
 };
