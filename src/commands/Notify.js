@@ -279,8 +279,8 @@ module.exports = CreateCommand({
                     if (removedRows > 0) {
                         await msg.reply(locale.GetFormatted(
                             "notificationRemoved", {
-                                "twitch-id": twitchId,
-                                "twitch-url": await TwitchNotification.GetSocialUrl(twitchId)
+                                "twitch-id": Utils.EscapeDiscordSpecialCharacters(twitchId),
+                                "twitch-url": Utils.EscapeDiscordSpecialCharacters(await TwitchNotification.GetSocialUrl(twitchId))
                             }
                         ));
                     } else {
@@ -303,8 +303,8 @@ module.exports = CreateCommand({
                         } else {
                             await msg.reply(await locale.GetFormattedListAsync(
                                 notificationRows, "notificationListEntry", async row => ({
-                                    "twitch-id": row.twitchId,
-                                    "twitch-url": await TwitchNotification.GetSocialUrl(row.twitchId),
+                                    "twitch-id": Utils.EscapeDiscordSpecialCharacters(row.twitchId),
+                                    "twitch-url": Utils.EscapeDiscordSpecialCharacters(await TwitchNotification.GetSocialUrl(row.twitchId)),
                                     "text-channel": locale.GetSoftMention(
                                         "Channel",
                                         msg.guild.channels.resolve(row.notificationChannelId)?.name,
@@ -329,8 +329,8 @@ module.exports = CreateCommand({
                     } else {
                         await msg.reply(locale.GetFormatted(
                             "notificationDetails", {
-                                "twitch-id": twitchId,
-                                "twitch-url": YouTubeNotification.GetSocialUrl(twitchId),
+                                "twitch-id": Utils.EscapeDiscordSpecialCharacters(twitchId),
+                                "twitch-url": Utils.EscapeDiscordSpecialCharacters(await TwitchNotification.GetSocialUrl(twitchId)),
                                 "text-channel": locale.GetSoftMention(
                                     "Channel",
                                     (await Utils.SafeFetch(msg.guild.channels, notificationRow.notificationChannelId))?.name,
@@ -412,8 +412,8 @@ module.exports = CreateCommand({
                     if (removedRows > 0) {
                         await msg.reply(locale.GetFormatted(
                             "notificationRemoved", {
-                                "youtube-id": ytChannelId,
-                                "youtube-url": YouTubeNotification.GetSocialUrl(ytChannelId)
+                                "youtube-id": Utils.EscapeDiscordSpecialCharacters(ytChannelId),
+                                "youtube-url": Utils.EscapeDiscordSpecialCharacters(YouTubeNotification.GetSocialUrl(ytChannelId))
                             }
                         ));
                     } else {
@@ -436,8 +436,8 @@ module.exports = CreateCommand({
                         } else {
                             await msg.reply(locale.GetFormattedList(
                                 notificationRows, "notificationListEntry", row => ({
-                                    "youtube-id": row.youtubeId,
-                                    "youtube-url": YouTubeNotification.GetSocialUrl(row.youtubeId),
+                                    "youtube-id": Utils.EscapeDiscordSpecialCharacters(row.youtubeId),
+                                    "youtube-url": Utils.EscapeDiscordSpecialCharacters(YouTubeNotification.GetSocialUrl(row.youtubeId)),
                                     "text-channel": locale.GetSoftMention(
                                         "Channel",
                                         msg.guild.channels.resolve(row.notificationChannelId)?.name,
@@ -462,8 +462,8 @@ module.exports = CreateCommand({
                     } else {
                         await msg.reply(locale.GetFormatted(
                             "notificationDetails", {
-                                "youtube-id": notificationRow.youtubeId,
-                                "youtube-url": YouTubeNotification.GetSocialUrl(notificationRow.youtubeId),
+                                "youtube-id": Utils.EscapeDiscordSpecialCharacters(notificationRow.youtubeId),
+                                "youtube-url": Utils.EscapeDiscordSpecialCharacters(YouTubeNotification.GetSocialUrl(notificationRow.youtubeId)),
                                 "text-channel": locale.GetSoftMention(
                                     "Channel",
                                     (await Utils.SafeFetch(msg.guild.channels, notificationRow.notificationChannelId))?.name,
