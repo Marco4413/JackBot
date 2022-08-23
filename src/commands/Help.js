@@ -38,34 +38,25 @@ module.exports = CreateCommand({
         "isVariadic": true
     }],
     "execute": async (msg, guild, locale, [ docsPath ]) => {
-        let currentDoc = locale.Get("docs", false);
-        for (let i = 0; i < docsPath.length; i++) {
-            if (currentDoc.subcommands == null) {
-                currentDoc = locale.Get("emptyDoc", false);
-                break;
-            }
-            
-            const subDoc = currentDoc.subcommands[docsPath[i]];
-            if (subDoc == null) {
-                currentDoc = locale.Get("emptyDoc", false);
-                break;
-            }
+        const localePath = [ "docs" ];
+        for (let i = 0; i < docsPath.length; i++)
+            localePath.push("subcommands", docsPath[i]);
 
-            currentDoc = subDoc;
-        }
+        const commandDoc = locale.GetSubLocale(localePath) ?? locale.GetSubLocale("emptyDoc");
+        const commandTitle = commandDoc.Get("title", false);
 
         const noTitle = locale.Get("noTitle");
-        const hasSubcommands = currentDoc.subcommands;
         const embed = Utils.GetDefaultEmbedForMessage(msg, true)
-            .setTitle(currentDoc.title ?? noTitle)
+            .setTitle(commandTitle === null ? docsPath[docsPath.length - 1] : (commandTitle ?? noTitle))
             .setDescription(
-                _HandleDescription(currentDoc.longDescription, null) ??
-                _HandleDescription(currentDoc.description, "")
+                _HandleDescription(commandDoc.Get("longDescription", false), null) ??
+                _HandleDescription(commandDoc.Get("description", false), "")
             );
 
-        if (hasSubcommands) {
-            for (const subKey of Object.keys(currentDoc.subcommands)) {
-                const subDoc = currentDoc.subcommands[subKey];
+        const subcommands = commandDoc.GetSubLocale("subcommands");
+        if (subcommands != null) {
+            for (const subKey of Object.keys(subcommands._locale)) {
+                const subDoc = subcommands.Get(subKey, false);
                 if (subDoc.hidden) {
                     const name = _GetCommandDocName(subDoc, noTitle, false);
                     if (name != null) embed.addField(name, locale.Get("noSubcommands"), false);
@@ -76,18 +67,19 @@ module.exports = CreateCommand({
                 if (subDoc.subcommands == null) {
                     subSubCmdList = locale.Get("noSubcommands");
                 } else {
+                    const subSubcommands = subcommands.GetSubLocale([ subKey, "subcommands" ]);
                     subSubCmdList = locale.GetFormatted(
                         "subcommandsList", {
                             "commands": locale.GetFormattedInlineList(
-                                Object.keys(subDoc.subcommands),
+                                Object.keys(subSubcommands._locale),
                                 null,
-                                el => ({ "value": _GetCommandDocName(subDoc.subcommands[el], el) })
+                                el => ({ "value": _GetCommandDocName(subSubcommands.Get(el, false), el) })
                             )
                         }
                     );
                 }
 
-                embed.addField(subDoc.title ?? noTitle, `${
+                embed.addField(subDoc.title === null ? subKey : (subDoc.title ?? noTitle), `${
                     _HandleDescription(subDoc.description, "")
                 }\n${subSubCmdList}`, false);
             }
