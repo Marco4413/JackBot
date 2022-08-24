@@ -1,0 +1,422 @@
+{
+  "title": "command",
+  "description": "A list of all the available commands.",
+  "fullTitle": "All Commands",
+  "longDescription": [
+    "A list of all the available commands.",
+    "*Some commands have longer descriptions once you open their specific help page.*"
+  ],
+  "hideSubcommandsPreview": true,
+  "subcommands": {
+    "help": {
+      "title": "help [COMMAND...]",
+      "description": "Shows these help messages."
+    },
+    "info": {
+      "title": "info",
+      "description": "Shows info about this bot."
+    },
+    "access-list": {
+      "title": "access-list <SUB>",
+      "description": "Used to manage User and Role Blacklists/Whitelists.",
+      "subcommands": {
+        "channel": "#extends command/access-list/subcommand",
+        "role": "#extends command/access-list/subcommand",
+        "sound": "#extends command/access-list/subcommand",
+        "suggestion": "#extends command/access-list/subcommand",
+        "suggestion-manager": "#extends command/access-list/subcommand",
+        "credits": "#extends command/access-list/subcommand",
+        "credits-manager": "#extends command/access-list/subcommand",
+        "social-manager": "#extends command/access-list/subcommand"
+      }
+    },
+    "banana": {
+      "title": "banana",
+      "description": "Gets a random Banana GIF from Tenor."
+    },
+    "boost": {
+      "title": "boost <SUB>",
+      "description": "Used to manage Boost Announcements for this Guild from the Bot.",
+      "subcommands": {
+        "channel": {
+          "title": "channel [SUB]",
+          "description": "Shows the currently set Channel for Nitro Boost Announcements.",
+          "subcommands": {
+            "set": {
+              "title": "set [CHANNEL]",
+              "description": "Sets the Channel for Nitro Boost Announcements."
+            }
+          }
+        },
+        "test": {
+          "title": "test",
+          "description": "Tests Nitro Boost Announcements by sending the Announcement either to the specified Channel or the default one."
+        }
+      }
+    },
+    "calculate": {
+      "title": "calculate <FORMULA>",
+      "description": "Calculates the specified Math Expression."
+    },
+    "channel": {
+      "title": "channel <SUB>",
+      "description": "Manages Private Voice and Text Channels.",
+      "subcommands": {
+        "voice": {
+          "title": "voice <SUB>",
+          "description": "Manages Private Voice Channels.",
+          "subcommands": {
+            "create": {
+              "title": "create [NAME...]",
+              "description": "Creates a new Private Voice Channel."
+            },
+            "delete": {
+              "title": "delete",
+              "description": "Deletes your Private Voice Channel."
+            }
+          }
+        },
+        "category": {
+          "title": "category [SUB]",
+          "description": "Shows the Category for new Private Channels.",
+          "subcommands": {
+            "set": {
+              "title": "set <CHANNEL>",
+              "description": "Sets the Category for new Private Channels."
+            }
+          }
+        },
+        "voice-creation-channel": {
+          "title": "voice-creation-channel [SUB]",
+          "description": "Shows the Channel that an User should join to automatically create a new Voice Channel.",
+          "subcommands": {
+            "set": {
+              "title": "set [CHANNEL]",
+              "description": "Sets the Voice Creation Channel."
+            }
+          }
+        },
+        "template-role": {
+          "title": "template-role <SUB>",
+          "description": "Manages Template Roles for new Channels' Permissions.",
+          "subcommands": {
+            "everyone": {
+              "title": "everyone [SUB]",
+              "description": "Shows the Template Role for Everyone.",
+              "subcommands": {
+                "set": {
+                  "title": "set [ROLE]",
+                  "description": "Sets the Template Role for Everyone."
+                }
+              }
+            },
+            "owner": {
+              "title": "owner [SUB]",
+              "description": "Shows the Template Role for the Channel Owner.",
+              "subcommands": {
+                "set": {
+                  "title": "set [ROLE]",
+                  "description": "Sets the Template Role for the Channel Owner."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "counter": {
+      "title": "counter [SUB]",
+      "description": "Shows the current count of this Channel.",
+      "subcommands": {
+        "start": {
+          "title": "start",
+          "description": "Starts a new Counter in this Channel."
+        },
+        "terminate": {
+          "title": "terminate [CHANNEL]",
+          "description": "Removes the Counter in this Channel or the one specified."
+        },
+        "config": {
+          "title": "config <SUB>",
+          "description": "Used to configure Counter Channel settings.",
+          "subcommands": {
+            "allow-messages": {
+              "title": "allow-messages <'true'|'false'>",
+              "description": "If false Messages that aren't numbers will be deleted."
+            },
+            "allow-errors": {
+              "title": "allow-errors <'true'|'false'>",
+              "description": "If false Messages that are the wrong number will be ignored and deleted."
+            },
+            "alternate-member": {
+              "title": "alternate-member <'true'|'false'>",
+              "description": "If true Messages that would change the count that are sent from the same person who changed it last time will be ignored and deleted."
+            }
+          }
+        },
+        "best": {
+          "title": "best",
+          "description": "Replies with the best count this Channel has reached."
+        },
+        "list": {
+          "title": "list",
+          "description": "Shows all active Counters in this Guild."
+        }
+      }
+    },
+    "credits": {
+      "title": "credits [SUB|USER]",
+      "description": "Shows your credits on this Guild.",
+      "subcommands": {
+        "channel": {
+          "title": "channel [SUB]",
+          "description": "Shows the current Credits Channel.",
+          "subcommands": {
+            "set": {
+              "title": "set [CHANNEL]",
+              "description": "Sets the Credits Channel."
+            }
+          }
+        },
+        "top": {
+          "title": "top [BOARD SIZE 0:10]",
+          "description": "Shows the credits leaderboard."
+        },
+        "worst": {
+          "title": "worst [BOARD SIZE 0:10]",
+          "description": "Shows the worst performing users credit wise."
+        },
+        "apply": {
+          "title": "apply <USER> <FORMULA ;; REASON...>",
+          "description": "Applies a formula to someone's credits.",
+          "longDescription": [
+            "Applies a formula to someone's credits.",
+            "To **separate the formula from the reason** use `;;`:",
+            "*e.g.* `x + 10 ;; He's a good boy.`",
+            "You can **reference the user's old credits** using the variables: `x`, `c`, `credits`",
+            "**Decimal values are truncated**."
+          ]
+        },
+        "award": {
+          "title": "award <USER> <CREDITS> <REASON...>",
+          "description": "Awards credits to the user with the specified reason."
+        },
+        "set": {
+          "title": "set <USER> <CREDITS> <REASON...>",
+          "description": "Sets someone's credits with the specified reason."
+        },
+        "reset": {
+          "title": "reset <USER> <REASON...>",
+          "description": "Resets someone's credits with the specified reason."
+        }
+      }
+    },
+    "language": {
+      "title": "language [SUB]",
+      "description": "Shows this guild's language.",
+      "subcommands": {
+        "list": {
+          "title": "list",
+          "description": "Shows all available languages."
+        },
+        "set": {
+          "title": "set <LANGUAGE>",
+          "description": "Sets this guild's language to the one specified."
+        }
+      }
+    },
+    "notify": {
+      "title": "notify <SUB>",
+      "description": "Manages text channel notifications for specific events.",
+      "subcommands": {
+        "voice": {
+          "title": "voice <SUB>",
+          "description": "Manages text channel notifications for voice-specific events.",
+          "subcommands": {
+            "join": {
+              "title": "join <SUB>",
+              "description": "Manages text channel notifications for voice channel join events.",
+              "subcommands": {
+                "add": {
+                  "title": "add <VOICE CHANNEL> <TEXT CHANNEL> <MESSAGE...>",
+                  "description": "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.",
+                  "longDescription": [
+                    "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.",
+                    "**Valid variables for the message are the following:**",
+                    "{join-user-mention}",
+                    "{join-user-nickname}",
+                    "{join-user-name}",
+                    "{join-user-id}",
+                    "{joined-channel-mention}",
+                    "{joined-channel-name}",
+                    "{joined-channel-id}"
+                  ]
+                },
+                "remove": {
+                  "title": "remove <CHANNEL>",
+                  "description": "Removes the event listener from the specified voice channel (If present)."
+                },
+                "list": {
+                  "title": "list <SUB|CHANNEL>",
+                  "description": "Shows where notifications for a specific voice channel are sent to and the text that is sent to that text channel.",
+                  "subcommands": {
+                    "all": {
+                      "title": "all",
+                      "description": "Lists all voice channels with events and their target channel."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ping": {
+      "title": "ping",
+      "description": "Pong!",
+      "subcommands": {
+        "message": {
+          "hidden": true,
+          "hiddenNames": [ "6d", "6573", "73", "6167", "65", "b16" ],
+          "title": "message",
+          "description": "Sends a message and calculates the time needed for that message to be sent."
+        }
+      }
+    },
+    "prefix": {
+      "title": "prefix [SUB]",
+      "description": "Shows this Guild's Prefix.",
+      "subcommands": {
+        "set": {
+          "title": "set <PREFISSO>",
+          "description": "Sets this Guild's prefix to the one specified."
+        }
+      }
+    },
+    "role": {
+      "title": "role <SUB>",
+      "description": "Manages User Roles.",
+      "subcommands": {
+        "managers": {
+          "title": "managers <SUB>",
+          "description": "Manages role managers of this guild.",
+          "subcommands": {
+            "add": {
+              "title": "add <MANAGER ROLE> <ROLE...>",
+              "description": "Adds all the specified roles to the manager."
+            },
+            "remove": {
+              "title": "remove <SUB|<MANAGER ROLE> <ROLE...>>",
+              "description": "Removes all the specified roles from the manager.",
+              "subcommands": {
+                "all": {
+                  "title": "all",
+                  "description": "Removes all roles from the specified manager."
+                }
+              }
+            },
+            "list": {
+              "title": "list <SUB|ROLE>",
+              "description": "Lists all roles manageable by the specified manager.",
+              "subcommands": {
+                "all": {
+                  "title": "all",
+                  "description": "Lists all manager roles and their manageable roles."
+                }
+              }
+            },
+            "clear": {
+              "title": "clear",
+              "description": "Removes all managers from this guild."
+            }
+          }
+        },
+        "add": {
+          "title": "add <USER> <ROLE...>",
+          "description": "Adds all specified roles to the user."
+        },
+        "remove": {
+          "title": "remove <USER> <ROLE...>",
+          "description": "Removes all specified roles from the user."
+        }
+      }
+    },
+    "shortcuts": {
+      "title": "shortcuts [SUB]",
+      "description": "Shows if shortcuts are enabled in this Guild.",
+      "subcommands": {
+        "set": {
+          "title": "set <'true'|'false'>",
+          "description": "Enables or disables shortcuts for this Guild."
+        }
+      }
+    },
+    "sound": {
+      "title": "sound <SUB|SOUND>",
+      "description": "Plays the specified sound.\nUse `sound play` if a sound has the same name as a subcommand.",
+      "subcommands": {
+        "list": {
+          "title": "list",
+          "description": "Lists all available Sounds."
+        },
+        "stop": {
+          "title": "stop",
+          "description": "Stops playing the currently playing Sound if any."
+        },
+        "leave": {
+          "title": "leave",
+          "description": "Leaves the current channel if connected."
+        },
+        "play": {
+          "title": "play <SOUND>",
+          "description": "Plays the specified sound.\nThis is an alias for `sound`, use this is a sound has the same name as a subcommand."
+        }
+      }
+    },
+    "suggestion": {
+      "title": "suggestion <SUB|SUGGESTION...>",
+      "description": "Sends a new suggestion for the guild.",
+      "subcommands": {
+        "channel": {
+          "title": "channel [SUB]",
+          "description": "Shows the current channel for suggestions.",
+          "subcommands": {
+            "set": {
+              "title": "set [CHANNEL]",
+              "description": "Sets the current channel for suggestions."
+            },
+            "result": {
+              "title": "result [SUB]",
+              "description": "Shows the current channel for suggestion results.",
+              "subcommands": {
+                "set": {
+                  "title": "set [CHANNEL]",
+                  "description": "Sets the current channel for suggestion results."
+                }
+              }
+            }
+          }
+        },
+        "approve": {
+          "title": "approve <ID> <REASON...>",
+          "description": "Approves the specified suggestion with the specified reason."
+        },
+        "reject": {
+          "title": "reject <ID> <REASON...>",
+          "description": "Rejects the specified suggestion with the specified reason."
+        }
+      }
+    },
+    "time": {
+      "title": "time <DATE>",
+      "description": "Replies with Discord's Date Formats which reference the specified Date.",
+      "longDescription": [
+        "Replies with Discord's Date Formats which reference the specified Date.",
+        "**Dates follow this standard:** https://en.wikipedia.org/wiki/ISO_8601#Dates",
+        "You can also specify an **offset from today's date**: https://day.js.org/docs/en/manipulate/add",
+        "*e.g.* `1days`, `-1month`"
+      ]
+    }
+  }
+}

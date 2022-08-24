@@ -1,5 +1,5 @@
 {
-  "title": null,
+  "title": "{this-key} <SUB>",
   "description": "Manages the Access List for this category of commands.",
   "subcommands": {
     "type": {

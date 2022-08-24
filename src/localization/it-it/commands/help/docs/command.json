@@ -1,0 +1,423 @@
+{
+  "title": "command",
+  "description": "Lista di tutti i comandi disponibili.",
+  "fullTitle": "Tutti i Comandi",
+  "longDescription": [
+    "Lista di tutti i comandi disponibili.",
+    "*Alcuni comandi hanno descrizioni più lunghe una volta aperta la loro relativa pagina d'aiuto.*"
+  ],
+  "hideSubcommandsPreview": true,
+  "subcommands": {
+    "help": {
+      "title": "help [COMANDO...]",
+      "description": "Mostra questi messaggi di aiuto."
+    },
+    "info": {
+      "title": "info",
+      "description": "Mostra informazioni sul bot."
+    },
+    "access-list": {
+      "title": "access-list <SUB>",
+      "description": "Gestisce le Blacklist/Whitelist degli Utenti e Ruoli.",
+      "subcommands": {
+        "channel": "#extends command/access-list/subcommand",
+        "role": "#extends command/access-list/subcommand",
+        "sound": "#extends command/access-list/subcommand",
+        "suggestion": "#extends command/access-list/subcommand",
+        "suggestion-manager": "#extends command/access-list/subcommand",
+        "credits": "#extends command/access-list/subcommand",
+        "credits-manager": "#extends command/access-list/subcommand",
+        "social-manager": "#extends command/access-list/subcommand"
+      }
+    },
+    "banana": {
+      "title": "banana",
+      "description": "Prende una GIF casuale di Banane da Tenor."
+    },
+    "boost": {
+      "title": "boost <SUB>",
+      "description": "Gestisce gli annunci per i Boost Nitro in questo server da parte del Bot.",
+      "subcommands": {
+        "channel": {
+          "title": "channel [SUB]",
+          "description": "Mostra il Canale corrente per gli annunci Boost Nitro.",
+          "subcommands": {
+            "set": {
+              "title": "set [CANALE]",
+              "description": "Imposta il Canale per gli annunci Boost Nitro."
+            }
+          }
+        },
+        "test": {
+          "title": "test",
+          "description": "Testa gli annunci Boost Nitro inviando l'Annuncio o nel Canale specificato o quello impostato."
+        }
+      }
+    },
+    "calculate": {
+      "title": "calculate <FORMULA>",
+      "description": "Calcola l'Espressione Matematica."
+    },
+    "channel": {
+      "title": "channel <SUB>",
+      "description": "Gestisce i Canali Vocali e Testuali Privati.",
+      "subcommands": {
+        "voice": {
+          "title": "voice <SUB>",
+          "description": "Gestisce i Canali Vocali Privati.",
+          "subcommands": {
+            "create": {
+              "title": "create [NOME...]",
+              "description": "Crea un nuovo Canale Vocale Privato."
+            },
+            "delete": {
+              "title": "delete",
+              "description": "Cancella il tuo Canale Vocale Privato"
+            }
+          }
+        },
+        "category": {
+          "title": "category [SUB]",
+          "description": "Mostra la Categoria per i nuovi Canali Privati.",
+          "subcommands": {
+            "set": {
+              "title": "set <CANALE>",
+              "description": "Imposta la Categoria per i nuovi Canali Privati."
+            }
+          }
+        },
+        "voice-creation-channel": {
+          "title": "voice-creation-channel [SUB]",
+          "description": "Mostra il Canale in cui un Utente dovrebbe entrare per creare in automatico un nuovo Canale Vocale.",
+          "subcommands": {
+            "set": {
+              "title": "set [CANALE]",
+              "description": "Imposta il Canale per Creare nuovi Canali Vocali."
+            }
+          }
+        },
+        "template-role": {
+          "title": "template-role <SUB>",
+          "description": "Gestisce i Ruoli Template per i Permessi dei nuovi Canali.",
+          "subcommands": {
+            "everyone": {
+              "title": "everyone [SUB]",
+              "description": "Mostra il Ruolo Template per Everyone.",
+              "subcommands": {
+                "set": {
+                  "title": "set [RUOLO]",
+                  "description": "Imposta il Ruolo Template per Everyone."
+                }
+              }
+            },
+            "owner": {
+              "title": "owner [SUB]",
+              "description": "Mostra il Ruolo Template per il Creatore del Canale.",
+              "subcommands": {
+                "set": {
+                  "title": "set [RUOLO]",
+                  "description": "Imposta il Ruolo Template per il Creatore del Canale."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "counter": {
+      "title": "counter [SUB]",
+      "description": "Mostra l'attuale conteggio di questo canale.",
+      "subcommands": {
+        "start": {
+          "title": "start",
+          "description": "Inizia un nuovo conteggio in questo canale."
+        },
+        "terminate": {
+          "title": "terminate [CANALE]",
+          "description": "Rimuove il conteggio in questo o un altro canale."
+        },
+        "config": {
+          "title": "config <SUB>",
+          "description": "Usato per configurare il conteggio di questo canale.",
+          "subcommands": {
+            "allow-messages": {
+              "title": "allow-messages <'true'|'false'>",
+              "description": "Se impostato su Falso i messaggi inviati nel canale che non sono numeri verranno eliminati."
+            },
+            "allow-errors": {
+              "title": "allow-errors <'true'|'false'>",
+              "description": "Se impostato su Falso i numeri errati inviati nel canale verranno ignorati ed eliminati."
+            },
+            "alternate-member": {
+              "title": "alternate-member <'true'|'false'>",
+              "description": "Se impostato su Vero un utente non potrà inviare più di due numeri di seguito ed i suoi messaggi saranno ignorati ed eliminati."
+            }
+          }
+        },
+        "best": {
+          "title": "best",
+          "description": "Mostra il conteggio più alto raggiunto in questo canale."
+        },
+        "list": {
+          "title": "list",
+          "description": "Mostra tutti i conteggi attivi nel server."
+        }
+      }
+    },
+    "credits": {
+      "title": "credits [SUB|UTENTE]",
+      "description": "Mostra i tuoi crediti nel Server.",
+      "subcommands": {
+        "channel": {
+          "title": "channel [SUB]",
+          "description": "Mostra il Canale dei Crediti.",
+          "subcommands": {
+            "set": {
+              "title": "set [CANALE]",
+              "description": "Imposta il Canale dei Crediti."
+            }
+          }
+        },
+        "top": {
+          "title": "top [GRANDEZZA CLASSIFICA 0:10]",
+          "description": "Mostra la leaderboard dei crediti."
+        },
+        "worst": {
+          "title": "worst [GRANDEZZA CLASSIFICA 0:10]",
+          "description": "Mostra gli utenti con meno crediti."
+        },
+        "apply": {
+          "title": "apply <UTENTE> <FORMULA ;; MOTIVO...>",
+          "description": "Applica una formula ai crediti di un'utente.",
+          "longDescription": [
+            "Applica una formula ai crediti di un'utente.",
+            "Per **separare la formula dal motivo** usa `;;`:",
+            "*e.g.* `x + 10 ;; E' un bravo giovanotto.`",
+            "Puoi far **riferimento ai crediti precedenti dell'utente** usando le variabili: `x`, `c`, `credits`",
+            "**I valori decimali sono troncati**."
+          ]
+        },
+        "award": {
+          "title": "award <UTENTE> <CREDITI> <MOTIVO...>",
+          "description": "Premia l'utente con dei crediti per uno specifico motivo."
+        },
+        "set": {
+          "title": "set <UTENTE> <CREDITI> <MOTIVO...>",
+          "description": "Imposta i crediti specificati all'utente per un motivo."
+        },
+        "reset": {
+          "title": "reset <UTENTE> <MOTIVO...>",
+          "description": "Resetta i crediti dell'utente per un motivo."
+        }
+      }
+    },
+    "language": {
+      "title": "language [SUB]",
+      "description": "Mostra la lingua del server.",
+      "subcommands": {
+        "list": {
+          "title": "list",
+          "description": "Mostra tutte le lingue disponibili."
+        },
+        "set": {
+          "title": "set <LINGUA>",
+          "description": "Imposta la lingua del server a quella specificata."
+        }
+      }
+    },
+    "notify": {
+      "title": "notify <SUB>",
+      "description": "Gestisce le notifiche via canali testuali di determinati eventi.",
+      "subcommands": {
+        "voice": {
+          "title": "voice <SUB>",
+          "description": "Gestisce le notifiche via canali testuali di eventi relativi a canali vocali.",
+          "subcommands": {
+            "join": {
+              "title": "join <SUB>",
+              "description": "Gestisce le notifiche via canali testuali di eventi relativi all'entrata di utenti in canali vocali.",
+              "subcommands": {
+                "add": {
+                  "title": "add <CANALE VOCALE> <CANALE TESTUALE> <MESSAGGIO...>",
+                  "description": "Aggiunge una nuova notifica per il canale vocale nel canale testuale utilizzando il testo specificato.",
+                  "longDescription": [
+                    "Aggiunge una nuova notifica per il canale vocale nel canale testuale utilizzando il testo specificato.",
+                    "**Le variabili valide per il messaggio sono le seguenti:**",
+                    "{join-user-mention}",
+                    "{join-user-nickname}",
+                    "{join-user-name}",
+                    "{join-user-id}",
+                    "{joined-channel-mention}",
+                    "{joined-channel-name}",
+                    "{joined-channel-id}"
+                  ]
+                },
+                "remove": {
+                  "title": "remove <CANALE>",
+                  "description": "Rimuove la notifica per il canale vocale specificato (Se presente)."
+                },
+                "list": {
+                  "title": "list <SUB|CANALE>",
+                  "description": "Mostra dove le notifiche per un specifico canale vocale sono inviate e il messaggio della notifica.",
+                  "subcommands": {
+                    "all": {
+                      "title": "all",
+                      "description": "Mostra tutti i canali vocali con notifiche e il canale di destinazione."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ping": {
+      "title": "ping",
+      "description": "Pong!",
+      "subcommands": {
+        "message": {
+          "hidden": true,
+          "hiddenNames": [ "6d", "6573", "73", "6167", "65", "b16" ],
+          "title": "message",
+          "description": "Invia un messaggio e calcola il tempo necessario per inviare quel messaggio.",
+          "hideSubcommandsPreview": true
+        }
+      }
+    },
+    "prefix": {
+      "title": "prefix [SUB]",
+      "description": "Mostra il prefisso del bot nel server.",
+      "subcommands": {
+        "set": {
+          "title": "set <PREFISSO>",
+          "description": "Imposta il prefisso del bot nel server a quello specificato."
+        }
+      }
+    },
+    "role": {
+      "title": "role <SUB>",
+      "description": "Gestisce i Ruoli degli Utenti.",
+      "subcommands": {
+        "managers": {
+          "title": "managers <SUB>",
+          "description": "Gestisce i manager di questo server.",
+          "subcommands": {
+            "add": {
+              "title": "add <RUOLO MANAGER> <RUOLO...>",
+              "description": "Aggiunge tutti i ruoli specificati al manager."
+            },
+            "remove": {
+              "title": "remove <SUB|<RUOLO MANAGER> <RUOLO...>>",
+              "description": "Rimuove tutti i ruoli specificati dal manager.",
+              "subcommands": {
+                "all": {
+                  "title": "all",
+                  "description": "Rimuove tutti i ruoli dal manager specificato."
+                }
+              }
+            },
+            "list": {
+              "title": "list <SUB|RUOLO>",
+              "description": "Mostra tutti i ruoli gestibili dal manager specificato.",
+              "subcommands": {
+                "all": {
+                  "title": "all",
+                  "description": "Mostra tutti i gestori di ruoli e i ruoli gestibili da loro."
+                }
+              }
+            },
+            "clear": {
+              "title": "clear",
+              "description": "Rimuove tutti i manager da questo server."
+            }
+          }
+        },
+        "add": {
+          "title": "add <UTENTE> <RUOLO...>",
+          "description": "Aggiunge tutti i ruoli specificati all'utente."
+        },
+        "remove": {
+          "title": "remove <UTENTE> <RUOLO...>",
+          "description": "Rimuove tutti i ruoli specificati dall'utente."
+        }
+      }
+    },
+    "shortcuts": {
+      "title": "shortcuts [SUB]",
+      "description": "Mostra se le scorciatoie sono attivate su questo server.",
+      "subcommands": {
+        "set": {
+          "title": "set <'true'|'false'>",
+          "description": "Abilita o Disabilita le scorciatoie su questo server."
+        }
+      }
+    },
+    "sound": {
+      "title": "sound <SUB|AUDIO>",
+      "description": "Riproduce l'audio specificato.\nUsa `sound play` se l'audio ha lo stesso nome di un sottocomando.",
+      "subcommands": {
+        "list": {
+          "title": "list",
+          "description": "Mostra tutti gli audio disponibili."
+        },
+        "stop": {
+          "title": "stop",
+          "description": "Termina la riproduzione dell'audio corrente."
+        },
+        "leave": {
+          "title": "leave",
+          "description": "Esce dal canale corrente se connesso."
+        },
+        "play": {
+          "title": "play <AUDIO>",
+          "description": "Riproduce l'audio specificato.\nQuesto è un soprannome per `sound`, usa `sound play` se l'audio ha lo stesso nome di un sottocomando."
+        }
+      }
+    },
+    "suggestion": {
+      "title": "suggestion <SUB|SUGGERIMENTO...>",
+      "description": "Invia un nuovo suggerimento per il server.",
+      "subcommands": {
+        "channel": {
+          "title": "channel [SUB]",
+          "description": "Mostra il canale per i suggerimenti.",
+          "subcommands": {
+            "set": {
+              "title": "set [CANALE]",
+              "description": "Imposta il canale per i suggerimenti."
+            },
+            "result": {
+              "title": "result [SUB]",
+              "description": "Mostra il canale per gli esiti dei suggerimenti.",
+              "subcommands": {
+                "set": {
+                  "title": "set [CANALE]",
+                  "description": "Imposta il canale per gli esiti dei suggerimenti."
+                }
+              }
+            }
+          }
+        },
+        "approve": {
+          "title": "approve <ID> <MOTIVO...>",
+          "description": "Approva il suggerimento con la motivazione specificata."
+        },
+        "reject": {
+          "title": "reject <ID> <MOTIVO...>",
+          "description": "Rifiuta il suggerimento con la motivazione specificata."
+        }
+      }
+    },
+    "time": {
+      "title": "time <DATE>",
+      "description": "Risponde con i Formati delle Date di Discord che fanno riferimento alla Data specificata.",
+      "longDescription": [
+        "Risponde con i Formati delle Date di Discord che fanno riferimento alla Data specificata.",
+        "**Le Date seguono questo standard:** https://en.wikipedia.org/wiki/ISO_8601#Dates",
+        "Puoi anche specificare un **offset dalla data odierna**: https://day.js.org/docs/en/manipulate/add",
+        "*e.g.* `1days`, `-1month`"
+      ]
+    }
+  }
+}
