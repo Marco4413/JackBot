@@ -2,6 +2,6 @@
   "title": "Pagina d'Aiuto",
   "description": "Questa è la pagina d'aiuto del bot, puoi cercare aiuto nelle varie categorie specificate qua sotto.",
   "subcommands": {
-    "command": "#extends docs/command"
+    "comandi": "#extends docs/commands"
   }
 }

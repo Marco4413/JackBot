@@ -1,5 +1,5 @@
 {
-  "title": "command",
+  "title": "commands",
   "description": "A list of all the available commands.",
   "fullTitle": "All Commands",
   "longDescription": [
@@ -20,14 +20,14 @@
       "title": "access-list <SUB>",
       "description": "Used to manage User and Role Blacklists/Whitelists.",
       "subcommands": {
-        "channel": "#extends command/access-list/subcommand",
-        "role": "#extends command/access-list/subcommand",
-        "sound": "#extends command/access-list/subcommand",
-        "suggestion": "#extends command/access-list/subcommand",
-        "suggestion-manager": "#extends command/access-list/subcommand",
-        "credits": "#extends command/access-list/subcommand",
-        "credits-manager": "#extends command/access-list/subcommand",
-        "social-manager": "#extends command/access-list/subcommand"
+        "channel": "#extends commands/access-list/subcommand",
+        "role": "#extends commands/access-list/subcommand",
+        "sound": "#extends commands/access-list/subcommand",
+        "suggestion": "#extends commands/access-list/subcommand",
+        "suggestion-manager": "#extends commands/access-list/subcommand",
+        "credits": "#extends commands/access-list/subcommand",
+        "credits-manager": "#extends commands/access-list/subcommand",
+        "social-manager": "#extends commands/access-list/subcommand"
       }
     },
     "banana": {
@@ -239,9 +239,9 @@
               "subcommands": {
                 "add": {
                   "title": "add <VOICE CHANNEL> <TEXT CHANNEL> <MESSAGE...>",
-                  "description": "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.",
+                  "description": "Adds a new event listener for the specified voice channel on the specified text channel using the specified text as a response.",
                   "longDescription": [
-                    "Adds a new event listener for the specified voice channel on the specified text channel usind the specified text as a response.",
+                    "Adds a new event listener for the specified voice channel on the specified text channel using the specified text as a response.",
                     "**Valid variables for the message are the following:**",
                     "{join-user-mention}",
                     "{join-user-nickname}",
@@ -263,6 +263,81 @@
                     "all": {
                       "title": "all",
                       "description": "Lists all voice channels with events and their target channel."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "social": {
+          "title": "social <SUB>",
+          "description": "Manages notifications for various socials.",
+          "subcommands": {
+            "twitch": {
+              "title": "twitch <SUB>",
+              "description": "Manages notifications for Twitch channels.",
+              "subcommands": {
+                "subcommands": {
+                  "add": {
+                    "title": "add <TWITCH CHANNEL USERNAME> <TEXT CHANNEL> <MESSAGE...>",
+                    "description": "Subscribes for notifications from the specified Twitch channel which will be sent to a text channel using the specified text as a response.",
+                    "longDescription": [
+                      "Subscribes for notifications from the specified Twitch channel which will be sent to a text channel using the specified text as a response.",
+                      "**Valid variables for the message are the following:**",
+                      "{streamer-name}",
+                      "{streamer-url}",
+                      "{stream-title}",
+                      "{stream-thumbnail-url}",
+                      "{stream-activity}"
+                    ]
+                  },
+                  "remove": {
+                    "title": "remove <TWITCH CHANNEL ID>",
+                    "description": "Unsubscribes from the specified Twitch channel."
+                  },
+                  "list": {
+                    "title": "list <SUB|TWITCH CHANNEL ID>",
+                    "description": "Shows where notifications for a specific Twitch channel are sent to and the text that is sent to that text channel.",
+                    "subcommands": {
+                      "all": {
+                        "title": "all",
+                        "description": "Lists all subscribed Twitch channels."
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "youtube": {
+              "title": "youtube <SUB>",
+              "description": "Manages notifications for YouTube channels.",
+              "subcommands": {
+                "subcommands": {
+                  "add": {
+                    "title": "add <YOUTUBE CHANNEL ID> <TEXT CHANNEL> <MESSAGE...>",
+                    "description": "Subscribes for notifications from the specified YouTube channel which will be sent to a text channel using the specified text as a response.",
+                    "longDescription": [
+                      "Subscribes for notifications from the specified YouTube channel which will be sent to a text channel using the specified text as a response.",
+                      "**Valid variables for the message are the following:**",
+                      "{author-name}",
+                      "{author-url}",
+                      "{video-title}",
+                      "{video-url}"
+                    ]
+                  },
+                  "remove": {
+                    "title": "remove <YOUTUBE CHANNEL ID>",
+                    "description": "Unsubscribes from the specified YouTube channel."
+                  },
+                  "list": {
+                    "title": "list <SUB|YOUTUBE CHANNEL ID>",
+                    "description": "Shows where notifications for a specific YouTube channel are sent to and the text that is sent to that text channel.",
+                    "subcommands": {
+                      "all": {
+                        "title": "all",
+                        "description": "Lists all subscribed YouTube channels."
+                      }
                     }
                   }
                 }

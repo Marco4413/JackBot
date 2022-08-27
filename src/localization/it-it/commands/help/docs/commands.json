@@ -1,5 +1,5 @@
 {
-  "title": "command",
+  "title": "comandi",
   "description": "Lista di tutti i comandi disponibili.",
   "fullTitle": "Tutti i Comandi",
   "longDescription": [
@@ -20,14 +20,14 @@
       "title": "access-list <SUB>",
       "description": "Gestisce le Blacklist/Whitelist degli Utenti e Ruoli.",
       "subcommands": {
-        "channel": "#extends command/access-list/subcommand",
-        "role": "#extends command/access-list/subcommand",
-        "sound": "#extends command/access-list/subcommand",
-        "suggestion": "#extends command/access-list/subcommand",
-        "suggestion-manager": "#extends command/access-list/subcommand",
-        "credits": "#extends command/access-list/subcommand",
-        "credits-manager": "#extends command/access-list/subcommand",
-        "social-manager": "#extends command/access-list/subcommand"
+        "channel": "#extends commands/access-list/subcommand",
+        "role": "#extends commands/access-list/subcommand",
+        "sound": "#extends commands/access-list/subcommand",
+        "suggestion": "#extends commands/access-list/subcommand",
+        "suggestion-manager": "#extends commands/access-list/subcommand",
+        "credits": "#extends commands/access-list/subcommand",
+        "credits-manager": "#extends commands/access-list/subcommand",
+        "social-manager": "#extends commands/access-list/subcommand"
       }
     },
     "banana": {
@@ -263,6 +263,77 @@
                     "all": {
                       "title": "all",
                       "description": "Mostra tutti i canali vocali con notifiche e il canale di destinazione."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "social": {
+          "title": "social <SUB>",
+          "description": "Gestisce le notifiche per vari social.",
+          "subcommands": {
+            "twitch": {
+              "title": "twitch <SUB>",
+              "description": "Gestisce le notifiche per i canali Twitch.",
+              "subcommands": {
+                "add": {
+                  "title": "add <TWITCH CHANNEL USERNAME> <TEXT CHANNEL> <MESSAGE...>",
+                  "description": "Iscrive il server alle notifiche del canale Twitch specificato che verranno inviate nel canale testuale specificato utilizzando il messaggio di notifica personalizzato.",
+                  "longDescription": [
+                    "Iscrive il server alle notifiche del canale Twitch specificato che verranno inviate nel canale testuale specificato utilizzando il messaggio di notifica personalizzato.",
+                    "**Le variabili valide per il messaggio di notifica sono le seguenti:**",
+                    "{streamer-name}",
+                    "{streamer-url}",
+                    "{stream-title}",
+                    "{stream-thumbnail-url}",
+                    "{stream-activity}"
+                  ]
+                },
+                "remove": {
+                  "title": "remove <TWITCH CHANNEL ID>",
+                  "description": "Disiscrive il server dal canale Twitch specificato."
+                },
+                "list": {
+                  "title": "list <SUB|TWITCH CHANNEL ID>",
+                  "description": "Mostra dove le notifiche di un canale Twitch specifico sono inviate e il messaggio di notifica.",
+                  "subcommands": {
+                    "all": {
+                      "title": "all",
+                      "description": "Mostra tutti i canali Twitch al quale il server è iscritto."
+                    }
+                  }
+                }
+              }
+            },
+            "youtube": {
+              "title": "youtube <SUB>",
+              "description": "Gestisce le notifiche per i canali YouTube.",
+              "subcommands": {
+                "add": {
+                  "title": "add <YOUTUBE CHANNEL ID> <TEXT CHANNEL> <MESSAGE...>",
+                  "description": "Iscrive il server alle notifiche del canale YouTube specificato che verranno inviate nel canale testuale specificato utilizzando il messaggio di notifica personalizzato.",
+                  "longDescription": [
+                    "Iscrive il server alle notifiche del canale YouTube specificato che verranno inviate nel canale testuale specificato utilizzando il messaggio di notifica personalizzato.",
+                    "**Le variabili valide per il messaggio di notifica sono le seguenti:**",
+                    "{author-name}",
+                    "{author-url}",
+                    "{video-title}",
+                    "{video-url}"
+                  ]
+                },
+                "remove": {
+                  "title": "remove <YOUTUBE CHANNEL ID>",
+                  "description": "Disiscrive il server dal canale YouTube specificato."
+                },
+                "list": {
+                  "title": "list <SUB|YOUTUBE CHANNEL ID>",
+                  "description": "Mostra dove le notifiche di un canale YouTube specifico sono inviate e il messaggio di notifica.",
+                  "subcommands": {
+                    "all": {
+                      "title": "all",
+                      "description": "Mostra tutti i canali YouTube al quale il server è iscritto."
                     }
                   }
                 }

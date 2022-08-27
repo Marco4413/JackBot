@@ -2,6 +2,6 @@
   "title": "Help Page",
   "description": "This is the bot's help page, you can search help in the categories specified below.",
   "subcommands": {
-    "command": "#extends docs/command"
+    "commands": "#extends docs/commands"
   }
 }
