@@ -159,8 +159,8 @@
     "docs": "#extends commands/help/docs",
     "noTitle": "Quell'idiota di uno sviluppatore ha dimenticato la traduzione per questo comando.",
     "emptyDoc": {
-      "title": "Nessun Comando Trovato",
-      "description": "Nessun comando con il nome specificato è stato trovato."
+      "title": "Documentazione non Trovata",
+      "description": "Non è stato possibile trovare la documentazione specificata."
     },
     "subcommandsList": "Sottocomandi: {commands}",
     "noSubcommands": "Questo comando non ha sottocomandi."

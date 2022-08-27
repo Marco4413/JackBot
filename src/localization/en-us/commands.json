@@ -159,8 +159,8 @@
     "docs": "#extends commands/help/docs",
     "noTitle": "That idiot of a Developer forgot this command's Locale Entry.",
     "emptyDoc": {
-      "title": "No Command Found",
-      "description": "No command with the specified name was found in the documentation."
+      "title": "Documentation not Found",
+      "description": "The specified documentation couldn't be found."
     },
     "subcommandsList": "Subcommands: {commands}",
     "noSubcommands": "This command has no subcommands."
