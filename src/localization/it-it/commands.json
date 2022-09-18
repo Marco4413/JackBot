@@ -315,6 +315,11 @@
     "alreadyPlaying": "Sto già riproducendo un audio, per favore aspetta.",
     "playing": "Riproducendo `{sound-name}`..."
   },
+  "sticky": {
+    "noText": "Non posso 'incollare' un messaggio senza testo.",
+    "defaultTitle": "Messaggio Sticky:",
+    "noDescription": "Non posso 'incollare' un messaggio senza descrizione."
+  },
   "suggestion": {
     "subcommands": {
       "channel": {

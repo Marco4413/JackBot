@@ -312,6 +312,11 @@ const ChannelModel = {
         "type": _SNOWFLAKE_DATATYPE,
         "allowNull": false
     },
+    "stickyMessageId": {
+        "type": _SNOWFLAKE_DATATYPE,
+        "defaultValue": null,
+        "allowNull": true
+    },
     "joinNotificationChannelId": {
         "type": _SNOWFLAKE_DATATYPE,
         "defaultValue": null,
@@ -483,6 +488,7 @@ const TwitchNotificationModel = {
  * @typedef {Object} _ChannelRowType
  * @property {String} guildId The Id of the Guild this Channel belongs to
  * @property {String} channelId The Id of the Channel
+ * @property {String} stickyMessageId The id of the channel's sticky message
  * @property {String} joinNotificationChannelId The Id of the Channel which will receive notifications of this one
  * @property {String} joinNotificationText The text to send to the Notification Channel
  * @typedef {DatabaseRow&_ChannelRowType} ChannelRow

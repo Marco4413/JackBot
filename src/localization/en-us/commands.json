@@ -315,6 +315,11 @@
     "alreadyPlaying": "I'm already playing a sound, please wait.",
     "playing": "Playing `{sound-name}`..."
   },
+  "sticky": {
+    "noText": "Can't stick a message with no text.",
+    "defaultTitle": "Sticky Message:",
+    "noDescription": "Can't stick a message with no description."
+  },
   "suggestion": {
     "subcommands": {
       "channel": {

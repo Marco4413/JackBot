@@ -27,6 +27,10 @@ TWITCH_CLIENT_SECRET = "MyTwitchClientSecret"
 # Put it on false if you want persistent settings for Users even if they leave an re-join the Guild
 DELETE_USERS_ON_LEAVE = true
 
+# Sticky Messages Settings
+# How much time has to pass before re-sending the sticky message.
+STICKY_MESSAGE_COOLDOWN = 2.5e3
+
 # Private Channels Settings
 # The interval for checking inactive Private Text/Voice Channels
 CHANNEL_SWEEP_INTERVAL = 900e3
