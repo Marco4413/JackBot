@@ -181,6 +181,25 @@ const GetRandomArrayElement = (array) => {
 };
 
 /**
+ * Replies to a message and then deletes the reply and the replied message
+ * @param {Message} msg The message to reply to
+ * @param {String|MessagePayload|ReplyMessageOptions} reply The reply to the specified message
+ * @param {Number} [timeout] The time to wait before deleting messages in ms
+ * @returns {Promise<void>} Resolves when all messages are deleted
+ */
+const TimedMessageReply = (msg, reply, timeout = 2.5e3) => {
+    return new Promise((res, rej) => {
+        msg.reply(reply).then(
+            replyMsg => setTimeout(async () => {
+                await SafeDelete(replyMsg);
+                await SafeDelete(msg);
+                res();
+            }, timeout)
+        ).catch(rej);
+    });
+};
+
+/**
  * Returns the Default Embed for the Specified Message
  * @param {Message} msg The Message to create the Embed from
  * @param {boolean} [addThumbnail] Whether or not to add a Thumbnail to the Embed
@@ -504,6 +523,7 @@ module.exports = {
     IsValidEmbedValue, FormatString, MapFormatString,
     JoinArray, JoinArrayAsync, GetRandomArrayElement,
     SplitString,
+    TimedMessageReply,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     IsNaN,
     MentionUser, MentionChannel, MentionRole,
