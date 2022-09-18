@@ -446,6 +446,23 @@
         }
       }
     },
+    "sticky": {
+      "title": "sticky <SUB|MESSAGGIO>",
+      "description": "'Incolla' un messaggio alla fine del canale.",
+      "subcommands": {
+        "remove": {
+          "title": "remove",
+          "description": "Rimuove il messaggio 'incollato' dal canale."
+        },
+        "embed": {
+          "title": "embed <DESCRIZIONE|;; DESCRIZIONE|TITOLO ;; DESCRIZIONE>",
+          "description": [
+            "'Incolla' un messaggio embed alla fine del canale.",
+            "Se sono presenti all'interno della descrizione dei link ad immagini supportate allora la prima verrà aggiunta al messaggio."
+          ]
+        }
+      }
+    },
     "suggestion": {
       "title": "suggestion <SUB|SUGGERIMENTO...>",
       "description": "Invia un nuovo suggerimento per il server.",

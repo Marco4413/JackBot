@@ -449,6 +449,23 @@
         }
       }
     },
+    "sticky": {
+      "title": "sticky <SUB|MESSAGE>",
+      "description": "Sticks a message to the end of the channel.",
+      "subcommands": {
+        "remove": {
+          "title": "remove",
+          "description": "Removes the stickied message from the channel."
+        },
+        "embed": {
+          "title": "embed <DESCRIPTION|;; DESCRIPTION|TITLE ;; DESCRIPTION>",
+          "description": [
+            "Sticks an embed message to the end of the channel.",
+            "If links to supported images are present in the message's description then the first one will be used as the message's image."
+          ]
+        }
+      }
+    },
     "suggestion": {
       "title": "suggestion <SUB|SUGGESTION...>",
       "description": "Sends a new suggestion for the guild.",
