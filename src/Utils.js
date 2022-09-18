@@ -140,6 +140,36 @@ const JoinArrayAsync = async (array, separator = ",", elFormatter = el => el) =>
 };
 
 /**
+ * A custom implementation of {@link String.split}.
+ * This was also tested at https://jsben.ch/Hb5WA and it's faster than the native implementation
+ * (This is probably due to not using Regex)
+ * @template {Any} T The type of the elements in the Array
+ * @param {String} str The string to split
+ * @param {String} separator The separator to split the string with (Doesn't support Regex)
+ * @param {Number} [limit] The limit of elements that can be in the Array (The last element will contain the remaining string)
+ * @param {(el: String, index: Number) => T} [elFormatter] Called to format every element in the Array
+ * @returns {T[]} The splitted elements
+ */
+const SplitString = (str, separator, limit = Number.POSITIVE_INFINITY, elFormatter = el => el) => {
+    if (separator.length === 0 || str.length === 0 || limit <= 0) return [ ];
+    
+    const result = [ ];
+    let remainingStr = str;
+    while (remainingStr.length > 0) {
+        const index = remainingStr.indexOf(separator);
+        if (index < 0 || result.length + 1 >= limit) {
+            result.push(elFormatter(remainingStr, result.length));
+            break;
+        }
+
+        result.push(elFormatter(remainingStr.substring(0, index), result.length));
+        remainingStr = remainingStr.substring(index + separator.length);
+    }
+
+    return result;
+};
+
+/**
  * Returns a random element from the specified array
  * @template {Object} T
  * @param {T[]} array The array to get the random element from
@@ -473,6 +503,7 @@ module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
     IsValidEmbedValue, FormatString, MapFormatString,
     JoinArray, JoinArrayAsync, GetRandomArrayElement,
+    SplitString,
     GetDefaultEmbedForMessage, GetFormattedDateComponents,
     IsNaN,
     MentionUser, MentionChannel, MentionRole,
