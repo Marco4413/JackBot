@@ -158,7 +158,7 @@ const _DeleteVoiceChannel = async (member, scatterUsers, msg) => {
 
         // Getting All Voice Channels of the Guild except the one that is being deleted
         const channels = (await member.guild.channels.fetch()).filter(ch =>
-            ch.isVoice() && ch.id !== userChannel.id && !ch.full &&
+            ch != null && ch.isVoice() && ch.id !== userChannel.id && !ch.full &&
             ch.id !== guild.privateVoiceCreateChannelId &&
             ch.permissionsFor(member)
                 .has(Permissions.FLAGS.CONNECT) &&
