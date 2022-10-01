@@ -2,15 +2,18 @@ const { CreateEventListener } = require("../EventListener.js");
 const Database = require("../Database.js");
 
 const _MessageManagers = [
-    require("./MessageCreate/StickyManager.js"),
     require("./MessageCreate/BoostManager.js"),
     require("./MessageCreate/CommandManager.js"),
     require("./MessageCreate/CounterManager.js")
 ];
 
+const _StickyManager = require("./MessageCreate/StickyManager.js");
+
 module.exports = CreateEventListener(
     "messageCreate", async msg => {
-        if (msg.author.bot || msg.channel.type !== "GUILD_TEXT") return;
+        if (msg.channel.type !== "GUILD_TEXT") return;
+        if (await _StickyManager(msg)) return;
+        if (msg.author.bot) return;
 
         const guild = await Database.GetOrCreateRow("guild", { "id": msg.guildId });
         for (let i = 0; i < _MessageManagers.length; i++) {

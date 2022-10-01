@@ -7,10 +7,9 @@ const _STICKY_MESSAGE_COOLDOWN = Utils.GetEnvVariable("STICKY_MESSAGE_COOLDOWN",
 
 /**
  * @param {Message} msg
- * @param {DatabaseDefinitions.GuildRow} guild
  * @returns {Promise<Boolean>}
  */
-module.exports = async (msg, guild) => {
+module.exports = async (msg) => {
     const channelRow = await Database.GetRow("channel", {
         "guildId": msg.guildId, "channelId": msg.channelId
     });
