@@ -179,8 +179,6 @@ module.exports = CreateCommand({
                         for (let i = 0; i < rolesToRemove.length; i++) {
                             const roleId = rolesToRemove[i];
                             const role = await Utils.SafeFetch(msg.guild.roles, roleId);
-                            if (role == null)
-                                continue;
                             
                             const newRoles = manageableRoles.filter(val => val !== roleId);
                             if (newRoles.length === manageableRoles.length)
@@ -188,7 +186,7 @@ module.exports = CreateCommand({
 
                             manageableRoles = newRoles;
                             removedRoles.push(locale.GetSoftMention(
-                                "Role", role.name, roleId, true
+                                "Role", role?.name, roleId, true
                             ));
                         }
 
