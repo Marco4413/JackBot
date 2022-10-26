@@ -3,21 +3,16 @@ const { CreateInterval } = require("./Timing.js");
 const { GetLocale } = require("./Localization.js");
 const Utils = require("./Utils.js");
 const Logger = require("./Logger.js");
+const { ActivityType } = require("discord.js");
 
 const _RP_DEFAULT_UPDATE_INTERVAL = 3600e3;
 
-/** @type {import("discord.js").ActivityType[]} */
-const _VALID_ACTIVITY_TYPES = [
-    "COMPETING", "LISTENING", "PLAYING",
-    "STREAMING", "WATCHING"
-];
-
-/**
- * @param {String} activityType
- * @returns {Boolean}
- */
-const _IsValidActivityType = (activityType) => {
-    return _VALID_ACTIVITY_TYPES.findIndex(v => activityType === v) >= 0;
+const _VALID_ACTIVITY_TYPES = {
+    "COMPETING": ActivityType.Competing,
+    "LISTENING": ActivityType.Listening,
+    "PLAYING": ActivityType.Playing,
+    "STREAMING": ActivityType.Streaming,
+    "WATCHING": ActivityType.Watching
 };
 
 const StartRichPresence = async () => {
@@ -27,12 +22,12 @@ const StartRichPresence = async () => {
     if (typeof activityOptions !== "string") {
         Logger.Warn("Rich Presence Failed to Run: DefaultLocale.common.richPresence is not a String.");
     } else {
-        /** @type {[ import("discord.js").ActivityType, String ]} */
-        let [ activityType, ...activityWords ] = activityOptions.trim().split(" ");
-        activityType = activityType.toUpperCase();
+        /** @type {[ String, String ]} */
+        let [ activityName, ...activityWords ] = activityOptions.trim().split(" ");
+        activityName = activityName.toUpperCase();
 
-        const activityName = Utils.JoinArray(activityWords, " ");
-        if (_IsValidActivityType(activityType)) {
+        if (_VALID_ACTIVITY_TYPES[activityName] != null) {
+            const activityName = Utils.JoinArray(activityWords, " ");
             CreateInterval(async () => {
                 let totalMembers = 0;
                 let onlineMembers = 0;
@@ -55,15 +50,15 @@ const StartRichPresence = async () => {
                         "total-users": totalMembers,
                         "total-guilds": Client.guilds.cache.size
                     }),
-                    "type": activityType
+                    "type": _VALID_ACTIVITY_TYPES[activityName]
                 });
             }, updateInterval, undefined, "use-handler");
         } else {
             Logger.Warn(
                 `Rich Presence Failed to Run: DefaultLocale.common.richPresence has invalid activity type: ${
-                    activityType
+                    activityName
                 }. Valid Types are [ ${
-                    Utils.JoinArray(_VALID_ACTIVITY_TYPES, ", ")
+                    Utils.JoinArray(Object.keys(_VALID_ACTIVITY_TYPES), ", ")
                 } ]`
             );
         }
