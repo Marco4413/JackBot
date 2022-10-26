@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Client: DiscordClient, Intents, BaseGuildVoiceChannel, Guild } = require("discord.js");
+const { Client: DiscordClient, GatewayIntentBits, BaseGuildVoiceChannel, Guild } = require("discord.js");
 const {
     getVoiceConnection, joinVoiceChannel, createAudioPlayer, createAudioResource,
     PlayerSubscription, VoiceConnectionStatus, VoiceConnection, AudioPlayerStatus, AudioPlayer
@@ -9,7 +9,8 @@ const { CreateInterval, ClearInterval } = require("./Timing.js");
 const Utils = require("./Utils.js");
 
 const Client = new DiscordClient({
-    "intents": Intents.FLAGS.GUILDS | Intents.FLAGS.GUILD_MESSAGES | Intents.FLAGS.GUILD_MEMBERS | Intents.FLAGS.GUILD_PRESENCES | Intents.FLAGS.GUILD_VOICE_STATES
+    "intents": GatewayIntentBits.Guilds | GatewayIntentBits.GuildMessages | GatewayIntentBits.MessageContent |
+        GatewayIntentBits.GuildMembers | GatewayIntentBits.GuildPresences | GatewayIntentBits.GuildVoiceStates
 });
 
 Client.token = process.env["TOKEN"];
@@ -186,7 +187,7 @@ const GetOrCreateVoiceConnection = (voiceChannel, switchChannel = true) => {
         return _CreateVoiceConnection(voiceChannel);
     }
 
-    if (switchChannel && voiceChannel.guild.me.voice.channelId !== voiceChannel.id) {
+    if (switchChannel && voiceChannel.guild.members.me.voice.channelId !== voiceChannel.id) {
         voiceSub.connection.destroy();
         return _CreateVoiceConnection(voiceChannel);
     }

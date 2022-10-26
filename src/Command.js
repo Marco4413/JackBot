@@ -59,9 +59,7 @@ const Utils = require("./Utils.js");
 // #region Private Functions
 
 /**
- * @param {Discord.Message} msg
  * @param {String} [arg]
- * @param {Number} argIndex
  * @param {CommandArgument} argDef
  * @param {Boolean} [isRequired]
  * @returns {_ArgumentParseResult}
@@ -153,7 +151,6 @@ const _NextArgument = rawContent => {
 }; 
 
 /**
- * @param {Discord.Message} msg
  * @param {String} rawArgs
  * @param {CommandArgument[]} [argDefs]
  * @returns {_ArgumentsParseResult}
@@ -198,16 +195,16 @@ const _ParseArguments = (rawArgs, argDefs) => {
 };
 
 /**
- * @param {Discord.Permissions} memberPerms
+ * @param {Discord.PermissionsBitField} memberPerms
  * @param {Discord.PermissionResolvable} requiredPermsResolvable
  * @param {Localization.Locale} locale
  * @returns {String}
  */
 const _ListMissingPerms = (memberPerms, requiredPermsResolvable, locale) => {
     const adminKey = "ADMINISTRATOR";
-    const requiredPerms = Discord.Permissions.resolve(requiredPermsResolvable);
+    const requiredPerms = Discord.PermissionsBitField.resolve(requiredPermsResolvable);
     const missingPerms =
-        requiredPerms === Discord.Permissions.FLAGS.ADMINISTRATOR ?
+        requiredPerms === Discord.PermissionsBitField.Flags.Administrator ?
             [ adminKey ] : memberPerms.missing(requiredPerms);
 
     const permsLocale = locale.GetSubLocale("common.permissions", false);
@@ -419,5 +416,5 @@ const CreateCommand = cmd => cmd;
 
 module.exports = {
     IsValidCommand, ExecuteCommand, CreateCommand, IsMissingPermissions,
-    Utils, Database, DatabaseDefinitions, Permissions: Discord.Permissions
+    Utils, Database, DatabaseDefinitions, Permissions: Discord.PermissionsBitField
 };

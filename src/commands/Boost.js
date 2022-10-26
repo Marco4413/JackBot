@@ -1,9 +1,10 @@
+const { ChannelType } = require ("discord.js");
 const { CreateCommand, Permissions, Database, Utils } = require("../Command.js");
 const { SendNitroBoostEmbed } = require("./utils/BoostUtils.js");
 
 module.exports = CreateCommand({
     "name": "boost",
-    "permissions": Permissions.FLAGS.MANAGE_GUILD,
+    "permissions": Permissions.Flags.ManageGuild,
     "subcommands": [
         {
             "name": "channel",
@@ -32,7 +33,7 @@ module.exports = CreateCommand({
                         const textChannel = await msg.guild.channels.fetch(channelId);
                         if (textChannel == null) {
                             await msg.reply(locale.Get("noChannel"));
-                        } else if (textChannel.isText()) {
+                        } else if (textChannel.type === ChannelType.GuildText) {
                             const newGuild = await Database.SetRowAttr("guild", { "id": msg.guildId }, {
                                 "nitroBoostChannelId": channelId
                             });
@@ -71,7 +72,7 @@ module.exports = CreateCommand({
                 if (channelId != null) {
                     textChannel = await msg.guild.channels.fetch(channelId);
 
-                    if (textChannel == null || !textChannel.isText()) {
+                    if (textChannel == null || textChannel.type !== ChannelType.GuildText) {
                         await msg.reply(locale.Get("invalidChannel"));
                         return;
                     }

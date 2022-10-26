@@ -32,7 +32,7 @@ const _ArrayToStringList = (arr) => {
  */
 const _GetUnmanageableRoles = async (roles, member) => {
     if (roles.length === 0) return [ ];
-    if (member.permissions.has(Permissions.FLAGS.ADMINISTRATOR)) return [ ];
+    if (member.permissions.has(Permissions.Flags.Administrator)) return [ ];
 
     // Get all managers owned by the user which also have at least
     //  one of the roles that it needs to manage
@@ -74,7 +74,7 @@ module.exports = CreateCommand({
     "subcommands": [
         {
             "name": "managers",
-            "permissions": Permissions.FLAGS.ADMINISTRATOR,
+            "permissions": Permissions.Flags.Administrator,
             "subcommands": [
                 {
                     "name": "add",

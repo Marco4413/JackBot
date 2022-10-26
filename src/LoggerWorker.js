@@ -1,10 +1,10 @@
 const fs = require("fs");
 const { parentPort } = require("worker_threads");
 const { JoinArray, GetFormattedDateComponents, FormatString } = require("./Utils.js");
-const { Client: DiscordClient, Intents, DMChannel, User } = require("discord.js");
+const { Client: DiscordClient, GatewayIntentBits, DMChannel, User } = require("discord.js");
 
 let _LogClient = new DiscordClient({
-    "intents": Intents.FLAGS.GUILD_MEMBERS,
+    "intents": GatewayIntentBits.GuildMembers,
     "presence": {
         "status": "invisible"
     }

@@ -1,3 +1,4 @@
+const { ChannelType } = require("discord.js");
 const { CreateEventListener } = require("../EventListener.js");
 const Database = require("../Database.js");
 
@@ -11,7 +12,7 @@ const _StickyManager = require("./MessageCreate/StickyManager.js");
 
 module.exports = CreateEventListener(
     "messageCreate", async msg => {
-        if (msg.channel.type !== "GUILD_TEXT") return;
+        if (msg.channel.type !== ChannelType.GuildText) return;
         if (await _StickyManager(msg)) return;
         if (msg.author.bot) return;
 

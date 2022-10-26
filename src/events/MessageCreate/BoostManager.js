@@ -1,5 +1,5 @@
 const { SendNitroBoostEmbed } = require("../../commands/utils/BoostUtils.js");
-const { Message } = require("discord.js");
+const { Message, MessageType } = require("discord.js");
 
 /**
  * @param {Message} msg
@@ -7,7 +7,7 @@ const { Message } = require("discord.js");
  * @returns {Promise<Boolean>}
  */
 module.exports = async (msg, guild) => {
-    if (msg.type.startsWith("USER_PREMIUM_GUILD_SUBSCRIPTION") && msg.member != null) {
+    if (msg.type === MessageType.GuildBoost && msg.member != null) {
         await SendNitroBoostEmbed(msg.member);
         return true;
     }

@@ -1,3 +1,4 @@
+const { ChannelType } = require("discord.js");
 const Sequelize = require("sequelize");
 const { Client } = require("../Client.js");
 const { CreateCommand, Permissions, Database, Utils } = require("../Command.js");
@@ -90,7 +91,7 @@ CreateInterval(async id => {
 module.exports = CreateCommand({
     "name": "channel",
     "shortcut": "ch",
-    "permissions": Permissions.FLAGS.VIEW_CHANNEL,
+    "permissions": Permissions.Flags.ViewChannel,
     "canExecute": async (msg, guild, locale) =>
         !await ReplyIfBlacklisted(locale, "channel", msg, "inChannelAccessList", "isChannelAccessBlacklist"),
     "subcommands": [
@@ -140,7 +141,7 @@ module.exports = CreateCommand({
         {
             "name": "category",
             "shortcut": "c",
-            "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
+            "permissions": Permissions.Flags.ManageChannels,
             "subcommands": [{
                 "name": "set",
                 "shortcut": "s",
@@ -159,7 +160,7 @@ module.exports = CreateCommand({
                     }
 
                     const category = await Utils.SafeFetch(msg.guild.channels, categoryId);
-                    if (category == null || category.type !== "GUILD_CATEGORY") {
+                    if (category == null || category.type !== ChannelType.GuildCategory) {
                         await msg.reply(locale.Get("invalidCategory"));
                         return;
                     }
@@ -189,7 +190,7 @@ module.exports = CreateCommand({
         {
             "name": "voice-creation-channel",
             "shortcut": "vcc",
-            "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
+            "permissions": Permissions.Flags.ManageChannels,
             "subcommands": [{
                 "name": "set",
                 "shortcut": "s",
@@ -208,7 +209,7 @@ module.exports = CreateCommand({
                     }
 
                     const voiceChannel = await Utils.SafeFetch(msg.guild.channels, channelId);
-                    if (voiceChannel == null || voiceChannel.type !== "GUILD_VOICE") {
+                    if (voiceChannel == null || voiceChannel.type !== ChannelType.GuildVoice) {
                         await msg.reply(locale.Get("invalidChannel"));
                         return;
                     }
@@ -238,7 +239,7 @@ module.exports = CreateCommand({
         {
             "name": "template-role",
             "shortcut": "tr",
-            "permissions": Permissions.FLAGS.MANAGE_ROLES,
+            "permissions": Permissions.Flags.ManageRoles,
             "subcommands": [
                 {
                     "name": "everyone",

@@ -36,7 +36,7 @@
     "chalk": "^4.1.2",
     "cross-fetch": "^3.1.5",
     "dayjs": "^1.11.4",
-    "discord.js": "^13.3.1",
+    "discord.js": "^14.5.0",
     "dotenv": "^10.0.0",
     "ffmpeg-static": "^4.4.0",
     "libsodium-wrappers": "^0.7.10",

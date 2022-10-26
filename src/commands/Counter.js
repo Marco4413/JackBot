@@ -36,7 +36,7 @@ module.exports = CreateCommand({
             "name": "start",
             "shortcut": "s",
             "channelPermissions": true,
-            "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
+            "permissions": Permissions.Flags.ManageChannels,
             "execute": async (msg, guild, locale) => {
                 const counter = await Database.CreateRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId });
                 if (counter == null) {
@@ -55,7 +55,7 @@ module.exports = CreateCommand({
             "name": "terminate",
             "shortcut": "term",
             "channelPermissions": true,
-            "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
+            "permissions": Permissions.Flags.ManageChannels,
             "arguments": [
                 {
                     "name": "[CHANNEL MENTION/ID]",
@@ -69,8 +69,8 @@ module.exports = CreateCommand({
                 let channelId = msg.channelId;
                 if (!isHere) {
                     channelId = targetChannel;
-                    const textChannel = await await Utils.SafeFetch(msg.guild.channels, channelId);
-                    if (textChannel != null && await IsMissingPermissions(msg, locale, Permissions.FLAGS.MANAGE_CHANNELS, textChannel))
+                    const textChannel = await Utils.SafeFetch(msg.guild.channels, channelId);
+                    if (textChannel != null && await IsMissingPermissions(msg, locale, Permissions.Flags.ManageChannels, textChannel))
                         return;
                 }
 
@@ -100,7 +100,7 @@ module.exports = CreateCommand({
             "name": "config",
             "shortcut": "cfg",
             "channelPermissions": true,
-            "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
+            "permissions": Permissions.Flags.ManageChannels,
             "subcommands": [
                 {
                     "name": "allow-messages",
@@ -154,24 +154,24 @@ module.exports = CreateCommand({
 
                         let channelName = counter.channelId;
                         if (textChannel != null) {
-                            if (!msg.member.permissionsIn(textChannel).has(Permissions.FLAGS.VIEW_CHANNEL))
+                            if (!msg.member.permissionsIn(textChannel).has(Permissions.Flags.ViewChannel))
                                 continue;
                             channelName = textChannel.name;
                         }
 
-                        embed.addField(
-                            locale.GetFormatted("counterTitle", {
+                        embed.addFields([{
+                            "name": locale.GetFormatted("counterTitle", {
                                 "channel-name": channelName,
                                 "count": counter.count,
                                 "best-count": counter.bestCount
                             }),
-                            locale.GetFormatted("counterDescription", {
+                            "value": locale.GetFormatted("counterDescription", {
                                 "channel": Utils.MentionChannel(counter.channelId),
                                 "count": counter.count,
                                 "best-count": counter.bestCount
                             }),
-                            false
-                        );
+                            "inline": false
+                        }]);
                     }
                 }
 

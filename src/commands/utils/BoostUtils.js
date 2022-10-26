@@ -1,4 +1,4 @@
-const { MessageEmbed, GuildMember } = require("discord.js");
+const { EmbedBuilder, GuildMember, ChannelType } = require("discord.js");
 const { GetCommandLocale } = require("../../Localization");
 const Database = require("../../Database.js");
 const Utils = require("../../Utils.js");
@@ -14,12 +14,12 @@ const SendNitroBoostEmbed = async (member, textChannel = null) => {
     if (textChannel == null) {
         if (guildRow.nitroBoostChannelId == null) return false;
         textChannel = await member.guild.channels.fetch(guildRow.nitroBoostChannelId);
-        if (textChannel == null || !textChannel.isText()) return false;
+        if (textChannel == null || textChannel.type !== ChannelType.GuildText) return false;
     }
 
     const locale = GetCommandLocale(guildRow.locale, [ "boost" ]);
     const premiumSinceTimestamp = member.premiumSinceTimestamp ?? Date.now();
-    const embed = new MessageEmbed({
+    const embed = new EmbedBuilder({
         "author": {
             "iconURL": locale.Get("authorIconURL"),
             "name": locale.Get("authorName")

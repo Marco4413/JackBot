@@ -1,8 +1,8 @@
 const fs = require("fs");
 const {
-    Message, MessageEmbed, MessageReaction,
+    Message, EmbedBuilder, MessageReaction,
     EmojiIdentifierResolvable, MessagePayload,
-    ReplyMessageOptions, DataManager, BaseFetchOptions,
+    MessageReplyOptions, DataManager, BaseFetchOptions,
     Collection
 } = require("discord.js");
 const DayJS = require("dayjs");
@@ -10,7 +10,7 @@ const DayJS = require("dayjs");
 /**
  * Safely replies to the specified message (Catches errors and returns null if one was thrown)
  * @param {Message} msg The message to reply to
- * @param {String|MessagePayload|ReplyMessageOptions} options The reply to send
+ * @param {String|MessagePayload|MessageReplyOptions} options The reply to send
  * @returns {Promise<Message<Boolean>|null>} The reply message or null if an error was thrown
  */
 const SafeReply = async (msg, options) => {
@@ -203,21 +203,21 @@ const TimedMessageReply = (msg, reply, timeout = 2.5e3) => {
  * Returns the Default Embed for the Specified Message
  * @param {Message} msg The Message to create the Embed from
  * @param {boolean} [addThumbnail] Whether or not to add a Thumbnail to the Embed
- * @returns {MessageEmbed} The Default Embed for the Specified Message
+ * @returns {EmbedBuilder} The Default Embed for the Specified Message
  */
 const GetDefaultEmbedForMessage = (msg, addThumbnail = false) => {
-    const botAvatar = msg.guild.me.displayAvatarURL();
-    return new MessageEmbed({
+    const botAvatar = msg.guild.members.me.displayAvatarURL();
+    return new EmbedBuilder({
         "author": {
             "iconURL": msg.member.displayAvatarURL(),
             "name": msg.member.displayName
         },
-        "color": "GOLD",
+        "color": 0xefc20f,
         "thumbnail": addThumbnail ? { "url": botAvatar } : undefined,
         "timestamp": Date.now(),
         "footer": {
             "iconURL": botAvatar,
-            "text": msg.guild.me.displayName
+            "text": msg.guild.members.me.displayName
         }
     });
 };

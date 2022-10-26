@@ -2,6 +2,7 @@ const { Message } = require("discord.js");
 const Utils = require("../../Utils.js");
 const Database = require("../../Database.js");
 const Logger = require("../../Logger.js");
+const { EmbedBuilder } = require("discord.js");
 
 const _STICKY_MESSAGE_COOLDOWN = Utils.GetEnvVariable("STICKY_MESSAGE_COOLDOWN", Utils.AnyToNumber, 2.5e3, Logger.Warn);
 
@@ -27,7 +28,7 @@ module.exports = async (msg) => {
                 await Utils.SafeDelete(stickyMessage);
                 const newStickyMessage = await (stickyMessage.content.length > 0 ?
                     msg.channel.send(stickyMessage.content) :
-                    msg.channel.send({ "embeds": [ stickyMessage.embeds[0] ] })
+                    msg.channel.send({ "embeds": [ new EmbedBuilder(stickyMessage.embeds[0].data) ] })
                 );
     
                 await Database.SetRowAttr("channel", {

@@ -1,11 +1,11 @@
-const { GuildMember, Message, Permissions } = require("discord.js");
+const { GuildMember, Message, PermissionsBitField, ChannelType } = require("discord.js");
 const Database = require("../../Database.js");
 const { GetLocale } = require("../../Localization");
 const Logger = require("../../Logger.js");
 const Utils = require("../../Utils.js");
 
 /**
- * @param {Permissions} perms
+ * @param {PermissionsBitField} perms
  * @returns {Object}
  */
 const _PermissionToOverwrites = (perms) => {
@@ -70,12 +70,11 @@ const _CreateVoiceChannel = async (member, channelName, msg = null) => {
             }
         }
 
-        userChannel = await member.guild.channels.create(
-            channelName ?? `${member.displayName}'s Voice Channel`, {
-                "type": "GUILD_VOICE",
-                "parent": parent?.type === "GUILD_CATEGORY" ? parent : null
-            }
-        );
+        userChannel = await member.guild.channels.create({
+            "name": channelName ?? `${member.displayName}'s Voice Channel`,
+            "type": ChannelType.GuildVoice,
+            "parent": parent?.type === ChannelType.GuildCategory ? parent : null
+        });
 
         if (permissionOverwrites.length > 0) {
             for (let i = 0; i < permissionOverwrites.length; i++) {
@@ -148,7 +147,7 @@ const _DeleteVoiceChannel = async (member, scatterUsers, msg) => {
         return;
     }
 
-    if (!userChannel.deletable) {
+    if (!userChannel.permissionsFor(member.guild.members.me).has(PermissionsBitField.Flags.ManageChannels)) {
         await msg?.reply(locale.Get("cantDelete"));
         return;
     }
@@ -158,12 +157,12 @@ const _DeleteVoiceChannel = async (member, scatterUsers, msg) => {
 
         // Getting All Voice Channels of the Guild except the one that is being deleted
         const channels = (await member.guild.channels.fetch()).filter(ch =>
-            ch != null && ch.isVoice() && ch.id !== userChannel.id && !ch.full &&
+            ch?.type === ChannelType.GuildVoice && ch.id !== userChannel.id && !ch.full &&
             ch.id !== guild.privateVoiceCreateChannelId &&
             ch.permissionsFor(member)
-                .has(Permissions.FLAGS.CONNECT) &&
-            ch.permissionsFor(member.guild.me)
-                .has(Permissions.FLAGS.MOVE_MEMBERS)
+                .has(PermissionsBitField.Flags.Connect) &&
+            ch.permissionsFor(member.guild.members.me)
+                .has(PermissionsBitField.Flags.MoveMembers)
         );
 
         // For each channel member
@@ -172,7 +171,7 @@ const _DeleteVoiceChannel = async (member, scatterUsers, msg) => {
             if (chMember.voice.channelId != null) {
                 // Get a random channel that it can join
                 const channel = channels.filter(
-                    ch => ch.permissionsFor(chMember).has(Permissions.FLAGS.CONNECT | Permissions.FLAGS.VIEW_CHANNEL)
+                    ch => ch.permissionsFor(chMember).has(PermissionsBitField.Flags.Connect | PermissionsBitField.Flags.ViewChannel)
                 ).random();
                 // Set its channel to the one picked or disconnect if none
                 await chMember.voice.setChannel(channel ?? null, `${chMember.id}'s Voice Channel was Deleted.`);

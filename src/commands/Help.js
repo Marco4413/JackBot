@@ -77,7 +77,13 @@ module.exports = CreateCommand({
                 const subDoc = subcommands.Get(subKey, false);
                 if (subDoc.hidden) {
                     const name = _GetCommandDocName(subDoc, noTitle, false);
-                    if (name != null) embed.addField(name, subDoc.hideSubcommandsPreview === true ? _NBSP : locale.Get("noSubcommands"), false);
+                    if (name != null) {
+                        embed.addFields([{
+                            name,
+                            "value": subDoc.hideSubcommandsPreview === true ? _NBSP : locale.Get("noSubcommands"),
+                            "inline": false
+                        }]);
+                    }
                     continue;
                 }
 
@@ -103,8 +109,11 @@ module.exports = CreateCommand({
                     _HandleDescription(subDoc.description, "")
                 }\n${subSubCmdList ?? ""}`.trim();
                 
-                embed.addField(_GetCommandDocName(subDoc, null, undefined, true, { "this-key": subKey }),
-                    fieldDescription.length > 0 ? fieldDescription : _NBSP, false);
+                embed.addFields([{
+                    "name": _GetCommandDocName(subDoc, null, undefined, true, { "this-key": subKey }),
+                    "value": fieldDescription.length > 0 ? fieldDescription : _NBSP,
+                    "inline": false
+                }]);
             }
         }
 

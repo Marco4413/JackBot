@@ -1,3 +1,4 @@
+const { ChannelType } = require("discord.js");
 const Sequelize = require("sequelize");
 const { CreateCommand, Permissions, Database, Utils } = require("../Command.js");
 const YouTubeNotification = require("./notifications/YouTubeNotification.js");
@@ -32,7 +33,7 @@ module.exports = CreateCommand({
     "subcommands": [{
         "name": "voice",
         "shortcut": "v",
-        "permissions": Permissions.FLAGS.ADMINISTRATOR,
+        "permissions": Permissions.Flags.Administrator,
         "subcommands": [{
             "name": "join",
             "shortcut": "j",
@@ -54,7 +55,7 @@ module.exports = CreateCommand({
                     if (voiceChannel == null) {
                         await msg.reply(locale.Get("noVoiceChannelFound"));
                         return;
-                    } else if (!voiceChannel.isVoice()) {
+                    } else if (voiceChannel.type !== ChannelType.GuildVoice) {
                         await msg.reply(locale.Get("notVoiceChannel"));
                         return;
                     }
@@ -63,7 +64,7 @@ module.exports = CreateCommand({
                     if (notificationChannel == null) {
                         await msg.reply(locale.Get("noTextChannelFound"));
                         return;
-                    } else if (!notificationChannel.isText()) {
+                    } else if (notificationChannel.type !== ChannelType.GuildText) {
                         await msg.reply(locale.Get("notTextChannel"));
                         return;
                     }
@@ -236,7 +237,7 @@ module.exports = CreateCommand({
                     if (notificationChannel == null) {
                         await msg.reply(locale.Get("noTextChannelFound"));
                         return;
-                    } else if (!notificationChannel.isText()) {
+                    } else if (notificationChannel.type !== ChannelType.GuildText) {
                         await msg.reply(locale.Get("notTextChannel"));
                         return;
                     }
@@ -371,7 +372,7 @@ module.exports = CreateCommand({
                     if (notificationChannel == null) {
                         await msg.reply(locale.Get("noTextChannelFound"));
                         return;
-                    } else if (!notificationChannel.isText()) {
+                    } else if (notificationChannel.type !== ChannelType.GuildText) {
                         await msg.reply(locale.Get("notTextChannel"));
                         return;
                     }

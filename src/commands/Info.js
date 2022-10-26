@@ -12,30 +12,34 @@ module.exports = CreateCommand({
             locale.Get("title")
         ).setDescription(
             locale.Get("description")
-        ).addField(
-            locale.Get("package.name"),
-            package.name, true
-        ).addField(
-            locale.Get("package.version"),
-            package.version, true
-        ).addField(
-            locale.Get("package.description"),
-            package.description
-        ).addField(
-            locale.Get("package.author"),
-            locale.GetFormatted("package.authorValue", {
+        ).addFields([{
+            "name": locale.Get("package.name"),
+            "value": package.name,
+            "inline": true
+        }, {
+            "name": locale.Get("package.version"),
+            "value": package.version,
+            "inline": true
+        }, {
+            "name": locale.Get("package.description"),
+            "value": package.description
+        }, {
+            "name": locale.Get("package.author"),
+            "value": locale.GetFormatted("package.authorValue", {
                 "name": package.author.name,
                 "url": package.author.url
-            }), true
-        ).addField(
-            locale.Get("package.license"),
-            package.license, true
-        ).addField(
-            locale.Get("package.homepage"),
-            package.homepage
-        ).addField(
-            locale.Get("package.contributors"),
-            locale.GetFormattedList(
+            }),
+            "inline": true
+        }, {
+            "name": locale.Get("package.license"),
+            "value": package.license,
+            "inline": true
+        }, {
+            "name": locale.Get("package.homepage"),
+            "value": package.homepage
+        }, {
+            "name": locale.Get("package.contributors"),
+            "value": locale.GetFormattedList(
                 package.contributors, "package.contributorsValue",
                 el => ({
                     "name": el.name,
@@ -43,16 +47,16 @@ module.exports = CreateCommand({
                     "contribution": el.contribution
                 })
             )
-        ).addField(
-            locale.Get("package.dependencies"),
-            locale.GetFormattedList(
+        }, {
+            "name": locale.Get("package.dependencies"),
+            "value": locale.GetFormattedList(
                 Object.keys(package.dependencies), "package.dependenciesValue",
                 depName => ({
                     "name": depName,
                     "version": package.dependencies[depName]
                 })
             )
-        );
+        }]);
 
         msg.channel.send({
             "embeds": [ embed ]

@@ -337,7 +337,7 @@ const _CreateAccesslistCommand = (name, shortcut, dbInListColumn, dbIsBlacklistC
 module.exports = CreateCommand({
     "name": "access-list",
     "shortcut": "al",
-    "permissions": Permissions.FLAGS.MANAGE_ROLES | Permissions.FLAGS.MANAGE_GUILD,
+    "permissions": Permissions.Flags.ManageRoles | Permissions.Flags.ManageGuild,
     "subcommands": [
         _CreateAccesslistCommand("sound", "s", "inSoundAccessList", "isSoundAccessBlacklist"),
         _CreateAccesslistCommand("channel", "ch", "inChannelAccessList", "isChannelAccessBlacklist"),

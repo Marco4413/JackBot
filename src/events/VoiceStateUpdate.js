@@ -1,3 +1,4 @@
+const { ChannelType } = require("discord.js");
 const { CreateEventListener } = require("../EventListener.js");
 const Database = require("../Database.js");
 const { CreateVoiceChannel } = require("../commands/utils/ChannelUtils.js");
@@ -27,7 +28,7 @@ module.exports = CreateEventListener(
 
         if (notifyChannelRow != null) {
             const notificationChannel = await Utils.SafeFetch(state.guild.channels, notifyChannelRow.joinNotificationChannelId);
-            if (notificationChannel != null && notificationChannel.isText()) {
+            if (notificationChannel != null && notificationChannel === ChannelType.GuildText) {
                 await notificationChannel.send(Utils.MapFormatString(
                     notifyChannelRow.joinNotificationText, {
                         "join-user-mention": Utils.MentionUser(state.member.id),

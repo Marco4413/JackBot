@@ -1,3 +1,4 @@
+const { ChannelType } = require("discord.js");
 const { CreateEventListener } = require("../EventListener.js");
 const Database = require("../Database.js");
 const { GetCommandLocale } = require("../Localization.js");
@@ -6,7 +7,7 @@ const { DatabaseDefinitions } = require("../Command.js");
 
 module.exports = CreateEventListener(
     "messageDelete", async msg => {
-        if (msg.channel.type !== "GUILD_TEXT") return;
+        if (msg.channel.type !== ChannelType.GuildText) return;
         
         const counter = await Database.GetRow("counter", { "guildId": msg.guildId, "channelId": msg.channelId, "lastMessageId": msg.id });
         if (counter == null) return;

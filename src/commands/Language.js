@@ -17,7 +17,7 @@ module.exports = CreateCommand({
         {
             "name": "set",
             "shortcut": "s",
-            "permissions": Permissions.FLAGS.MANAGE_GUILD,
+            "permissions": Permissions.Flags.ManageGuild,
             "arguments": [
                 {
                     "name": "[NAME]",

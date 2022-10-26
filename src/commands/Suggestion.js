@@ -1,4 +1,4 @@
-const { Message, TextChannel } = require("discord.js");
+const { Message, TextChannel, ChannelType } = require("discord.js");
 const { CreateCommand, Permissions, Database, DatabaseDefinitions, Utils } = require("../Command.js");
 const { Locale } = require("../Localization.js");
 const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
@@ -73,11 +73,13 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, appr
         ));
     }
 
-    embed.addField(locale.Get("suggestionTextTitle"), suggestionField.value);
-    embed.addField(
-        locale.Get("suggestionReasonTitle"),
-        reason.length === 0 ? locale.Get("suggestionNoReason") : reason
-    );
+    embed.addFields([{
+        "name": locale.Get("suggestionTextTitle"),
+        "value": suggestionField.value
+    }, {
+        "name": locale.Get("suggestionReasonTitle"),
+        "value": reason.length === 0 ? locale.Get("suggestionNoReason") : reason
+    }]);
 
     embed.image = suggestionEmbed.image;
 
@@ -95,7 +97,7 @@ module.exports = CreateCommand({
     "subcommands": [
         {
             "name": "channel",
-            "permissions": Permissions.FLAGS.ADMINISTRATOR,
+            "permissions": Permissions.Flags.Administrator,
             "subcommands": [
                 {
                     "name": "set",
@@ -115,7 +117,7 @@ module.exports = CreateCommand({
                         }
 
                         const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
-                        if (channel == null || !channel.isText()) {
+                        if (channel == null || channel.type !== ChannelType.GuildText) {
                             await msg.reply(locale.Get("invalidChannel"));
                             return;
                         }
@@ -147,7 +149,7 @@ module.exports = CreateCommand({
                             }
     
                             const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
-                            if (channel == null || !channel.isText()) {
+                            if (channel == null || channel.type !== ChannelType.GuildText) {
                                 await msg.reply(locale.Get("invalidChannel"));
                                 return;
                             }
@@ -262,7 +264,10 @@ module.exports = CreateCommand({
             "suggestionSentDescription",
             { "user-mention": Utils.MentionUser(msg.member.id) }
         ));
-        embed.addField(locale.Get("suggestionTextTitle"), suggestion);
+        embed.addFields([{
+            "name": locale.Get("suggestionTextTitle"),
+            "value": suggestion
+        }]);
 
         embed.setImage(Utils.MatchImageUrl(suggestion));
 

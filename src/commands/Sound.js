@@ -195,12 +195,12 @@ const _ExecutePlaySound = async (msg, guild, locale, [ soundName ]) => {
         return;
     }
 
-    if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, userVoiceChannel)) {
+    if (await IsMissingPermissions(msg, locale, Permissions.Flags.Speak, userVoiceChannel)) {
         return;
     }
 
     // User's channel is not joinable and is not the same as the bot
-    if (!userVoiceChannel.joinable && userVoiceChannel.id !== msg.guild.me.voice.channelId) {
+    if (!userVoiceChannel.joinable && userVoiceChannel.id !== msg.guild.members.me.voice.channelId) {
         await msg.reply(locale.Get("cantJoinChannel"));
         return;
     }
@@ -237,16 +237,17 @@ module.exports = CreateCommand({
             const embed = Utils.GetDefaultEmbedForMessage(msg, true);
             embed.setTitle(locale.Get("title")).setDescription(locale.Get("description"));
 
-            for (const soundName of Object.keys(_AUDIO_NAME_TO_FILE)) {
+            // TODO: We'll probably have to do a wrapper to better handle Embeds constraints
+            for (const soundName of Object.keys(_AUDIO_NAME_TO_FILE).slice(0, 25)) {
                 /** @type {AudioFileData} */
                 const sound = _AUDIO_NAME_TO_FILE[soundName];
                 Logger.Debug(sound);
                 const formattedMetadata = _FormatAudioMetadata(locale, sound.metadata);
-                embed.addField(
-                    locale.GetFormatted("fieldTitle", { "sound-name": soundName }),
-                    formattedMetadata.text,
-                    formattedMetadata.maxLineLength <= _INLINE_LINE_CHAR_LIMIT
-                );
+                embed.addFields({
+                    "name": locale.GetFormatted("fieldTitle", { "sound-name": soundName }),
+                    "value": formattedMetadata.text,
+                    "inline": formattedMetadata.maxLineLength <= _INLINE_LINE_CHAR_LIMIT
+                });
             }
 
             await msg.channel.send({
@@ -270,13 +271,13 @@ module.exports = CreateCommand({
                 return;
             }
     
-            if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, msg.guild.me.voice.channelId)) {
+            if (await IsMissingPermissions(msg, locale, Permissions.Flags.Speak, msg.guild.members.me.voice.channelId)) {
                 return;
             }
 
             if (IsVoiceConnectionIdle(msg.guild)) {
                 await msg.reply(locale.Get("notPlaying"));
-            } else if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
+            } else if (msg.guild.members.me.voice.channelId === msg.member.voice.channelId) {
                 voiceConnection.player.stop(true);
                 await msg.reply(locale.Get("stopped"));
             } else {
@@ -300,11 +301,11 @@ module.exports = CreateCommand({
                 return;
             }
     
-            if (await IsMissingPermissions(msg, locale, Permissions.FLAGS.SPEAK, msg.guild.me.voice.channelId)) {
+            if (await IsMissingPermissions(msg, locale, Permissions.Flags.Speak, msg.guild.members.me.voice.channelId)) {
                 return;
             }
 
-            if (msg.guild.me.voice.channelId === msg.member.voice.channelId) {
+            if (msg.guild.members.me.voice.channelId === msg.member.voice.channelId) {
                 voiceConnection.softDestroy();
                 await msg.reply(locale.Get("leaving"));
             } else {

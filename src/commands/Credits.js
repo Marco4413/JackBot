@@ -1,4 +1,4 @@
-const { Message, Channel } = require("discord.js");
+const { Message, Channel, ChannelType } = require("discord.js");
 const { CreateCommand, Database, Utils, DatabaseDefinitions, Permissions } = require("../Command.js");
 const { Locale } = require("../Localization.js");
 const SMath = require("../SandMath.js");
@@ -38,7 +38,7 @@ const _GetFormattedCredits = (locale, userId, authorId, oldCredits, newCredits, 
 const _GetCreditsChannel = async (msg, guildRow) => {
     const channelId = guildRow.creditsChannelId;
     const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
-    if (channel == null || !channel.isText())
+    if (channel == null || channel.type !== ChannelType.GuildText)
         return null;
     return channel;
 };
@@ -73,24 +73,24 @@ const _ReplyWithLeaderboard = async (msg, locale, boardSize = 4.5, sortingOrder 
         const isLastEntry = i === leadUsers.length;
         const userSoftMention = locale.GetSoftMention("User", user?.displayName, userId);
         if (isLastEntry) {
-            embed.addField(
-                locale.GetFormatted("fieldTitle", {
+            embed.addFields([{
+                "name": locale.GetFormatted("fieldTitle", {
                     "i": actualBoardSize,
                     "user": userSoftMention.substring(0, Math.floor(userSoftMention.length * decBoardSize))
                 }),
-                locale.GetFormatted("fieldValue", {
+                "value": locale.GetFormatted("fieldValue", {
                     "total": locale.TranslateNumber(credits * decBoardSize, true, true)
                 })
-            );
+            }]);
         } else {
-            embed.addField(
-                locale.GetFormatted("fieldTitle", {
+            embed.addFields([{
+                "name": locale.GetFormatted("fieldTitle", {
                     i, "user": userSoftMention
                 }),
-                locale.GetFormatted("fieldValue", {
+                "value": locale.GetFormatted("fieldValue", {
                     "total": locale.TranslateNumber(credits, true, true)
                 })
-            );
+            }]);
         }
     }
 
@@ -104,7 +104,7 @@ module.exports = CreateCommand({
         !await ReplyIfBlacklisted(locale, "credits", msg, "inCreditsAccessList", "isCreditsAccessBlacklist"),
     "subcommands": [{
         "name": "channel",
-        "permissions": Permissions.FLAGS.ADMINISTRATOR,
+        "permissions": Permissions.Flags.Administrator,
         "subcommands": [{
             "name": "set",
             "shortcut": "s",
@@ -123,7 +123,7 @@ module.exports = CreateCommand({
                 }
 
                 const channel = await Utils.SafeFetch(msg.guild.channels, channelId);
-                if (channel == null || !channel.isText()) {
+                if (channel == null || channel.type !== ChannelType.GuildText) {
                     await msg.reply(locale.Get("invalidChannel"));
                     return;
                 }

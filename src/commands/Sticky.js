@@ -2,7 +2,7 @@ const { CreateCommand, Utils, Permissions, Database } = require("../Command.js")
 
 module.exports = CreateCommand({
     "name": "sticky",
-    "permissions": Permissions.FLAGS.MANAGE_CHANNELS,
+    "permissions": Permissions.Flags.ManageChannels,
     "channelPermissions": true,
     "subcommands": [{
         "name": "remove",
