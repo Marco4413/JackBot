@@ -34,7 +34,7 @@ const SendNitroBoostEmbed = async (member, textChannel = null) => {
         "image": {
             "url": locale.Get("imageURL")
         },
-        "color": locale.Get("color"),
+        "color": Number.parseInt(locale.Get("color")),
         "thumbnail": {
             "url": member.displayAvatarURL()
         },

@@ -58,14 +58,14 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, appr
     const embed = Utils.GetDefaultEmbedForMessage(msg, true);
     
     if (approve) {
-        embed.setColor(locale.Get("suggestionApprovedColor"));
+        embed.setColor(Number.parseInt(locale.Get("suggestionApprovedColor")));
         embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
         embed.setDescription(locale.GetFormatted(
             "suggestionApprovedDescription",
             { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
         ));
     } else {
-        embed.setColor(locale.Get("suggestionRejectedColor"));
+        embed.setColor(Number.parseInt(locale.Get("suggestionRejectedColor")));
         embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", { "id": suggestionId }));
         embed.setDescription(locale.GetFormatted(
             "suggestionRejectedDescription",

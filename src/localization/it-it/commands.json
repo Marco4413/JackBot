@@ -47,7 +47,7 @@
     "authorName": "🎉🎉 Nitro Booster 🎉🎉",
     "description": "Grazie a {user-mention} per aver boostato {guild-name} grazie al suo boost siamo a **{boost-count} Boost**!",
     "imageURL": "https://media1.tenor.com/images/4ae117611a4dc9af4a241ab90a70738d/tenor.gif",
-    "color": "#CD84A0",
+    "color": "0xcd84a0",
     "footerText": "Server Boostato 🎉"
   },
   "calculate": {
@@ -340,10 +340,10 @@
     "noResultChannelFound": "Il canale per gli esiti dei suggerimenti non è stato trovato ({id}).",
     "noSuggestionFound": "Il suggerimento specificato non esiste.",
     "noSuggestionMessage": "Il messaggio del suggerimento è stato eliminato.",
-    "suggestionApprovedColor": "#00CC00",
+    "suggestionApprovedColor": "0x00cc00",
     "suggestionApprovedTitle": "Suggerimento Approvato!",
     "suggestionApprovedDescription": "Un suggerimento inviato da {user-mention} è stato approvato!",
-    "suggestionRejectedColor": "#CC0000",
+    "suggestionRejectedColor": "0xcc0000",
     "suggestionRejectedTitle": "Suggerimento Rifiutato.",
     "suggestionRejectedDescription": "Un suggerimento inviato da {user-mention} è stato rifiutato.",
     "suggestionTextTitle": "Suggerimento",
