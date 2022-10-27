@@ -7,9 +7,15 @@ const { Message, MessageType } = require("discord.js");
  * @returns {Promise<Boolean>}
  */
 module.exports = async (msg, guild) => {
-    if (msg.type === MessageType.GuildBoost && msg.member != null) {
-        await SendNitroBoostEmbed(msg.member);
-        return true;
+    if (msg.member != null) {
+        switch (msg.type) {
+        case MessageType.GuildBoost:
+        case MessageType.GuildBoostTier1:
+        case MessageType.GuildBoostTier2:
+        case MessageType.GuildBoostTier3:
+            await SendNitroBoostEmbed(msg.member);
+            return true;
+        }
     }
     return false;
 };
