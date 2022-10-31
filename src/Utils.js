@@ -518,6 +518,14 @@ const UnlockTask = (...taskId) => {
 const GetLockedTasks = () =>
     Object.keys(_LOCKED_TASKS);
 
+/**
+ * Asynchronously waits for a certain time to elapse
+ * @param {Number} ms The time to wait in ms
+ * @returns {Promise<Void>} Resolves when ms elapsed
+ */
+const AsyncWait = async (ms) =>
+    new Promise(res => setTimeout(res, ms));
+
 module.exports = {
     SafeReply, SafeReact, SafeDelete, SafeFetch,
     IsValidEmbedValue, FormatString, MapFormatString,
@@ -532,5 +540,6 @@ module.exports = {
     MatchImageUrl, EndsWithOrAdd, Capitalize,
     EscapeDiscordSpecialCharacters,
     ParseDate,
-    IsTaskLocked, TimedLockTask, LockTask, UnlockTask, GetLockedTasks
+    IsTaskLocked, TimedLockTask, LockTask, UnlockTask, GetLockedTasks,
+    AsyncWait
 };
