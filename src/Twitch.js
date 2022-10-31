@@ -22,15 +22,20 @@ const _GetAuthentication = async () => {
         // curl -X POST 'https://id.twitch.tv/oauth2/token' \
         //     -H 'Content-Type: application/x-www-form-urlencoded' \
         //     -d 'client_id=<your client id goes here>&client_secret=<your client secret goes here>&grant_type=client_credentials'
-        const tokenResp = await fetch(
-            `${_TWITCH_OAUTH_API_URL}/token?client_id=${_CLIENT_ID}&client_secret=${_CLIENT_SECRET}&grant_type=client_credentials&scope=${encodeURIComponent(_TWITCH_API_SCOPE)}`, {
-                "method": "POST",
-                "headers": {
-                    "Content-Type": "application/x-www-form-urlencoded",
+        let tokenResp = null;
+        try {
+            tokenResp = await fetch(
+                `${_TWITCH_OAUTH_API_URL}/token?client_id=${_CLIENT_ID}&client_secret=${_CLIENT_SECRET}&grant_type=client_credentials&scope=${encodeURIComponent(_TWITCH_API_SCOPE)}`, {
+                    "method": "POST",
+                    "headers": { "Content-Type": "application/x-www-form-urlencoded" }
                 }
-            }
-        );
-    
+            );
+        } catch (error) {
+            Logger.QuietError(error);
+            Logger.Error("Twitch OAuth Error (POST /token): Failed to acquire API Token.");
+            return null;
+        }
+
         if (tokenResp.ok) {
             const { access_token, token_type, expires_in } = await tokenResp.json();
             _LastAuth = {
