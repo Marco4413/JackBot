@@ -55,6 +55,8 @@ const Unsubscribe = async (channelId) => {
 const Notify = async () => {
     const twitchChannelIds = Object.keys(_Subscriptions);
     for (let i = 0; i < twitchChannelIds.length; i++) {
+        await Utils.AsyncWait(1e3); // We wait 1 second for each query to twitch
+
         const twitchChannelId = twitchChannelIds[i];
         const notifications = await Database.GetRows("twitchNotification", {
             "twitchId": twitchChannelId

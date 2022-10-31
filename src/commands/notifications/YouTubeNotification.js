@@ -81,6 +81,8 @@ const Unsubscribe = async (channelId) => {
 const Notify = async () => {
     const ytChannelIds = Object.keys(_Subscriptions);
     for (let i = 0; i < ytChannelIds.length; i++) {
+        await Utils.AsyncWait(1e3); // We wait 1 second for each query to yt
+
         const ytChannelId = ytChannelIds[i];
         const notifications = await Database.GetRows("youtubeNotification", {
             "youtubeId": ytChannelId
