@@ -73,6 +73,12 @@ const LogError = (...message) => _ConsoleLog(_ErrorChalk, "ERROR", message, unde
 /** Logs the specified Warning Message */
 const Warn     = (...message) => _ConsoleLog(_WarnChalk , "WARN", message, undefined, undefined, true);
 
+/** Logs the specified Error Message */
+const QuietError = (...message) => _ConsoleLog(_ErrorChalk, "QUIET ERROR", message, undefined, undefined, false);
+/** Logs the specified Warning Message */
+const QuietWarn  = (...message) => _ConsoleLog(_WarnChalk , "QUIET WARN", message, undefined, undefined, false);
+
+
 /** Logs a Traceback preceded by the specified Message */
 const Trace = (...data) => {
     const err = new Error(Utils.JoinArray(data, " "));
@@ -135,6 +141,6 @@ CreateInterval(
 );
 
 module.exports = {
-    Log, Info, Debug, Assert, "Error": LogError, Warn,
+    Log, Info, Debug, Assert, "Error": LogError, Warn, QuietError, QuietWarn,
     Trace, GroupStart, GroupEnd, TimeStart, TimeLog, TimeEnd
 };
