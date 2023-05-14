@@ -5,7 +5,7 @@ such as logs, custom sounds, SQLite database...
 
 The folders that should be present upon first start of the bot are the following:
  - [`logs/`](#logs-folder) : Folder which holds all logs.
- - [`sounds/`](#sounds-folder) : Folder which holde all custom sounds.
+ - [`sounds/`](#sounds-folder) : Folder which holds all custom sounds.
 
 ## Logs Folder
 
