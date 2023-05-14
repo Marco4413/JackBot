@@ -1,5 +1,7 @@
 # JackBot
 
+![logo](./logo.png)
+
 ## Steps to run this project:
 
  1. Create a `.env` file on the project's root and add the following template:

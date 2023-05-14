@@ -1,4 +1,4 @@
-Copyright (c) 2022 [Marco4413](https://github.com/Marco4413/JackBot)
+Copyright (c) 2023 [Marco4413](https://github.com/Marco4413/JackBot)
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
