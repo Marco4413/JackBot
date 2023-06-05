@@ -61,7 +61,7 @@
   "downvote": "⬇️",
   "listSeparator": ", ",
   "listDelimiter": "[ {list} ]",
-  "listEntry": " - {value}",
+  "listEntry": "- {value}",
   "unknownUser": "Utente Sconosciuto",
   "unknownRole": "Ruolo Sconosciuto",
   "unknownChannel": "Canale Sconosciuto",
