@@ -39,6 +39,17 @@ const _CreateVoiceChannel = async (member, channelName, msg = null) => {
     let userChannel = await Utils.SafeFetch(member.guild.channels, user.privateVoiceChannelId);
     if (userChannel == null) {
         const parent = await Utils.SafeFetch(member.guild.channels, guild.privateChannelCategoryId);
+        userChannel = await member.guild.channels.create({
+            "name": channelName ?? `${member.displayName}'s Voice Channel`,
+            "type": ChannelType.GuildVoice,
+            "parent": parent?.type === ChannelType.GuildCategory ? parent : null
+        });
+
+        await Database.SetRowAttr("user", {
+            "guildId": member.guild.id,
+            "userId": member.id
+        }, { "privateVoiceChannelId": userChannel.id });
+
         const permissionOverwrites = [ ];
         if (guild.privateChannelEveryoneTemplateRoleId != null) {
             const everyoneTemplateRole = await Utils.SafeFetch(
@@ -70,14 +81,9 @@ const _CreateVoiceChannel = async (member, channelName, msg = null) => {
             }
         }
 
-        userChannel = await member.guild.channels.create({
-            "name": channelName ?? `${member.displayName}'s Voice Channel`,
-            "type": ChannelType.GuildVoice,
-            "parent": parent?.type === ChannelType.GuildCategory ? parent : null
-        });
-
         if (permissionOverwrites.length > 0) {
             for (let i = 0; i < permissionOverwrites.length; i++) {
+                await Utils.AsyncWait(250);
                 const overwrites = permissionOverwrites[i];
                 await userChannel.permissionOverwrites.edit(
                     overwrites.id,
@@ -88,11 +94,6 @@ const _CreateVoiceChannel = async (member, channelName, msg = null) => {
                 );
             }
         }
-
-        await Database.SetRowAttr("user", {
-            "guildId": member.guild.id,
-            "userId": member.id
-        }, { "privateVoiceChannelId": userChannel.id });
 
         await msg?.reply(locale.Get("created"));
     } else {
