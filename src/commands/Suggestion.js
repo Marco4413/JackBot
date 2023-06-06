@@ -9,14 +9,12 @@ const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
  * @param {Locale} locale
  * @param {Number} suggestionId
  * @param {String} reason
- * @param {Boolean} approve
- * @param {Boolean} implemented
  */
 
 const SuggestionStatus = {
-    Approved: "approved",
-    Rejected: "rejected",
-    Implemented: "implemented"
+    Approved: 1,
+    Rejected: 2,
+    Implemented: 3
 }
 
 const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, SuggestionStatus) => {
@@ -86,6 +84,33 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, Sugg
             "suggestionImplementedDescription",
             { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
         ));
+    }
+
+    switch (SuggestionStatus) {
+        case 1:
+            embed.setColor(Number.parseInt(locale.Get("suggestionApprovedColor")));
+            embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
+            embed.setDescription(locale.GetFormatted(
+                "suggestionApprovedDescription",
+                { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
+            ));
+            break;
+        case 2:
+            embed.setColor(Number.parseInt(locale.Get("suggestionRejectedColor")));
+            embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", { "id": suggestionId }));
+            embed.setDescription(locale.GetFormatted(
+                "suggestionRejectedDescription",
+                { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
+            ));
+            break;
+        case 3:
+            embed.setColor(Number.parseInt(locale.Get("suggestionImplementedColor")));
+            embed.setTitle(locale.GetFormatted("suggestionImplementedTitle", { "id": suggestionId }));
+            embed.setDescription(locale.GetFormatted(
+                "suggestionImplementedDescription",
+                { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
+            ));
+            break;
     }
 
     embed.addFields([{
