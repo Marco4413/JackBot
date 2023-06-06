@@ -10,8 +10,9 @@ const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
  * @param {Number} suggestionId
  * @param {String} reason
  * @param {Boolean} approve
+ * @param {Boolean} implemented
  */
-const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, approve) => {
+const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, approve, implemented) => {
     if (guild.suggestionChannelId == null) {
         await msg.reply(locale.Get("noChannelSet"));
         return;
@@ -57,6 +58,15 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, appr
     const suggestionField = suggestionEmbed.fields[suggestionEmbed.fields.length - 1];
     const embed = Utils.GetDefaultEmbedForMessage(msg, true);
     
+    if (implemented) {
+        embed.setColor(Number.parseInt(locale.Get("suggestionImplementedColor")));
+        embed.setTitle(locale.GetFormatted("suggestionImplementedTitle", { "id": suggestionId }));
+        embed.setDescription(locale.GetFormatted(
+            "suggestionImplementedDescription",
+            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
+        ));
+    }
+
     if (approve) {
         embed.setColor(Number.parseInt(locale.Get("suggestionApprovedColor")));
         embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
@@ -209,7 +219,7 @@ module.exports = CreateCommand({
                 "types": [ "text" ]
             }],
             "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, true)
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, true, false)
         },
         {
             "name": "reject",
@@ -223,7 +233,21 @@ module.exports = CreateCommand({
                 "types": [ "text" ]
             }],
             "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, false)
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, false, false)
+        },
+        {
+            "name": "implemented",
+            "canExecute": async (msg, guild, locale) =>
+                !await ReplyIfBlacklisted(locale, "suggestion implemented", msg, "inSuggestionManagerAccessList", "isSuggestionManagerAccessBlacklist"),
+            "arguments": [{
+                "name": "[SUGGESTION ID]",
+                "types": [ "number" ]
+            }, {
+                "name": "[REASON]",
+                "types": [ "text" ]
+            }],
+            "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, false, true)
         }
     ],
     "arguments": [{
