@@ -12,7 +12,14 @@ const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
  * @param {Boolean} approve
  * @param {Boolean} implemented
  */
-const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, approve, implemented) => {
+
+const SuggestionStatus = {
+    Approved: "approved",
+    Rejected: "rejected",
+    Implemented: "implemented"
+}
+
+const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, SuggestionStatus) => {
     if (guild.suggestionChannelId == null) {
         await msg.reply(locale.Get("noChannelSet"));
         return;
@@ -57,28 +64,26 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, appr
     const suggestionEmbed = suggestionMessage.embeds[suggestionMessage.embeds.length - 1];
     const suggestionField = suggestionEmbed.fields[suggestionEmbed.fields.length - 1];
     const embed = Utils.GetDefaultEmbedForMessage(msg, true);
-    
-    if (implemented) {
-        embed.setColor(Number.parseInt(locale.Get("suggestionImplementedColor")));
-        embed.setTitle(locale.GetFormatted("suggestionImplementedTitle", { "id": suggestionId }));
-        embed.setDescription(locale.GetFormatted(
-            "suggestionImplementedDescription",
-            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
-        ));
-    }
 
-    if (approve) {
+    if (SuggestionStatus.Approved) {
         embed.setColor(Number.parseInt(locale.Get("suggestionApprovedColor")));
         embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
         embed.setDescription(locale.GetFormatted(
             "suggestionApprovedDescription",
             { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
         ));
-    } else {
+    } else if (SuggestionStatus.Rejected) {
         embed.setColor(Number.parseInt(locale.Get("suggestionRejectedColor")));
         embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", { "id": suggestionId }));
         embed.setDescription(locale.GetFormatted(
             "suggestionRejectedDescription",
+            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
+        ));
+    } else if (SuggestionStatus.Implemented) {
+        embed.setColor(Number.parseInt(locale.Get("suggestionImplementedColor")));
+        embed.setTitle(locale.GetFormatted("suggestionImplementedTitle", { "id": suggestionId }));
+        embed.setDescription(locale.GetFormatted(
+            "suggestionImplementedDescription",
             { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
         ));
     }
@@ -219,7 +224,7 @@ module.exports = CreateCommand({
                 "types": [ "text" ]
             }],
             "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, true, false)
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, SuggestionStatus.Approved)
         },
         {
             "name": "reject",
@@ -233,7 +238,7 @@ module.exports = CreateCommand({
                 "types": [ "text" ]
             }],
             "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, false, false)
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, SuggestionStatus.Rejected)
         },
         {
             "name": "implemented",
@@ -247,7 +252,7 @@ module.exports = CreateCommand({
                 "types": [ "text" ]
             }],
             "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, false, true)
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, SuggestionStatus.Implemented)
         }
     ],
     "arguments": [{
