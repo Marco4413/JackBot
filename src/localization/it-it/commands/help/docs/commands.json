@@ -491,6 +491,10 @@
           "title": "approve <ID> <MOTIVO...>",
           "description": "Approva il suggerimento con la motivazione specificata."
         },
+        "implemented": {
+          "title": "implemented <ID> <MOTIVO...>",
+          "description": "Segna il suggerimento specificato come già implementato con la motivazione specificata."
+        },
         "reject": {
           "title": "reject <ID> <MOTIVO...>",
           "description": "Rifiuta il suggerimento con la motivazione specificata."

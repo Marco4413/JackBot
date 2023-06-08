@@ -494,6 +494,10 @@
           "title": "approve <ID> <REASON...>",
           "description": "Approves the specified suggestion with the specified reason."
         },
+        "implemented": {
+          "title": "implemented <ID> <REASON...>",
+          "description": "Marks the specified suggestion as already implemented with the specified reason."
+        },
         "reject": {
           "title": "reject <ID> <REASON...>",
           "description": "Rejects the specified suggestion with the specified reason."
