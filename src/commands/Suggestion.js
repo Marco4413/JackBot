@@ -9,9 +9,9 @@ const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
  * @param {Locale} locale
  * @param {Number} suggestionId
  * @param {String} reason
- * @param {Boolean} approve
+ * @param {"Approved"|"Implemented"|"Rejected"} locKey
  */
-const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, approve) => {
+const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, locKey) => {
     if (guild.suggestionChannelId == null) {
         await msg.reply(locale.Get("noChannelSet"));
         return;
@@ -57,21 +57,12 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, appr
     const suggestionField = suggestionEmbed.fields[suggestionEmbed.fields.length - 1];
     const embed = Utils.GetDefaultEmbedForMessage(msg, true);
     
-    if (approve) {
-        embed.setColor(Number.parseInt(locale.Get("suggestionApprovedColor")));
-        embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
-        embed.setDescription(locale.GetFormatted(
-            "suggestionApprovedDescription",
-            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
-        ));
-    } else {
-        embed.setColor(Number.parseInt(locale.Get("suggestionRejectedColor")));
-        embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", { "id": suggestionId }));
-        embed.setDescription(locale.GetFormatted(
-            "suggestionRejectedDescription",
-            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
-        ));
-    }
+    embed.setColor(Number.parseInt(locale.Get(`suggestion${locKey}Color`)));
+    embed.setTitle(locale.GetFormatted(`suggestion${locKey}Title`, { "id": suggestionId }));
+    embed.setDescription(locale.GetFormatted(
+        `suggestion${locKey}Description`,
+        { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
+    ));
 
     embed.addFields([{
         "name": locale.Get("suggestionTextTitle"),
@@ -209,7 +200,21 @@ module.exports = CreateCommand({
                 "types": [ "text" ]
             }],
             "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, true)
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, "Approved")
+        },
+        {
+            "name": "implemented",
+            "canExecute": async (msg, guild, locale) =>
+                !await ReplyIfBlacklisted(locale, "suggestion implemented", msg, "inSuggestionManagerAccessList", "isSuggestionManagerAccessBlacklist"),
+            "arguments": [{
+                "name": "[SUGGESTION ID]",
+                "types": [ "number" ]
+            }, {
+                "name": "[REASON]",
+                "types": [ "text" ]
+            }],
+            "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, "Implemented")
         },
         {
             "name": "reject",
@@ -223,7 +228,7 @@ module.exports = CreateCommand({
                 "types": [ "text" ]
             }],
             "execute": async (msg, guild, locale, [ suggestionId, reason ]) =>
-                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, false)
+                await _ProcessSuggestion(msg, guild, locale, suggestionId, reason, "Rejected")
         }
     ],
     "arguments": [{
