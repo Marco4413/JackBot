@@ -2,6 +2,7 @@ const { Message, TextChannel, ChannelType } = require("discord.js");
 const { CreateCommand, Permissions, Database, DatabaseDefinitions, Utils } = require("../Command.js");
 const { Locale } = require("../Localization.js");
 const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
+const Logger = require("./Logger.js");
 
 /**
  * @param {Message} msg
@@ -12,12 +13,12 @@ const { ReplyIfBlacklisted } = require("./utils/AccessListUtils.js");
  */
 
 const SuggestionStatus = {
-    Approved: 1,
-    Rejected: 2,
-    Implemented: 3
+    Approved: 0,
+    Rejected: 1,
+    Implemented: 2
 }
 
-const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, SuggestionStatus) => {
+const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, status) => {
     if (guild.suggestionChannelId == null) {
         await msg.reply(locale.Get("noChannelSet"));
         return;
@@ -63,31 +64,8 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, Sugg
     const suggestionField = suggestionEmbed.fields[suggestionEmbed.fields.length - 1];
     const embed = Utils.GetDefaultEmbedForMessage(msg, true);
 
-    if (SuggestionStatus.Approved) {
-        embed.setColor(Number.parseInt(locale.Get("suggestionApprovedColor")));
-        embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
-        embed.setDescription(locale.GetFormatted(
-            "suggestionApprovedDescription",
-            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
-        ));
-    } else if (SuggestionStatus.Rejected) {
-        embed.setColor(Number.parseInt(locale.Get("suggestionRejectedColor")));
-        embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", { "id": suggestionId }));
-        embed.setDescription(locale.GetFormatted(
-            "suggestionRejectedDescription",
-            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
-        ));
-    } else if (SuggestionStatus.Implemented) {
-        embed.setColor(Number.parseInt(locale.Get("suggestionImplementedColor")));
-        embed.setTitle(locale.GetFormatted("suggestionImplementedTitle", { "id": suggestionId }));
-        embed.setDescription(locale.GetFormatted(
-            "suggestionImplementedDescription",
-            { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
-        ));
-    }
-
-    switch (SuggestionStatus) {
-        case 1:
+    switch (status) {
+        case status.Approved:
             embed.setColor(Number.parseInt(locale.Get("suggestionApprovedColor")));
             embed.setTitle(locale.GetFormatted("suggestionApprovedTitle", { "id": suggestionId }));
             embed.setDescription(locale.GetFormatted(
@@ -95,7 +73,7 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, Sugg
                 { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
             ));
             break;
-        case 2:
+        case status.Rejected:
             embed.setColor(Number.parseInt(locale.Get("suggestionRejectedColor")));
             embed.setTitle(locale.GetFormatted("suggestionRejectedTitle", { "id": suggestionId }));
             embed.setDescription(locale.GetFormatted(
@@ -103,7 +81,7 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, Sugg
                 { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
             ));
             break;
-        case 3:
+        case status.Implemented:
             embed.setColor(Number.parseInt(locale.Get("suggestionImplementedColor")));
             embed.setTitle(locale.GetFormatted("suggestionImplementedTitle", { "id": suggestionId }));
             embed.setDescription(locale.GetFormatted(
@@ -111,6 +89,8 @@ const _ProcessSuggestion = async (msg, guild, locale, suggestionId, reason, Sugg
                 { "user-mention": Utils.MentionUser(suggestionRow.authorId) }
             ));
             break;
+        default:
+            Logger.Warn("Invalid suggestion status.");
     }
 
     embed.addFields([{
