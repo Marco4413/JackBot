@@ -25,9 +25,10 @@ const _GetAuthentication = async () => {
         let tokenResp = null;
         try {
             tokenResp = await fetch(
-                `${_TWITCH_OAUTH_API_URL}/token?client_id=${_CLIENT_ID}&client_secret=${_CLIENT_SECRET}&grant_type=client_credentials&scope=${encodeURIComponent(_TWITCH_API_SCOPE)}`, {
+                `${_TWITCH_OAUTH_API_URL}/token`, {
                     "method": "POST",
-                    "headers": { "Content-Type": "application/x-www-form-urlencoded" }
+                    "headers": { "Content-Type": "application/x-www-form-urlencoded" },
+                    "body": `client_id=${_CLIENT_ID}&client_secret=${_CLIENT_SECRET}&grant_type=client_credentials&scope=${encodeURIComponent(_TWITCH_API_SCOPE)}`
                 }
             );
         } catch (error) {
